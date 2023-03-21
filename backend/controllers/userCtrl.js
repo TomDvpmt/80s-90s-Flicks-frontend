@@ -1,8 +1,14 @@
+const User = require("../models/User");
+
 exports.login = (req, res) => {
 
 };
 
 exports.createUser = (req, res) => {
+
+};
+
+exports.getAllUsers = (req, res) => {
 
 };
 

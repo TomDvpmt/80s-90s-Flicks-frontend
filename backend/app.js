@@ -1,19 +1,16 @@
 require("dotenv").config();
 
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
-const usersRoutes = require("./routes/usersRoutes");
-const moviesRoutes = require("./routes/moviesRoutes");
-const personsRoutes = require("./routes/personsRoutes");
-const reviewsRoutes = require("./routes/reviewsRoutes");
+const connectToDb = require("./config/database");
+const {errorHandler} = require("./middleware/errorHandler");
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log("============== Application connectée à MongoDB =============="))
-.catch(error => console.log("==================== Connexion à MongoDB impossible : ", error, "======================"))
+const userRoutes = require("./routes/userRoutes");
+const movieRoutes = require("./routes/movieRoutes");
+const personRoutes = require("./routes/personRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+
+connectToDb();
 
 app.use(express.json());
 
@@ -24,9 +21,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/API/users", usersRoutes);
-app.use("/API/movies", moviesRoutes);
-app.use("/API/persons", personsRoutes);
-app.use("/API/reviews", reviewsRoutes);
+app.use("/API/users", userRoutes); // MongoDB
+app.use("/API/movies", movieRoutes); // The Movie Database API
+app.use("/API/persons", personRoutes); // The Movie Database API
+app.use("/API/reviews", reviewRoutes); // MongoDB
+
+app.use(errorHandler);
 
 module.exports = app;

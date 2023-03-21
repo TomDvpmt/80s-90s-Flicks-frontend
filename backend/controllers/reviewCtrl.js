@@ -1,3 +1,6 @@
+const Review = require("../models/Review");
+
+
 exports.getAllReviews = (req, res) => {
 
 };
