@@ -1,5 +1,9 @@
-import { Link } from "react-router-dom";
-import { FaUser, FaSignInAlt } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+
+import fetchData from "../utils/fetchData";
+import logout from "../utils/logout";
+
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -20,6 +24,14 @@ const StyledHeader = styled.header`
 `;
 
 const Header = () => {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    const handleLogout = async () => {
+        await fetchData(`${process.env.REACT_APP_API_URI}users/logout`, "POST");
+        logout(navigate);
+    };
+
     return (
         <StyledHeader>
             <img src="" alt="" />
@@ -27,12 +39,24 @@ const Header = () => {
             <nav>
                 <ul>
                     <li>
+                        <Link to="/">Explore</Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
                         <Link to="/profile">Profile</Link>
                     </li>
                     <li>
-                        <Link to="/login">
+                        <Link to={token && token !== "null" ? "/" : "/login"}>
                             <FaSignInAlt />
-                            Sign In
+                            Log In
+                        </Link>
+                    </li>
+                    <li>
+                        <Link onClick={handleLogout}>
+                            <FaSignOutAlt />
+                            Log out
                         </Link>
                     </li>
                     <li>

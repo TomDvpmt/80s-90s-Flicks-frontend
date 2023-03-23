@@ -22,12 +22,11 @@ const createToken = (user) => {
  */
 
 const setCookie = (res, token) => {
-    res.setHeader(
-        "Set-Cookie",
-        `token=${token};HttpOnly;SameSite=Lax;Max-Age=${60 * 60 * 24};${
+    res.setHeader("Set-Cookie", [
+        `token=${token};HttpOnly;Max-Age=${60 * 60 * 24};${
             process.env.NODE_ENV === "production" && "Secure;"
-        }`
-    );
+        }`,
+    ]);
 };
 
 /**
@@ -53,11 +52,12 @@ exports.login = asyncHandler(async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
         const token = createToken(user);
-        setCookie(res, token);
+        // setCookie(res, token);
 
         res.status(200).json({
             message: "Utilisateur connecté.",
             _id: user.id,
+            token: token,
             username: user.username,
             email: user.email,
             firstName: user.firstName,
@@ -67,6 +67,17 @@ exports.login = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error("Nom d'utilisateur ou mot de passe incorrect.");
     }
+});
+
+exports.logout = asyncHandler(async (req, res) => {
+    // res.setHeader(
+    //     "Set-Cookie",
+    //     `token=null;HttpOnly;SameSite=Lax;expires=Thu, 01 Jan 1970 00:00:00 GMT;${
+    //         process.env.NODE_ENV === "production" && "Secure;"
+    //     }`
+    // );
+
+    res.status(200).json({ message: "utilisateur déconnecté." });
 });
 
 /**
@@ -151,7 +162,16 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
  * @returns {Promise}
  */
 
-exports.getOneUser = asyncHandler(async (req, res) => {});
+exports.getOneUser = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findOne({ _id: userId });
+    res.status(200).json({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+    });
+});
 
 /**
  * Update user.

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 /** Fetch data from an API
  *
  * @param {String} endpoint

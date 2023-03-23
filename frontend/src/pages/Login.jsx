@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,6 +16,13 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        if (token && token !== "null") {
+            navigate("/");
+        }
+    }, [token, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,8 +36,9 @@ const Login = () => {
         if (data.statusCode >= 400) {
             setErrorMessage(data.message);
         } else {
+            localStorage.setItem("userId", data._id);
+            localStorage.setItem("token", data.token);
             navigate("/");
-            console.log(data.message);
         }
     };
 
