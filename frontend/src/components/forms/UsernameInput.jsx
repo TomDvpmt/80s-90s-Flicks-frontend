@@ -1,13 +1,18 @@
 import PropTypes from "prop-types";
 
-const UsernameInput = ({ username, setUsername }) => {
+const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
     UsernameInput.propTypes = {
         username: PropTypes.string,
         setUsername: PropTypes.func,
+        setErrorMessage: PropTypes.func,
     };
 
     const handleChange = (e) => {
         setUsername(e.target.value);
+    };
+
+    const handleFocus = () => {
+        setErrorMessage("");
     };
 
     return (
@@ -20,7 +25,9 @@ const UsernameInput = ({ username, setUsername }) => {
                 placeholder="Enter your username"
                 value={username}
                 onChange={handleChange}
+                onFocus={handleFocus}
                 required
+                autoFocus
             />
         </label>
     );

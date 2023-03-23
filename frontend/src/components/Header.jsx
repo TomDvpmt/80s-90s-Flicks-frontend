@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaSignInAlt } from "react-icons/fa";
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -27,12 +27,20 @@ const Header = () => {
             <nav>
                 <ul>
                     <li>
-                        <Link to="/profile">
-                            <FaUser />
-                            Profile
+                        <Link to="/profile">Profile</Link>
+                    </li>
+                    <li>
+                        <Link to="/login">
+                            <FaSignInAlt />
+                            Sign In
                         </Link>
                     </li>
-                    <li></li>
+                    <li>
+                        <Link to="/register">
+                            <FaUser />
+                            Register
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </StyledHeader>
