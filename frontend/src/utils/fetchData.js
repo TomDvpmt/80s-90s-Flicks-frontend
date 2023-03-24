@@ -1,18 +1,16 @@
 /** Fetch data from an API
  *
  * @param {String} endpoint
- * @param {String} method
- * @param {Object} headers
- * @param {Object} body
+ * @param {Object} config
  * @returns {Object}
  */
 
-async function fetchData(endpoint, method, headers, body) {
+async function fetchData(endpoint, config) {
     try {
         const response = await fetch(endpoint, {
-            method: method,
-            headers: headers,
-            body: body,
+            method: config.method,
+            headers: config.headers,
+            body: config.body,
         });
         const data = await response.json();
         return data;

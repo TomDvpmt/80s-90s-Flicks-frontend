@@ -16,9 +16,11 @@ const Profile = () => {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-        fetchData(`${process.env.REACT_APP_API_URI}users/${userId}`, "GET", {
-            "Content-Type": "application/json",
-            Authorization: `BEARER ${token}`,
+        fetchData(`${process.env.REACT_APP_API_URI}users/${userId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `BEARER ${token}`,
+            },
         }).then((response) => {
             if (response.statusCode === 401) {
                 logout(navigate);
@@ -28,7 +30,7 @@ const Profile = () => {
                 setUserData(response);
             }
         });
-    }, [userId, token]);
+    }, [userId, token, navigate]);
 
     return (
         <>

@@ -12,12 +12,12 @@ const LastNameInput = ({ lastName, setLastName }) => {
 
     return (
         <label htmlFor="lastName">
-            Last name
+            Nom
             <input
                 type="lastName"
                 id="lastName"
                 name="lastName"
-                placeholder="Enter your last name"
+                placeholder="Entrez votre nom"
                 value={lastName}
                 onChange={handleChange}
             />

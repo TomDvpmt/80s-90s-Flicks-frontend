@@ -12,12 +12,12 @@ const EmailInput = ({ email, setEmail }) => {
 
     return (
         <label htmlFor="email">
-            Email *
+            E-mail *
             <input
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="Entrez votre adresse e-mail"
                 value={email}
                 onChange={handleChange}
                 required

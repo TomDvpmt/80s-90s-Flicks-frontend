@@ -2,21 +2,21 @@ const Dashboard = () => {
     return (
         <>
             <main>
-                <h1>Dashboard</h1>
+                <h1>Tableau de bord</h1>
             </main>
             <nav>
                 <ul>
                     <li>
-                        <h2>Movies to watch</h2>
+                        <h2>À voir</h2>
                     </li>
                     <li>
-                        <h2>Movies watched</h2>
+                        <h2>Déjà vus</h2>
                     </li>
                     <li>
-                        <h2>Movies I liked</h2>
+                        <h2>J'aime</h2>
                     </li>
                     <li>
-                        <h2>My Reviews</h2>
+                        <h2>Mes critiques</h2>
                     </li>
                 </ul>
             </nav>

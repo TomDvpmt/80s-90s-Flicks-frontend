@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UsernameInput from "../components/forms/UsernameInput";
 import PasswordInput from "../components/forms/PasswordInput";
 import SubmitButton from "../components/forms/SubmitButton";
+import ErrorMessage from "../components/ErrorMessage";
 
 import fetchData from "../utils/fetchData";
 
@@ -29,9 +30,14 @@ const Login = () => {
 
         const data = await fetchData(
             `${process.env.REACT_APP_API_URI}users/login`,
-            "POST",
-            { "Content-Type": "application/json" },
-            JSON.stringify({ username: username, password: password })
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                }),
+            }
         );
         if (data.statusCode >= 400) {
             setErrorMessage(data.message);
@@ -44,10 +50,10 @@ const Login = () => {
 
     return (
         <main>
-            <h1>Sign In</h1>
+            <h1>Connexion</h1>
             <StyledForm>
                 <form onSubmit={handleSubmit}>
-                    {errorMessage && <p>{errorMessage}</p>}
+                    <ErrorMessage errorMessage={errorMessage} />
                     <UsernameInput
                         username={username}
                         setUsername={setUsername}
@@ -58,10 +64,10 @@ const Login = () => {
                         setPassword={setPassword}
                         setErrorMessage={setErrorMessage}
                     />
-                    <SubmitButton text="Sign in" />
+                    <SubmitButton text="Se connecter" />
                     <p>
-                        Not a member yet ?&nbsp;
-                        <Link to="/register">Create an account</Link>
+                        Pas encore incrit ?&nbsp;
+                        <Link to="/register">Créer un compte</Link>
                     </p>
                 </form>
             </StyledForm>

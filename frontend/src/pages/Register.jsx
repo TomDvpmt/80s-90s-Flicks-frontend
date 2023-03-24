@@ -27,12 +27,17 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = await fetchData(
-            `${process.env.REACT_APP_API_URI}users/`,
-            "POST",
-            { "Content-type": "application/json" },
-            JSON.stringify({ username, password, email, firstName, lastName })
-        );
+        const data = await fetchData(`${process.env.REACT_APP_API_URI}users/`, {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({
+                username,
+                password,
+                email,
+                firstName,
+                lastName,
+            }),
+        });
         if (data.statusCode >= 400) {
             setErrorMessage(data.message);
         } else {
@@ -43,7 +48,7 @@ const Register = () => {
 
     return (
         <main>
-            <h1>Register</h1>
+            <h1>Créer un compte</h1>
             <StyledForm>
                 <form onSubmit={handleSubmit}>
                     {errorMessage && <p>{errorMessage}</p>}
@@ -77,9 +82,10 @@ const Register = () => {
                         setLastName={setLastName}
                         setErrorMessage={setErrorMessage}
                     />
-                    <SubmitButton text="Register" />
+                    <SubmitButton text="S'enregistrer" />
                     <p>
-                        Already a member ?&nbsp;<Link to="/login">Sign in</Link>
+                        Déjà inscrit ?&nbsp;
+                        <Link to="/login">Se connecter</Link>
                     </p>
                 </form>
             </StyledForm>

@@ -39,30 +39,30 @@ const Header = () => {
             <nav>
                 <ul>
                     <li>
-                        <Link to="/">Explore</Link>
+                        <Link to="/">Explorer</Link>
                     </li>
                     <li>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to="/dashboard">Tableau de bord</Link>
                     </li>
                     <li>
-                        <Link to="/profile">Profile</Link>
+                        <Link to="/profile">Profil</Link>
                     </li>
                     <li>
                         <Link to={token && token !== "null" ? "/" : "/login"}>
                             <FaSignInAlt />
-                            Log In
+                            Connexion
                         </Link>
                     </li>
                     <li>
                         <Link onClick={handleLogout}>
                             <FaSignOutAlt />
-                            Log out
+                            Déconnexion
                         </Link>
                     </li>
                     <li>
                         <Link to="/register">
                             <FaUser />
-                            Register
+                            Créer un compte
                         </Link>
                     </li>
                 </ul>

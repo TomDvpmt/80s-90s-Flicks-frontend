@@ -17,12 +17,12 @@ const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
 
     return (
         <label htmlFor="username">
-            Username *
+            Nom d'utilisateur *
             <input
                 type="text"
                 id="username"
                 name="username"
-                placeholder="Enter your username"
+                placeholder="Entrez votre nom d'utilisateur"
                 value={username}
                 onChange={handleChange}
                 onFocus={handleFocus}
