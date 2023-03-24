@@ -23,6 +23,9 @@ const Home = () => {
     const [movies, setMovies] = useState([]);
     const [filters, setFilters] = useState(allYearsFilter);
     const [errorMessage, setErrorMessage] = useState("");
+    const [numberOfPages, setNumberOfPages] = useState(1);
+    const [numberOfResults, setNumberOfResults] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const years = ["Toutes"];
     for (let i = 1980; i < 2000; i++) {
@@ -30,6 +33,7 @@ const Home = () => {
     }
 
     const handleYearChange = (e) => {
+        setCurrentPage(1);
         const dateFilterString = "&primary_release_year=";
         const start = filters.indexOf(dateFilterString);
         const end = start + dateFilterString.length + 4;
@@ -51,14 +55,32 @@ const Home = () => {
         }
     };
 
+    const goToPreviousPage = (e) => {
+        e.preventDefault();
+        setCurrentPage((currentPage) => currentPage - 1);
+    };
+
+    const goToNextPage = (e) => {
+        e.preventDefault();
+        setCurrentPage((currentPage) => currentPage + 1);
+    };
+
+    const handleDirectPageClick = (e) => {
+        e.target.value && setCurrentPage(parseInt(e.target.value));
+    };
+
     useEffect(() => {
         fetchData(
-            `https://api.themoviedb.org/3/discover/movie?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr${filters}&with_original_language=en&sort_by=popularity.desc`,
+            `https://api.themoviedb.org/3/discover/movie?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr${filters}&with_original_language=en&page=${currentPage}&sort_by=popularity.desc`,
             {
                 method: "GET",
             }
         )
             .then((response) => {
+                setNumberOfPages(
+                    response.total_pages > 500 ? 500 : response.total_pages
+                );
+                setNumberOfResults(response.total_results);
                 const results = response.results.map((movie) => {
                     const movieData = {
                         id: movie.id,
@@ -79,7 +101,7 @@ const Home = () => {
                 setErrorMessage("Impossible d'afficher les films.");
                 console.error(error);
             });
-    }, [filters]);
+    }, [filters, currentPage]);
 
     return (
         <main>
@@ -87,7 +109,52 @@ const Home = () => {
             <section>
                 <h2>Trouver des films</h2>
                 <form>
+                    <p>
+                        Nombre de résultats : {numberOfResults}{" "}
+                        {numberOfResults > 10000 && (
+                            <span>
+                                (seuls les 10 000 premiers sont disponibles)
+                            </span>
+                        )}
+                    </p>
                     <p>Filters : {filters}</p>
+                    <div>
+                        <button
+                            onClick={goToPreviousPage}
+                            disabled={currentPage === 1}>
+                            Page précédente
+                        </button>
+                        <div onClick={handleDirectPageClick}>
+                            {currentPage !== 1 && (
+                                <input type="button" value="1" />
+                            )}
+                            {currentPage > 4 && <span> ... </span>}
+                            {currentPage > 3 && (
+                                <input type="button" value={currentPage - 2} />
+                            )}
+                            {currentPage > 2 && (
+                                <input type="button" value={currentPage - 1} />
+                            )}
+                            <strong>{currentPage}</strong>
+                            {currentPage < numberOfPages - 1 && (
+                                <input type="button" value={currentPage + 1} />
+                            )}
+                            {currentPage < numberOfPages - 2 && (
+                                <input type="button" value={currentPage + 2} />
+                            )}
+                            {currentPage < numberOfPages - 3 && (
+                                <span> ... </span>
+                            )}
+                            {currentPage !== numberOfPages && (
+                                <input type="button" value={numberOfPages} />
+                            )}
+                        </div>
+                        <button
+                            onClick={goToNextPage}
+                            disabled={currentPage === numberOfPages}>
+                            Page suivante
+                        </button>
+                    </div>
                     <label htmlFor="date-filter">Année : </label>
                     <select id="date-filter" onChange={handleYearChange}>
                         {years.map((year) => (
@@ -99,7 +166,6 @@ const Home = () => {
                 </form>
                 <StyledResultsGrid>{movies}</StyledResultsGrid>
                 <ErrorMessage errorMessage={errorMessage} />
-                <div>[PAGINATION]</div>
             </section>
         </main>
     );

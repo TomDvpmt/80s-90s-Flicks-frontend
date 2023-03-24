@@ -9,13 +9,21 @@ const StyledMovieCard = styled.article`
 
     .card__info {
         position: absolute;
-        display: none;
         z-index: 2;
         color: white;
+
+        p {
+            display: none;
+        }
+
+        h3 {
+            display: ${(props) => (props.hasPoster ? "none" : "block")};
+        }
     }
 
     &:hover {
-        .card__info {
+        .card__info p,
+        .card__info h3 {
             display: block;
         }
 
@@ -30,8 +38,8 @@ const MovieCard = ({ movieData }) => {
         movieData: PropTypes.object,
     };
 
-    const [director, setDirector] = useState({});
-    const [mainActors, setMainActors] = useState([]);
+    const [director, setDirector] = useState("");
+    const [mainActors, setMainActors] = useState([""]);
 
     useEffect(() => {
         fetch(
@@ -42,38 +50,58 @@ const MovieCard = ({ movieData }) => {
         )
             .then((response) => response.json())
             .then((data) => {
-                setDirector(
-                    data.crew.filter((person) => person.job === "Director")[0]
-                );
-                setMainActors(
-                    data.cast.slice(0, 3).map((actor, index) => (
-                        <span key={actor.name}>
-                            {actor.name}
-                            {index === mainActors.length - 1 ? "" : ", "}
-                        </span>
-                    ))
-                );
+                data.crew[0]
+                    ? setDirector(
+                          data.crew.filter(
+                              (person) => person.job === "Director"
+                          )[0].name
+                      )
+                    : setDirector("");
+
+                data.cast.length > 0
+                    ? setMainActors(
+                          data.cast
+                              .slice(
+                                  0,
+                                  data.cast.length >= 3 ? 3 : data.cast.length
+                              )
+                              .map((actor, index) => (
+                                  <span key={actor.name}>
+                                      {actor.name}
+                                      {index === mainActors.length - 1
+                                          ? ""
+                                          : ", "}
+                                  </span>
+                              ))
+                      )
+                    : setMainActors([""]);
             })
             .catch((error) => console.log(error));
-    }, [mainActors, movieData.id]);
+    }, [mainActors.length, movieData.id]);
 
     return (
-        <StyledMovieCard>
+        <StyledMovieCard hasPoster={movieData.posterPath}>
             <Link to={`/movies/${movieData.id}`}>
                 <div className="card__info">
                     <h3>{movieData.title}</h3>
                     <p>({movieData.originalTitle})</p>
                     <p>
-                        {director.name} | {movieData.releaseDate.slice(0, 4)}
+                        {director !== "" && director + " | "}
+                        {movieData.releaseDate.slice(0, 4)}
                     </p>
-                    <p>Avec {mainActors}</p>
+                    {mainActors[0] && <p>Avec {mainActors}</p>}
                 </div>
-                <img
-                    src={
-                        "https://image.tmdb.org/t/p/w300" + movieData.posterPath
-                    }
-                    alt={movieData.title}
-                />
+                {movieData.posterPath !== null ? (
+                    <img
+                        src={
+                            "https://image.tmdb.org/t/p/w300" +
+                            movieData.posterPath
+                        }
+                        alt={movieData.title}
+                    />
+                ) : (
+                    <img src="" width="300" height="450" />
+                )}
             </Link>
         </StyledMovieCard>
     );
