@@ -3,19 +3,26 @@ import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
+import UserForm from "../components/forms/UserForm";
+
 import fetchData from "../utils/fetchData";
 import logout from "../utils/logout";
 
 const Profile = () => {
     const [userData, setUserData] = useState({});
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
 
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+    const handleUpdateUser = () => {
+        setShowUpdateForm((showUpdateForm) => !showUpdateForm);
+    };
 
     useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        const token = localStorage.getItem("token");
+
         fetchData(`${process.env.REACT_APP_API_URI}users/${userId}`, {
             method: "GET",
             headers: {
@@ -30,7 +37,7 @@ const Profile = () => {
                 setUserData(response);
             }
         });
-    }, [userId, token, navigate]);
+    }, [navigate]);
 
     return (
         <>
@@ -42,6 +49,23 @@ const Profile = () => {
                 <li>Email address: {userData.email}</li>
             </ul>
             <ErrorMessage errorMessage={errorMessage} />
+            <button type="button" onClick={handleUpdateUser}>
+                Modifier les informations
+            </button>
+
+            {showUpdateForm && (
+                <UserForm
+                    userId={parseInt(userData.id)}
+                    page="profile"
+                    defaultFormValues={{
+                        username: userData.username,
+                        email: userData.email,
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                    }}
+                    setShowUpdateForm={setShowUpdateForm}
+                />
+            )}
         </>
     );
 };

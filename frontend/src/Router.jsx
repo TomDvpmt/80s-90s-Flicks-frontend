@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -11,17 +11,17 @@ import Movie from "./pages/Movie";
 import Profile from "./pages/Profile";
 import Error404 from "./pages/Error404";
 
-function App() {
+function Router() {
     fetch(
         `https://api.themoviedb.org/3/configuration?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
         { method: "GET" }
     )
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => console.log("TMDB config : ", data))
         .catch((error) => console.error(error));
 
     return (
-        <Router>
+        <BrowserRouter>
             <Header />
             <Routes>
                 <Route path="/login" element={<Login />} />
@@ -33,8 +33,8 @@ function App() {
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />
-        </Router>
+        </BrowserRouter>
     );
 }
 
-export default App;
+export default Router;

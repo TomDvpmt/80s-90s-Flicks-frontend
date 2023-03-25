@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
 import ErrorMessage from "../components/ErrorMessage";
@@ -17,15 +18,51 @@ const StyledResultsGrid = styled.div`
 `;
 
 const Home = () => {
-    const allYearsFilter =
-        "&primary_release_date.gte=1980-01-01&release_date.lte=1999-12-31";
-
     const [movies, setMovies] = useState([]);
-    const [filters, setFilters] = useState(allYearsFilter);
     const [errorMessage, setErrorMessage] = useState("");
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const { state } = useLocation();
+    const inheritedFilter = state;
+
+    const allFilters = [
+        inheritedFilter
+            ? inheritedFilter
+            : { name: "inheritedFilter", param: "", value: "" },
+        {
+            name: "allYearsMin",
+            param: "&primary_release_date.gte=",
+            value: "1980-01-01",
+        },
+        {
+            name: "allYearsMax",
+            param: "&release_date.lte=",
+            value: "1999-12-31",
+        },
+        { name: "language", param: "&language=", value: "fr" },
+        {
+            name: "page",
+            param: "&page=",
+            value: currentPage,
+        },
+        {
+            name: "primaryReleaseYear",
+            param: "&primary_release_year=",
+            value: "",
+        },
+        { name: "sortBy", param: "&sort_by=", value: "popularity.desc" },
+        { name: "withGenres", param: "&with_genres=", value: "" },
+        {
+            name: "originalLanguage",
+            param: "&with_original_language=",
+            value: "en",
+        },
+        { name: "withPeople", param: "&with_people=", value: "" },
+    ];
+
+    const [filters, setFilters] = useState(allFilters);
 
     const years = ["Toutes"];
     for (let i = 1980; i < 2000; i++) {
@@ -33,27 +70,33 @@ const Home = () => {
     }
 
     const handleYearChange = (e) => {
-        setCurrentPage(1);
-        const dateFilterString = "&primary_release_year=";
-        const start = filters.indexOf(dateFilterString);
-        const end = start + dateFilterString.length + 4;
-        const prevDateFilter = filters.slice(start, end);
-        const newDateFilter = `&primary_release_year=${e.target.value}`;
-
-        if (filters.includes(allYearsFilter)) {
+        if (e.target.value === "Toutes") {
             setFilters((filters) =>
-                filters.replace(allYearsFilter, newDateFilter)
+                filters.map((filter) => {
+                    if (filter.name === "primaryReleaseYear")
+                        return { ...filter, value: "" };
+                    else if (filter.name === "allYearsMin")
+                        return { ...filter, value: "1980-01-01" };
+                    else if (filter.name === "allYearsMax")
+                        return { ...filter, value: "1999-12-31" };
+                    else return filter;
+                })
             );
-        } else if (filters.includes(dateFilterString)) {
-            e.target.value === "Toutes"
-                ? setFilters((filters) =>
-                      filters.replace(prevDateFilter, allYearsFilter)
-                  )
-                : setFilters((filters) =>
-                      filters.replace(prevDateFilter, newDateFilter)
-                  );
+        } else {
+            setFilters((filters) =>
+                filters.map((filter) => {
+                    if (["allYearsMin", "allYearsMax"].includes(filter.name))
+                        return { ...filter, value: "" };
+                    else if (filter.name === "primaryReleaseYear")
+                        return { ...filter, value: e.target.value };
+                    else return filter;
+                })
+            );
         }
+        setCurrentPage(1);
     };
+
+    // Change page filter when click on pagination
 
     const goToPreviousPage = (e) => {
         e.preventDefault();
@@ -70,8 +113,29 @@ const Home = () => {
     };
 
     useEffect(() => {
+        const pageFilter = filters.filter(
+            (element) => element.name === "page"
+        )[0];
+        const index = filters.indexOf(pageFilter);
+        setFilters((filters) =>
+            filters.map((filter) =>
+                filter.name === "page"
+                    ? { ...pageFilter, value: currentPage }
+                    : filter
+            )
+        );
+    }, [currentPage]);
+
+    // Display the movie cards
+
+    useEffect(() => {
+        const queryFilters = filters
+            .filter((filter) => filter.value !== "")
+            .map((filter) => filter.param + filter.value)
+            .join("");
+
         fetchData(
-            `https://api.themoviedb.org/3/discover/movie?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr${filters}&with_original_language=en&page=${currentPage}&sort_by=popularity.desc`,
+            `https://api.themoviedb.org/3/discover/movie?api_key=2d0a75daa1b16703efb5d87960c9e67e${queryFilters}`,
             {
                 method: "GET",
             }
@@ -84,14 +148,18 @@ const Home = () => {
                 const results = response.results.map((movie) => {
                     const movieData = {
                         id: movie.id,
+                        imdbId: movie.imdb_id,
                         title: movie.title,
                         originalTitle: movie.original_title,
-                        genres: movie.genre_ids,
+                        tagline: movie.tagline,
+                        genres: movie.genres,
                         overview: movie.overview,
                         backdropPath: movie.backdrop_path,
                         posterPath: movie.poster_path,
                         releaseDate: movie.release_date,
                         voteAverage: movie.vote_average,
+                        budget: movie.budget,
+                        revenue: movie.revenue,
                     };
                     return <MovieCard key={movie.id} movieData={movieData} />;
                 });
@@ -101,7 +169,7 @@ const Home = () => {
                 setErrorMessage("Impossible d'afficher les films.");
                 console.error(error);
             });
-    }, [filters, currentPage]);
+    }, [filters]);
 
     return (
         <main>
@@ -117,7 +185,6 @@ const Home = () => {
                             </span>
                         )}
                     </p>
-                    <p>Filters : {filters}</p>
                     <div>
                         <button
                             onClick={goToPreviousPage}

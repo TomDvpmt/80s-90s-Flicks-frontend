@@ -84,7 +84,7 @@ const MovieCard = ({ movieData }) => {
             <Link to={`/movies/${movieData.id}`}>
                 <div className="card__info">
                     <h3>{movieData.title}</h3>
-                    <p>({movieData.originalTitle})</p>
+                    <p>{movieData.originalTitle}</p>
                     <p>
                         {director !== "" && director + " | "}
                         {movieData.releaseDate.slice(0, 4)}

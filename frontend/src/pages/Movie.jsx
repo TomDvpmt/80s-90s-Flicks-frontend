@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
@@ -29,7 +29,13 @@ const StyledMovie = styled.main`
         max-width: 1280px;
         margin: auto;
         display: flex;
+        flex-direction: column;
         z-index: 99;
+    }
+
+    .poster {
+        object-fit: contain;
+        max-width: 500px;
     }
 
     .info {
@@ -85,8 +91,32 @@ const Movie = () => {
                     />
                     <div className="info">
                         <h1>{movie.title}</h1>
-                        <p></p>
+                        <p>({movie.original_title})</p>
+                        <p>{movie.tagline}</p>
+                        {movie.genres && (
+                            <ul>
+                                {movie.genres.map((genre, index) => (
+                                    <Link
+                                        key={index}
+                                        to="/"
+                                        state={{
+                                            param: "&with_genres=",
+                                            value: genre.id,
+                                        }}>
+                                        {genre.name}
+                                        {index === movie.genres.length - 1
+                                            ? ""
+                                            : ", "}
+                                    </Link>
+                                ))}
+                            </ul>
+                        )}
                         <p>{movie.overview}</p>
+                        <Link
+                            to={`https://www.imdb.com/title/${movie.imdb_id}/`}
+                            target="_blank">
+                            Voir sur IMDB
+                        </Link>
                     </div>
                 </div>
             </section>

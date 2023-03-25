@@ -120,11 +120,12 @@ exports.createUser = asyncHandler(async (req, res) => {
 
     if (user) {
         const token = createToken(user);
-        setCookie(res, token);
+        // setCookie(res, token);
 
         res.status(201).json({
             message: "Utilisateur créé.",
             _id: user.id,
+            token: token,
             username: user.username,
             email: user.email,
             firstName: user.firstName,
@@ -166,6 +167,7 @@ exports.getOneUser = asyncHandler(async (req, res) => {
     const userId = req.params.id;
     const user = await User.findOne({ _id: userId });
     res.status(200).json({
+        id: userId,
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -184,7 +186,9 @@ exports.getOneUser = asyncHandler(async (req, res) => {
  * @returns {Promise}
  */
 
-exports.updateUser = asyncHandler(async (req, res) => {});
+exports.updateUser = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: "test OK" });
+});
 
 /**
  * Delete user.
