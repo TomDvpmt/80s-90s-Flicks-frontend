@@ -7,11 +7,7 @@
 
 async function fetchData(endpoint, config) {
     try {
-        const response = await fetch(endpoint, {
-            method: config.method,
-            headers: config.headers,
-            body: config.body,
-        });
+        const response = await fetch(endpoint, config);
         const data = await response.json();
         return data;
     } catch (error) {

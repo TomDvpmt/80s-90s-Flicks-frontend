@@ -187,7 +187,20 @@ exports.getOneUser = asyncHandler(async (req, res) => {
  */
 
 exports.updateUser = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "test OK" });
+    const paramUserId = req.params.id;
+    const loggedUserId = req.auth.id;
+    const updateData = req.body;
+
+    if (paramUserId === loggedUserId) {
+        await User.updateOne({ _id: loggedUserId }, updateData);
+        res.status(200).json({
+            ...updateData,
+            message: "Informations mises à jour.",
+        });
+    } else {
+        res.status(401);
+        throw new Error("Non autorisé.");
+    }
 });
 
 /**

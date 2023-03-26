@@ -15,12 +15,19 @@ import StyledForm from "../../styles/StyledForm";
 import fetchData from "../../utils/fetchData";
 import PropTypes from "prop-types";
 
-const UserForm = ({ userId, page, defaultFormValues, setShowUpdateForm }) => {
+const UserForm = ({
+    userId,
+    page,
+    defaultFormValues,
+    setShowUpdateForm,
+    setUserData,
+}) => {
     UserForm.propTypes = {
-        userId: PropTypes.number,
+        userId: PropTypes.string,
         page: PropTypes.string,
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
+        setUserData: PropTypes.func,
     };
 
     const [username, setUsername] = useState(
@@ -37,9 +44,7 @@ const UserForm = ({ userId, page, defaultFormValues, setShowUpdateForm }) => {
     );
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-
     const [errorMessage, setErrorMessage] = useState("");
-
     const [pageData, setPageData] = useState({});
 
     const navigate = useNavigate();
@@ -108,7 +113,13 @@ const UserForm = ({ userId, page, defaultFormValues, setShowUpdateForm }) => {
                         lastName,
                     },
                     handleResponse: (data) => {
-                        console.log(data);
+                        setUserData({
+                            username: data.username,
+                            email: data.email,
+                            firstName: data.fristName,
+                            lastName: data.lastName,
+                        });
+                        setShowUpdateForm(false);
                     },
                 });
                 break;
@@ -124,14 +135,15 @@ const UserForm = ({ userId, page, defaultFormValues, setShowUpdateForm }) => {
         passwordConfirm,
         page,
         userId,
+        setShowUpdateForm,
+        setUserData,
         navigate,
     ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("dataToSubmit : ", { ...pageData.dataToSubmit });
-        console.log("defaultValues : ", { ...defaultFormValues });
+        const token = localStorage.getItem("token");
 
         if (
             page === "profile" &&
@@ -150,7 +162,10 @@ const UserForm = ({ userId, page, defaultFormValues, setShowUpdateForm }) => {
             `${process.env.REACT_APP_API_URI}${pageData.endPoint}`,
             {
                 method: pageData.method,
-                headers: { "Content-type": "application/json" },
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `BEARER ${token}`,
+                },
                 body: JSON.stringify(pageData.dataToSubmit),
             }
         );

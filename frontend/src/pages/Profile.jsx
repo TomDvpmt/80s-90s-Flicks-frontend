@@ -55,7 +55,7 @@ const Profile = () => {
 
             {showUpdateForm && (
                 <UserForm
-                    userId={parseInt(userData.id)}
+                    userId={userData.id}
                     page="profile"
                     defaultFormValues={{
                         username: userData.username,
@@ -64,6 +64,7 @@ const Profile = () => {
                         lastName: userData.lastName,
                     }}
                     setShowUpdateForm={setShowUpdateForm}
+                    setUserData={setUserData}
                 />
             )}
         </>

@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Movie from "./pages/Movie";
 import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import Movie from "./pages/Movie";
+import Person from "./pages/Person";
 import Error404 from "./pages/Error404";
 
 function Router() {
@@ -26,10 +27,12 @@ function Router() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/movies/:id" element={<Movie />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/person/:id" element={<Person />} />
+
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />

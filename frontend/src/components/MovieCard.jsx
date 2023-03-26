@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import setCastAndCrew from "../utils/setCastAndCrew";
+
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -39,45 +41,11 @@ const MovieCard = ({ movieData }) => {
     };
 
     const [director, setDirector] = useState("");
-    const [mainActors, setMainActors] = useState([""]);
+    const [actors, setActors] = useState([""]);
 
     useEffect(() => {
-        fetch(
-            `https://api.themoviedb.org/3/movie/${movieData.id}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
-            {
-                method: "GET",
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                data.crew[0]
-                    ? setDirector(
-                          data.crew.filter(
-                              (person) => person.job === "Director"
-                          )[0].name
-                      )
-                    : setDirector("");
-
-                data.cast.length > 0
-                    ? setMainActors(
-                          data.cast
-                              .slice(
-                                  0,
-                                  data.cast.length >= 3 ? 3 : data.cast.length
-                              )
-                              .map((actor, index) => (
-                                  <span key={actor.name}>
-                                      {actor.name}
-                                      {index === mainActors.length - 1
-                                          ? ""
-                                          : ", "}
-                                  </span>
-                              ))
-                      )
-                    : setMainActors([""]);
-            })
-            .catch((error) => console.log(error));
-    }, [mainActors.length, movieData.id]);
+        setCastAndCrew("home", movieData.id, setDirector, setActors);
+    }, [actors.length, movieData.id]);
 
     return (
         <StyledMovieCard hasPoster={movieData.posterPath}>
@@ -89,7 +57,7 @@ const MovieCard = ({ movieData }) => {
                         {director !== "" && director + " | "}
                         {movieData.releaseDate.slice(0, 4)}
                     </p>
-                    {mainActors[0] && <p>Avec {mainActors}</p>}
+                    {actors[0] && <p>Avec {actors}</p>}
                 </div>
                 {movieData.posterPath !== null ? (
                     <img
@@ -100,7 +68,12 @@ const MovieCard = ({ movieData }) => {
                         alt={movieData.title}
                     />
                 ) : (
-                    <img src="" width="300" height="450" />
+                    <img
+                        src=""
+                        width="300"
+                        height="450"
+                        alt="No poster available"
+                    />
                 )}
             </Link>
         </StyledMovieCard>

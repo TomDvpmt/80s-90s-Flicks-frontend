@@ -18,16 +18,20 @@ const StyledResultsGrid = styled.div`
 `;
 
 const Home = () => {
+    const { state } = useLocation();
+    const inheritedFilter = state;
+
+    const years = ["Toutes"];
+    for (let i = 1980; i < 2000; i++) {
+        years.push(i);
+    }
+
     const [movies, setMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-
-    const { state } = useLocation();
-    const inheritedFilter = state;
-
-    const allFilters = [
+    const [filters, setFilters] = useState([
         inheritedFilter
             ? inheritedFilter
             : { name: "inheritedFilter", param: "", value: "" },
@@ -60,16 +64,10 @@ const Home = () => {
             value: "en",
         },
         { name: "withPeople", param: "&with_people=", value: "" },
-    ];
-
-    const [filters, setFilters] = useState(allFilters);
-
-    const years = ["Toutes"];
-    for (let i = 1980; i < 2000; i++) {
-        years.push(i);
-    }
+    ]);
 
     const handleYearChange = (e) => {
+        setCurrentPage(1);
         if (e.target.value === "Toutes") {
             setFilters((filters) =>
                 filters.map((filter) => {
@@ -93,10 +91,9 @@ const Home = () => {
                 })
             );
         }
-        setCurrentPage(1);
     };
 
-    // Change page filter when click on pagination
+    // Pagination
 
     const goToPreviousPage = (e) => {
         e.preventDefault();
@@ -113,14 +110,10 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const pageFilter = filters.filter(
-            (element) => element.name === "page"
-        )[0];
-        const index = filters.indexOf(pageFilter);
         setFilters((filters) =>
             filters.map((filter) =>
                 filter.name === "page"
-                    ? { ...pageFilter, value: currentPage }
+                    ? { name: "page", param: "&page=", value: currentPage }
                     : filter
             )
         );

@@ -4,6 +4,9 @@ import { useParams, Link } from "react-router-dom";
 import ErrorMessage from "../components/ErrorMessage";
 
 import fetchData from "../utils/fetchData";
+import displayBigNumber from "../utils/bigNumbers";
+import setCastAndCrew from "../utils/setCastAndCrew";
+
 import styled from "styled-components";
 
 const StyledMovie = styled.main`
@@ -48,8 +51,10 @@ const StyledMovie = styled.main`
 `;
 
 const Movie = () => {
-    const [errorMessage, setErrorMessage] = useState("");
     const [movie, setMovie] = useState({});
+    const [director, setDirector] = useState("");
+    const [actors, setActors] = useState([""]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const id = useParams().id;
 
@@ -60,7 +65,9 @@ const Movie = () => {
                 method: "GET",
             }
         )
-            .then((data) => setMovie(data))
+            .then((data) => {
+                setMovie(data);
+            })
             .catch((error) => {
                 setErrorMessage(
                     "Impossible d'afficher les informations du film."
@@ -68,6 +75,10 @@ const Movie = () => {
                 console.error(error);
             });
     }, [id]);
+
+    useEffect(() => {
+        setCastAndCrew("movie", id, setDirector, setActors);
+    }, [actors.length, id]);
 
     return (
         <StyledMovie>
@@ -93,6 +104,14 @@ const Movie = () => {
                         <h1>{movie.title}</h1>
                         <p>({movie.original_title})</p>
                         <p>{movie.tagline}</p>
+                        <p>
+                            {director}
+                            {director && movie.release_date && " | "}
+                            {movie.release_date &&
+                                movie.release_date.slice(0, 4)}
+                        </p>
+                        <p>{actors}</p>
+                        <p></p>
                         {movie.genres && (
                             <ul>
                                 {movie.genres.map((genre, index) => (
@@ -112,6 +131,20 @@ const Movie = () => {
                             </ul>
                         )}
                         <p>{movie.overview}</p>
+                        <p>
+                            Budget :{" "}
+                            {!movie.budget || movie.budget === 0
+                                ? "non-disponible"
+                                : "$ " + displayBigNumber(movie.budget)}
+                        </p>
+
+                        <p>
+                            Recettes :{" "}
+                            {!movie.revenue || movie.revenue === 0
+                                ? "non-disponible"
+                                : "$ " + displayBigNumber(movie.revenue)}
+                        </p>
+
                         <Link
                             to={`https://www.imdb.com/title/${movie.imdb_id}/`}
                             target="_blank">
