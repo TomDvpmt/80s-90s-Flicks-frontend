@@ -54,8 +54,10 @@ const MovieCard = ({ movieData }) => {
                     <h3>{movieData.title}</h3>
                     <p>{movieData.originalTitle}</p>
                     <p>
-                        {director !== "" && director + " | "}
-                        {movieData.releaseDate.slice(0, 4)}
+                        {director}
+                        {director && movieData.releaseDate && " | "}
+                        {movieData.releaseDate &&
+                            movieData.releaseDate.slice(0, 4)}
                     </p>
                     {actors[0] && <p>Avec {actors}</p>}
                 </div>

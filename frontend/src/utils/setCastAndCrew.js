@@ -12,7 +12,15 @@ const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
             const movieDirector = data.crew.filter(
                 (person) => person.job === "Director"
             )[0];
-            setDirector(movieDirector ? movieDirector.name : "");
+            setDirector(
+                movieDirector ? (
+                    <Link to={`/person/${movieDirector.id}`}>
+                        {movieDirector.name}
+                    </Link>
+                ) : (
+                    ""
+                )
+            );
 
             const numberOfActors = page === "home" ? 3 : 10;
             data.cast.length > 0

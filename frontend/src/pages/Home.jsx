@@ -4,9 +4,16 @@ import { useLocation } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import ErrorMessage from "../components/ErrorMessage";
 
+import { getAllFilters, years, getGenres } from "../assets/filters";
 import fetchData from "../utils/fetchData";
 
 import styled from "styled-components";
+
+const StyledFilters = styled.div`
+    border: 1px solid black;
+    margin: 2rem;
+    padding: 1rem;
+`;
 
 const StyledResultsGrid = styled.div`
     background-color: black;
@@ -17,54 +24,36 @@ const StyledResultsGrid = styled.div`
     gap: 1rem;
 `;
 
+const StyledPagination = styled.div`
+    margin: 2rem;
+    padding: 1rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    .page-numbers {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        input {
+            padding: 0.2rem 0.5rem;
+        }
+    }
+`;
+
 const Home = () => {
     const { state } = useLocation();
     const inheritedFilter = state;
 
-    const years = ["Toutes"];
-    for (let i = 1980; i < 2000; i++) {
-        years.push(i);
-    }
-
-    const [movies, setMovies] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [genres, setGenres] = useState([]);
+    const [filters, setFilters] = useState(getAllFilters(inheritedFilter));
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [filters, setFilters] = useState([
-        inheritedFilter
-            ? inheritedFilter
-            : { name: "inheritedFilter", param: "", value: "" },
-        {
-            name: "allYearsMin",
-            param: "&primary_release_date.gte=",
-            value: "1980-01-01",
-        },
-        {
-            name: "allYearsMax",
-            param: "&release_date.lte=",
-            value: "1999-12-31",
-        },
-        { name: "language", param: "&language=", value: "fr" },
-        {
-            name: "page",
-            param: "&page=",
-            value: currentPage,
-        },
-        {
-            name: "primaryReleaseYear",
-            param: "&primary_release_year=",
-            value: "",
-        },
-        { name: "sortBy", param: "&sort_by=", value: "popularity.desc" },
-        { name: "withGenres", param: "&with_genres=", value: "" },
-        {
-            name: "originalLanguage",
-            param: "&with_original_language=",
-            value: "en",
-        },
-        { name: "withPeople", param: "&with_people=", value: "" },
-    ]);
+    const [movies, setMovies] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleYearChange = (e) => {
         setCurrentPage(1);
@@ -92,6 +81,38 @@ const Home = () => {
             );
         }
     };
+
+    const handleCheckBox = (e) => {
+        //
+    };
+
+    // Get genres
+
+    useEffect(() => {
+        getGenres().then((data) =>
+            setGenres(
+                data.map((genre) => (
+                    <div key={genre.id} className="genre">
+                        <label htmlFor={`genre-${genre.id}`}>
+                            {genre.name}
+                        </label>
+                        <input
+                            id={`genre-${genre.id}`}
+                            name={genre.name}
+                            type="checkbox"
+                            value={genre.name}
+                            checked={
+                                !["Documentaire", "Téléfilm"].includes(
+                                    genre.name
+                                )
+                            }
+                            onChange={handleCheckBox}
+                        />
+                    </div>
+                ))
+            )
+        );
+    }, []);
 
     // Pagination
 
@@ -168,62 +189,75 @@ const Home = () => {
         <main>
             <h1>Explorer</h1>
             <section>
-                <h2>Trouver des films</h2>
-                <form>
-                    <p>
-                        Nombre de résultats : {numberOfResults}{" "}
-                        {numberOfResults > 10000 && (
-                            <span>
-                                (seuls les 10 000 premiers sont disponibles)
-                            </span>
+                <StyledFilters>
+                    <form className="movie-filters">
+                        <fieldset className="year-filter">
+                            <legend>Année :</legend>
+                            <select
+                                id="date-filter"
+                                onChange={handleYearChange}>
+                                {years.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </fieldset>
+                        <fieldset className="genres-filter">
+                            <legend>Genres : </legend>
+                            {genres}
+                            <button type="button">Tous</button>
+                            <button type="button">Aucun</button>
+                        </fieldset>
+                        <fieldset className="search-filter">
+                            <legend>Recherche</legend>
+                            <label>Contient l'expression : </label>
+                            <input type="text" name="search" id="search" />
+                        </fieldset>
+                        <p className="number-of-results">
+                            Nombre de résultats : {numberOfResults}{" "}
+                            {numberOfResults > 10000 && (
+                                <span>(10 000 disponibles)</span>
+                            )}
+                        </p>
+                    </form>
+                </StyledFilters>
+
+                <StyledPagination className="pagination">
+                    <button
+                        onClick={goToPreviousPage}
+                        disabled={currentPage === 1}>
+                        Page précédente
+                    </button>
+                    <div
+                        className="page-numbers"
+                        onClick={handleDirectPageClick}>
+                        {currentPage !== 1 && <input type="button" value="1" />}
+                        {currentPage > 4 && <span> ... </span>}
+                        {currentPage > 3 && (
+                            <input type="button" value={currentPage - 2} />
                         )}
-                    </p>
-                    <div>
-                        <button
-                            onClick={goToPreviousPage}
-                            disabled={currentPage === 1}>
-                            Page précédente
-                        </button>
-                        <div onClick={handleDirectPageClick}>
-                            {currentPage !== 1 && (
-                                <input type="button" value="1" />
-                            )}
-                            {currentPage > 4 && <span> ... </span>}
-                            {currentPage > 3 && (
-                                <input type="button" value={currentPage - 2} />
-                            )}
-                            {currentPage > 2 && (
-                                <input type="button" value={currentPage - 1} />
-                            )}
-                            <strong>{currentPage}</strong>
-                            {currentPage < numberOfPages - 1 && (
-                                <input type="button" value={currentPage + 1} />
-                            )}
-                            {currentPage < numberOfPages - 2 && (
-                                <input type="button" value={currentPage + 2} />
-                            )}
-                            {currentPage < numberOfPages - 3 && (
-                                <span> ... </span>
-                            )}
-                            {currentPage !== numberOfPages && (
-                                <input type="button" value={numberOfPages} />
-                            )}
-                        </div>
-                        <button
-                            onClick={goToNextPage}
-                            disabled={currentPage === numberOfPages}>
-                            Page suivante
-                        </button>
+                        {currentPage > 2 && (
+                            <input type="button" value={currentPage - 1} />
+                        )}
+                        <strong>{currentPage}</strong>
+                        {currentPage < numberOfPages - 1 && (
+                            <input type="button" value={currentPage + 1} />
+                        )}
+                        {currentPage < numberOfPages - 2 && (
+                            <input type="button" value={currentPage + 2} />
+                        )}
+                        {currentPage < numberOfPages - 3 && <span> ... </span>}
+                        {currentPage !== numberOfPages && (
+                            <input type="button" value={numberOfPages} />
+                        )}
                     </div>
-                    <label htmlFor="date-filter">Année : </label>
-                    <select id="date-filter" onChange={handleYearChange}>
-                        {years.map((year) => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
-                </form>
+                    <button
+                        onClick={goToNextPage}
+                        disabled={currentPage === numberOfPages}>
+                        Page suivante
+                    </button>
+                </StyledPagination>
                 <StyledResultsGrid>{movies}</StyledResultsGrid>
                 <ErrorMessage errorMessage={errorMessage} />
             </section>
