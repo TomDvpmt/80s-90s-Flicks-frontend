@@ -1,7 +1,4 @@
-const getAllFilters = (inheritedFilter) => [
-    inheritedFilter
-        ? inheritedFilter
-        : { name: "inheritedFilter", param: "", value: "" },
+const allFilters = [
     {
         name: "allYearsMin",
         param: "&primary_release_date.gte=",
@@ -33,11 +30,6 @@ const getAllFilters = (inheritedFilter) => [
     { name: "withPeople", param: "&with_people=", value: "" },
 ];
 
-const years = ["Toutes"];
-for (let i = 1980; i < 2000; i++) {
-    years.push(i);
-}
-
 const getGenres = async () => {
     try {
         const results = await fetch(
@@ -53,4 +45,4 @@ const getGenres = async () => {
     }
 };
 
-export { getAllFilters, years, getGenres };
+export { allFilters, getGenres };

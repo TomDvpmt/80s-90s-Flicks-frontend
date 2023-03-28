@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
+import YearFilter from "../components/filters/YearFilter";
+import GenreFilters from "../components/filters/GenreFilters";
+import SearchFilter from "../components/filters/SearchFilter";
+import Pagination from "../components/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
 
-import { getAllFilters, years, getGenres } from "../assets/filters";
+import { allFilters } from "../assets/filters";
 import fetchData from "../utils/fetchData";
 
 import styled from "styled-components";
@@ -24,123 +28,22 @@ const StyledResultsGrid = styled.div`
     gap: 1rem;
 `;
 
-const StyledPagination = styled.div`
-    margin: 2rem;
-    padding: 1rem;
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-
-    .page-numbers {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        input {
-            padding: 0.2rem 0.5rem;
-        }
-    }
-`;
-
 const Home = () => {
     const { state } = useLocation();
-    const inheritedFilter = state;
+    const inheritedGenre = state;
+    console.log(inheritedGenre);
 
-    const [genres, setGenres] = useState([]);
-    const [filters, setFilters] = useState(getAllFilters(inheritedFilter));
+    const [activeGenres, setActiveGenres] = useState([
+        inheritedGenre && inheritedGenre.value,
+    ]);
+    const [filters, setFilters] = useState(allFilters);
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleYearChange = (e) => {
-        setCurrentPage(1);
-        if (e.target.value === "Toutes") {
-            setFilters((filters) =>
-                filters.map((filter) => {
-                    if (filter.name === "primaryReleaseYear")
-                        return { ...filter, value: "" };
-                    else if (filter.name === "allYearsMin")
-                        return { ...filter, value: "1980-01-01" };
-                    else if (filter.name === "allYearsMax")
-                        return { ...filter, value: "1999-12-31" };
-                    else return filter;
-                })
-            );
-        } else {
-            setFilters((filters) =>
-                filters.map((filter) => {
-                    if (["allYearsMin", "allYearsMax"].includes(filter.name))
-                        return { ...filter, value: "" };
-                    else if (filter.name === "primaryReleaseYear")
-                        return { ...filter, value: e.target.value };
-                    else return filter;
-                })
-            );
-        }
-    };
-
-    const handleCheckBox = (e) => {
-        //
-    };
-
-    // Get genres
-
-    useEffect(() => {
-        getGenres().then((data) =>
-            setGenres(
-                data.map((genre) => (
-                    <div key={genre.id} className="genre">
-                        <label htmlFor={`genre-${genre.id}`}>
-                            {genre.name}
-                        </label>
-                        <input
-                            id={`genre-${genre.id}`}
-                            name={genre.name}
-                            type="checkbox"
-                            value={genre.name}
-                            checked={
-                                !["Documentaire", "Téléfilm"].includes(
-                                    genre.name
-                                )
-                            }
-                            onChange={handleCheckBox}
-                        />
-                    </div>
-                ))
-            )
-        );
-    }, []);
-
-    // Pagination
-
-    const goToPreviousPage = (e) => {
-        e.preventDefault();
-        setCurrentPage((currentPage) => currentPage - 1);
-    };
-
-    const goToNextPage = (e) => {
-        e.preventDefault();
-        setCurrentPage((currentPage) => currentPage + 1);
-    };
-
-    const handleDirectPageClick = (e) => {
-        e.target.value && setCurrentPage(parseInt(e.target.value));
-    };
-
-    useEffect(() => {
-        setFilters((filters) =>
-            filters.map((filter) =>
-                filter.name === "page"
-                    ? { name: "page", param: "&page=", value: currentPage }
-                    : filter
-            )
-        );
-    }, [currentPage]);
-
-    // Display the movie cards
+    // Movie cards
 
     useEffect(() => {
         const queryFilters = filters
@@ -191,29 +94,23 @@ const Home = () => {
             <section>
                 <StyledFilters>
                     <form className="movie-filters">
-                        <fieldset className="year-filter">
-                            <legend>Année :</legend>
-                            <select
-                                id="date-filter"
-                                onChange={handleYearChange}>
-                                {years.map((year) => (
-                                    <option key={year} value={year}>
-                                        {year}
-                                    </option>
-                                ))}
-                            </select>
-                        </fieldset>
-                        <fieldset className="genres-filter">
-                            <legend>Genres : </legend>
-                            {genres}
-                            <button type="button">Tous</button>
-                            <button type="button">Aucun</button>
-                        </fieldset>
-                        <fieldset className="search-filter">
+                        <YearFilter
+                            setCurrentPage={setCurrentPage}
+                            setFilters={setFilters}
+                        />
+                        <GenreFilters
+                            activeGenres={activeGenres}
+                            setActiveGenres={setActiveGenres}
+                            setFilters={setFilters}
+                        />
+                        <SearchFilter setFilters={setFilters} />
+                        {/* <fieldset className="search-filter">
                             <legend>Recherche</legend>
-                            <label>Contient l'expression : </label>
+                            <label>
+                                Films dont le titre ou la description contient :{" "}
+                            </label>
                             <input type="text" name="search" id="search" />
-                        </fieldset>
+                        </fieldset> */}
                         <p className="number-of-results">
                             Nombre de résultats : {numberOfResults}{" "}
                             {numberOfResults > 10000 && (
@@ -222,42 +119,12 @@ const Home = () => {
                         </p>
                     </form>
                 </StyledFilters>
-
-                <StyledPagination className="pagination">
-                    <button
-                        onClick={goToPreviousPage}
-                        disabled={currentPage === 1}>
-                        Page précédente
-                    </button>
-                    <div
-                        className="page-numbers"
-                        onClick={handleDirectPageClick}>
-                        {currentPage !== 1 && <input type="button" value="1" />}
-                        {currentPage > 4 && <span> ... </span>}
-                        {currentPage > 3 && (
-                            <input type="button" value={currentPage - 2} />
-                        )}
-                        {currentPage > 2 && (
-                            <input type="button" value={currentPage - 1} />
-                        )}
-                        <strong>{currentPage}</strong>
-                        {currentPage < numberOfPages - 1 && (
-                            <input type="button" value={currentPage + 1} />
-                        )}
-                        {currentPage < numberOfPages - 2 && (
-                            <input type="button" value={currentPage + 2} />
-                        )}
-                        {currentPage < numberOfPages - 3 && <span> ... </span>}
-                        {currentPage !== numberOfPages && (
-                            <input type="button" value={numberOfPages} />
-                        )}
-                    </div>
-                    <button
-                        onClick={goToNextPage}
-                        disabled={currentPage === numberOfPages}>
-                        Page suivante
-                    </button>
-                </StyledPagination>
+                <Pagination
+                    numberOfPages={numberOfPages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    setFilters={setFilters}
+                />
                 <StyledResultsGrid>{movies}</StyledResultsGrid>
                 <ErrorMessage errorMessage={errorMessage} />
             </section>
