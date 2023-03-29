@@ -17,6 +17,9 @@ const StyledFilters = styled.div`
     border: 1px solid black;
     margin: 2rem;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const StyledResultsGrid = styled.div`
@@ -31,7 +34,6 @@ const StyledResultsGrid = styled.div`
 const Home = () => {
     const { state } = useLocation();
     const inheritedGenre = state;
-    console.log(inheritedGenre);
 
     const [activeGenres, setActiveGenres] = useState([
         inheritedGenre && inheritedGenre.value,
@@ -93,6 +95,7 @@ const Home = () => {
             <h1>Explorer</h1>
             <section>
                 <StyledFilters>
+                    <SearchFilter />
                     <form className="movie-filters">
                         <YearFilter
                             setCurrentPage={setCurrentPage}
@@ -103,14 +106,6 @@ const Home = () => {
                             setActiveGenres={setActiveGenres}
                             setFilters={setFilters}
                         />
-                        <SearchFilter setFilters={setFilters} />
-                        {/* <fieldset className="search-filter">
-                            <legend>Recherche</legend>
-                            <label>
-                                Films dont le titre ou la description contient :{" "}
-                            </label>
-                            <input type="text" name="search" id="search" />
-                        </fieldset> */}
                         <p className="number-of-results">
                             Nombre de résultats : {numberOfResults}{" "}
                             {numberOfResults > 10000 && (

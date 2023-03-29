@@ -1,73 +1,82 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
-import fetchData from "../utils/fetchData";
-import logout from "../utils/logout";
+import { Box, Container, Toolbar, Typography, Button } from "@mui/material";
 
-import styled from "styled-components";
-
-const StyledHeader = styled.header`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-
-    & nav {
-        background-color: #f5f5f5;
-        flex-grow: 1;
-
-        & li a {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-    }
-`;
+import UserMenu from "./UserMenu";
 
 const Header = () => {
-    const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
-    const handleLogout = async () => {
-        await fetchData(`${process.env.REACT_APP_API_URI}users/logout`, "POST");
-        logout(navigate);
-    };
-
     return (
-        <StyledHeader>
-            <img src="" alt="" />
-            <p>HEADER</p>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Explorer</Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard">Tableau de bord</Link>
-                    </li>
-                    <li>
-                        <Link to="/profile">Profil</Link>
-                    </li>
-                    <li>
-                        <Link to={token && token !== "null" ? "/" : "/login"}>
-                            <FaSignInAlt />
-                            Connexion
-                        </Link>
-                    </li>
-                    <li>
-                        <Link onClick={handleLogout}>
-                            <FaSignOutAlt />
-                            Déconnexion
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/register">
-                            <FaUser />
-                            Créer un compte
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-        </StyledHeader>
+        <Box component="header">
+            <Box component="div" className="test">
+                <Container
+                    component="p"
+                    sx={{
+                        mt: "8rem",
+                        mb: "8rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}>
+                    <Typography
+                        variant="h1"
+                        component="span"
+                        fontFamily="Bungee Shade">
+                        80s-90s
+                    </Typography>
+                    <Typography
+                        variant="h1"
+                        component="span"
+                        fontFamily="Bungee Shade">
+                        Flicks
+                    </Typography>
+                </Container>
+            </Box>
+
+            <Toolbar
+                sx={{
+                    backgroundColor: "var(--color-bttf-tertiary)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}>
+                <Box>
+                    <Button
+                        component={NavLink}
+                        to="/"
+                        sx={{ color: "white", fontSize: "1.6rem" }}>
+                        Explorer
+                    </Button>
+                    {token && (
+                        <Button
+                            component={NavLink}
+                            to="/dashboard"
+                            sx={{ color: "white", fontSize: "1.6rem" }}>
+                            Mon tableau de bord
+                        </Button>
+                    )}
+                    {!token && (
+                        <>
+                            <Button
+                                component={NavLink}
+                                to="/login"
+                                sx={{ color: "white", fontSize: "1.6rem" }}>
+                                Connexion
+                            </Button>
+                            <Button
+                                component={NavLink}
+                                to="/register"
+                                sx={{ color: "white", fontSize: "1.6rem" }}>
+                                Créer un compte
+                            </Button>
+                        </>
+                    )}
+                </Box>
+
+                {token && <UserMenu />}
+            </Toolbar>
+        </Box>
     );
 };
 

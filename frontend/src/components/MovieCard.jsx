@@ -12,7 +12,6 @@ const StyledMovieCard = styled.article`
     .card__info {
         position: absolute;
         z-index: 2;
-        color: white;
 
         p {
             display: none;
@@ -21,6 +20,9 @@ const StyledMovieCard = styled.article`
         h3 {
             display: ${(props) => (props.hasPoster ? "none" : "block")};
         }
+    }
+    .card__info > * {
+        color: white;
     }
 
     &:hover {

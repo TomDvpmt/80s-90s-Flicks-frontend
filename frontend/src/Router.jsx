@@ -32,7 +32,6 @@ function Router() {
                 <Route path="/" element={<Home />} />
                 <Route path="/movies/:id" element={<Movie />} />
                 <Route path="/person/:id" element={<Person />} />
-
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />

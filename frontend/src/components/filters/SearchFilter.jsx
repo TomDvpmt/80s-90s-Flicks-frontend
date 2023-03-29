@@ -1,29 +1,27 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 
-const SearchFilter = ({ setFilters }) => {
-    SearchFilter.propTypes = {
-        setFilters: PropTypes.func,
-    };
-
+const SearchFilter = () => {
     const [query, setQuery] = useState("");
-
     const handleChange = (e) => {
         setQuery(e.target.value);
+        // https://developers.themoviedb.org/3/search/search-movies
     };
 
     return (
-        <fieldset className="search-filter">
-            <legend>Recherche</legend>
-            <label>Films dont le titre ou la description contient : </label>
-            <input
-                type="text"
-                name="search"
-                id="search"
-                value={query}
-                onChange={handleChange}
-            />
-        </fieldset>
+        <form className="search-filter">
+            <fieldset>
+                <legend>Recherche directe</legend>
+                <label>Films dont le titre contient : </label>
+                <input
+                    type="text"
+                    name="search"
+                    id="search"
+                    value={query}
+                    onChange={handleChange}
+                />
+                <button type="submit">Chercher</button>
+            </fieldset>
+        </form>
     );
 };
 
