@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -13,6 +14,8 @@ import Person from "./pages/Person";
 import Error404 from "./pages/Error404";
 
 function Router() {
+    const [token, setToken] = useState(null);
+
     fetch(
         `https://api.themoviedb.org/3/configuration?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
         { method: "GET" }
@@ -23,9 +26,9 @@ function Router() {
 
     return (
         <BrowserRouter>
-            <Header />
+            <Header token={token} setToken={setToken} />
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Login setToken={setToken} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/dashboard" element={<Dashboard />} />

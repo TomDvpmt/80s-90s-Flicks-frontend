@@ -62,7 +62,7 @@ const GenreFilters = ({ activeGenres, setActiveGenres, setFilters }) => {
                     : filter
             )
         );
-    }, [activeGenres]);
+    }, [activeGenres, setFilters]);
     return (
         <fieldset className="genres-filter">
             <legend>Genres : </legend>

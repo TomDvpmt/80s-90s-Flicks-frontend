@@ -21,6 +21,7 @@ const UserForm = ({
     defaultFormValues,
     setShowUpdateForm,
     setUserData,
+    setToken,
 }) => {
     UserForm.propTypes = {
         userId: PropTypes.string,
@@ -28,6 +29,7 @@ const UserForm = ({
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
         setUserData: PropTypes.func,
+        setToken: PropTypes.func,
     };
 
     const [username, setUsername] = useState(
@@ -69,6 +71,7 @@ const UserForm = ({
                     handleResponse: (data) => {
                         localStorage.setItem("userId", data._id);
                         localStorage.setItem("token", data.token);
+                        setToken(data.token);
                         navigate("/");
                     },
                 });
@@ -138,6 +141,7 @@ const UserForm = ({
         setShowUpdateForm,
         setUserData,
         navigate,
+        setToken,
     ]);
 
     const handleSubmit = async (e) => {

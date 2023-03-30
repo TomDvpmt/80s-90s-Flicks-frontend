@@ -1,11 +1,15 @@
 import { NavLink } from "react-router-dom";
 
+import UserMenu from "./UserMenu";
 import { Box, Container, Toolbar, Typography, Button } from "@mui/material";
 
-import UserMenu from "./UserMenu";
+import PropTypes from "prop-types";
 
-const Header = () => {
-    const token = localStorage.getItem("token");
+const Header = ({ token, setToken }) => {
+    Header.propTypes = {
+        token: PropTypes.string,
+        setToken: PropTypes.func,
+    };
 
     return (
         <Box component="header">
@@ -74,7 +78,7 @@ const Header = () => {
                     )}
                 </Box>
 
-                {token && <UserMenu />}
+                {token && <UserMenu token={token} setToken={setToken} />}
             </Toolbar>
         </Box>
     );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import styled from "styled-components";
 
@@ -49,7 +49,7 @@ const Pagination = ({
                     : filter
             )
         );
-    }, [currentPage]);
+    }, [currentPage, setFilters]);
 
     return (
         <StyledPagination className="pagination">

@@ -5,9 +5,15 @@ import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
 import fetchData from "../utils/fetchData";
 import logout from "../utils/logout";
 
-const UserMenu = () => {
+import PropTypes from "prop-types";
+
+const UserMenu = ({ token, setToken }) => {
+    UserMenu.propTypes = {
+        token: PropTypes.string,
+        setToken: PropTypes.func,
+    };
+
     const [anchorEl, setAnchorEl] = useState(null);
-    const token = localStorage.getItem("token");
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
 
@@ -29,6 +35,7 @@ const UserMenu = () => {
     const handleLogout = async () => {
         await fetchData(`${process.env.REACT_APP_API_URI}users/logout`, "POST");
         handleClose();
+        setToken(null);
         logout(navigate);
     };
 
