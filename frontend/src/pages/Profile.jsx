@@ -40,7 +40,7 @@ const Profile = () => {
     }, [navigate]);
 
     return (
-        <>
+        <main>
             <h1>My Profile</h1>
             <ul>
                 <li>Username : {userData.username}</li>
@@ -67,7 +67,7 @@ const Profile = () => {
                     setUserData={setUserData}
                 />
             )}
-        </>
+        </main>
     );
 };
 

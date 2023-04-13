@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
+import Branding from "./Branding";
 import UserMenu from "./UserMenu";
-import { Box, Container, Toolbar, Typography, Button } from "@mui/material";
+import { Box, Toolbar, Button } from "@mui/material";
+
+import { theme } from "../utils/theme";
 
 import PropTypes from "prop-types";
 
@@ -11,74 +15,62 @@ const Header = ({ token, setToken }) => {
         setToken: PropTypes.func,
     };
 
+    useEffect(() => {
+        if (!token) {
+            setToken(localStorage.getItem("token"));
+        }
+    }, [token, setToken]);
+
     return (
         <Box component="header">
-            <Box component="div" className="test">
-                <Container
-                    component="p"
-                    sx={{
-                        mt: "8rem",
-                        mb: "8rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}>
-                    <Typography
-                        variant="h1"
-                        component="span"
-                        fontFamily="Bungee Shade">
-                        80s-90s
-                    </Typography>
-                    <Typography
-                        variant="h1"
-                        component="span"
-                        fontFamily="Bungee Shade">
-                        Flicks
-                    </Typography>
-                </Container>
-            </Box>
-
+            <Branding location="header" />
             <Toolbar
                 sx={{
-                    backgroundColor: "var(--color-bttf-tertiary)",
-                    display: "flex",
-                    justifyContent: "space-between",
+                    backgroundColor: theme.palette.tertiary.main,
+                    justifyContent: "center",
                 }}>
-                <Box>
-                    <Button
-                        component={NavLink}
-                        to="/"
-                        sx={{ color: "white", fontSize: "1.6rem" }}>
-                        Explorer
-                    </Button>
-                    {token && (
+                <Box
+                    sx={{
+                        flex: 1,
+                        maxWidth: theme.maxWidth.desktop,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}>
+                    <Box>
                         <Button
                             component={NavLink}
-                            to="/dashboard"
-                            sx={{ color: "white", fontSize: "1.6rem" }}>
-                            Mon tableau de bord
+                            to="/"
+                            sx={{ color: "white" }}>
+                            Explorer
                         </Button>
-                    )}
-                    {!token && (
-                        <>
+                        {token && (
                             <Button
                                 component={NavLink}
-                                to="/login"
-                                sx={{ color: "white", fontSize: "1.6rem" }}>
-                                Connexion
+                                to="/dashboard"
+                                sx={{ color: "white" }}>
+                                Mon tableau de bord
                             </Button>
-                            <Button
-                                component={NavLink}
-                                to="/register"
-                                sx={{ color: "white", fontSize: "1.6rem" }}>
-                                Créer un compte
-                            </Button>
-                        </>
-                    )}
+                        )}
+                        {!token && (
+                            <>
+                                <Button
+                                    component={NavLink}
+                                    to="/login"
+                                    sx={{ color: "white" }}>
+                                    Connexion
+                                </Button>
+                                <Button
+                                    component={NavLink}
+                                    to="/register"
+                                    sx={{ color: "white" }}>
+                                    Créer un compte
+                                </Button>
+                            </>
+                        )}
+                    </Box>
+                    {token && <UserMenu token={token} setToken={setToken} />}
                 </Box>
-
-                {token && <UserMenu token={token} setToken={setToken} />}
             </Toolbar>
         </Box>
     );

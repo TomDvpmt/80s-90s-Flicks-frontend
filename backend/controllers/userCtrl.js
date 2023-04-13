@@ -149,7 +149,7 @@ exports.createUser = asyncHandler(async (req, res) => {
  */
 
 exports.getAllUsers = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "Utilisateur créé." });
+    res.status(200).json();
 });
 
 /**

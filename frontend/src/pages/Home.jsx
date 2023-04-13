@@ -3,24 +3,17 @@ import { useLocation } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
 import YearFilter from "../components/filters/YearFilter";
-import GenreFilters from "../components/filters/GenreFilters";
+import GenresFilter from "../components/filters/GenresFilter";
 import SearchFilter from "../components/filters/SearchFilter";
 import Pagination from "../components/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
+
+import { Box, Typography, Grid } from "@mui/material";
 
 import { allFilters } from "../assets/filters";
 import fetchData from "../utils/fetchData";
 
 import styled from "styled-components";
-
-const StyledFilters = styled.div`
-    border: 1px solid black;
-    margin: 2rem;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
 
 const StyledResultsGrid = styled.div`
     background-color: black;
@@ -94,26 +87,47 @@ const Home = () => {
         <main>
             <h1>Explorer</h1>
             <section>
-                <StyledFilters>
+                <Box
+                    sx={{
+                        border: "1px solid black",
+                        margin: "2rem",
+                        padding: "1rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                    }}>
                     <SearchFilter />
-                    <form className="movie-filters">
+                    <Box
+                        component="form"
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "2rem",
+                        }}>
                         <YearFilter
                             setCurrentPage={setCurrentPage}
                             setFilters={setFilters}
                         />
-                        <GenreFilters
+                        <GenresFilter
                             activeGenres={activeGenres}
                             setActiveGenres={setActiveGenres}
                             setFilters={setFilters}
                         />
-                        <p className="number-of-results">
-                            Nombre de résultats : {numberOfResults}{" "}
-                            {numberOfResults > 10000 && (
-                                <span>(10 000 disponibles)</span>
-                            )}
-                        </p>
-                    </form>
-                </StyledFilters>
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        border: "1px solid black",
+                        margin: "2rem",
+                        padding: "1rem",
+                    }}>
+                    <Typography>
+                        Nombre de résultats : {numberOfResults}{" "}
+                        {numberOfResults > 10000 && (
+                            <span>(10 000 disponibles)</span>
+                        )}
+                    </Typography>
+                </Box>
                 <Pagination
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}
@@ -121,6 +135,7 @@ const Home = () => {
                     setFilters={setFilters}
                 />
                 <StyledResultsGrid>{movies}</StyledResultsGrid>
+
                 <ErrorMessage errorMessage={errorMessage} />
             </section>
         </main>

@@ -17,8 +17,6 @@ const UserMenu = ({ token, setToken }) => {
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
 
-    console.log(token);
-
     const handleAvatarClick = (e) => {
         setAnchorEl(e.currentTarget);
     };

@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
 
+import {
+    FormControl,
+    FormLabel,
+    FormGroup,
+    Checkbox,
+    FormControlLabel,
+    Button,
+    ButtonGroup,
+} from "@mui/material";
+
 import { getGenres } from "../../assets/filters";
 
 import PropTypes from "prop-types";
 
-const GenreFilters = ({ activeGenres, setActiveGenres, setFilters }) => {
-    GenreFilters.propTypes = {
+const GenresFilter = ({ activeGenres, setActiveGenres, setFilters }) => {
+    GenresFilter.propTypes = {
         activeGenres: PropTypes.array,
         setActiveGenres: PropTypes.func,
         setFilters: PropTypes.func,
@@ -37,19 +47,19 @@ const GenreFilters = ({ activeGenres, setActiveGenres, setFilters }) => {
             .then((data) =>
                 setAllGenres(
                     data.map((genre) => (
-                        <div key={genre.id} className="genre">
-                            <label htmlFor={`genre-${genre.id}`}>
-                                {genre.name}
-                            </label>
-                            <input
-                                id={genre.id}
-                                name={genre.name}
-                                type="checkbox"
-                                value={genre.name}
-                                onChange={handleCheckBox}
-                                checked={activeGenres.includes(genre.id)}
-                            />
-                        </div>
+                        <FormControlLabel
+                            key={genre.id}
+                            control={
+                                <Checkbox
+                                    id={`${genre.id}`}
+                                    name={genre.name}
+                                    onChange={handleCheckBox}
+                                    checked={activeGenres.includes(genre.id)}
+                                    value={genre.name}
+                                />
+                            }
+                            label={genre.name}
+                        />
                     ))
                 )
             )
@@ -64,17 +74,15 @@ const GenreFilters = ({ activeGenres, setActiveGenres, setFilters }) => {
         );
     }, [activeGenres, setFilters]);
     return (
-        <fieldset className="genres-filter">
-            <legend>Genres : </legend>
-            {allGenres}
-            <button type="button" onClick={handleAllClick}>
-                Tous
-            </button>
-            <button type="button" onClick={handleNoneClick}>
-                Aucun
-            </button>
-        </fieldset>
+        <FormControl component="fieldset">
+            <FormLabel>Genres : </FormLabel>
+            <FormGroup>{allGenres}</FormGroup>
+            <ButtonGroup sx={{ justifyContent: "center" }}>
+                <Button onClick={handleAllClick}>Tous</Button>
+                <Button onClick={handleNoneClick}>Aucun</Button>
+            </ButtonGroup>
+        </FormControl>
     );
 };
 
-export default GenreFilters;
+export default GenresFilter;

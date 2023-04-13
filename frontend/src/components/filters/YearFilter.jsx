@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 const YearFilter = ({ setCurrentPage, setFilters }) => {
@@ -6,14 +10,17 @@ const YearFilter = ({ setCurrentPage, setFilters }) => {
         setFilters: PropTypes.func,
     };
 
-    const years = ["Toutes"];
+    const [yearOption, setYearOption] = useState("All");
+
+    const years = ["All"];
     for (let i = 1980; i < 2000; i++) {
         years.push(i);
     }
 
     const handleYearChange = (e) => {
+        setYearOption(e.target.value);
         setCurrentPage(1);
-        if (e.target.value === "Toutes") {
+        if (e.target.value === "All") {
             setFilters((filters) =>
                 filters.map((filter) => {
                     if (filter.name === "primaryReleaseYear")
@@ -38,16 +45,20 @@ const YearFilter = ({ setCurrentPage, setFilters }) => {
         }
     };
     return (
-        <fieldset className="year-filter">
-            <legend>Année :</legend>
-            <select id="date-filter" onChange={handleYearChange}>
+        <FormControl>
+            <InputLabel id="year-filer">Year :</InputLabel>
+            <Select
+                labelId="year-filter"
+                label="Year"
+                onChange={handleYearChange}
+                value={yearOption}>
                 {years.map((year) => (
-                    <option key={year} value={year}>
+                    <MenuItem key={year} value={year}>
                         {year}
-                    </option>
+                    </MenuItem>
                 ))}
-            </select>
-        </fieldset>
+            </Select>
+        </FormControl>
     );
 };
 
