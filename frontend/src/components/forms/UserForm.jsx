@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import UsernameInput from "./UsernameInput";
 import PasswordInput from "./PasswordInput";
@@ -11,26 +11,28 @@ import LastNameInput from "./LastNameInput";
 import SubmitButton from "./SubmitButton";
 import ErrorMessage from "../ErrorMessage";
 
+import { selectPageType } from "../../utils/selectors";
+import store from "../../utils/store";
+import { userAuth, userSetToken } from "../../features/user";
+
 import StyledForm from "../../styles/StyledForm";
 import fetchData from "../../utils/fetchData";
 import PropTypes from "prop-types";
 
 const UserForm = ({
     userId,
-    page,
     defaultFormValues,
     setShowUpdateForm,
     setUserData,
-    setToken,
 }) => {
     UserForm.propTypes = {
         userId: PropTypes.string,
-        page: PropTypes.string,
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
         setUserData: PropTypes.func,
-        setToken: PropTypes.func,
     };
+
+    const page = useSelector(selectPageType());
 
     const [username, setUsername] = useState(
         page === "profile" ? defaultFormValues.username : ""
@@ -69,9 +71,10 @@ const UserForm = ({
                         password,
                     },
                     handleResponse: (data) => {
-                        localStorage.setItem("userId", data._id);
-                        localStorage.setItem("token", data.token);
-                        setToken(data.token);
+                        sessionStorage.setItem("userId", data._id);
+                        sessionStorage.setItem("token", data.token);
+                        store.dispatch(userAuth());
+                        store.dispatch(userSetToken(data.token));
                         navigate("/");
                     },
                 });
@@ -97,8 +100,8 @@ const UserForm = ({
                     },
                     handleResponse: (data) => {
                         console.log(data.message);
-                        localStorage.setItem("userId", data._id);
-                        localStorage.setItem("token", data.token);
+                        sessionStorage.setItem("userId", data._id);
+                        sessionStorage.setItem("token", data.token);
                         navigate("/");
                     },
                 });
@@ -141,13 +144,13 @@ const UserForm = ({
         setShowUpdateForm,
         setUserData,
         navigate,
-        setToken,
+        // setToken,
     ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
 
         if (
             page === "profile" &&

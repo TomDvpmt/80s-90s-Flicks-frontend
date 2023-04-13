@@ -5,6 +5,9 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import fetchData from "../utils/fetchData";
 
+import store from "../utils/store";
+import { pageSetType } from "../features/page";
+
 import styled from "styled-components";
 
 const StyledPerson = styled.main`
@@ -14,6 +17,7 @@ const StyledPerson = styled.main`
 `;
 
 const Person = () => {
+    store.dispatch(pageSetType("person"));
     const [person, setPerson] = useState({});
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);

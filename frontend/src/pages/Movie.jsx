@@ -7,6 +7,9 @@ import fetchData from "../utils/fetchData";
 import displayBigNumber from "../utils/bigNumbers";
 import setCastAndCrew from "../utils/setCastAndCrew";
 
+import store from "../utils/store";
+import { pageSetType } from "../features/page";
+
 import styled from "styled-components";
 
 const StyledMovie = styled.main`
@@ -51,6 +54,8 @@ const StyledMovie = styled.main`
 `;
 
 const Movie = () => {
+    store.dispatch(pageSetType("movie"));
+
     const [movie, setMovie] = useState({});
     const [director, setDirector] = useState("");
     const [actors, setActors] = useState([""]);

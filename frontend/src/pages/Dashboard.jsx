@@ -1,4 +1,8 @@
+import store from "../utils/store";
+import { pageSetType } from "../features/page";
+
 const Dashboard = () => {
+    store.dispatch(pageSetType("dashboard"));
     return (
         <>
             <main>

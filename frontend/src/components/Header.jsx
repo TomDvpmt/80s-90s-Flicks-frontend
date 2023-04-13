@@ -1,25 +1,26 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Branding from "./Branding";
 import UserMenu from "./UserMenu";
-import { Box, Toolbar, Button } from "@mui/material";
 
+import store from "../utils/store";
+import { userSetToken } from "../features/user";
+import { selectUserToken, selectUserIsSignedIn } from "../utils/selectors";
+
+import { Box, Toolbar, Button } from "@mui/material";
 import { theme } from "../utils/theme";
 
-import PropTypes from "prop-types";
-
-const Header = ({ token, setToken }) => {
-    Header.propTypes = {
-        token: PropTypes.string,
-        setToken: PropTypes.func,
-    };
+const Header = () => {
+    const token = useSelector(selectUserToken());
+    const isSignedIn = useSelector(selectUserIsSignedIn());
 
     useEffect(() => {
         if (!token) {
-            setToken(localStorage.getItem("token"));
+            store.dispatch(userSetToken(sessionStorage.getItem("token")));
         }
-    }, [token, setToken]);
+    }, [token]);
 
     return (
         <Box component="header">
@@ -44,7 +45,7 @@ const Header = ({ token, setToken }) => {
                             sx={{ color: "white" }}>
                             Explorer
                         </Button>
-                        {token && (
+                        {isSignedIn && (
                             <Button
                                 component={NavLink}
                                 to="/dashboard"
@@ -52,7 +53,7 @@ const Header = ({ token, setToken }) => {
                                 Mon tableau de bord
                             </Button>
                         )}
-                        {!token && (
+                        {!isSignedIn && (
                             <>
                                 <Button
                                     component={NavLink}
@@ -69,7 +70,7 @@ const Header = ({ token, setToken }) => {
                             </>
                         )}
                     </Box>
-                    {token && <UserMenu token={token} setToken={setToken} />}
+                    {isSignedIn && <UserMenu />}
                 </Box>
             </Toolbar>
         </Box>

@@ -8,7 +8,12 @@ import UserForm from "../components/forms/UserForm";
 import fetchData from "../utils/fetchData";
 import logout from "../utils/logout";
 
+import store from "../utils/store";
+import { pageSetType } from "../features/page";
+
 const Profile = () => {
+    store.dispatch(pageSetType("profile"));
+
     const [userData, setUserData] = useState({});
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -20,8 +25,8 @@ const Profile = () => {
     };
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-        const token = localStorage.getItem("token");
+        const userId = sessionStorage.getItem("userId");
+        const token = sessionStorage.getItem("token");
 
         fetchData(`${process.env.REACT_APP_API_URI}users/${userId}`, {
             method: "GET",
@@ -56,7 +61,6 @@ const Profile = () => {
             {showUpdateForm && (
                 <UserForm
                     userId={userData.id}
-                    page="profile"
                     defaultFormValues={{
                         username: userData.username,
                         email: userData.email,

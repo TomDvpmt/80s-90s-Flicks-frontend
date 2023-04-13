@@ -8,10 +8,13 @@ import SearchFilter from "../components/filters/SearchFilter";
 import Pagination from "../components/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
 
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { allFilters } from "../assets/filters";
 import fetchData from "../utils/fetchData";
+
+import store from "../utils/store";
+import { pageSetType } from "../features/page";
 
 import styled from "styled-components";
 
@@ -25,6 +28,8 @@ const StyledResultsGrid = styled.div`
 `;
 
 const Home = () => {
+    store.dispatch(pageSetType("home"));
+
     const { state } = useLocation();
     const inheritedGenre = state;
 

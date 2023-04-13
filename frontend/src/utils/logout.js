@@ -1,6 +1,6 @@
 const logout = (navigate) => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("token");
     navigate("/login");
 };
 
