@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MovieCard from "../components/MovieCard";
 import YearFilter from "../components/filters/YearFilter";
@@ -10,11 +10,11 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import { Box, Typography } from "@mui/material";
 
-import { allFilters } from "../assets/filters";
 import fetchData from "../utils/fetchData";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
+import { selectFiltersAll } from "../utils/selectors";
 
 import styled from "styled-components";
 
@@ -29,21 +29,13 @@ const StyledResultsGrid = styled.div`
 
 const Home = () => {
     store.dispatch(pageSetType("home"));
+    const filters = useSelector(selectFiltersAll());
 
-    const { state } = useLocation();
-    const inheritedGenre = state;
-
-    const [activeGenres, setActiveGenres] = useState([
-        inheritedGenre && inheritedGenre.value,
-    ]);
-    const [filters, setFilters] = useState(allFilters);
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-
-    // Movie cards
 
     useEffect(() => {
         const queryFilters = filters
@@ -109,15 +101,8 @@ const Home = () => {
                             flexDirection: "column",
                             gap: "2rem",
                         }}>
-                        <YearFilter
-                            setCurrentPage={setCurrentPage}
-                            setFilters={setFilters}
-                        />
-                        <GenresFilter
-                            activeGenres={activeGenres}
-                            setActiveGenres={setActiveGenres}
-                            setFilters={setFilters}
-                        />
+                        <YearFilter setCurrentPage={setCurrentPage} />
+                        <GenresFilter />
                     </Box>
                 </Box>
                 <Box
@@ -137,7 +122,6 @@ const Home = () => {
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    setFilters={setFilters}
                 />
                 <StyledResultsGrid>{movies}</StyledResultsGrid>
 

@@ -18,6 +18,7 @@ const StyledPerson = styled.main`
 
 const Person = () => {
     store.dispatch(pageSetType("person"));
+
     const [person, setPerson] = useState({});
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);

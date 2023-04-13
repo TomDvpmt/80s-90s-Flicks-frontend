@@ -1,4 +1,14 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
+import store from "../../utils/store";
+import {
+    filtersAddActiveGenre,
+    filtersRemoveActiveGenre,
+    filtersClearActiveGenres,
+    filtersConvertActiveGenresToFilter,
+} from "../../features/filters";
+import { selectFiltersActiveGenres } from "../../utils/selectors";
 
 import {
     FormControl,
@@ -7,39 +17,26 @@ import {
     Checkbox,
     FormControlLabel,
     Button,
-    ButtonGroup,
 } from "@mui/material";
 
 import { getGenres } from "../../assets/filters";
 
-import PropTypes from "prop-types";
-
-const GenresFilter = ({ activeGenres, setActiveGenres, setFilters }) => {
-    GenresFilter.propTypes = {
-        activeGenres: PropTypes.array,
-        setActiveGenres: PropTypes.func,
-        setFilters: PropTypes.func,
-    };
-
+const GenresFilter = () => {
     const [allGenres, setAllGenres] = useState([]);
+
+    const activeGenres = useSelector(selectFiltersActiveGenres());
+    console.log(activeGenres);
 
     const handleCheckBox = (e) => {
         const genreId = parseInt(e.target.id);
-        setActiveGenres((activeGenres) =>
-            activeGenres.includes(genreId)
-                ? activeGenres.filter((element) => element !== genreId)
-                : [...activeGenres, genreId]
-        );
-    };
 
-    const handleAllClick = () => {
-        getGenres()
-            .then((data) => setActiveGenres(data.map((genre) => genre.id)))
-            .catch((error) => console.log(error));
+        activeGenres.includes(genreId)
+            ? store.dispatch(filtersRemoveActiveGenre(genreId))
+            : store.dispatch(filtersAddActiveGenre(genreId));
     };
 
     const handleNoneClick = () => {
-        setActiveGenres([]);
+        store.dispatch(filtersClearActiveGenres());
     };
 
     useEffect(() => {
@@ -65,22 +62,15 @@ const GenresFilter = ({ activeGenres, setActiveGenres, setFilters }) => {
             )
             .catch((error) => console.log(error));
 
-        setFilters((filters) =>
-            filters.map((filter) =>
-                filter.name === "withGenres"
-                    ? { ...filter, value: activeGenres.toString() }
-                    : filter
-            )
-        );
-    }, [activeGenres, setFilters]);
+        store.dispatch(filtersConvertActiveGenresToFilter(activeGenres));
+    }, [activeGenres]);
     return (
         <FormControl component="fieldset">
             <FormLabel>Genres : </FormLabel>
             <FormGroup>{allGenres}</FormGroup>
-            <ButtonGroup sx={{ justifyContent: "center" }}>
-                <Button onClick={handleAllClick}>Tous</Button>
-                <Button onClick={handleNoneClick}>Aucun</Button>
-            </ButtonGroup>
+            <Button variant="outlined" onClick={handleNoneClick}>
+                Aucun
+            </Button>
         </FormControl>
     );
 };

@@ -9,6 +9,7 @@ import setCastAndCrew from "../utils/setCastAndCrew";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
+import { filtersAddActiveGenre } from "../features/filters";
 
 import styled from "styled-components";
 
@@ -62,6 +63,10 @@ const Movie = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const id = useParams().id;
+
+    const handleGenreClick = (e) => {
+        store.dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
+    };
 
     useEffect(() => {
         fetchData(
@@ -122,7 +127,9 @@ const Movie = () => {
                                 {movie.genres.map((genre, index) => (
                                     <Link
                                         key={index}
+                                        id={genre.id}
                                         to="/"
+                                        onClick={handleGenreClick}
                                         state={{
                                             param: "&with_genres=",
                                             value: genre.id,

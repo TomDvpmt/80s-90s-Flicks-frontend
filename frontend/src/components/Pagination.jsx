@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import store from "../utils/store";
+import { filtersSetPageNumber } from "../features/filters";
 
 import styled from "styled-components";
 
@@ -21,12 +23,7 @@ const StyledPagination = styled.div`
     }
 `;
 
-const Pagination = ({
-    numberOfPages,
-    currentPage,
-    setCurrentPage,
-    setFilters,
-}) => {
+const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     const goToPreviousPage = (e) => {
         e.preventDefault();
         setCurrentPage((currentPage) => currentPage - 1);
@@ -42,14 +39,8 @@ const Pagination = ({
     };
 
     useEffect(() => {
-        setFilters((filters) =>
-            filters.map((filter) =>
-                filter.name === "page"
-                    ? { name: "page", param: "&page=", value: currentPage }
-                    : filter
-            )
-        );
-    }, [currentPage, setFilters]);
+        store.dispatch(filtersSetPageNumber(currentPage));
+    }, [currentPage]);
 
     return (
         <StyledPagination className="pagination">
