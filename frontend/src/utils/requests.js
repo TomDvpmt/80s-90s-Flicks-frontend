@@ -1,6 +1,23 @@
 import { Link } from "react-router-dom";
 
-const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
+/** Fetch data from an API
+ *
+ * @param {String} endpoint
+ * @param {Object} config
+ * @returns {Object}
+ */
+
+export async function fetchData(endpoint, config) {
+    try {
+        const response = await fetch(endpoint, config);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
     fetch(
         `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
         {
@@ -44,4 +61,17 @@ const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
         .catch((error) => console.log(error));
 };
 
-export default setCastAndCrew;
+export const getGenres = async () => {
+    try {
+        const results = await fetch(
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+            {
+                method: "GET",
+            }
+        );
+        const data = await results.json();
+        return data.genres;
+    } catch (error) {
+        console.log(error);
+    }
+};

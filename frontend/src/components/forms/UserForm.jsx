@@ -15,8 +15,10 @@ import { selectPageType } from "../../utils/selectors";
 import store from "../../utils/store";
 import { userAuth, userSetToken } from "../../features/user";
 
+import { fetchData } from "../../utils/requests";
+
 import StyledForm from "../../styles/StyledForm";
-import fetchData from "../../utils/fetchData";
+
 import PropTypes from "prop-types";
 
 const UserForm = ({

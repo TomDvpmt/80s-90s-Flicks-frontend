@@ -10,7 +10,7 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import { Box, Typography } from "@mui/material";
 
-import fetchData from "../utils/fetchData";
+import { fetchData } from "../utils/requests";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
@@ -28,7 +28,10 @@ const StyledResultsGrid = styled.div`
 `;
 
 const Home = () => {
-    store.dispatch(pageSetType("home"));
+    useEffect(() => {
+        store.dispatch(pageSetType("home"));
+    }, []);
+
     const filters = useSelector(selectFiltersAll());
 
     const [numberOfPages, setNumberOfPages] = useState(1);

@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 const YearFilter = ({ setCurrentPage }) => {
     YearFilter.propTypes = {
         setCurrentPage: PropTypes.func,
-        // setFilters: PropTypes.func,
     };
 
     const [yearOption, setYearOption] = useState("All");
@@ -26,33 +25,6 @@ const YearFilter = ({ setCurrentPage }) => {
         store.dispatch(filterYear(e.target.value));
     };
 
-    // const handleYearChange = (e) => {
-    //     setYearOption(e.target.value);
-    //     setCurrentPage(1);
-    //     if (e.target.value === "All") {
-    //         setFilters((filters) =>
-    //             filters.map((filter) => {
-    //                 if (filter.name === "primaryReleaseYear")
-    //                     return { ...filter, value: "" };
-    //                 else if (filter.name === "allYearsMin")
-    //                     return { ...filter, value: "1980-01-01" };
-    //                 else if (filter.name === "allYearsMax")
-    //                     return { ...filter, value: "1999-12-31" };
-    //                 else return filter;
-    //             })
-    //         );
-    //     } else {
-    //         setFilters((filters) =>
-    //             filters.map((filter) => {
-    //                 if (["allYearsMin", "allYearsMax"].includes(filter.name))
-    //                     return { ...filter, value: "" };
-    //                 else if (filter.name === "primaryReleaseYear")
-    //                     return { ...filter, value: e.target.value };
-    //                 else return filter;
-    //             })
-    //         );
-    //     }
-    // };
     return (
         <FormControl>
             <InputLabel id="year-filer">Year :</InputLabel>

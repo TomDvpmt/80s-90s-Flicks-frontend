@@ -1,10 +1,14 @@
+import { useEffect } from "react";
+
 import UserForm from "../components/forms/UserForm";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
 
 const Login = () => {
-    store.dispatch(pageSetType("login"));
+    useEffect(() => {
+        store.dispatch(pageSetType("login"));
+    }, []);
 
     return (
         <main>

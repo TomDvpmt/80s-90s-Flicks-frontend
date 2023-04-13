@@ -76,8 +76,7 @@ exports.logout = asyncHandler(async (req, res) => {
     //         process.env.NODE_ENV === "production" && "Secure;"
     //     }`
     // );
-
-    res.status(200).json({ message: "utilisateur déconnecté." });
+    // res.status(200).json({ message: "utilisateur déconnecté." });
 });
 
 /**

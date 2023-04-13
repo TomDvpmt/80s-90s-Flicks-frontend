@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
-
 import UserForm from "../components/forms/UserForm";
 
-import fetchData from "../utils/fetchData";
+import { fetchData } from "../utils/requests";
 import logout from "../utils/logout";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
 
 const Profile = () => {
-    store.dispatch(pageSetType("profile"));
+    useEffect(() => {
+        store.dispatch(pageSetType("profile"));
+    }, []);
 
     const [userData, setUserData] = useState({});
     const [showUpdateForm, setShowUpdateForm] = useState(false);

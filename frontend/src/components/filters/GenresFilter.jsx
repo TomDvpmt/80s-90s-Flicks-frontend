@@ -10,6 +10,8 @@ import {
 } from "../../features/filters";
 import { selectFiltersActiveGenres } from "../../utils/selectors";
 
+import { getGenres } from "../../utils/requests";
+
 import {
     FormControl,
     FormLabel,
@@ -19,13 +21,10 @@ import {
     Button,
 } from "@mui/material";
 
-import { getGenres } from "../../assets/filters";
-
 const GenresFilter = () => {
     const [allGenres, setAllGenres] = useState([]);
 
     const activeGenres = useSelector(selectFiltersActiveGenres());
-    console.log(activeGenres);
 
     const handleCheckBox = (e) => {
         const genreId = parseInt(e.target.id);
@@ -41,33 +40,30 @@ const GenresFilter = () => {
 
     useEffect(() => {
         getGenres()
-            .then((data) =>
-                setAllGenres(
-                    data.map((genre) => (
-                        <FormControlLabel
-                            key={genre.id}
-                            control={
-                                <Checkbox
-                                    id={`${genre.id}`}
-                                    name={genre.name}
-                                    onChange={handleCheckBox}
-                                    checked={activeGenres.includes(genre.id)}
-                                    value={genre.name}
-                                />
-                            }
-                            label={genre.name}
-                        />
-                    ))
-                )
-            )
+            .then((data) => setAllGenres(data))
             .catch((error) => console.log(error));
-
         store.dispatch(filtersConvertActiveGenresToFilter(activeGenres));
     }, [activeGenres]);
     return (
         <FormControl component="fieldset">
             <FormLabel>Genres : </FormLabel>
-            <FormGroup>{allGenres}</FormGroup>
+            <FormGroup>
+                {allGenres.map((genre) => (
+                    <FormControlLabel
+                        key={genre.id}
+                        control={
+                            <Checkbox
+                                id={`${genre.id}`}
+                                name={genre.name}
+                                onChange={handleCheckBox}
+                                checked={activeGenres.includes(genre.id)}
+                                value={genre.name}
+                            />
+                        }
+                        label={genre.name}
+                    />
+                ))}
+            </FormGroup>
             <Button variant="outlined" onClick={handleNoneClick}>
                 Aucun
             </Button>

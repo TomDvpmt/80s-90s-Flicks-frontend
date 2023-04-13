@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import setCastAndCrew from "../utils/setCastAndCrew";
+import { setCastAndCrew } from "../utils/requests";
 
 import styled from "styled-components";
 import PropTypes from "prop-types";

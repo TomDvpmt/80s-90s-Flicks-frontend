@@ -4,10 +4,8 @@ import { useSelector } from "react-redux";
 
 import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
 
-import fetchData from "../utils/fetchData";
 import logout from "../utils/logout";
-import store from "../utils/store";
-import { userSignOut } from "../features/user";
+
 import { selectUserToken } from "../utils/selectors";
 
 const UserMenu = () => {
@@ -16,6 +14,10 @@ const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleAvatarClick = (e) => {
         setAnchorEl(e.currentTarget);
@@ -26,14 +28,8 @@ const UserMenu = () => {
         handleClose();
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     const handleLogout = async () => {
-        await fetchData(`${process.env.REACT_APP_API_URI}users/logout`, "POST");
         handleClose();
-        store.dispatch(userSignOut());
         logout(navigate);
     };
 

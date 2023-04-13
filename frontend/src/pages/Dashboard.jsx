@@ -1,8 +1,12 @@
+import { useEffect } from "react";
+
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
 
 const Dashboard = () => {
-    store.dispatch(pageSetType("dashboard"));
+    useEffect(() => {
+        store.dispatch(pageSetType("dashboard"));
+    }, []);
     return (
         <>
             <main>

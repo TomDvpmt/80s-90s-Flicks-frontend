@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import fetchData from "../utils/fetchData";
+import { fetchData } from "../utils/requests";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
@@ -17,7 +17,9 @@ const StyledPerson = styled.main`
 `;
 
 const Person = () => {
-    store.dispatch(pageSetType("person"));
+    useEffect(() => {
+        store.dispatch(pageSetType("person"));
+    }, []);
 
     const [person, setPerson] = useState({});
     const [personImgUrl, setPersonImgUrl] = useState("");

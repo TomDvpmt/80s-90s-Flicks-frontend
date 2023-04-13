@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import store from "../utils/store";
 import { filtersSetPageNumber } from "../features/filters";
 

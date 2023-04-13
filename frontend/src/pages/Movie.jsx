@@ -3,9 +3,8 @@ import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import fetchData from "../utils/fetchData";
+import { fetchData, setCastAndCrew } from "../utils/requests";
 import displayBigNumber from "../utils/bigNumbers";
-import setCastAndCrew from "../utils/setCastAndCrew";
 
 import store from "../utils/store";
 import { pageSetType } from "../features/page";
@@ -55,7 +54,9 @@ const StyledMovie = styled.main`
 `;
 
 const Movie = () => {
-    store.dispatch(pageSetType("movie"));
+    useEffect(() => {
+        store.dispatch(pageSetType("movie"));
+    }, []);
 
     const [movie, setMovie] = useState({});
     const [director, setDirector] = useState("");
