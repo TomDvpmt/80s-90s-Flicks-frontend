@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 
+import store from "./store";
+import { userSetInfo } from "../features/user";
+
 /** Fetch data from an API
  *
  * @param {String} endpoint
  * @param {Object} config
- * @returns {Object}
+ * @returns {Promise}
  */
 
-export async function fetchData(endpoint, config) {
+export const fetchData = async (endpoint, config) => {
     try {
         const response = await fetch(endpoint, config);
         const data = await response.json();
@@ -15,7 +18,31 @@ export async function fetchData(endpoint, config) {
     } catch (error) {
         console.log(error);
     }
-}
+};
+
+/**
+ * Get user info from database
+ * @param {String} token
+ * @returns { Promise }
+ */
+
+export const setUserInfo = async (token) => {
+    try {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URI}users/0`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `BEARER ${token}`,
+                },
+            }
+        );
+        const data = await response.json();
+        store.dispatch(userSetInfo(data));
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
     fetch(

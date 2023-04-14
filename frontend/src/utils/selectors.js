@@ -8,6 +8,10 @@ export const selectUserToken = () => {
     return (state) => state.user.token;
 };
 
+export const selectUserInfo = () => {
+    return (state) => state.user;
+};
+
 // Page
 
 export const selectPageType = () => {

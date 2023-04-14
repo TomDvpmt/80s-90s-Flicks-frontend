@@ -3,10 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import { fetchData } from "../utils/requests";
-
-import store from "../utils/store";
-import { pageSetType } from "../features/page";
+import { fetchData, setUserInfo } from "../utils/requests";
 
 import styled from "styled-components";
 
@@ -18,7 +15,9 @@ const StyledPerson = styled.main`
 
 const Person = () => {
     useEffect(() => {
-        store.dispatch(pageSetType("person"));
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
     }, []);
 
     const [person, setPerson] = useState({});

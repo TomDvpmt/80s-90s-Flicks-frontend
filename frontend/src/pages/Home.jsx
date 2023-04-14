@@ -11,9 +11,8 @@ import ErrorMessage from "../components/ErrorMessage";
 import { Box, Typography } from "@mui/material";
 
 import { fetchData } from "../utils/requests";
+import { setUserInfo } from "../utils/requests";
 
-import store from "../utils/store";
-import { pageSetType } from "../features/page";
 import { selectFiltersAll } from "../utils/selectors";
 
 import styled from "styled-components";
@@ -29,7 +28,9 @@ const StyledResultsGrid = styled.div`
 
 const Home = () => {
     useEffect(() => {
-        store.dispatch(pageSetType("home"));
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
     }, []);
 
     const filters = useSelector(selectFiltersAll());

@@ -3,11 +3,10 @@ import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import { fetchData, setCastAndCrew } from "../utils/requests";
+import { fetchData, setCastAndCrew, setUserInfo } from "../utils/requests";
 import displayBigNumber from "../utils/bigNumbers";
 
 import store from "../utils/store";
-import { pageSetType } from "../features/page";
 import { filtersAddActiveGenre } from "../features/filters";
 
 import styled from "styled-components";
@@ -55,7 +54,9 @@ const StyledMovie = styled.main`
 
 const Movie = () => {
     useEffect(() => {
-        store.dispatch(pageSetType("movie"));
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
     }, []);
 
     const [movie, setMovie] = useState({});

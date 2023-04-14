@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import UsernameInput from "./UsernameInput";
 import PasswordInput from "./PasswordInput";
@@ -11,9 +10,8 @@ import LastNameInput from "./LastNameInput";
 import SubmitButton from "./SubmitButton";
 import ErrorMessage from "../ErrorMessage";
 
-import { selectPageType } from "../../utils/selectors";
 import store from "../../utils/store";
-import { userAuth, userSetToken } from "../../features/user";
+import { userAuth, userSetToken, userSetInfo } from "../../features/user";
 
 import { fetchData } from "../../utils/requests";
 
@@ -22,6 +20,7 @@ import StyledForm from "../../styles/StyledForm";
 import PropTypes from "prop-types";
 
 const UserForm = ({
+    page,
     userId,
     defaultFormValues,
     setShowUpdateForm,
@@ -33,8 +32,6 @@ const UserForm = ({
         setShowUpdateForm: PropTypes.func,
         setUserData: PropTypes.func,
     };
-
-    const page = useSelector(selectPageType());
 
     const [username, setUsername] = useState(
         page === "profile" ? defaultFormValues.username : ""
@@ -121,12 +118,15 @@ const UserForm = ({
                         lastName,
                     },
                     handleResponse: (data) => {
-                        setUserData({
-                            username: data.username,
-                            email: data.email,
-                            firstName: data.fristName,
-                            lastName: data.lastName,
-                        });
+                        store.dispatch(
+                            userSetInfo({
+                                id: userId,
+                                username: data.username,
+                                firstName: data.firstName,
+                                lastName: data.lastName,
+                                email: data.email,
+                            })
+                        );
                         setShowUpdateForm(false);
                     },
                 });

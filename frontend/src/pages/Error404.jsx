@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
-import store from "../utils/store";
-import { pageSetType } from "../features/page";
+import { setUserInfo } from "../utils/requests";
 
 const Error404 = () => {
     useEffect(() => {
-        store.dispatch(pageSetType("error404"));
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
     }, []);
     return <div>Error404</div>;
 };

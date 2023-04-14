@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
-import store from "../utils/store";
-import { pageSetType } from "../features/page";
+import { setUserInfo } from "../utils/requests";
 
 const Dashboard = () => {
     useEffect(() => {
-        store.dispatch(pageSetType("dashboard"));
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
     }, []);
     return (
         <>

@@ -163,7 +163,7 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
  */
 
 exports.getOneUser = asyncHandler(async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.auth.id;
     const user = await User.findOne({ _id: userId });
     res.status(200).json({
         id: userId,
