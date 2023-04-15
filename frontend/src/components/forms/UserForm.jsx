@@ -57,11 +57,11 @@ const UserForm = ({
                 setPageData({
                     endPoint: "users/login",
                     method: "POST",
-                    submitButtonText: "Se connecter",
+                    submitButtonText: "Log in",
                     redirectLine: (
                         <p>
-                            Pas encore incrit ?&nbsp;
-                            <Link to="/register">Créer un compte</Link>
+                            Not a member yet?&nbsp;
+                            <Link to="/register">Register</Link>
                         </p>
                     ),
                     dataToSubmit: {
@@ -80,11 +80,11 @@ const UserForm = ({
                 setPageData({
                     endPoint: "users/",
                     method: "POST",
-                    submitButtonText: "S'enregistrer",
+                    submitButtonText: "Register",
                     redirectLine: (
                         <p>
-                            Déjà inscrit ?&nbsp;
-                            <Link to="/login">Se connecter</Link>
+                            Already a member?&nbsp;
+                            <Link to="/login">Log in</Link>
                         </p>
                     ),
                     dataToSubmit: {
@@ -106,7 +106,7 @@ const UserForm = ({
                 setPageData({
                     endPoint: `users/${userId}`,
                     method: "PUT",
-                    submitButtonText: "Enregistrer les modifications",
+                    submitButtonText: "Save changes",
                     dataToSubmit: {
                         username,
                         email,

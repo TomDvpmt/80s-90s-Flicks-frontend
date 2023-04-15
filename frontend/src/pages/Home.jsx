@@ -86,7 +86,7 @@ const Home = () => {
 
     return (
         <Box component="main">
-            <h1>Explorer</h1>
+            <h1>Explore</h1>
             <section>
                 <Box
                     sx={{
@@ -116,9 +116,9 @@ const Home = () => {
                         padding: "1rem",
                     }}>
                     <Typography>
-                        Nombre de résultats : {numberOfResults}{" "}
+                        Number of results: {numberOfResults}{" "}
                         {numberOfResults > 10000 && (
-                            <span>(10 000 disponibles)</span>
+                            <span>(10 000 max. available)</span>
                         )}
                     </Typography>
                 </Box>

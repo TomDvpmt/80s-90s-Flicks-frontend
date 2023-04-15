@@ -29,7 +29,7 @@ const Profile = () => {
     return (
         <main>
             <h1>My Profile</h1>
-            {showUpdateValidation && <p>Informations mises à jour.</p>}
+            {showUpdateValidation && <p>Profile updated.</p>}
             <ul>
                 <li>Username : {user.username}</li>
                 <li>First name: {user.firstName}</li>
@@ -38,7 +38,7 @@ const Profile = () => {
             </ul>
             {/* <ErrorMessage errorMessage={errorMessage} /> */}
             <button type="button" onClick={handleUpdateUser}>
-                Modifier les informations
+                Change profile
             </button>
 
             {showUpdateForm && (

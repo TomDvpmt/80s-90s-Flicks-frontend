@@ -12,12 +12,12 @@ const PasswordInput = ({ password, setPassword }) => {
 
     return (
         <label htmlFor="password">
-            Mot de passe *
+            Password *
             <input
                 type="password"
                 id="password"
                 name="password"
-                placeholder="Entrez votre mot de passe"
+                placeholder="Your password"
                 value={password}
                 onChange={handleChange}
                 required

@@ -52,7 +52,7 @@ const GenresFilter = () => {
     }, [activeGenres]);
     return (
         <FormControl component="fieldset">
-            <FormLabel>Genres : </FormLabel>
+            <FormLabel>Genres to look for: </FormLabel>
             <FormGroup>
                 {allGenres.map((genre) => (
                     <FormControlLabel
@@ -71,7 +71,7 @@ const GenresFilter = () => {
                 ))}
             </FormGroup>
             <Button variant="outlined" onClick={handleNoneClick}>
-                Aucun
+                Clear genre filters
             </Button>
         </FormControl>
     );

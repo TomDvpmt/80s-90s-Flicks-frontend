@@ -83,7 +83,7 @@ const Person = () => {
     useEffect(() => {
         personId &&
             fetch(
-                `https://api.themoviedb.org/3/person/${personId}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`
+                `https://api.themoviedb.org/3/person/${personId}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en`
             )
                 .then((response) => response.json())
                 .then((data) => setPerson(data))
@@ -99,7 +99,7 @@ const Person = () => {
     useEffect(() => {
         personId &&
             fetch(
-                `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr&with_original_language=en`
+                `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en&with_original_language=en`
             )
                 .then((response) => response.json())
                 .then((data) => {
@@ -161,25 +161,23 @@ const Person = () => {
                     alt={person.name}
                 />
             )}
-            <h2>Filmographie</h2>
+            <h2>Filmography</h2>
             {personDirectingMovies.length > 0 && (
                 <>
-                    <h3>
-                        {person.gender === 1 ? "Réalisatrice" : "Réalisateur"}
-                    </h3>
+                    <h3>Director</h3>
                     <ul>{personDirectingMovies}</ul>
                 </>
             )}
             {personActingMovies.length > 0 && (
                 <>
-                    <h3>{person.gender === 1 ? "Actrice" : "Acteur"}</h3>
+                    <h3>{person.gender === 1 ? "Actress" : "Actor"}</h3>
                     <ul>{personActingMovies}</ul>
                 </>
             )}
             <Link
                 to={`https://en.wikipedia.org/wiki/${personFormatedName}`}
                 target="_blank">
-                Voir sa fiche Wikipédia
+                See on Wikipedia
             </Link>
             <ErrorMessage errorMessage={errorMessage} />
         </StyledPerson>

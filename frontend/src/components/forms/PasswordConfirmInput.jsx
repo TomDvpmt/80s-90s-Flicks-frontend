@@ -12,12 +12,12 @@ const PasswordConfirmInput = ({ passwordConfirm, setPasswordConfirm }) => {
 
     return (
         <label htmlFor="passwordConfirm">
-            Confirmation du mot de passe *
+            Password confirmation *
             <input
                 type="password"
                 id="passwordConfirm"
                 name="passwordConfirm"
-                placeholder="Confirmez votre mot de passe"
+                placeholder="Confirm your password"
                 value={passwordConfirm}
                 onChange={handleChange}
                 required

@@ -52,8 +52,10 @@ const UserMenu = () => {
                             horizontal: "right",
                             vertical: "bottom",
                         }}>
-                        <MenuItem onClick={handleProfileClick}>Profil</MenuItem>
-                        <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
+                        <MenuItem onClick={handleProfileClick}>
+                            Profile
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                     </Menu>
                 </Box>
             )}

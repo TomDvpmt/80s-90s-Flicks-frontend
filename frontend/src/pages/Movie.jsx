@@ -224,7 +224,6 @@ const Movie = () => {
                                 movie.release_date.slice(0, 4)}
                         </p>
                         <p>{actors}</p>
-                        <p></p>
                         {movie.genres && (
                             <ul>
                                 {movie.genres.map((genre, index) => (
@@ -254,7 +253,7 @@ const Movie = () => {
                         </p>
 
                         <p>
-                            Recettes :{" "}
+                            Revenue :{" "}
                             {!movie.revenue || movie.revenue === 0
                                 ? "non-disponible"
                                 : "$ " + displayBigNumber(movie.revenue)}
@@ -263,7 +262,7 @@ const Movie = () => {
                         <Link
                             to={`https://www.imdb.com/title/${movie.imdb_id}/`}
                             target="_blank">
-                            Voir sur IMDB
+                            See on IMDB
                         </Link>
                         <br />
                         <label htmlFor="movieSeen">

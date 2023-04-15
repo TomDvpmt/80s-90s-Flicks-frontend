@@ -36,7 +36,7 @@ export const setUserInfo = async (token) => {
 export const getMovieData = async (id) => {
     try {
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+            `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en`,
             {
                 method: "GET",
                 headers: {
@@ -125,7 +125,7 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
 export const getGenres = async () => {
     try {
         const results = await fetch(
-            `https://api.themoviedb.org/3/genre/movie/list?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en`,
             {
                 method: "GET",
             }

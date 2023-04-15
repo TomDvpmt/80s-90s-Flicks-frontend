@@ -46,7 +46,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     return (
         <StyledPagination className="pagination">
             <button onClick={goToPreviousPage} disabled={currentPage === 1}>
-                Page précédente
+                Previous page
             </button>
             <div className="page-numbers" onClick={handleDirectPageClick}>
                 {currentPage !== 1 && <input type="button" value="1" />}
@@ -72,7 +72,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
             <button
                 onClick={goToNextPage}
                 disabled={currentPage === numberOfPages}>
-                Page suivante
+                Next page
             </button>
         </StyledPagination>
     );

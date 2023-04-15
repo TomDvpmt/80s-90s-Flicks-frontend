@@ -34,14 +34,14 @@ const Header = () => {
                             component={NavLink}
                             to="/"
                             sx={{ color: "white" }}>
-                            Explorer
+                            Explore
                         </Button>
                         {isSignedIn && (
                             <Button
                                 component={NavLink}
                                 to="/dashboard"
                                 sx={{ color: "white" }}>
-                                Mon tableau de bord
+                                My Dashboard
                             </Button>
                         )}
                         {!isSignedIn && (
@@ -50,13 +50,13 @@ const Header = () => {
                                     component={NavLink}
                                     to="/login"
                                     sx={{ color: "white" }}>
-                                    Connexion
+                                    Log In
                                 </Button>
                                 <Button
                                     component={NavLink}
                                     to="/register"
                                     sx={{ color: "white" }}>
-                                    Créer un compte
+                                    Register
                                 </Button>
                             </>
                         )}

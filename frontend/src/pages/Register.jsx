@@ -3,7 +3,7 @@ import UserForm from "../components/forms/UserForm";
 const Register = () => {
     return (
         <main>
-            <h1>Créer un compte</h1>
+            <h1>Register</h1>
             <UserForm page="register" />
         </main>
     );

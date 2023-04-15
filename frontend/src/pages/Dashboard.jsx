@@ -156,7 +156,7 @@ const Dashboard = () => {
         <>
             <Box component="main">
                 <Typography component="h1" variant="h4">
-                    Tableau de bord
+                    Dashboard
                 </Typography>
                 <Box sx={{ display: "flex", gap: "1rem" }}>
                     <Box
@@ -167,14 +167,16 @@ const Dashboard = () => {
                             border: "1px solid black",
                         }}>
                         <Stack component="nav">
-                            <NavLink to="/dashboard/#toSee">À voir</NavLink>
+                            <NavLink to="/dashboard/#toSee">To See</NavLink>
 
-                            <NavLink to="/dashboard/#seen">Déjà vus</NavLink>
+                            <NavLink to="/dashboard/#seen">
+                                Already Seen
+                            </NavLink>
 
-                            <NavLink to="/dashboard/#liked">J'aime</NavLink>
+                            <NavLink to="/dashboard/#liked">Liked</NavLink>
 
                             <NavLink to="/dashboard/#reviews">
-                                Mes critiques
+                                My Reviews
                             </NavLink>
                         </Stack>
                     </Box>

@@ -12,7 +12,7 @@ const initialState = {
             param: "&release_date.lte=",
             value: "1999-12-31",
         },
-        { name: "language", param: "&language=", value: "fr" },
+        { name: "language", param: "&language=", value: "en" },
         {
             name: "page",
             param: "&page=",
