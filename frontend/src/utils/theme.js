@@ -11,6 +11,9 @@ export const theme = createTheme({
         tertiary: {
             main: "#32231f",
         },
+        validation: {
+            main: "green",
+        },
     },
     typography: {
         fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",

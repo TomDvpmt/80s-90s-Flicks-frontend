@@ -6,10 +6,10 @@ import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
 
 import logout from "../utils/logout";
 
-import { selectUserToken } from "../utils/selectors";
+import { selectUserIsSignedIn } from "../utils/selectors";
 
 const UserMenu = () => {
-    const token = useSelector(selectUserToken());
+    const isSignedIn = useSelector(selectUserIsSignedIn());
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -35,7 +35,7 @@ const UserMenu = () => {
 
     return (
         <>
-            {token && (
+            {isSignedIn && (
                 <Box>
                     <IconButton onClick={handleAvatarClick}>
                         <Avatar sx={{ width: "2.5rem", height: "2.5rem" }} />

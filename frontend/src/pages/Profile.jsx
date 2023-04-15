@@ -15,18 +15,21 @@ const Profile = () => {
         // to add : handle request error
     }, []);
 
+    const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     // const [errorMessage, setErrorMessage] = useState("");
 
     const user = useSelector(selectUserInfo());
 
     const handleUpdateUser = () => {
+        setShowUpdateValidation(false);
         setShowUpdateForm((showUpdateForm) => !showUpdateForm);
     };
 
     return (
         <main>
             <h1>My Profile</h1>
+            {showUpdateValidation && <p>Informations mises à jour.</p>}
             <ul>
                 <li>Username : {user.username}</li>
                 <li>First name: {user.firstName}</li>
@@ -49,6 +52,7 @@ const Profile = () => {
                         lastName: user.lastName,
                     }}
                     setShowUpdateForm={setShowUpdateForm}
+                    setShowUpdateValidation={setShowUpdateValidation}
                 />
             )}
         </main>

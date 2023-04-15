@@ -44,6 +44,14 @@ export const setUserInfo = async (token) => {
     }
 };
 
+/**
+ * Display cast and crew of a specific movie
+ * @param {String} page
+ * @param {Number} movieId
+ * @param {import("react").SetStateAction} setDirector
+ * @param {import("react").SetStateAction} setActors
+ */
+
 export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
     fetch(
         `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
@@ -87,6 +95,11 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
         })
         .catch((error) => console.log(error));
 };
+
+/**
+ * Get the list of all genres from The Movie Database
+ * @returns {Promise}
+ */
 
 export const getGenres = async () => {
     try {

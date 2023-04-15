@@ -1,15 +1,19 @@
 // User
 
-export const selectUserIsSignedIn = () => {
-    return (state) => state.user.token !== "" && state.user.token !== null;
-};
-
-export const selectUserToken = () => {
-    return (state) => state.user.token;
-};
-
 export const selectUserInfo = () => {
     return (state) => state.user;
+};
+
+export const selectUserIsSignedIn = () => {
+    return (state) => state.user.isSignedIn;
+};
+
+export const selectUserId = () => {
+    return (state) => state.user.id;
+};
+
+export const selectUserMoviesSeen = () => {
+    return (state) => state.user.moviesSeen;
 };
 
 // Page
@@ -19,6 +23,13 @@ export const selectPageType = () => {
 };
 
 // Filters
+
+export const selectFiltersYear = () => {
+    return (state) =>
+        state.filters.allFilters.filter(
+            (filter) => filter.name === "primaryReleaseYear"
+        )[0].value;
+};
 
 export const selectFiltersActiveGenres = () => {
     return (state) => state.filters.activeGenres;

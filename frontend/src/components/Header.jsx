@@ -1,26 +1,16 @@
-import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Branding from "./Branding";
 import UserMenu from "./UserMenu";
 
-import store from "../utils/store";
-import { userSetToken } from "../features/user";
-import { selectUserToken, selectUserIsSignedIn } from "../utils/selectors";
+import { selectUserIsSignedIn } from "../utils/selectors";
 
 import { Box, Toolbar, Button } from "@mui/material";
 import { theme } from "../utils/theme";
 
 const Header = () => {
-    const token = useSelector(selectUserToken());
     const isSignedIn = useSelector(selectUserIsSignedIn());
-
-    useEffect(() => {
-        if (!token) {
-            store.dispatch(userSetToken(sessionStorage.getItem("token")));
-        }
-    }, [token]);
 
     return (
         <Box component="header">

@@ -85,7 +85,7 @@ const Home = () => {
     }, [filters]);
 
     return (
-        <main>
+        <Box component="main">
             <h1>Explorer</h1>
             <section>
                 <Box
@@ -131,7 +131,7 @@ const Home = () => {
 
                 <ErrorMessage errorMessage={errorMessage} />
             </section>
-        </main>
+        </Box>
     );
 };
 

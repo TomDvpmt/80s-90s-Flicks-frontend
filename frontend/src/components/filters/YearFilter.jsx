@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import store from "../../utils/store";
 import { filterYear } from "../../features/filters";
+import { selectFiltersYear } from "../../utils/selectors";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
@@ -12,7 +13,7 @@ const YearFilter = ({ setCurrentPage }) => {
         setCurrentPage: PropTypes.func,
     };
 
-    const [yearOption, setYearOption] = useState("All");
+    const yearOption = useSelector(selectFiltersYear());
 
     const years = ["All"];
     for (let i = 1980; i < 2000; i++) {
@@ -20,7 +21,6 @@ const YearFilter = ({ setCurrentPage }) => {
     }
 
     const handleYearChange = (e) => {
-        setYearOption(e.target.value);
         setCurrentPage(1);
         store.dispatch(filterYear(e.target.value));
     };

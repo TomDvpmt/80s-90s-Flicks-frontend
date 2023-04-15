@@ -7,11 +7,10 @@ import PasswordConfirmInput from "./PasswordConfirmInput";
 import EmailInput from "./EmailInput";
 import FirstNameInput from "./FirstNameInput";
 import LastNameInput from "./LastNameInput";
-import SubmitButton from "./SubmitButton";
 import ErrorMessage from "../ErrorMessage";
 
 import store from "../../utils/store";
-import { userAuth, userSetToken, userSetInfo } from "../../features/user";
+import { userAuth, userSetInfo } from "../../features/user";
 
 import { fetchData } from "../../utils/requests";
 
@@ -24,12 +23,14 @@ const UserForm = ({
     userId,
     defaultFormValues,
     setShowUpdateForm,
+    setShowUpdateValidation,
     setUserData,
 }) => {
     UserForm.propTypes = {
         userId: PropTypes.string,
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
+        setShowUpdateValidation: PropTypes.func,
         setUserData: PropTypes.func,
     };
 
@@ -70,10 +71,8 @@ const UserForm = ({
                         password,
                     },
                     handleResponse: (data) => {
-                        sessionStorage.setItem("userId", data._id);
                         sessionStorage.setItem("token", data.token);
                         store.dispatch(userAuth());
-                        store.dispatch(userSetToken(data.token));
                         navigate("/");
                     },
                 });
@@ -99,7 +98,6 @@ const UserForm = ({
                     },
                     handleResponse: (data) => {
                         console.log(data.message);
-                        sessionStorage.setItem("userId", data._id);
                         sessionStorage.setItem("token", data.token);
                         navigate("/");
                     },
@@ -127,6 +125,7 @@ const UserForm = ({
                                 email: data.email,
                             })
                         );
+                        setShowUpdateValidation(true);
                         setShowUpdateForm(false);
                     },
                 });
@@ -144,9 +143,9 @@ const UserForm = ({
         page,
         userId,
         setShowUpdateForm,
+        setShowUpdateValidation,
         setUserData,
         navigate,
-        // setToken,
     ]);
 
     const handleSubmit = async (e) => {
@@ -229,7 +228,7 @@ const UserForm = ({
                         />
                     </>
                 )}
-                <SubmitButton text={pageData.submitButtonText} />
+                <button type="submit">{pageData.submitButtonText}</button>
                 {page !== "profile" && pageData.redirectLine}
             </form>
         </StyledForm>

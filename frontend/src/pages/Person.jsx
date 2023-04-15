@@ -21,6 +21,7 @@ const Person = () => {
     }, []);
 
     const [person, setPerson] = useState({});
+    const [personFormatedName, setPersonFormatedName] = useState("");
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);
     const [personDirectingMovies, setPersonDirectingMovies] = useState([]);
@@ -49,7 +50,10 @@ const Person = () => {
                         movie.release_date &&
                         (type === "acting"
                             ? movie.adult === false
-                            : movie.adult === false && movie.job === "Director")
+                            : movie.adult === false &&
+                              movie.job === "Director") &&
+                        !movie.genre_ids.includes(99 || 10770) &&
+                        movie.genre_ids.length > 0
                 )
                 .sort(
                     (a, b) =>
@@ -110,37 +114,39 @@ const Person = () => {
                 });
     }, [personId]);
 
+    // Set the person's formated name for Wikipedia requests and link
+    useEffect(() => {
+        if (person.name) {
+            setPersonFormatedName(person.name.replace(" ", "_"));
+        }
+    }, [person]);
+
     // Get the person's photo from Wikipedia API
     // API documentation : https://en.wikipedia.org/w/api.php
     useEffect(() => {
-        if (person.name) {
-            const personName = person.name;
-            const personFormatedName = personName.replace(" ", "_");
-
-            // To avoid CORS blocking, include "origin=*" in fetch url
-            personFormatedName &&
-                fetchData(
-                    `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&pithumbsize=300&origin=*&titles=${personFormatedName}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                )
-                    .then((data) => {
-                        const firstPart = data.query.pages;
-                        const imgUrl = Object.keys(firstPart).reduce(
-                            (acc, key) =>
-                                firstPart[key].thumbnail &&
-                                firstPart[key].thumbnail.source,
-                            ""
-                        );
-                        setPersonImgUrl(imgUrl);
-                    })
-                    .catch();
-        }
-    }, [person]);
+        // To avoid CORS blocking, include "origin=*" in fetch url
+        personFormatedName &&
+            fetchData(
+                `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&pithumbsize=300&origin=*&titles=${personFormatedName}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+                .then((data) => {
+                    const firstPart = data.query.pages;
+                    const imgUrl = Object.keys(firstPart).reduce(
+                        (acc, key) =>
+                            firstPart[key].thumbnail &&
+                            firstPart[key].thumbnail.source,
+                        ""
+                    );
+                    setPersonImgUrl(imgUrl);
+                })
+                .catch();
+    }, [personFormatedName]);
 
     return (
         <StyledPerson>
@@ -167,7 +173,11 @@ const Person = () => {
                     <ul>{personActingMovies}</ul>
                 </>
             )}
-
+            <Link
+                to={`https://en.wikipedia.org/wiki/${personFormatedName}`}
+                target="_blank">
+                Voir sa fiche Wikipédia
+            </Link>
             <ErrorMessage errorMessage={errorMessage} />
         </StyledPerson>
     );

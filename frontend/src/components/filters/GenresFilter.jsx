@@ -40,7 +40,13 @@ const GenresFilter = () => {
 
     useEffect(() => {
         getGenres()
-            .then((data) => setAllGenres(data))
+            .then((data) => {
+                // exclude Documentary (99) and Television film (10770)
+                const allGenres = data.filter(
+                    (genre) => genre.id !== 99 && genre.id !== 10770
+                );
+                setAllGenres(allGenres);
+            })
             .catch((error) => console.log(error));
         store.dispatch(filtersConvertActiveGenresToFilter(activeGenres));
     }, [activeGenres]);

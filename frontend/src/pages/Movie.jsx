@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import ErrorMessage from "../components/ErrorMessage";
 
@@ -8,6 +9,11 @@ import displayBigNumber from "../utils/bigNumbers";
 
 import store from "../utils/store";
 import { filtersAddActiveGenre } from "../features/filters";
+import {
+    userAddToMoviesSeen,
+    userRemoveFromMoviesSeen,
+} from "../features/user";
+import { selectUserMoviesSeen, selectUserId } from "../utils/selectors";
 
 import styled from "styled-components";
 
@@ -45,6 +51,12 @@ const StyledMovie = styled.main`
 
     .info {
         padding: 3rem;
+
+        h1,
+        p,
+        label {
+            color: white;
+        }
     }
 
     h1 {
@@ -53,11 +65,12 @@ const StyledMovie = styled.main`
 `;
 
 const Movie = () => {
+    const token = sessionStorage.getItem("token");
+
     useEffect(() => {
-        const token = sessionStorage.getItem("token");
         setUserInfo(token);
         // to add : handle request error
-    }, []);
+    }, [token]);
 
     const [movie, setMovie] = useState({});
     const [director, setDirector] = useState("");
@@ -65,6 +78,46 @@ const Movie = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const id = useParams().id;
+    const moviesSeen = useSelector(selectUserMoviesSeen());
+    const userHasSeenMovie = moviesSeen.includes(id);
+
+    const userId = useSelector(selectUserId());
+
+    const handleMovieSeen = () => {
+        if (userHasSeenMovie) {
+            store.dispatch(userRemoveFromMoviesSeen(id));
+            try {
+                fetch(`${process.env.REACT_APP_API_URI}users/${userId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `BEARER ${token}`,
+                    },
+                    body: JSON.stringify({
+                        moviesSeen: moviesSeen.filter(
+                            (movieId) => movieId !== id
+                        ),
+                    }),
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            store.dispatch(userAddToMoviesSeen(id));
+            try {
+                fetch(`${process.env.REACT_APP_API_URI}users/${userId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `BEARER ${token}`,
+                    },
+                    body: JSON.stringify({ moviesSeen: [...moviesSeen, id] }),
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
 
     const handleGenreClick = (e) => {
         store.dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
@@ -164,6 +217,17 @@ const Movie = () => {
                             target="_blank">
                             Voir sur IMDB
                         </Link>
+                        <br />
+                        <label htmlFor="movieSeen">
+                            I've seen this movie !
+                        </label>
+                        <input
+                            type="checkbox"
+                            name="movieSeen"
+                            id="movieSeen"
+                            checked={userHasSeenMovie}
+                            onChange={handleMovieSeen}
+                        />
                     </div>
                 </div>
             </section>
