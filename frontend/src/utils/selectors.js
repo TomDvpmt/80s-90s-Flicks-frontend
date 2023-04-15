@@ -16,6 +16,10 @@ export const selectUserMoviesSeen = () => {
     return (state) => state.user.moviesSeen;
 };
 
+export const selectUserMoviesToSee = () => {
+    return (state) => state.user.moviesToSee;
+};
+
 // Page
 
 export const selectPageType = () => {

@@ -12,8 +12,14 @@ import { filtersAddActiveGenre } from "../features/filters";
 import {
     userAddToMoviesSeen,
     userRemoveFromMoviesSeen,
+    userAddToMoviesToSee,
+    userRemoveFromMoviesToSee,
 } from "../features/user";
-import { selectUserMoviesSeen, selectUserId } from "../utils/selectors";
+import {
+    selectUserId,
+    selectUserMoviesSeen,
+    selectUserMoviesToSee,
+} from "../utils/selectors";
 
 import styled from "styled-components";
 
@@ -79,20 +85,27 @@ const Movie = () => {
 
     const id = useParams().id;
     const moviesSeen = useSelector(selectUserMoviesSeen());
+    const moviesToSee = useSelector(selectUserMoviesToSee());
     const userHasSeenMovie = moviesSeen.includes(id);
+    const userWantsToSeeMovie = moviesToSee.includes(id);
 
     const userId = useSelector(selectUserId());
+
+    const fetchURI = `${process.env.REACT_APP_API_URI}users/${userId}`;
+    const fetchParams = {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `BEARER ${token}`,
+        },
+    };
 
     const handleMovieSeen = () => {
         if (userHasSeenMovie) {
             store.dispatch(userRemoveFromMoviesSeen(id));
             try {
-                fetch(`${process.env.REACT_APP_API_URI}users/${userId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-type": "application/json",
-                        Authorization: `BEARER ${token}`,
-                    },
+                fetch(fetchURI, {
+                    ...fetchParams,
                     body: JSON.stringify({
                         moviesSeen: moviesSeen.filter(
                             (movieId) => movieId !== id
@@ -105,13 +118,37 @@ const Movie = () => {
         } else {
             store.dispatch(userAddToMoviesSeen(id));
             try {
-                fetch(`${process.env.REACT_APP_API_URI}users/${userId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-type": "application/json",
-                        Authorization: `BEARER ${token}`,
-                    },
+                fetch(fetchURI, {
+                    ...fetchParams,
                     body: JSON.stringify({ moviesSeen: [...moviesSeen, id] }),
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    const handleMovieToSee = () => {
+        if (userWantsToSeeMovie) {
+            store.dispatch(userRemoveFromMoviesToSee(id));
+            try {
+                fetch(fetchURI, {
+                    ...fetchParams,
+                    body: JSON.stringify({
+                        moviesToSee: moviesToSee.filter(
+                            (movieId) => movieId !== id
+                        ),
+                    }),
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            store.dispatch(userAddToMoviesToSee(id));
+            try {
+                fetch(fetchURI, {
+                    ...fetchParams,
+                    body: JSON.stringify({ moviesToSee: [...moviesToSee, id] }),
                 });
             } catch (error) {
                 console.log(error);
@@ -227,6 +264,17 @@ const Movie = () => {
                             id="movieSeen"
                             checked={userHasSeenMovie}
                             onChange={handleMovieSeen}
+                        />
+                        <br />
+                        <label htmlFor="movieToSee">
+                            I want to see this movie !
+                        </label>
+                        <input
+                            type="checkbox"
+                            name="movieToSee"
+                            id="movieToSee"
+                            checked={userWantsToSeeMovie}
+                            onChange={handleMovieToSee}
                         />
                     </div>
                 </div>

@@ -172,6 +172,7 @@ exports.getOneUser = asyncHandler(async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         moviesSeen: user.moviesSeen,
+        moviesToSee: user.moviesToSee,
     });
 });
 

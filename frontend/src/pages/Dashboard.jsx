@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setUserInfo } from "../utils/requests";
-import { selectUserInfo } from "../utils/selectors";
+import {
+    selectUserInfo,
+    selectUserMoviesSeen,
+    selectUserMoviesToSee,
+} from "../utils/selectors";
 
 const Dashboard = () => {
     useEffect(() => {
@@ -14,25 +18,29 @@ const Dashboard = () => {
     }, []);
 
     const user = useSelector(selectUserInfo());
-    const [moviesSeen, setMoviesSeen] = useState([]);
-    const [moviesLinks, setMoviesLinks] = useState([]);
+    const moviesSeen = useSelector(selectUserMoviesSeen());
+    const moviesToSee = useSelector(selectUserMoviesToSee());
+
+    const [uniqueMovies, setUniqueMovies] = useState([]);
+    const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
+    const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
 
     useEffect(() => {
-        user.moviesSeen.forEach((id) => {
-            fetch(
-                `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((movie) =>
-                    setMoviesSeen((moviesSeen) => [
-                        ...moviesSeen,
-                        {
+        const allMoviesIds = user.moviesSeen.concat(user.moviesToSee);
+        Promise.all(
+            allMoviesIds.map((id) =>
+                fetch(
+                    `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((movie) => {
+                        return {
                             id: movie.id,
                             link: (
                                 <Link
@@ -43,29 +51,45 @@ const Dashboard = () => {
                                     {movie.release_date.slice(0, 4)})
                                 </Link>
                             ),
-                        },
-                    ])
+                        };
+                    })
+                    .catch((error) => console.log(error))
+            )
+        )
+            .then((data) =>
+                setUniqueMovies(
+                    data.filter(
+                        (movie, index, array) =>
+                            array.findIndex((mov) => mov.id === movie.id) ===
+                            index
+                    )
                 )
-                .catch((error) => console.log(error));
-        });
+            )
+            .catch((error) => console.log(error));
     }, [user]);
 
-    // Remove duplicates (for Strict mode)
     useEffect(() => {
-        const uniqueMoviesSeen = moviesSeen.filter(
-            (movie, index, array) =>
-                array.findIndex((mov) => mov.id === movie.id) === index
+        setMoviesSeenLinks(
+            uniqueMovies
+                .filter((movie) => moviesSeen.includes(`${movie.id}`))
+                .map((movie, index, array) => {
+                    return index === array.length - 1 ? (
+                        movie.link
+                    ) : (
+                        <>{movie.link}, </>
+                    );
+                })
         );
-        setMoviesLinks(
-            uniqueMoviesSeen.map((movie, index) => {
-                if (index === uniqueMoviesSeen.length - 1) {
-                    return movie.link;
-                } else {
-                    return <>{movie.link}, </>;
-                }
-            })
+        setMoviesToSeeLinks(
+            uniqueMovies
+                .filter((movie) => moviesToSee.includes(`${movie.id}`))
+                .map((movie, index, array) => {
+                    if (index === array.length - 1) {
+                        return movie.link;
+                    }
+                })
         );
-    }, [moviesSeen]);
+    }, [uniqueMovies, moviesSeen, moviesToSee]);
 
     return (
         <>
@@ -76,10 +100,11 @@ const Dashboard = () => {
                 <ul>
                     <li>
                         <h2>À voir</h2>
+                        <p>{moviesToSeeLinks}</p>
                     </li>
                     <li>
                         <h2>Déjà vus</h2>
-                        <p>{moviesLinks}</p>
+                        <p>{moviesSeenLinks}</p>
                     </li>
                     <li>
                         <h2>J'aime</h2>
