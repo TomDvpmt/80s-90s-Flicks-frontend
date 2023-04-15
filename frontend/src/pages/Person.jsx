@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import { fetchData, setUserInfo } from "../utils/requests";
+import { setUserInfo } from "../utils/requests";
 
 import styled from "styled-components";
 
@@ -82,9 +82,10 @@ const Person = () => {
     // Get the person's main data
     useEffect(() => {
         personId &&
-            fetchData(
+            fetch(
                 `https://api.themoviedb.org/3/person/${personId}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`
             )
+                .then((response) => response.json())
                 .then((data) => setPerson(data))
                 .catch((error) => {
                     setErrorMessage(
@@ -97,9 +98,10 @@ const Person = () => {
     // Get the person's filmography
     useEffect(() => {
         personId &&
-            fetchData(
+            fetch(
                 `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr&with_original_language=en`
             )
+                .then((response) => response.json())
                 .then((data) => {
                     const actingMovies = getFilmography(data, "acting");
                     const directingMovies = getFilmography(data, "directing");
@@ -126,7 +128,7 @@ const Person = () => {
     useEffect(() => {
         // To avoid CORS blocking, include "origin=*" in fetch url
         personFormatedName &&
-            fetchData(
+            fetch(
                 `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&pithumbsize=300&origin=*&titles=${personFormatedName}`,
                 {
                     method: "GET",
@@ -135,6 +137,7 @@ const Person = () => {
                     },
                 }
             )
+                .then((response) => response.json())
                 .then((data) => {
                     const firstPart = data.query.pages;
                     const imgUrl = Object.keys(firstPart).reduce(

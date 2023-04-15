@@ -9,10 +9,8 @@ import FirstNameInput from "./FirstNameInput";
 import LastNameInput from "./LastNameInput";
 import ErrorMessage from "../ErrorMessage";
 
-import store from "../../utils/store";
-import { userAuth, userSetInfo } from "../../features/user";
-
-import { fetchData } from "../../utils/requests";
+import store from "../../services/utils/store";
+import { userAuth, userSetInfo } from "../../services/features/user";
 
 import StyledForm from "../../styles/StyledForm";
 
@@ -166,7 +164,7 @@ const UserForm = ({
             return;
         }
 
-        const data = await fetchData(
+        const response = await fetch(
             `${process.env.REACT_APP_API_URI}${pageData.endPoint}`,
             {
                 method: pageData.method,
@@ -177,6 +175,7 @@ const UserForm = ({
                 body: JSON.stringify(pageData.dataToSubmit),
             }
         );
+        const data = await response.json();
         if (data.statusCode >= 400) {
             setErrorMessage(data.message);
         } else {

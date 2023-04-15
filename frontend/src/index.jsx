@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 
 import Router from "./Router";
 
-import store from "./utils/store";
+import store from "./services/utils/store";
 
-import "./index.css";
+import "./assets/styles/index.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./utils/theme";
+import { theme } from "./assets/styles/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

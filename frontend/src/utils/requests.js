@@ -1,24 +1,7 @@
 import { Link } from "react-router-dom";
 
-import store from "./store";
-import { userSetInfo } from "../features/user";
-
-/** Fetch data from an API
- *
- * @param {String} endpoint
- * @param {Object} config
- * @returns {Promise}
- */
-
-export const fetchData = async (endpoint, config) => {
-    try {
-        const response = await fetch(endpoint, config);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-};
+import store from "../services/utils/store";
+import { userSetInfo } from "../services/features/user";
 
 /**
  * Get user info from database
@@ -45,6 +28,50 @@ export const setUserInfo = async (token) => {
 };
 
 /**
+ * Get movie's main data from The Movie Database
+ * @param {Number} id
+ * @returns {Promise}
+ */
+
+export const getMovieData = async (id) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/**
+ * Get cast and crew of a movie from The Movie Database
+ * @param {Number} movieId
+ */
+
+const getMovieCredits = async (movieId) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
+            {
+                method: "GET",
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/**
  * Display cast and crew of a specific movie
  * @param {String} page
  * @param {Number} movieId
@@ -53,13 +80,7 @@ export const setUserInfo = async (token) => {
  */
 
 export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
-    fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
-        {
-            method: "GET",
-        }
-    )
-        .then((response) => response.json())
+    getMovieCredits(movieId)
         .then((data) => {
             const movieDirector = data.crew.filter(
                 (person) => person.job === "Director"
@@ -97,7 +118,7 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
 };
 
 /**
- * Get the list of all genres from The Movie Database
+ * Get the list of all available genres from The Movie Database
  * @returns {Promise}
  */
 

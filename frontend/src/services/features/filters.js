@@ -23,7 +23,7 @@ const initialState = {
             param: "&primary_release_year=",
             value: "",
         },
-        { name: "sortBy", param: "&sort_by=", value: "popularity.desc" },
+        { name: "sortBy", param: "&sort_by=", value: "revenue.desc" },
         { name: "withGenres", param: "&with_genres=", value: "" },
         { name: "withoutGenres", param: "&without_genres=", value: "99,10770" },
         {

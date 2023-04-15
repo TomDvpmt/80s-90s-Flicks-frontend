@@ -4,22 +4,22 @@ import { useSelector } from "react-redux";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import { fetchData, setCastAndCrew, setUserInfo } from "../utils/requests";
+import { getMovieData, setCastAndCrew, setUserInfo } from "../utils/requests";
 import displayBigNumber from "../utils/bigNumbers";
 
-import store from "../utils/store";
-import { filtersAddActiveGenre } from "../features/filters";
+import store from "../services/utils/store";
+import {
+    selectUserId,
+    selectUserMoviesSeen,
+    selectUserMoviesToSee,
+} from "../services/utils/selectors";
+import { filtersAddActiveGenre } from "../services/features/filters";
 import {
     userAddToMoviesSeen,
     userRemoveFromMoviesSeen,
     userAddToMoviesToSee,
     userRemoveFromMoviesToSee,
-} from "../features/user";
-import {
-    selectUserId,
-    selectUserMoviesSeen,
-    selectUserMoviesToSee,
-} from "../utils/selectors";
+} from "../services/features/user";
 
 import styled from "styled-components";
 
@@ -100,59 +100,75 @@ const Movie = () => {
         },
     };
 
+    const addToMoviesSeen = () => {
+        store.dispatch(userAddToMoviesSeen(id));
+        try {
+            fetch(fetchURI, {
+                ...fetchParams,
+                body: JSON.stringify({ moviesSeen: [...moviesSeen, id] }),
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const removeFromMoviesSeen = () => {
+        store.dispatch(userRemoveFromMoviesSeen(id));
+        try {
+            fetch(fetchURI, {
+                ...fetchParams,
+                body: JSON.stringify({
+                    moviesSeen: moviesSeen.filter((movieId) => movieId !== id),
+                }),
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const addToMoviesToSee = () => {
+        store.dispatch(userAddToMoviesToSee(id));
+        try {
+            fetch(fetchURI, {
+                ...fetchParams,
+                body: JSON.stringify({ moviesToSee: [...moviesToSee, id] }),
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const removeFromMoviesToSee = () => {
+        store.dispatch(userRemoveFromMoviesToSee(id));
+        try {
+            fetch(fetchURI, {
+                ...fetchParams,
+                body: JSON.stringify({
+                    moviesToSee: moviesToSee.filter(
+                        (movieId) => movieId !== id
+                    ),
+                }),
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleMovieSeen = () => {
         if (userHasSeenMovie) {
-            store.dispatch(userRemoveFromMoviesSeen(id));
-            try {
-                fetch(fetchURI, {
-                    ...fetchParams,
-                    body: JSON.stringify({
-                        moviesSeen: moviesSeen.filter(
-                            (movieId) => movieId !== id
-                        ),
-                    }),
-                });
-            } catch (error) {
-                console.log(error);
-            }
+            removeFromMoviesSeen();
         } else {
-            store.dispatch(userAddToMoviesSeen(id));
-            try {
-                fetch(fetchURI, {
-                    ...fetchParams,
-                    body: JSON.stringify({ moviesSeen: [...moviesSeen, id] }),
-                });
-            } catch (error) {
-                console.log(error);
-            }
+            addToMoviesSeen();
+            userWantsToSeeMovie && removeFromMoviesToSee();
         }
     };
 
     const handleMovieToSee = () => {
         if (userWantsToSeeMovie) {
-            store.dispatch(userRemoveFromMoviesToSee(id));
-            try {
-                fetch(fetchURI, {
-                    ...fetchParams,
-                    body: JSON.stringify({
-                        moviesToSee: moviesToSee.filter(
-                            (movieId) => movieId !== id
-                        ),
-                    }),
-                });
-            } catch (error) {
-                console.log(error);
-            }
+            removeFromMoviesToSee();
         } else {
-            store.dispatch(userAddToMoviesToSee(id));
-            try {
-                fetch(fetchURI, {
-                    ...fetchParams,
-                    body: JSON.stringify({ moviesToSee: [...moviesToSee, id] }),
-                });
-            } catch (error) {
-                console.log(error);
-            }
+            addToMoviesToSee();
+            userHasSeenMovie && removeFromMoviesSeen();
         }
     };
 
@@ -161,12 +177,7 @@ const Movie = () => {
     };
 
     useEffect(() => {
-        fetchData(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
-            {
-                method: "GET",
-            }
-        )
+        getMovieData(id)
             .then((data) => {
                 setMovie(data);
             })

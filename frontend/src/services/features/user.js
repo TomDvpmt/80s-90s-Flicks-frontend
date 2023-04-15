@@ -29,7 +29,8 @@ const userReducer = createReducer(initialState, (builder) => {
             draft.isSignedIn = true;
         })
         .addCase(userSetInfo, (draft, action) => {
-            draft.isSignedIn = true;
+            const token = sessionStorage.getItem("token");
+            draft.isSignedIn = token !== "" && token !== null;
             draft.id = action.payload.id;
             draft.username = action.payload.username;
             draft.firstName = action.payload.firstName;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import store from "../utils/store";
-import { filtersSetPageNumber } from "../features/filters";
+import store from "../services/utils/store";
+import { filtersSetPageNumber } from "../services/features/filters";
 
 import styled from "styled-components";
 

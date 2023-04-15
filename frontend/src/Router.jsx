@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import ScrollToHashElement from "./components/ScrollToHashElement";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -23,6 +24,7 @@ function Router() {
 
     return (
         <BrowserRouter>
+            <ScrollToHashElement />
             <Header />
             <Routes>
                 <Route path="/login" element={<Login />} />

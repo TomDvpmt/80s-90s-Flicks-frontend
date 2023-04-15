@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Branding from "./Branding";
-import UserMenu from "./UserMenu";
+import Branding from "../components/Branding";
+import UserMenu from "../components/UserMenu";
 
-import { selectUserIsSignedIn } from "../utils/selectors";
+import { selectUserIsSignedIn } from "../services/utils/selectors";
 
 import { Box, Toolbar, Button } from "@mui/material";
-import { theme } from "../utils/theme";
+import { theme } from "../assets/styles/theme";
 
 const Header = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
@@ -21,6 +21,7 @@ const Header = () => {
                     justifyContent: "center",
                 }}>
                 <Box
+                    component="nav"
                     sx={{
                         flex: 1,
                         maxWidth: theme.maxWidth.desktop,

@@ -1,4 +1,4 @@
-import Branding from "./Branding";
+import Branding from "../components/Branding";
 
 import {
     Box,

@@ -10,10 +10,9 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import { Box, Typography } from "@mui/material";
 
-import { fetchData } from "../utils/requests";
 import { setUserInfo } from "../utils/requests";
 
-import { selectFiltersAll } from "../utils/selectors";
+import { selectFiltersAll } from "../services/utils/selectors";
 
 import styled from "styled-components";
 
@@ -47,18 +46,19 @@ const Home = () => {
             .map((filter) => filter.param + filter.value)
             .join("");
 
-        fetchData(
+        fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=2d0a75daa1b16703efb5d87960c9e67e${queryFilters}`,
             {
                 method: "GET",
             }
         )
-            .then((response) => {
+            .then((response) => response.json())
+            .then((data) => {
                 setNumberOfPages(
-                    response.total_pages > 500 ? 500 : response.total_pages
+                    data.total_pages > 500 ? 500 : data.total_pages
                 );
-                setNumberOfResults(response.total_results);
-                const results = response.results.map((movie) => {
+                setNumberOfResults(data.total_results);
+                const results = data.results.map((movie) => {
                     const movieData = {
                         id: movie.id,
                         imdbId: movie.imdb_id,

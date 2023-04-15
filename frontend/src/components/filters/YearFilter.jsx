@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
-import store from "../../utils/store";
-import { filterYear } from "../../features/filters";
-import { selectFiltersYear } from "../../utils/selectors";
+import store from "../../services/utils/store";
+import { filterYear } from "../../services/features/filters";
+import { selectFiltersYear } from "../../services/utils/selectors";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 

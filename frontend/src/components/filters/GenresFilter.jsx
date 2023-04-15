@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import store from "../../utils/store";
+import store from "../../services/utils/store";
 import {
     filtersAddActiveGenre,
     filtersRemoveActiveGenre,
     filtersClearActiveGenres,
     filtersConvertActiveGenresToFilter,
-} from "../../features/filters";
-import { selectFiltersActiveGenres } from "../../utils/selectors";
+} from "../../services/features/filters";
+import { selectFiltersActiveGenres } from "../../services/utils/selectors";
 
 import { getGenres } from "../../utils/requests";
 

@@ -6,7 +6,7 @@ import UserForm from "../components/forms/UserForm";
 
 import { setUserInfo } from "../utils/requests";
 
-import { selectUserInfo } from "../utils/selectors";
+import { selectUserInfo } from "../services/utils/selectors";
 
 const Profile = () => {
     useEffect(() => {
