@@ -12,6 +12,10 @@ export const selectUserId = () => {
     return (state) => state.user.id;
 };
 
+export const selectUserUsername = () => {
+    return (state) => state.user.username;
+};
+
 export const selectUserMoviesSeen = () => {
     return (state) => state.user.moviesSeen;
 };
@@ -20,10 +24,8 @@ export const selectUserMoviesToSee = () => {
     return (state) => state.user.moviesToSee;
 };
 
-// Page
-
-export const selectPageType = () => {
-    return (state) => state.page.type;
+export const selectUserLanguage = () => {
+    return (state) => state.user.language;
 };
 
 // Filters
@@ -42,3 +44,5 @@ export const selectFiltersActiveGenres = () => {
 export const selectFiltersAll = () => {
     return (state) => state.filters.allFilters;
 };
+
+// Theme

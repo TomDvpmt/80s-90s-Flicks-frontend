@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import store from "../../services/utils/store";
-import { filterYear } from "../../services/features/filters";
+import { filtersSetYear } from "../../services/features/filters";
 import { selectFiltersYear } from "../../services/utils/selectors";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
@@ -22,12 +22,12 @@ const YearFilter = ({ setCurrentPage }) => {
 
     const handleYearChange = (e) => {
         setCurrentPage(1);
-        store.dispatch(filterYear(e.target.value));
+        store.dispatch(filtersSetYear(e.target.value));
     };
 
     return (
         <FormControl>
-            <InputLabel id="year-filer">Year :</InputLabel>
+            <InputLabel id="year-filter">Year :</InputLabel>
             <Select
                 labelId="year-filter"
                 label="Year"

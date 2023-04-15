@@ -9,6 +9,7 @@ const initialState = {
     email: "",
     moviesSeen: [],
     moviesToSee: [],
+    language: "en",
 };
 
 export const userAuth = createAction("user/auth");
@@ -22,6 +23,7 @@ export const userAddToMoviesToSee = createAction("user/addToMoviesToSee");
 export const userRemoveFromMoviesToSee = createAction(
     "user/removeFromMoviesToSee"
 );
+export const userSetLanguage = createAction("user/setLanguage");
 
 const userReducer = createReducer(initialState, (builder) => {
     return builder
@@ -38,6 +40,7 @@ const userReducer = createReducer(initialState, (builder) => {
             draft.email = action.payload.email;
             draft.moviesSeen = action.payload.moviesSeen;
             draft.moviesToSee = action.payload.moviesToSee;
+            draft.language = action.payload.language;
         })
         .addCase(userSignOut, (draft, action) => {
             return initialState;
@@ -57,6 +60,9 @@ const userReducer = createReducer(initialState, (builder) => {
             draft.moviesToSee = draft.moviesToSee.filter(
                 (movieId) => movieId !== action.payload
             );
+        })
+        .addCase(userSetLanguage, (draft, action) => {
+            draft.language = action.payload;
         });
 });
 

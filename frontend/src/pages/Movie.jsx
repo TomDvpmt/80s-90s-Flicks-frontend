@@ -12,6 +12,7 @@ import {
     selectUserId,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
+    selectUserLanguage,
 } from "../services/utils/selectors";
 import { filtersAddActiveGenre } from "../services/features/filters";
 import {
@@ -90,6 +91,7 @@ const Movie = () => {
     const userWantsToSeeMovie = moviesToSee.includes(id);
 
     const userId = useSelector(selectUserId());
+    const language = useSelector(selectUserLanguage());
 
     const fetchURI = `${process.env.REACT_APP_API_URI}users/${userId}`;
     const fetchParams = {
@@ -177,7 +179,7 @@ const Movie = () => {
     };
 
     useEffect(() => {
-        getMovieData(id)
+        getMovieData(id, language)
             .then((data) => {
                 setMovie(data);
             })
@@ -187,7 +189,7 @@ const Movie = () => {
                 );
                 console.error(error);
             });
-    }, [id]);
+    }, [id, language]);
 
     useEffect(() => {
         setCastAndCrew("movie", id, setDirector, setActors);

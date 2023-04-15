@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import ErrorMessage from "../components/ErrorMessage";
 
 import { setUserInfo } from "../utils/requests";
+import { selectUserLanguage } from "../services/utils/selectors";
 
 import styled from "styled-components";
 
@@ -28,6 +30,7 @@ const Person = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const personId = useParams().id;
+    const language = useSelector(selectUserLanguage());
 
     /**
      * Get a person's filmography
@@ -83,7 +86,7 @@ const Person = () => {
     useEffect(() => {
         personId &&
             fetch(
-                `https://api.themoviedb.org/3/person/${personId}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en`
+                `https://api.themoviedb.org/3/person/${personId}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=${language}`
             )
                 .then((response) => response.json())
                 .then((data) => setPerson(data))
@@ -93,13 +96,13 @@ const Person = () => {
                     );
                     console.error(error);
                 });
-    }, [personId]);
+    }, [personId, language]);
 
     // Get the person's filmography
     useEffect(() => {
         personId &&
             fetch(
-                `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=en&with_original_language=en`
+                `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=${language}&with_original_language=en`
             )
                 .then((response) => response.json())
                 .then((data) => {
@@ -114,7 +117,7 @@ const Person = () => {
                     );
                     console.error(error);
                 });
-    }, [personId]);
+    }, [personId, language]);
 
     // Set the person's formated name for Wikipedia requests and link
     useEffect(() => {

@@ -7,6 +7,7 @@ import GenresFilter from "../components/filters/GenresFilter";
 import SearchFilter from "../components/filters/SearchFilter";
 import Pagination from "../components/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
+import Language from "../components/Language";
 
 import { Box, Typography } from "@mui/material";
 
@@ -122,6 +123,7 @@ const Home = () => {
                         )}
                     </Typography>
                 </Box>
+                <Language />
                 <Pagination
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}

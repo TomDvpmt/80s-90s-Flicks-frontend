@@ -37,7 +37,8 @@ const initialState = {
     searchQuery: "",
 };
 
-export const filterYear = createAction("filters/year");
+export const filtersSetYear = createAction("filters/year");
+export const filtersSetLanguage = createAction("filters/language");
 export const filtersAddActiveGenre = createAction("filters/addActiveGenre");
 export const filtersRemoveActiveGenre = createAction(
     "filters/removeActiveGenre"
@@ -52,7 +53,7 @@ export const filtersSetPageNumber = createAction("filters/setPageNumber");
 
 const filtersReducer = createReducer(initialState, (builder) => {
     return builder
-        .addCase(filterYear, (draft, action) => {
+        .addCase(filtersSetYear, (draft, action) => {
             if (action.payload === "All") {
                 draft.allFilters = draft.allFilters.map((filter) => {
                     if (filter.name === "primaryReleaseYear")
@@ -72,6 +73,13 @@ const filtersReducer = createReducer(initialState, (builder) => {
                     else return filter;
                 });
             }
+        })
+        .addCase(filtersSetLanguage, (draft, action) => {
+            draft.allFilters = draft.allFilters.map((filter) =>
+                filter.name === "language"
+                    ? { ...filter, value: action.payload }
+                    : filter
+            );
         })
         .addCase(filtersAddActiveGenre, (draft, action) => {
             draft.activeGenres.push(action.payload);

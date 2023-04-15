@@ -4,13 +4,17 @@ import { useSelector } from "react-redux";
 import Branding from "../components/Branding";
 import UserMenu from "../components/UserMenu";
 
-import { selectUserIsSignedIn } from "../services/utils/selectors";
+import {
+    selectUserIsSignedIn,
+    selectUserUsername,
+} from "../services/utils/selectors";
 
-import { Box, Toolbar, Button } from "@mui/material";
+import { Box, Toolbar, Button, Typography } from "@mui/material";
 import { theme } from "../assets/styles/theme";
 
 const Header = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const username = useSelector(selectUserUsername());
 
     return (
         <Box component="header">
@@ -34,14 +38,14 @@ const Header = () => {
                             component={NavLink}
                             to="/"
                             sx={{ color: "white" }}>
-                            Explore
+                            Explorer
                         </Button>
                         {isSignedIn && (
                             <Button
                                 component={NavLink}
                                 to="/dashboard"
                                 sx={{ color: "white" }}>
-                                My Dashboard
+                                Mon tableau de bord
                             </Button>
                         )}
                         {!isSignedIn && (
@@ -50,18 +54,26 @@ const Header = () => {
                                     component={NavLink}
                                     to="/login"
                                     sx={{ color: "white" }}>
-                                    Log In
+                                    Se connecter
                                 </Button>
                                 <Button
                                     component={NavLink}
                                     to="/register"
                                     sx={{ color: "white" }}>
-                                    Register
+                                    Créer un compte
                                 </Button>
                             </>
                         )}
                     </Box>
-                    {isSignedIn && <UserMenu />}
+
+                    {isSignedIn && (
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Typography component="span" color="white">
+                                {username}
+                            </Typography>
+                            <UserMenu />
+                        </Box>
+                    )}
                 </Box>
             </Toolbar>
         </Box>
