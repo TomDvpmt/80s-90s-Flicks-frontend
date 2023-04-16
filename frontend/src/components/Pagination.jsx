@@ -3,12 +3,13 @@ import { useEffect } from "react";
 import store from "../services/utils/store";
 import { filtersSetPageNumber } from "../services/features/filters";
 
+import { Stack, Pagination as MUIPagination } from "@mui/material";
+
 import styled from "styled-components";
 
 const StyledPagination = styled.div`
     margin: 2rem;
     padding: 1rem;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -46,7 +47,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     return (
         <StyledPagination className="pagination">
             <button onClick={goToPreviousPage} disabled={currentPage === 1}>
-                Previous page
+                Page préc.
             </button>
             <div className="page-numbers" onClick={handleDirectPageClick}>
                 {currentPage !== 1 && <input type="button" value="1" />}
@@ -72,7 +73,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
             <button
                 onClick={goToNextPage}
                 disabled={currentPage === numberOfPages}>
-                Next page
+                Page suiv.
             </button>
         </StyledPagination>
     );

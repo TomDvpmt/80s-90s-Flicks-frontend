@@ -8,7 +8,7 @@ import store from "./services/utils/store";
 
 import "./assets/styles/index.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./assets/styles/theme";
+import theme from "./assets/styles/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

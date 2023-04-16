@@ -4,27 +4,19 @@ import { useSelector } from "react-redux";
 import MovieCard from "../components/MovieCard";
 import YearFilter from "../components/filters/YearFilter";
 import GenresFilter from "../components/filters/GenresFilter";
-import SearchFilter from "../components/filters/SearchFilter";
 import Pagination from "../components/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
 import Language from "../components/Language";
 
-import { Box, Typography } from "@mui/material";
+import store from "../services/utils/store";
+import { filtersClearAll } from "../services/features/filters";
+import { selectFiltersAll } from "../services/utils/selectors";
 
 import { setUserInfo } from "../utils/requests";
 
-import { selectFiltersAll } from "../services/utils/selectors";
+import theme from "../assets/styles/theme";
 
-import styled from "styled-components";
-
-const StyledResultsGrid = styled.div`
-    background-color: black;
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 1rem;
-`;
+import { Box, Paper, Typography, Button, Grid } from "@mui/material";
 
 const Home = () => {
     useEffect(() => {
@@ -40,6 +32,10 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const handleFiltersClearAll = () => {
+        store.dispatch(filtersClearAll());
+    };
 
     useEffect(() => {
         const queryFilters = filters
@@ -75,7 +71,13 @@ const Home = () => {
                         budget: movie.budget,
                         revenue: movie.revenue,
                     };
-                    return <MovieCard key={movie.id} movieData={movieData} />;
+                    return (
+                        <MovieCard
+                            key={movie.id}
+                            page="home"
+                            movie={movieData}
+                        />
+                    );
                 });
                 setMovies(results);
             })
@@ -87,18 +89,20 @@ const Home = () => {
 
     return (
         <Box component="main">
-            <h1>Explore</h1>
-            <section>
-                <Box
+            <h1>Explorer</h1>
+            <Box
+                component="section"
+                maxWidth={theme.maxWidth.filters.desktop}
+                margin="auto">
+                <Paper
+                    elevation={2}
                     sx={{
-                        border: "1px solid black",
                         margin: "2rem",
                         padding: "1rem",
                         display: "flex",
                         flexDirection: "column",
                         gap: "1rem",
                     }}>
-                    <SearchFilter />
                     <Box
                         component="form"
                         sx={{
@@ -106,33 +110,52 @@ const Home = () => {
                             flexDirection: "column",
                             gap: "2rem",
                         }}>
-                        <YearFilter setCurrentPage={setCurrentPage} />
-                        <GenresFilter />
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: "1rem",
+                                "& *": { flex: "1" },
+                            }}>
+                            <YearFilter setCurrentPage={setCurrentPage} />
+                            <GenresFilter />
+                        </Box>
+                        <Button
+                            variant="outlined"
+                            onClick={handleFiltersClearAll}>
+                            Aucun filtre
+                        </Button>
                     </Box>
-                </Box>
-                <Box
+                </Paper>
+                <Paper
+                    elevation={2}
                     sx={{
-                        border: "1px solid black",
                         margin: "2rem",
                         padding: "1rem",
                     }}>
                     <Typography>
-                        Number of results: {numberOfResults}{" "}
+                        Nombre de résultats: {numberOfResults}{" "}
                         {numberOfResults > 10000 && (
-                            <span>(10 000 max. available)</span>
+                            <span>(10 000 max. disponibles)</span>
                         )}
                     </Typography>
-                </Box>
+                </Paper>
                 <Language />
                 <Pagination
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                 />
-                <StyledResultsGrid>{movies}</StyledResultsGrid>
-
+            </Box>
+            <Box component="section">
                 <ErrorMessage errorMessage={errorMessage} />
-            </section>
+                <Grid
+                    container
+                    columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                    spacing={{ xs: 2, md: 6 }}
+                    bgcolor="black">
+                    {movies}
+                </Grid>
+            </Box>
         </Box>
     );
 };

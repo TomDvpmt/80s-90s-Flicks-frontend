@@ -3,9 +3,7 @@ import { useSelector } from "react-redux";
 
 import store from "../../services/utils/store";
 import {
-    filtersAddActiveGenre,
-    filtersRemoveActiveGenre,
-    filtersClearActiveGenres,
+    filtersSetActiveGenres,
     filtersConvertActiveGenresToFilter,
 } from "../../services/features/filters";
 import { selectFiltersActiveGenres } from "../../services/utils/selectors";
@@ -14,11 +12,12 @@ import { getGenres } from "../../utils/requests";
 
 import {
     FormControl,
-    FormLabel,
-    FormGroup,
+    InputLabel,
+    Select,
+    MenuItem,
+    ListItemText,
+    OutlinedInput,
     Checkbox,
-    FormControlLabel,
-    Button,
 } from "@mui/material";
 
 const GenresFilter = () => {
@@ -26,16 +25,10 @@ const GenresFilter = () => {
 
     const activeGenres = useSelector(selectFiltersActiveGenres());
 
-    const handleCheckBox = (e) => {
-        const genreId = parseInt(e.target.id);
-
-        activeGenres.includes(genreId)
-            ? store.dispatch(filtersRemoveActiveGenre(genreId))
-            : store.dispatch(filtersAddActiveGenre(genreId));
-    };
-
-    const handleNoneClick = () => {
-        store.dispatch(filtersClearActiveGenres());
+    const convertIdsToNames = (arrayOfIds) => {
+        return arrayOfIds.map(
+            (id) => allGenres.filter((genre) => genre.id === id)[0].name
+        );
     };
 
     useEffect(() => {
@@ -48,31 +41,38 @@ const GenresFilter = () => {
                 setAllGenres(allGenres);
             })
             .catch((error) => console.log(error));
+    }, []);
+
+    const handleActiveGenresChange = (e) => {
+        store.dispatch(filtersSetActiveGenres(e.target.value));
+    };
+
+    useEffect(() => {
         store.dispatch(filtersConvertActiveGenresToFilter(activeGenres));
     }, [activeGenres]);
+
     return (
         <FormControl component="fieldset">
-            <FormLabel>Genres to look for: </FormLabel>
-            <FormGroup>
+            <InputLabel id="genres-list-label">Genres</InputLabel>
+            <Select
+                labelId="genres-list-label"
+                label="Genres"
+                id="genres-list"
+                multiple
+                value={activeGenres}
+                onChange={handleActiveGenresChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => {
+                    console.log("selected :", selected);
+                    return convertIdsToNames(selected).join(", ");
+                }}>
                 {allGenres.map((genre) => (
-                    <FormControlLabel
-                        key={genre.id}
-                        control={
-                            <Checkbox
-                                id={`${genre.id}`}
-                                name={genre.name}
-                                onChange={handleCheckBox}
-                                checked={activeGenres.includes(genre.id)}
-                                value={genre.name}
-                            />
-                        }
-                        label={genre.name}
-                    />
+                    <MenuItem key={genre.id} id={genre.id} value={genre.id}>
+                        <Checkbox checked={activeGenres.includes(genre.id)} />
+                        <ListItemText primary={genre.name} />
+                    </MenuItem>
                 ))}
-            </FormGroup>
-            <Button variant="outlined" onClick={handleNoneClick}>
-                Clear genre filters
-            </Button>
+            </Select>
         </FormControl>
     );
 };

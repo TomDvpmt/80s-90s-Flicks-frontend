@@ -9,10 +9,12 @@ import displayBigNumber from "../utils/bigNumbers";
 
 import store from "../services/utils/store";
 import {
+    selectUserIsSignedIn,
     selectUserId,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
     selectUserLanguage,
+    selectTmdbImagesSecureUrl,
 } from "../services/utils/selectors";
 import { filtersAddActiveGenre } from "../services/features/filters";
 import {
@@ -73,6 +75,7 @@ const StyledMovie = styled.main`
 
 const Movie = () => {
     const token = sessionStorage.getItem("token");
+    const isSignedIn = useSelector(selectUserIsSignedIn());
 
     useEffect(() => {
         setUserInfo(token);
@@ -92,6 +95,7 @@ const Movie = () => {
 
     const userId = useSelector(selectUserId());
     const language = useSelector(selectUserLanguage());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
     const fetchURI = `${process.env.REACT_APP_API_URI}users/${userId}`;
     const fetchParams = {
@@ -198,23 +202,23 @@ const Movie = () => {
     return (
         <StyledMovie>
             <section className="movie">
-                <img
-                    className="backdrop"
-                    src={
-                        "https://image.tmdb.org/t/p/original" +
-                        movie.backdrop_path
-                    }
-                    alt={movie.title + "(backdrop)"}
-                />
-                <div className="details">
+                {movie.backdrop_path && (
                     <img
-                        className="poster"
-                        src={
-                            "https://image.tmdb.org/t/p/w500" +
-                            movie.poster_path
-                        }
-                        alt={movie.title + "(poster)"}
+                        className="backdrop"
+                        src={`${imageBaseUrl}${"original"}${
+                            movie.backdrop_path
+                        }`}
+                        alt={movie.title + "(backdrop)"}
                     />
+                )}
+                <div className="details">
+                    {movie.poster_path && (
+                        <img
+                            className="poster"
+                            src={`${imageBaseUrl}w500${movie.poster_path}`}
+                            alt={movie.title + "(poster)"}
+                        />
+                    )}
                     <div className="info">
                         <h1>{movie.title}</h1>
                         <p>({movie.original_title})</p>
@@ -267,27 +271,31 @@ const Movie = () => {
                             See on IMDB
                         </Link>
                         <br />
-                        <label htmlFor="movieSeen">
-                            I've seen this movie !
-                        </label>
-                        <input
-                            type="checkbox"
-                            name="movieSeen"
-                            id="movieSeen"
-                            checked={userHasSeenMovie}
-                            onChange={handleMovieSeen}
-                        />
-                        <br />
-                        <label htmlFor="movieToSee">
-                            I want to see this movie !
-                        </label>
-                        <input
-                            type="checkbox"
-                            name="movieToSee"
-                            id="movieToSee"
-                            checked={userWantsToSeeMovie}
-                            onChange={handleMovieToSee}
-                        />
+                        {isSignedIn && (
+                            <>
+                                <label htmlFor="movieSeen">
+                                    I've seen this movie !
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="movieSeen"
+                                    id="movieSeen"
+                                    checked={userHasSeenMovie}
+                                    onChange={handleMovieSeen}
+                                />
+                                <br />
+                                <label htmlFor="movieToSee">
+                                    I want to see this movie !
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="movieToSee"
+                                    id="movieToSee"
+                                    checked={userWantsToSeeMovie}
+                                    onChange={handleMovieToSee}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </section>

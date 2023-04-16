@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import store from "../services/utils/store";
 import { userSetInfo } from "../services/features/user";
+import { Typography } from "@mui/material";
 
 /**
  * Get user info from database
@@ -10,20 +11,35 @@ import { userSetInfo } from "../services/features/user";
  */
 
 export const setUserInfo = async (token) => {
-    try {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_URI}users/0`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `BEARER ${token}`,
-                },
-            }
+    if (token) {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URI}users/0`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `BEARER ${token}`,
+                    },
+                }
+            );
+            const data = await response.json();
+            store.dispatch(userSetInfo(data));
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        store.dispatch(
+            userSetInfo({
+                id: "",
+                username: "",
+                firstName: "",
+                lastName: "",
+                email: "",
+                moviesSeen: [],
+                moviesToSee: [],
+                language: "en",
+            })
         );
-        const data = await response.json();
-        store.dispatch(userSetInfo(data));
-    } catch (error) {
-        console.log(error);
     }
 };
 
@@ -85,17 +101,28 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
             const movieDirector = data.crew.filter(
                 (person) => person.job === "Director"
             )[0];
-            setDirector(
-                movieDirector ? (
+            let directorElement;
+            if (page === "home" || page === "dashboard") {
+                directorElement = movieDirector ? (
+                    <Typography component="span" fontWeight="700">
+                        {movieDirector.name}
+                    </Typography>
+                ) : (
+                    ""
+                );
+            } else if (page === "movie") {
+                directorElement = movieDirector ? (
                     <Link to={`/person/${movieDirector.id}`}>
                         {movieDirector.name}
                     </Link>
                 ) : (
                     ""
-                )
-            );
+                );
+            }
+            setDirector(directorElement);
 
             const numberOfActors = page === "home" ? 3 : 10;
+
             data.cast.length > 0
                 ? setActors(
                       data.cast
@@ -105,12 +132,31 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
                                   ? numberOfActors
                                   : data.cast.length
                           )
-                          .map((actor, index) => (
-                              <Link key={actor.id} to={`/person/${actor.id}`}>
-                                  {actor.name}
-                                  {index === numberOfActors - 1 ? "" : ", "}
-                              </Link>
-                          ))
+                          .map((actor, index) => {
+                              if (page === "home" || page === "dashboard") {
+                                  return (
+                                      <Typography
+                                          key={actor.id}
+                                          component="span">
+                                          {actor.name}
+                                          {index === numberOfActors - 1
+                                              ? ""
+                                              : ", "}
+                                      </Typography>
+                                  );
+                              } else if (page === "movie") {
+                                  return (
+                                      <Link
+                                          key={actor.id}
+                                          to={`/person/${actor.id}`}>
+                                          {actor.name}
+                                          {index === numberOfActors - 1
+                                              ? ""
+                                              : ", "}
+                                      </Link>
+                                  );
+                              }
+                          })
                   )
                 : setActors([""]);
         })

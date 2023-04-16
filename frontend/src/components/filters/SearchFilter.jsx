@@ -33,12 +33,12 @@ const SearchFilter = () => {
             </fieldset> */}
             <TextField
                 id="search"
-                label="Title includes..."
+                label="Titre (complet ou partiel)"
                 value={query}
                 onChange={handleChange}
             />
             <Button type="submit" variant="contained">
-                Search
+                Chercher
             </Button>
         </Box>
     );

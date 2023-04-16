@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -9,10 +10,17 @@ import {
     selectUserUsername,
 } from "../services/utils/selectors";
 
+import { setUserInfo } from "../utils/requests";
+
 import { Box, Toolbar, Button, Typography } from "@mui/material";
-import { theme } from "../assets/styles/theme";
+import theme from "../assets/styles/theme";
 
 const Header = () => {
+    useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        setUserInfo(token);
+        // to add : handle request error
+    }, []);
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const username = useSelector(selectUserUsername());
 
@@ -28,7 +36,7 @@ const Header = () => {
                     component="nav"
                     sx={{
                         flex: 1,
-                        maxWidth: theme.maxWidth.desktop,
+                        maxWidth: theme.maxWidth.nav.desktop,
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",

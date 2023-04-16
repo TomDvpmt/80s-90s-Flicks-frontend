@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+import MovieCard from "../components/MovieCard";
 
 import { setUserInfo, getMovieData } from "../utils/requests";
 import {
@@ -10,41 +12,7 @@ import {
     selectUserMoviesToSee,
 } from "../services/utils/selectors";
 
-import {
-    Stack,
-    Box,
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-} from "@mui/material";
-
-import styled from "styled-components";
-
-const StyledCardContainer = styled.div`
-    background-color: black;
-
-    img {
-        transition: opacity ease 150ms;
-    }
-    .movieInfo {
-        display: none;
-
-        span {
-            color: white;
-        }
-    }
-
-    &:hover {
-        .movieInfo {
-            display: block;
-        }
-
-        img {
-            opacity: 0.3;
-        }
-    }
-`;
+import { Stack, Box, Typography } from "@mui/material";
 
 const moviesTypeSx = {
     border: "1px solid black",
@@ -100,51 +68,18 @@ const Dashboard = () => {
             .catch((error) => console.log(error));
     }, [user]);
 
-    // Display movie links for each section of the dashboard
+    // Display movie cards for each section of the dashboard
     useEffect(() => {
         const getLinks = (uniqueMovies, moviesType) =>
             uniqueMovies
                 .filter((movie) => moviesType.includes(`${movie.id}`))
                 .map((movie) => {
                     return (
-                        <Link key={movie.id} to={`/movies/${movie.id}`}>
-                            <Card
-                                component="article"
-                                sx={{
-                                    position: "relative",
-                                    maxWidth: "200px",
-                                }}
-                                className="card">
-                                <StyledCardContainer>
-                                    <CardContent
-                                        className="movieInfo"
-                                        sx={{
-                                            position: "absolute",
-                                            zIndex: "99",
-                                        }}>
-                                        <Typography component="span">
-                                            {movie.title}
-                                            {movie.releaseDate &&
-                                                ` (${movie.releaseDate.slice(
-                                                    0,
-                                                    4
-                                                )})`}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardMedia
-                                        image={
-                                            "https://image.tmdb.org/t/p/w300" +
-                                            movie.posterPath
-                                        }
-                                        component="img"
-                                        alt={movie.title}
-                                        sx={{
-                                            objectFit: "cover",
-                                        }}
-                                    />
-                                </StyledCardContainer>
-                            </Card>
-                        </Link>
+                        <MovieCard
+                            key={movie.id}
+                            page="dashboard"
+                            movie={movie}
+                        />
                     );
                 });
 
@@ -156,7 +91,7 @@ const Dashboard = () => {
         <>
             <Box component="main">
                 <Typography component="h1" variant="h4">
-                    Dashboard
+                    Tableau de bord
                 </Typography>
                 <Box sx={{ display: "flex", gap: "1rem" }}>
                     <Box
@@ -167,16 +102,11 @@ const Dashboard = () => {
                             border: "1px solid black",
                         }}>
                         <Stack component="nav">
-                            <NavLink to="/dashboard/#toSee">To See</NavLink>
-
-                            <NavLink to="/dashboard/#seen">
-                                Already Seen
-                            </NavLink>
-
-                            <NavLink to="/dashboard/#liked">Liked</NavLink>
-
+                            <NavLink to="/dashboard/#toSee">À voir</NavLink>
+                            <NavLink to="/dashboard/#seen">Déjà vus</NavLink>
+                            <NavLink to="/dashboard/#liked">Favoris</NavLink>
                             <NavLink to="/dashboard/#reviews">
-                                My Reviews
+                                Mes critiques
                             </NavLink>
                         </Stack>
                     </Box>

@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import store from "./services/utils/store";
+import { tmdbSetConfig } from "./services/features/tmdbConfig";
+
 import ScrollToHashElement from "./components/ScrollToHashElement";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
@@ -11,16 +14,20 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Person from "./pages/Person";
+import About from "./pages/About";
 import Error404 from "./pages/Error404";
+import { useEffect } from "react";
 
 function Router() {
-    fetch(
-        `https://api.themoviedb.org/3/configuration?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
-        { method: "GET" }
-    )
-        .then((response) => response.json())
-        .then((data) => console.log("TMDB config : ", data))
-        .catch((error) => console.error(error));
+    useEffect(() => {
+        fetch(
+            `https://api.themoviedb.org/3/configuration?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
+            { method: "GET" }
+        )
+            .then((response) => response.json())
+            .then((data) => store.dispatch(tmdbSetConfig(data)))
+            .catch((error) => console.error(error));
+    }, []);
 
     return (
         <BrowserRouter>
@@ -34,6 +41,7 @@ function Router() {
                 <Route path="/" element={<Home />} />
                 <Route path="/movies/:id" element={<Movie />} />
                 <Route path="/person/:id" element={<Person />} />
+                <Route path="/about" element={<About />} />
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />

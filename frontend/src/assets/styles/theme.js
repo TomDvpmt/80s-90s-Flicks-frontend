@@ -1,18 +1,26 @@
 import { createTheme } from "@mui/material/styles";
 
-export const theme = createTheme({
+const theme = createTheme({
     palette: {
         primary: {
+            // orange
             main: "#f25921",
         },
         secondary: {
+            // yellow
             main: "#feea10",
         },
         tertiary: {
+            // brown
             main: "#32231f",
         },
-        validation: {
-            main: "green",
+        warning: {
+            // red
+            main: "#ff0000",
+        },
+        success: {
+            // green
+            main: "#00FF00",
         },
     },
     typography: {
@@ -22,6 +30,16 @@ export const theme = createTheme({
 
     // Custom properties
     maxWidth: {
-        desktop: 1200,
+        nav: {
+            desktop: "1200px",
+        },
+        main: {
+            desktop: "1200px",
+        },
+        filters: {
+            desktop: "700px",
+        },
     },
 });
+
+export default theme;

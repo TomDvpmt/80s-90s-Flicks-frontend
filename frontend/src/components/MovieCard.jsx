@@ -1,86 +1,129 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import {
+    selectTmdbImagesSecureUrl,
+    selectTmdbImagesPosterSizes,
+} from "../services/utils/selectors";
 
 import { setCastAndCrew } from "../utils/requests";
+
+import {
+    Box,
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    Grid,
+} from "@mui/material";
 
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledMovieCard = styled.article`
-    position: relative;
+const StyledCardContainer = styled.div`
+    background-color: black;
 
-    .card__info {
-        position: absolute;
-        z-index: 2;
-
-        p {
-            display: none;
-        }
-
-        h3 {
-            display: ${(props) => (props.hasPoster ? "none" : "block")};
-        }
+    img {
+        transition: opacity ease 150ms;
     }
-    .card__info > * {
-        color: white;
+    .movieInfo {
+        display: none;
+
+        span {
+            color: white;
+        }
     }
 
     &:hover {
-        .card__info p,
-        .card__info h3 {
+        .movieInfo {
             display: block;
         }
 
         img {
-            opacity: 0.3;
+            opacity: 0.2;
         }
     }
 `;
 
-const MovieCard = ({ movieData }) => {
+const MovieCard = ({ page, movie }) => {
     MovieCard.propTypes = {
-        movieData: PropTypes.object,
+        page: PropTypes.string,
+        movie: PropTypes.object,
     };
+
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
+    const posterSizes = useSelector(selectTmdbImagesPosterSizes());
 
     const [director, setDirector] = useState("");
     const [actors, setActors] = useState([""]);
 
     useEffect(() => {
-        setCastAndCrew("home", movieData.id, setDirector, setActors);
-    }, [actors.length, movieData.id]);
+        setCastAndCrew(page, movie.id, setDirector, setActors);
+    }, [page, movie.id]);
 
     return (
-        <StyledMovieCard hasPoster={movieData.posterPath}>
-            <Link to={`/movies/${movieData.id}`}>
-                <div className="card__info">
-                    <h3>{movieData.title}</h3>
-                    <p>{movieData.originalTitle}</p>
-                    <p>
-                        {director}
-                        {director && movieData.releaseDate && " | "}
-                        {movieData.releaseDate &&
-                            movieData.releaseDate.slice(0, 4)}
-                    </p>
-                    {actors[0] && <p>Avec {actors}</p>}
-                </div>
-                {movieData.posterPath !== null ? (
-                    <img
-                        src={
-                            "https://image.tmdb.org/t/p/w300" +
-                            movieData.posterPath
-                        }
-                        alt={movieData.title}
-                    />
-                ) : (
-                    <img
-                        src=""
-                        width="300"
-                        height="450"
-                        alt="No poster available"
-                    />
-                )}
+        <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
+            <Link to={`/movies/${movie.id}`}>
+                <Card
+                    component="article"
+                    sx={{
+                        position: "relative",
+                        maxWidth: page === "home" ? "300px" : "inherit",
+                        margin: "auto",
+                    }}
+                    className="card">
+                    <StyledCardContainer>
+                        <CardContent
+                            className="movieInfo"
+                            sx={{
+                                position: "absolute",
+                                zIndex: "99",
+                                "& *": {
+                                    color: "white",
+                                },
+                            }}>
+                            <Typography
+                                component="h3"
+                                variant="h5"
+                                sx={{
+                                    margin: "4rem 0 2rem",
+                                    textAlign: "center",
+                                }}>
+                                {movie.title}
+                            </Typography>
+                            {movie.title !== movie.originalTitle && (
+                                <Typography
+                                    paragraph
+                                    sx={{ fontStyle: "italic" }}>
+                                    {movie.originalTitle}
+                                </Typography>
+                            )}
+                            <Box mb="1rem">
+                                {director}
+                                {movie.releaseDate && (
+                                    <Typography component="span" ml={1}>
+                                        ({movie.releaseDate.slice(0, 4)})
+                                    </Typography>
+                                )}
+                            </Box>
+                            {actors[0] && (
+                                <Typography>Avec {actors}</Typography>
+                            )}
+                        </CardContent>
+                        <CardMedia
+                            image={`${imageBaseUrl}${
+                                page === "home"
+                                    ? posterSizes[3]
+                                    : posterSizes[2]
+                            }${movie.posterPath}`}
+                            component="img"
+                            alt={movie.title}
+                        />
+                    </StyledCardContainer>
+                </Card>
             </Link>
-        </StyledMovieCard>
+        </Grid>
     );
 };
 

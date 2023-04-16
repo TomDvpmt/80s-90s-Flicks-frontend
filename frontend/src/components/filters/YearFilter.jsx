@@ -15,7 +15,7 @@ const YearFilter = ({ setCurrentPage }) => {
 
     const yearOption = useSelector(selectFiltersYear());
 
-    const years = ["All"];
+    const years = ["1980-1999"];
     for (let i = 1980; i < 2000; i++) {
         years.push(i);
     }
@@ -26,11 +26,11 @@ const YearFilter = ({ setCurrentPage }) => {
     };
 
     return (
-        <FormControl>
-            <InputLabel id="year-filter">Year :</InputLabel>
+        <FormControl component="fieldset">
+            <InputLabel id="year-filter">Période</InputLabel>
             <Select
                 labelId="year-filter"
-                label="Year"
+                label="Période"
                 onChange={handleYearChange}
                 value={yearOption}>
                 {years.map((year) => (

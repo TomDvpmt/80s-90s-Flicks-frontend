@@ -43,6 +43,7 @@ export const filtersAddActiveGenre = createAction("filters/addActiveGenre");
 export const filtersRemoveActiveGenre = createAction(
     "filters/removeActiveGenre"
 );
+export const filtersSetActiveGenres = createAction("filters/setActiveGenres");
 export const filtersClearActiveGenres = createAction(
     "filters/clearActiveGenres"
 );
@@ -50,11 +51,12 @@ export const filtersConvertActiveGenresToFilter = createAction(
     "filters/convertActiveGenresToFilter"
 );
 export const filtersSetPageNumber = createAction("filters/setPageNumber");
+export const filtersClearAll = createAction("filters/clearAll");
 
 const filtersReducer = createReducer(initialState, (builder) => {
     return builder
         .addCase(filtersSetYear, (draft, action) => {
-            if (action.payload === "All") {
+            if (action.payload === "1980-1999") {
                 draft.allFilters = draft.allFilters.map((filter) => {
                     if (filter.name === "primaryReleaseYear")
                         return { ...filter, value: "" };
@@ -89,6 +91,9 @@ const filtersReducer = createReducer(initialState, (builder) => {
                 (genre) => genre !== action.payload
             );
         })
+        .addCase(filtersSetActiveGenres, (draft, action) => {
+            draft.activeGenres = action.payload;
+        })
         .addCase(filtersClearActiveGenres, (draft, action) => {
             draft.activeGenres = [];
         })
@@ -105,6 +110,9 @@ const filtersReducer = createReducer(initialState, (builder) => {
                     ? { ...filter, value: action.payload }
                     : filter
             );
+        })
+        .addCase(filtersClearAll, (draft, action) => {
+            return initialState;
         });
 });
 
