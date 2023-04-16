@@ -1,31 +1,17 @@
 import { createTheme } from "@mui/material/styles";
 
+import { furyRoadPalette } from "./palettes";
+
 const theme = createTheme({
-    palette: {
-        primary: {
-            // orange
-            main: "#f25921",
-        },
-        secondary: {
-            // yellow
-            main: "#feea10",
-        },
-        tertiary: {
-            // brown
-            main: "#32231f",
-        },
-        warning: {
-            // red
-            main: "#ff0000",
-        },
-        success: {
-            // green
-            main: "#00FF00",
-        },
-    },
+    palette: furyRoadPalette,
     typography: {
         fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",
         fontSize: 16,
+        h1: {
+            margin: "3rem 0",
+            fontSize: "3rem",
+            textAlign: "center",
+        },
     },
 
     // Custom properties

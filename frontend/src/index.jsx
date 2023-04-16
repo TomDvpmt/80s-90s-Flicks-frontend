@@ -2,11 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
-import Router from "./Router";
+import Router from "./routes/Router";
 
 import store from "./services/utils/store";
 
-import "./assets/styles/index.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./assets/styles/theme";
 

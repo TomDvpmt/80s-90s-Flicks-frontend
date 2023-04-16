@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 
+import { API_URI, TMDB_API_KEY } from "./config";
+
 import store from "../services/utils/store";
 import { userSetInfo } from "../services/features/user";
+
 import { Typography } from "@mui/material";
 
 /**
@@ -13,15 +16,12 @@ import { Typography } from "@mui/material";
 export const setUserInfo = async (token) => {
     if (token) {
         try {
-            const response = await fetch(
-                `${process.env.REACT_APP_API_URI}users/0`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `BEARER ${token}`,
-                    },
-                }
-            );
+            const response = await fetch(`${API_URI}users/0`, {
+                method: "GET",
+                headers: {
+                    Authorization: `BEARER ${token}`,
+                },
+            });
             const data = await response.json();
             store.dispatch(userSetInfo(data));
         } catch (error) {
@@ -37,7 +37,7 @@ export const setUserInfo = async (token) => {
                 email: "",
                 moviesSeen: [],
                 moviesToSee: [],
-                language: "en",
+                language: "fr",
             })
         );
     }
@@ -52,7 +52,7 @@ export const setUserInfo = async (token) => {
 export const getMovieData = async (id, language) => {
     try {
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=${language}`,
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
             {
                 method: "GET",
                 headers: {
@@ -75,7 +75,7 @@ export const getMovieData = async (id, language) => {
 const getMovieCredits = async (movieId) => {
     try {
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=2d0a75daa1b16703efb5d87960c9e67e`,
+            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
             {
                 method: "GET",
             }
@@ -171,7 +171,7 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
 export const getGenres = async () => {
     try {
         const results = await fetch(
-            `https://api.themoviedb.org/3/genre/movie/list?api_key=2d0a75daa1b16703efb5d87960c9e67e&language=fr`,
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=fr`,
             {
                 method: "GET",
             }
