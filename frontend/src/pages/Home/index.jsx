@@ -95,7 +95,7 @@ const Home = () => {
             </Typography>
             <Box
                 component="section"
-                maxWidth={theme.maxWidth.filters.desktop}
+                maxWidth={theme.maxWidth.filters}
                 margin="auto">
                 <Paper
                     elevation={2}

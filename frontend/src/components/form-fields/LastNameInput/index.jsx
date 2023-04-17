@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
 const LastNameInput = ({ lastName, setLastName }) => {
@@ -11,17 +12,18 @@ const LastNameInput = ({ lastName, setLastName }) => {
     };
 
     return (
-        <label htmlFor="lastName">
-            Nom
-            <input
-                type="lastName"
-                id="lastName"
-                name="lastName"
-                placeholder="Votre nom"
-                value={lastName}
-                onChange={handleChange}
-            />
-        </label>
+        <TextField
+            fullWidth
+            margin="dense"
+            id="LastName"
+            name="LastName"
+            type="text"
+            label="Nom"
+            value={lastName}
+            onChange={handleChange}
+            // onFocus={handleFocus}
+            // error={lastNameError !== ""}
+        />
     );
 };
 

@@ -14,7 +14,8 @@ import { API_URI } from "../../utils/config";
 import store from "../../services/utils/store";
 import { userAuth, userSetInfo } from "../../services/features/user";
 
-import StyledForm from "../../styles/StyledForm";
+import { Box, Button, Typography } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
@@ -61,10 +62,10 @@ const UserForm = ({
                     method: "POST",
                     submitButtonText: "Log in",
                     redirectLine: (
-                        <p>
+                        <span>
                             Pas encore inscrit ?&nbsp;
                             <Link to="/register">Créer un compte</Link>
-                        </p>
+                        </span>
                     ),
                     dataToSubmit: {
                         username,
@@ -84,10 +85,10 @@ const UserForm = ({
                     method: "POST",
                     submitButtonText: "Register",
                     redirectLine: (
-                        <p>
+                        <span>
                             Déjà inscrit ?&nbsp;
                             <Link to="/login">Se connecter</Link>
-                        </p>
+                        </span>
                     ),
                     dataToSubmit: {
                         username,
@@ -108,7 +109,7 @@ const UserForm = ({
                 setPageData({
                     endPoint: `users/${userId}`,
                     method: "PUT",
-                    submitButtonText: "Enregistrer les modifications",
+                    submitButtonText: "Enregistrer",
                     dataToSubmit: {
                         username,
                         email,
@@ -183,8 +184,14 @@ const UserForm = ({
     };
 
     return (
-        <StyledForm>
-            <form onSubmit={handleSubmit}>
+        <Box component="section">
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                    maxWidth: theme.maxWidth.userForm,
+                    margin: "0 auto 3rem",
+                }}>
                 <ErrorMessage errorMessage={errorMessage} />
                 <UsernameInput
                     username={username}
@@ -226,10 +233,24 @@ const UserForm = ({
                         />
                     </>
                 )}
-                <button type="submit">{pageData.submitButtonText}</button>
-                {page !== "profile" && pageData.redirectLine}
-            </form>
-        </StyledForm>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                    }}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{ margin: `${theme.margin.buttonTop.spaced} 0` }}>
+                        {pageData.submitButtonText}
+                    </Button>
+                    <Typography paragraph>
+                        {page !== "profile" && pageData.redirectLine}
+                    </Typography>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 

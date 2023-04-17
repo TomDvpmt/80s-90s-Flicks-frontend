@@ -1,12 +1,12 @@
 import { furyRoadPalette } from "./palettes";
-import { languageFR } from "../languages/fr";
-import { languageEN } from "../languages/en";
+import { language_fr } from "../languages/fr";
+import { language_en } from "../languages/en";
 
 import { createTheme } from "@mui/material/styles";
 
 const languages = {
-    fr: languageFR,
-    en: languageEN,
+    fr: language_fr,
+    en: language_en,
 };
 
 const theme = createTheme({
@@ -22,15 +22,17 @@ const theme = createTheme({
     },
 
     // Custom properties
+
     maxWidth: {
-        nav: {
-            desktop: "1200px",
-        },
-        main: {
-            desktop: "1200px",
-        },
-        filters: {
-            desktop: "700px",
+        nav: "1200px",
+        main: "1200px",
+        filters: "700px",
+        userForm: "400px",
+    },
+    margin: {
+        buttonTop: {
+            spaced: ".5rem",
+            notSpaced: ".8rem",
         },
     },
     languages,

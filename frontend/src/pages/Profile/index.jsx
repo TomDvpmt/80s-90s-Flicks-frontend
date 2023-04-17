@@ -8,7 +8,24 @@ import { setUserInfo } from "../../utils/requests";
 
 import { selectUserInfo } from "../../services/utils/selectors";
 
-import { Typography } from "@mui/material";
+import {
+    Box,
+    Paper,
+    Typography,
+    Button,
+    TableContainer,
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+} from "@mui/material";
+
+import theme from "../../assets/styles/theme";
+
+const leftCellStyle = {
+    textAlign: "right",
+    fontWeight: "700",
+};
 
 const Profile = () => {
     useEffect(() => {
@@ -19,7 +36,6 @@ const Profile = () => {
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
-    // const [errorMessage, setErrorMessage] = useState("");
 
     const user = useSelector(selectUserInfo());
 
@@ -29,21 +45,59 @@ const Profile = () => {
     };
 
     return (
-        <main>
+        <Box component="main">
             <Typography component="h1" variant="h1">
                 My Profile
             </Typography>
-            {showUpdateValidation && <p>Profil mis à jour.</p>}
-            <ul>
-                <li>Nom d'utilisateur : {user.username}</li>
-                <li>Prénom : {user.firstName}</li>
-                <li>Nom : {user.lastName}</li>
-                <li>Adresse e-mail : {user.email}</li>
-            </ul>
-            {/* <ErrorMessage errorMessage={errorMessage} /> */}
-            <button type="button" onClick={handleUpdateUser}>
-                Modifier les informations
-            </button>
+
+            <Box
+                sx={{
+                    maxWidth: theme.maxWidth.userForm,
+                    margin: "0 auto 3rem",
+                }}>
+                {showUpdateValidation && (
+                    <Typography color={theme.palette.success.main} mb="1rem">
+                        Profil mis à jour.
+                    </Typography>
+                )}
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>
+                                    Nom d'utilisateur :
+                                </TableCell>
+                                <TableCell>{user.username}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>
+                                    Prénom :
+                                </TableCell>
+                                <TableCell>{user.firstName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>Nom :</TableCell>
+                                <TableCell>{user.lastName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>
+                                    Adresse e-mail :
+                                </TableCell>
+                                <TableCell>{user.email}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                        type="button"
+                        variant="contained"
+                        sx={{ mt: theme.margin.buttonTop.notSpaced }}
+                        onClick={handleUpdateUser}>
+                        Modifier les informations
+                    </Button>
+                </Box>
+            </Box>
 
             {showUpdateForm && (
                 <UserForm
@@ -59,7 +113,7 @@ const Profile = () => {
                     setShowUpdateValidation={setShowUpdateValidation}
                 />
             )}
-        </main>
+        </Box>
     );
 };
 

@@ -36,7 +36,7 @@ const Header = () => {
                     component="nav"
                     sx={{
                         flex: 1,
-                        maxWidth: theme.maxWidth.nav.desktop,
+                        maxWidth: theme.maxWidth.nav,
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",

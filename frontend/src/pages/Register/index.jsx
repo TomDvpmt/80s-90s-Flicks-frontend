@@ -6,7 +6,7 @@ const Register = () => {
     return (
         <Box component="main">
             <Typography component="h1" variant="h1">
-                Register
+                Créer un compte
             </Typography>
             <UserForm page="register" />
         </Box>

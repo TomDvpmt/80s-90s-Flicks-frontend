@@ -1,3 +1,5 @@
+import { TextField } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
@@ -11,25 +13,25 @@ const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
         setUsername(e.target.value);
     };
 
-    const handleFocus = () => {
-        setErrorMessage("");
-    };
+    // const handleFocus = () => {
+    //     setErrorMessage("");
+    // };
 
     return (
-        <label htmlFor="username">
-            Nom d'utilisateur *
-            <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Votre nom d'utilisateur"
-                value={username}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                required
-                autoFocus
-            />
-        </label>
+        <TextField
+            autoFocus
+            required
+            margin="dense"
+            fullWidth
+            id="username"
+            name="username"
+            type="username"
+            label="Nom d'utilisateur"
+            value={username}
+            onChange={handleChange}
+            // onFocus={handleFocus}
+            // error={usernameError !== ""}
+        />
     );
 };
 

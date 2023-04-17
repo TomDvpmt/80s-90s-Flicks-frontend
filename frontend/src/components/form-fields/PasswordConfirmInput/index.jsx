@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
 const PasswordConfirmInput = ({ passwordConfirm, setPasswordConfirm }) => {
@@ -11,18 +12,19 @@ const PasswordConfirmInput = ({ passwordConfirm, setPasswordConfirm }) => {
     };
 
     return (
-        <label htmlFor="passwordConfirm">
-            Confirmation du mot de passe *
-            <input
-                type="password"
-                id="passwordConfirm"
-                name="passwordConfirm"
-                placeholder="Confirmez votre mot de passe"
-                value={passwordConfirm}
-                onChange={handleChange}
-                required
-            />
-        </label>
+        <TextField
+            required
+            fullWidth
+            margin="dense"
+            id="passwordConfirm"
+            name="passwordConfirm"
+            type="password"
+            label="Confirmez votre mot de passe"
+            value={passwordConfirm}
+            onChange={handleChange}
+            // onFocus={handleFocus}
+            // error={passwordConfirmError !== ""}
+        />
     );
 };
 

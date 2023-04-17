@@ -20,7 +20,7 @@ export const indianaJonesPalette = {
     },
     success: {
         // green
-        main: "#00FF00",
+        main: "#13a83a",
     },
     text: {
         darkBg: "white",
@@ -53,7 +53,7 @@ export const matrixPalette = {
     },
     success: {
         // green
-        main: "#00FF00",
+        main: "#13a83a",
     },
     text: {
         darkBg: "white",
@@ -87,7 +87,7 @@ export const alienPalette = {
     },
     success: {
         // green
-        main: "#00FF00",
+        main: "#13a83a",
     },
     text: {
         darkBg: "white",
@@ -122,7 +122,7 @@ export const furyRoadPalette = {
     },
     success: {
         // green
-        main: "#00FF00",
+        main: "#13a83a",
     },
     text: {
         darkBg: "white",

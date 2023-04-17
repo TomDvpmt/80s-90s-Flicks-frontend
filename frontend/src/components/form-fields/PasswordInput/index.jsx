@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
 const PasswordInput = ({ password, setPassword }) => {
@@ -11,18 +12,19 @@ const PasswordInput = ({ password, setPassword }) => {
     };
 
     return (
-        <label htmlFor="password">
-            Mot de passe *
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Votre mot de passe"
-                value={password}
-                onChange={handleChange}
-                required
-            />
-        </label>
+        <TextField
+            required
+            fullWidth
+            margin="dense"
+            id="password"
+            name="password"
+            type="password"
+            label="Mot de passe"
+            value={password}
+            onChange={handleChange}
+            // onFocus={handleFocus}
+            // error={passwordError !== ""}
+        />
     );
 };
 

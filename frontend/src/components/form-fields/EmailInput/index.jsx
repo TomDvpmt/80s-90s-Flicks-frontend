@@ -1,3 +1,5 @@
+import { TextField } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 const EmailInput = ({ email, setEmail }) => {
@@ -11,18 +13,20 @@ const EmailInput = ({ email, setEmail }) => {
     };
 
     return (
-        <label htmlFor="email">
-            E-mail *
-            <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Votre adresse e-mail"
-                value={email}
-                onChange={handleChange}
-                required
-            />
-        </label>
+        <TextField
+            // autoFocus={hasAutoFocus}
+            required
+            fullWidth
+            margin="dense"
+            id="email"
+            name="email"
+            type="email"
+            label="Adresse e-mail"
+            value={email}
+            onChange={handleChange}
+            // onFocus={handleFocus}
+            // error={emailError !== ""}
+        />
     );
 };
 
