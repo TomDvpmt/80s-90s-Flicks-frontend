@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import store from "../../services/utils/store";
 import { filtersSetPageNumber } from "../../services/features/filters";
 
-import { Stack, Pagination as MUIPagination } from "@mui/material";
+// import { Stack, Pagination as MUIPagination } from "@mui/material";
 
 import styled from "styled-components";
 

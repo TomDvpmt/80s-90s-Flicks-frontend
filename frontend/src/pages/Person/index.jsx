@@ -185,7 +185,7 @@ const Person = () => {
                 </>
             )}
             <Link
-                to={`https://en.wikipedia.org/wiki/${personFormatedName}`}
+                to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
                 target="_blank">
                 See on Wikipedia
             </Link>

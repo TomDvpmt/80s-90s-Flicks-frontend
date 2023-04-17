@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
+    selectUserLanguage,
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
 } from "../../services/utils/selectors";
@@ -20,6 +21,7 @@ import {
 
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import theme from "../../assets/styles/theme";
 
 const StyledCardContainer = styled.div`
     background-color: black;
@@ -52,6 +54,7 @@ const MovieCard = ({ page, movie }) => {
         movie: PropTypes.object,
     };
 
+    const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
 
@@ -108,7 +111,13 @@ const MovieCard = ({ page, movie }) => {
                                 )}
                             </Box>
                             {actors[0] && (
-                                <Typography>Avec {actors}</Typography>
+                                <Typography>
+                                    {
+                                        theme.languages[language].components
+                                            .movieCard.actorsWith
+                                    }{" "}
+                                    {actors}
+                                </Typography>
                             )}
                         </CardContent>
                         <CardMedia

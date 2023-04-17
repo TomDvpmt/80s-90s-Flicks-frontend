@@ -17,7 +17,6 @@ import Dashboard from "../../pages/Dashboard";
 import Home from "../../pages/Home";
 import Movie from "../../pages/Movie";
 import Person from "../../pages/Person";
-import About from "../../pages/About";
 import Error404 from "../../pages/Error404";
 
 import { CssBaseline, GlobalStyles } from "@mui/material";
@@ -51,7 +50,6 @@ function Router() {
                 <Route path="/" element={<Home />} />
                 <Route path="/movies/:id" element={<Movie />} />
                 <Route path="/person/:id" element={<Person />} />
-                <Route path="/about" element={<About />} />
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />

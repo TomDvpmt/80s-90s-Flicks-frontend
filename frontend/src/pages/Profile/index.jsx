@@ -33,16 +33,16 @@ const Profile = () => {
             <Typography component="h1" variant="h1">
                 My Profile
             </Typography>
-            {showUpdateValidation && <p>Profile updated.</p>}
+            {showUpdateValidation && <p>Profil mis à jour.</p>}
             <ul>
-                <li>Username : {user.username}</li>
-                <li>First name: {user.firstName}</li>
-                <li>Last name: {user.lastName}</li>
-                <li>Email address: {user.email}</li>
+                <li>Nom d'utilisateur : {user.username}</li>
+                <li>Prénom : {user.firstName}</li>
+                <li>Nom : {user.lastName}</li>
+                <li>Adresse e-mail : {user.email}</li>
             </ul>
             {/* <ErrorMessage errorMessage={errorMessage} /> */}
             <button type="button" onClick={handleUpdateUser}>
-                Change profile
+                Modifier les informations
             </button>
 
             {showUpdateForm && (

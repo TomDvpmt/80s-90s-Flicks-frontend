@@ -9,7 +9,7 @@ const initialState = {
     email: "",
     moviesSeen: [],
     moviesToSee: [],
-    language: "en",
+    language: "fr",
 };
 
 export const userAuth = createAction("user/auth");

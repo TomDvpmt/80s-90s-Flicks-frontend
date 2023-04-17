@@ -1,6 +1,13 @@
+import { furyRoadPalette } from "./palettes";
+import { languageFR } from "../languages/fr";
+import { languageEN } from "../languages/en";
+
 import { createTheme } from "@mui/material/styles";
 
-import { furyRoadPalette } from "./palettes";
+const languages = {
+    fr: languageFR,
+    en: languageEN,
+};
 
 const theme = createTheme({
     palette: furyRoadPalette,
@@ -26,6 +33,7 @@ const theme = createTheme({
             desktop: "700px",
         },
     },
+    languages,
 });
 
 export default theme;

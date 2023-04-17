@@ -30,6 +30,7 @@ import {
 } from "../../services/features/user";
 
 import { Typography } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 import styled from "styled-components";
 
@@ -113,6 +114,8 @@ const Movie = () => {
         },
     };
 
+    const [langData, setLangData] = useState({});
+
     const addToMoviesSeen = () => {
         store.dispatch(userAddToMoviesSeen(id));
         try {
@@ -190,6 +193,10 @@ const Movie = () => {
     };
 
     useEffect(() => {
+        setLangData(theme.languages[language].pages.movie);
+    }, [language]);
+
+    useEffect(() => {
         getMovieData(id, language)
             .then((data) => {
                 setMovie(data);
@@ -261,14 +268,14 @@ const Movie = () => {
                         )}
                         <p>{movie.overview}</p>
                         <p>
-                            Budget :{" "}
+                            {langData.budget}{" "}
                             {!movie.budget || movie.budget === 0
                                 ? "non-disponible"
                                 : "$ " + displayBigNumber(movie.budget)}
                         </p>
 
                         <p>
-                            Revenue :{" "}
+                            {langData.revenue}{" "}
                             {!movie.revenue || movie.revenue === 0
                                 ? "non-disponible"
                                 : "$ " + displayBigNumber(movie.revenue)}
@@ -277,13 +284,13 @@ const Movie = () => {
                         <Link
                             to={`https://www.imdb.com/title/${movie.imdb_id}/`}
                             target="_blank">
-                            See on IMDB
+                            {langData.imdbLink}
                         </Link>
                         <br />
                         {isSignedIn && (
                             <>
                                 <label htmlFor="movieSeen">
-                                    I've seen this movie !
+                                    {langData.seen}
                                 </label>
                                 <input
                                     type="checkbox"
@@ -294,7 +301,7 @@ const Movie = () => {
                                 />
                                 <br />
                                 <label htmlFor="movieToSee">
-                                    I want to see this movie !
+                                    {langData.toSee}
                                 </label>
                                 <input
                                     type="checkbox"

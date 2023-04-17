@@ -17,7 +17,7 @@ const EmailInput = ({ email, setEmail }) => {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Your e-mail address"
+                placeholder="Votre adresse e-mail"
                 value={email}
                 onChange={handleChange}
                 required
