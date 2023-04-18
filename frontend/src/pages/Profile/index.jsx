@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
-// import ErrorMessage from "../components/ErrorMessage";
 import UserForm from "../../components/UserForm";
-
-import { setUserInfo } from "../../utils/requests";
 
 import { selectUserInfo } from "../../services/utils/selectors";
 
@@ -28,16 +25,10 @@ const leftCellStyle = {
 };
 
 const Profile = () => {
-    useEffect(() => {
-        const token = sessionStorage.getItem("token");
-        setUserInfo(token);
-        // to add : handle request error
-    }, []);
+    const user = useSelector(selectUserInfo());
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
-
-    const user = useSelector(selectUserInfo());
 
     const handleUpdateUser = () => {
         setShowUpdateValidation(false);
@@ -47,7 +38,7 @@ const Profile = () => {
     return (
         <Box component="main">
             <Typography component="h1" variant="h1">
-                My Profile
+                Mon Profil
             </Typography>
 
             <Box

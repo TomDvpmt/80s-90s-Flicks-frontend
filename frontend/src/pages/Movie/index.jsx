@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ErrorMessage from "../../components/ErrorMessage";
 
 import { API_URI } from "../../utils/config";
-import {
-    getMovieData,
-    setCastAndCrew,
-    setUserInfo,
-} from "../../utils/requests";
+import { getMovieData, setCastAndCrew } from "../../utils/requests";
 import displayBigNumber from "../../utils/bigNumbers";
 
-import store from "../../services/utils/store";
 import {
     selectUserIsSignedIn,
     selectUserId,
@@ -29,7 +24,13 @@ import {
     userRemoveFromMoviesToSee,
 } from "../../services/features/user";
 
-import { Typography } from "@mui/material";
+import {
+    Box,
+    Typography,
+    FormGroup,
+    FormControlLabel,
+    Checkbox,
+} from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 import styled from "styled-components";
@@ -47,7 +48,7 @@ const StyledMovie = styled.main`
         grid-row: 1;
         grid-column: 1;
         display: block;
-        max-width: 100%;
+        object-fit: scale-down;
         opacity: 0.2;
     }
 
@@ -62,7 +63,7 @@ const StyledMovie = styled.main`
     }
 
     .poster {
-        object-fit: contain;
+        object-fit: scale-down;
         max-width: 500px;
     }
 
@@ -84,11 +85,7 @@ const StyledMovie = styled.main`
 const Movie = () => {
     const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
-
-    useEffect(() => {
-        setUserInfo(token);
-        // to add : handle request error
-    }, [token]);
+    const dispatch = useDispatch();
 
     const [movie, setMovie] = useState({});
     const [director, setDirector] = useState("");
@@ -117,7 +114,7 @@ const Movie = () => {
     const [langData, setLangData] = useState({});
 
     const addToMoviesSeen = () => {
-        store.dispatch(userAddToMoviesSeen(id));
+        dispatch(userAddToMoviesSeen(id));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
@@ -129,7 +126,7 @@ const Movie = () => {
     };
 
     const removeFromMoviesSeen = () => {
-        store.dispatch(userRemoveFromMoviesSeen(id));
+        dispatch(userRemoveFromMoviesSeen(id));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
@@ -143,7 +140,7 @@ const Movie = () => {
     };
 
     const addToMoviesToSee = () => {
-        store.dispatch(userAddToMoviesToSee(id));
+        dispatch(userAddToMoviesToSee(id));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
@@ -155,7 +152,7 @@ const Movie = () => {
     };
 
     const removeFromMoviesToSee = () => {
-        store.dispatch(userRemoveFromMoviesToSee(id));
+        dispatch(userRemoveFromMoviesToSee(id));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
@@ -189,7 +186,7 @@ const Movie = () => {
     };
 
     const handleGenreClick = (e) => {
-        store.dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
+        dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
     };
 
     useEffect(() => {
@@ -214,40 +211,58 @@ const Movie = () => {
     }, [actors.length, id]);
 
     return (
-        <StyledMovie>
-            <section className="movie">
-                {movie.backdrop_path && (
-                    <img
-                        className="backdrop"
-                        src={`${imageBaseUrl}${"original"}${
-                            movie.backdrop_path
-                        }`}
-                        alt={movie.title + "(backdrop)"}
-                    />
-                )}
-                <div className="details">
-                    {movie.poster_path && (
+        <Box component="main">
+            <Box component="section">
+                <Box
+                    maxWidth="100%"
+                    sx={{ display: { xs: "none", sm: "block" } }}>
+                    {movie.backdrop_path && (
                         <img
-                            className="poster"
-                            src={`${imageBaseUrl}w500${movie.poster_path}`}
-                            alt={movie.title + "(poster)"}
+                            src={`${imageBaseUrl}${"original"}${
+                                movie.backdrop_path
+                            }`}
+                            alt={movie.title + "(backdrop)"}
+                            width="100%"
                         />
                     )}
-                    <div className="info">
-                        <Typography component="h1" variant="h1">
+                </Box>
+                <Box>
+                    {movie.poster_path && (
+                        <img
+                            src={`${imageBaseUrl}w500${movie.poster_path}`}
+                            alt={movie.title + "(poster)"}
+                            width="100%"
+                        />
+                    )}
+                    <Box sx={{ padding: ".5rem" }}>
+                        <Typography
+                            component="h1"
+                            variant="h1"
+                            align="center"
+                            sx={{ ffontWeight: "700" }}>
                             {movie.title}
                         </Typography>
-                        <p>({movie.original_title})</p>
-                        <p>{movie.tagline}</p>
-                        <p>
+                        <Typography
+                            paragraph
+                            align="center"
+                            sx={{ fontStyle: "italic" }}>
+                            {movie.title !== movie.original_title &&
+                                `(${movie.original_title})`}
+                        </Typography>
+                        {movie.tagline && (
+                            <Typography paragraph fontWeight="700">
+                                {movie.tagline}
+                            </Typography>
+                        )}
+                        <Typography paragraph>
                             {director}
                             {director && movie.release_date && " | "}
                             {movie.release_date &&
                                 movie.release_date.slice(0, 4)}
-                        </p>
-                        <p>{actors}</p>
+                        </Typography>
+                        <Typography paragraph>{actors}</Typography>
                         {movie.genres && (
-                            <ul>
+                            <Box>
                                 {movie.genres.map((genre, index) => (
                                     <Link
                                         key={index}
@@ -264,22 +279,22 @@ const Movie = () => {
                                             : ", "}
                                     </Link>
                                 ))}
-                            </ul>
+                            </Box>
                         )}
-                        <p>{movie.overview}</p>
-                        <p>
+                        <Typography paragraph>{movie.overview}</Typography>
+                        <Typography paragraph>
                             {langData.budget}{" "}
                             {!movie.budget || movie.budget === 0
                                 ? "non-disponible"
                                 : "$ " + displayBigNumber(movie.budget)}
-                        </p>
+                        </Typography>
 
-                        <p>
+                        <Typography paragraph>
                             {langData.revenue}{" "}
                             {!movie.revenue || movie.revenue === 0
                                 ? "non-disponible"
                                 : "$ " + displayBigNumber(movie.revenue)}
-                        </p>
+                        </Typography>
 
                         <Link
                             to={`https://www.imdb.com/title/${movie.imdb_id}/`}
@@ -288,35 +303,34 @@ const Movie = () => {
                         </Link>
                         <br />
                         {isSignedIn && (
-                            <>
-                                <label htmlFor="movieSeen">
-                                    {langData.seen}
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="movieSeen"
-                                    id="movieSeen"
-                                    checked={userHasSeenMovie}
-                                    onChange={handleMovieSeen}
-                                />
-                                <br />
-                                <label htmlFor="movieToSee">
-                                    {langData.toSee}
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="movieToSee"
-                                    id="movieToSee"
-                                    checked={userWantsToSeeMovie}
-                                    onChange={handleMovieToSee}
-                                />
-                            </>
+                            <Box component="form">
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={userHasSeenMovie}
+                                                onChange={handleMovieSeen}
+                                            />
+                                        }
+                                        label={langData.seen}
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={userWantsToSeeMovie}
+                                                onChange={handleMovieToSee}
+                                            />
+                                        }
+                                        label={langData.toSee}
+                                    />
+                                </FormGroup>
+                            </Box>
                         )}
-                    </div>
-                </div>
-            </section>
+                    </Box>
+                </Box>
+            </Box>
             <ErrorMessage errorMessage={errorMessage} />
-        </StyledMovie>
+        </Box>
     );
 };
 

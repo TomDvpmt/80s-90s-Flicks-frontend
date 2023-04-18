@@ -24,8 +24,8 @@ const UserMenu = () => {
     };
 
     const handleProfileClick = () => {
-        navigate("/profile");
         handleClose();
+        navigate("/profile");
     };
 
     const handleLogout = async () => {

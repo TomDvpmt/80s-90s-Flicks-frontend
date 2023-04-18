@@ -9,15 +9,23 @@ const languages = {
     en: language_en,
 };
 
-const theme = createTheme({
+// Intermediate theme in order to use breakpoints inside createTheme, see https://github.com/mui/material-ui/issues/28330
+let theme = createTheme();
+
+theme = createTheme(theme, {
     palette: furyRoadPalette,
     typography: {
         fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",
-        fontSize: 16,
         h1: {
             margin: "3rem 0",
-            fontSize: "3rem",
+            fontSize: "1.5rem",
+            [theme.breakpoints.up("sm")]: {
+                fontSize: "3rem",
+            },
             textAlign: "center",
+        },
+        h2: {
+            fontSize: "1.5rem",
         },
     },
 

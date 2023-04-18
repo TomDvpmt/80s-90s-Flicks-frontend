@@ -7,8 +7,8 @@ const initialState = {
     firstName: "",
     lastName: "",
     email: "",
-    moviesSeen: [],
-    moviesToSee: [],
+    moviesSeen: [""],
+    moviesToSee: [""],
     language: "fr",
 };
 

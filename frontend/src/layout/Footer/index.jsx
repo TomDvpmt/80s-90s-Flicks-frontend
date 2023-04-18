@@ -44,14 +44,14 @@ const Footer = () => {
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
+                    flexDirection: "column-reverse",
                 }}>
                 <Branding location="footer" />
                 <Stack
                     component="nav"
                     spacing={1}
                     sx={{
+                        padding: "2rem",
                         "& *": {
                             color: theme.palette.tertiary.light,
                             fontWeight: "400",

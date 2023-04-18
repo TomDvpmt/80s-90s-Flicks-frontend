@@ -11,8 +11,8 @@ const Branding = ({ location }) => {
         <Box
             component="div"
             sx={{
-                pt: "8rem",
-                pb: "8rem",
+                pt: location === "header" ? "8rem" : "2rem",
+                pb: location === "header" ? "8rem" : "2rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -21,7 +21,7 @@ const Branding = ({ location }) => {
             <img
                 src={logo}
                 alt="Logo"
-                width={location === "header" ? "500" : "300"}
+                width={location === "header" ? "300" : "300"}
             />
         </Box>
     );

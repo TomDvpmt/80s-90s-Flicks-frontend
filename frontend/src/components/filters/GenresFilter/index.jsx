@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import store from "../../../services/utils/store";
 import {
     filtersSetActiveGenres,
     filtersConvertActiveGenresToFilter,
@@ -21,9 +20,10 @@ import {
 } from "@mui/material";
 
 const GenresFilter = () => {
-    const [allGenres, setAllGenres] = useState([]);
-
     const activeGenres = useSelector(selectFiltersActiveGenres());
+    const dispatch = useDispatch();
+
+    const [allGenres, setAllGenres] = useState([]);
 
     const convertIdsToNames = (arrayOfIds) => {
         return arrayOfIds.map(
@@ -44,11 +44,11 @@ const GenresFilter = () => {
     }, []);
 
     const handleActiveGenresChange = (e) => {
-        store.dispatch(filtersSetActiveGenres(e.target.value));
+        dispatch(filtersSetActiveGenres(e.target.value));
     };
 
     useEffect(() => {
-        store.dispatch(filtersConvertActiveGenresToFilter(activeGenres));
+        dispatch(filtersConvertActiveGenresToFilter(activeGenres));
     }, [activeGenres]);
 
     return (

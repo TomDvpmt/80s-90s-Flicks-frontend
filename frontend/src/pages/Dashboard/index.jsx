@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
 
-import { setUserInfo, getMovieData } from "../../utils/requests";
+import { getMovieData } from "../../utils/requests";
 import {
     selectUserInfo,
     selectUserMoviesSeen,
@@ -23,12 +22,6 @@ const moviesTypeSx = {
 };
 
 const Dashboard = () => {
-    useEffect(() => {
-        const token = sessionStorage.getItem("token");
-        setUserInfo(token);
-        // to add : handle request error
-    }, []);
-
     const user = useSelector(selectUserInfo());
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const moviesToSee = useSelector(selectUserMoviesToSee());

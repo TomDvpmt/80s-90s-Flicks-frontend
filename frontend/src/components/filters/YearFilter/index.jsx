@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import store from "../../../services/utils/store";
 import { filtersSetYear } from "../../../services/features/filters";
 import { selectFiltersYear } from "../../../services/utils/selectors";
 
@@ -14,6 +13,7 @@ const YearFilter = ({ setCurrentPage }) => {
     };
 
     const yearOption = useSelector(selectFiltersYear());
+    const dispatch = useDispatch();
 
     const years = ["1980-1999"];
     for (let i = 1980; i < 2000; i++) {
@@ -22,7 +22,7 @@ const YearFilter = ({ setCurrentPage }) => {
 
     const handleYearChange = (e) => {
         setCurrentPage(1);
-        store.dispatch(filtersSetYear(e.target.value));
+        dispatch(filtersSetYear(e.target.value));
     };
 
     return (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
@@ -11,7 +12,6 @@ import ErrorMessage from "../ErrorMessage";
 
 import { API_URI } from "../../utils/config";
 
-import store from "../../services/utils/store";
 import { userAuth, userSetInfo } from "../../services/features/user";
 
 import { Box, Button, Typography } from "@mui/material";
@@ -35,6 +35,9 @@ const UserForm = ({
         setUserData: PropTypes.func,
     };
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [username, setUsername] = useState(
         page === "profile" ? defaultFormValues.username : ""
     );
@@ -51,8 +54,6 @@ const UserForm = ({
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [pageData, setPageData] = useState({});
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         switch (page) {
@@ -73,7 +74,7 @@ const UserForm = ({
                     },
                     handleResponse: (data) => {
                         sessionStorage.setItem("token", data.token);
-                        store.dispatch(userAuth());
+                        dispatch(userAuth());
                         navigate("/");
                     },
                 });
@@ -117,7 +118,7 @@ const UserForm = ({
                         lastName,
                     },
                     handleResponse: (data) => {
-                        store.dispatch(
+                        dispatch(
                             userSetInfo({
                                 id: userId,
                                 username: data.username,

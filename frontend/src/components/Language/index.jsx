@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { API_URI } from "../../utils/config";
 
-import store from "../../services/utils/store";
 import { userSetLanguage } from "../../services/features/user";
 import { filtersSetLanguage } from "../../services/features/filters";
 import {
@@ -22,10 +21,11 @@ const Language = () => {
     const token = sessionStorage.getItem("token");
     const userId = useSelector(selectUserId());
     const languageOption = useSelector(selectUserLanguage());
+    const dispatch = useDispatch();
 
     const handleLanguageChange = (e) => {
-        store.dispatch(userSetLanguage(e.target.value));
-        store.dispatch(filtersSetLanguage(e.target.value));
+        dispatch(userSetLanguage(e.target.value));
+        dispatch(filtersSetLanguage(e.target.value));
         fetch(`${API_URI}users/${userId}`, {
             method: "PUT",
             headers: {

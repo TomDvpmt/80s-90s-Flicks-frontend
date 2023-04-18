@@ -35,8 +35,8 @@ export const setUserInfo = async (token) => {
                 firstName: "",
                 lastName: "",
                 email: "",
-                moviesSeen: [],
-                moviesToSee: [],
+                moviesSeen: [""],
+                moviesToSee: [""],
                 language: "fr",
             })
         );

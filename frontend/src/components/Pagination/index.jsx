@@ -1,11 +1,13 @@
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import store from "../../services/utils/store";
 import { filtersSetPageNumber } from "../../services/features/filters";
 
 // import { Stack, Pagination as MUIPagination } from "@mui/material";
 
 import styled from "styled-components";
+
+import PropTypes from "prop-types";
 
 const StyledPagination = styled.div`
     margin: 2rem;
@@ -26,6 +28,14 @@ const StyledPagination = styled.div`
 `;
 
 const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
+    Pagination.propTypes = {
+        numberOfPages: PropTypes.number,
+        currentPage: PropTypes.number,
+        setCurrentPage: PropTypes.func,
+    };
+
+    const dispatch = useDispatch();
+
     const goToPreviousPage = (e) => {
         e.preventDefault();
         setCurrentPage((currentPage) => currentPage - 1);
@@ -41,7 +51,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     };
 
     useEffect(() => {
-        store.dispatch(filtersSetPageNumber(currentPage));
+        dispatch(filtersSetPageNumber(currentPage));
     }, [currentPage]);
 
     return (

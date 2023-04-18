@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-import { setUserInfo } from "../../utils/requests";
 import { TMDB_API_KEY } from "../../utils/config";
 import { selectUserLanguage } from "../../services/utils/selectors";
 
@@ -19,12 +18,6 @@ const StyledPerson = styled.main`
 `;
 
 const Person = () => {
-    useEffect(() => {
-        const token = sessionStorage.getItem("token");
-        setUserInfo(token);
-        // to add : handle request error
-    }, []);
-
     const [person, setPerson] = useState({});
     const [personFormatedName, setPersonFormatedName] = useState("");
     const [personImgUrl, setPersonImgUrl] = useState("");

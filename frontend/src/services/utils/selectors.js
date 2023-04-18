@@ -28,6 +28,12 @@ export const selectUserLanguage = () => {
     return (state) => state.user.language;
 };
 
+// Page
+
+export const selectPageLocation = () => {
+    return (state) => state.page.location;
+};
+
 // Filters
 
 export const selectFiltersYear = () => {

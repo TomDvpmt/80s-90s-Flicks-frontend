@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
 import YearFilter from "../../components/filters/YearFilter";
@@ -8,11 +8,9 @@ import Pagination from "../../components/Pagination";
 import ErrorMessage from "../../components/ErrorMessage";
 import Language from "../../components/Language";
 
-import store from "../../services/utils/store";
 import { filtersClearAll } from "../../services/features/filters";
 import { selectFiltersAll } from "../../services/utils/selectors";
 
-import { setUserInfo } from "../../utils/requests";
 import { TMDB_API_KEY } from "../../utils/config";
 
 import theme from "../../assets/styles/theme";
@@ -20,13 +18,8 @@ import theme from "../../assets/styles/theme";
 import { Box, Paper, Typography, Button, Grid } from "@mui/material";
 
 const Home = () => {
-    useEffect(() => {
-        const token = sessionStorage.getItem("token");
-        setUserInfo(token);
-        // to add : handle request error
-    }, []);
-
     const filters = useSelector(selectFiltersAll());
+    const dispatch = useDispatch();
 
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [numberOfResults, setNumberOfResults] = useState(0);
@@ -35,7 +28,7 @@ const Home = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleFiltersClearAll = () => {
-        store.dispatch(filtersClearAll());
+        dispatch(filtersClearAll());
     };
 
     useEffect(() => {
@@ -124,7 +117,11 @@ const Home = () => {
                         </Box>
                         <Button
                             variant="outlined"
-                            onClick={handleFiltersClearAll}>
+                            onClick={handleFiltersClearAll}
+                            sx={{
+                                maxWidth: "max-content",
+                                margin: "auto",
+                            }}>
                             Aucun filtre
                         </Button>
                     </Box>

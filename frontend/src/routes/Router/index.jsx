@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { TMDB_API_KEY } from "../../utils/config";
 
-import store from "../../services/utils/store";
 import { tmdbSetConfig } from "../../services/features/tmdbConfig";
+
+import { selectUserIsSignedIn } from "../../services/utils/selectors";
 
 import ScrollToHashElement from "../../components/ScrollToHashElement";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
-
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 import Profile from "../../pages/Profile";
@@ -19,34 +20,35 @@ import Movie from "../../pages/Movie";
 import Person from "../../pages/Person";
 import Error404 from "../../pages/Error404";
 
-import { CssBaseline, GlobalStyles } from "@mui/material";
-
-const styles = {
-    a: { textDecoration: "none" },
-};
-
 function Router() {
+    const isSignedIn = useSelector(selectUserIsSignedIn());
+    const dispatch = useDispatch();
+
     useEffect(() => {
         fetch(
             `https://api.themoviedb.org/3/configuration?api_key=${TMDB_API_KEY}`,
             { method: "GET" }
         )
             .then((response) => response.json())
-            .then((data) => store.dispatch(tmdbSetConfig(data)))
+            .then((data) => dispatch(tmdbSetConfig(data)))
             .catch((error) => console.error(error));
     }, []);
 
     return (
         <BrowserRouter>
             <ScrollToHashElement />
-            <CssBaseline />
-            <GlobalStyles styles={styles} />
             <Header />
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                    path="/profile"
+                    element={isSignedIn ? <Profile /> : <Login />}
+                />
+                <Route
+                    path="/dashboard"
+                    element={isSignedIn ? <Dashboard /> : <Login />}
+                />
                 <Route path="/" element={<Home />} />
                 <Route path="/movies/:id" element={<Movie />} />
                 <Route path="/person/:id" element={<Person />} />

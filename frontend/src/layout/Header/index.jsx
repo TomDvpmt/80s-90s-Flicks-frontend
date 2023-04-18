@@ -16,13 +16,14 @@ import { Box, Toolbar, Button, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Header = () => {
-    useEffect(() => {
-        const token = sessionStorage.getItem("token");
-        setUserInfo(token);
-        // to add : handle request error
-    }, []);
+    const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const username = useSelector(selectUserUsername());
+
+    useEffect(() => {
+        setUserInfo(token);
+        // to add : handle request error
+    }, [token]);
 
     return (
         <Box component="header" bgcolor={theme.palette.secondary.light}>
