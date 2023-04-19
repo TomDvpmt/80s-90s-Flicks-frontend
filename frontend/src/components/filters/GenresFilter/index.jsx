@@ -63,7 +63,6 @@ const GenresFilter = () => {
                 onChange={handleActiveGenresChange}
                 input={<OutlinedInput label="Tag" />}
                 renderValue={(selected) => {
-                    console.log("selected :", selected);
                     return convertIdsToNames(selected).join(", ");
                 }}>
                 {allGenres.map((genre) => (

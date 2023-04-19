@@ -36,7 +36,7 @@ const Profile = () => {
     };
 
     return (
-        <Box component="main">
+        <Box component="main" padding="1rem">
             <Typography component="h1" variant="h1">
                 Mon Profil
             </Typography>
