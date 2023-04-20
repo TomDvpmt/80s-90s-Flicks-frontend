@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-import { API_URI } from "../../utils/config";
 import { getMovieData, setCastAndCrew } from "../../utils/requests";
 import displayBigNumber from "../../utils/bigNumbers";
 
@@ -57,7 +56,7 @@ const Movie = () => {
     const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
-    const fetchURI = `${API_URI}users/${userId}`;
+    const fetchURI = `/API/users/${userId}`;
     const fetchParams = {
         method: "PUT",
         headers: {

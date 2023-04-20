@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import {
     createBrowserRouter,
     RouterProvider,
-    Outlet,
-    ScrollRestoration,
+    // Outlet,
+    // ScrollRestoration,
+    // useLoaderData,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { TMDB_API_KEY } from "../utils/config";
 import { getMovieData } from "../utils/requests";
 
+// import { userSetInfo } from "../services/features/user";
 import { tmdbSetConfig } from "../services/features/tmdbConfig";
 
 import {
@@ -17,9 +19,10 @@ import {
     selectUserLanguage,
 } from "../services/utils/selectors";
 
-import ScrollToHashElement from "../components/ScrollToHashElement";
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
+// import ScrollToHashElement from "../components/ScrollToHashElement";
+// import Header from "../layout/Header";
+// import Footer from "../layout/Footer";
+import RouterWrapper from "../components/RouterWrapper";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
@@ -30,19 +33,39 @@ import Person from "../pages/Person";
 import Error404 from "../pages/Error404";
 import ErrorBoundary from "../components/ErrorBoundary";
 
-const NavigationProvider = () => {
-    return (
-        <>
-            <ScrollRestoration />
-            <ScrollToHashElement />
-            <Header />
-            <Outlet />
-            <Footer />
-        </>
-    );
-};
+// const RouterWrapper = () => {
+//     const token = sessionStorage.getItem("token");
+//     const dispatch = useDispatch();
+//     const data = useLoaderData();
+
+//     token
+//         ? dispatch(userSetInfo(data))
+//         : dispatch(
+//               userSetInfo({
+//                   id: "",
+//                   username: "",
+//                   firstName: "",
+//                   lastName: "",
+//                   email: "",
+//                   moviesSeen: [""],
+//                   moviesToSee: [""],
+//                   language: "fr",
+//               })
+//           );
+
+//     return (
+//         <>
+//             <ScrollRestoration />
+//             <ScrollToHashElement />
+//             <Header />
+//             <Outlet />
+//             <Footer />
+//         </>
+//     );
+// };
 
 function Router() {
+    const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
     const dispatch = useDispatch();
@@ -57,9 +80,21 @@ function Router() {
             .catch((error) => console.error(error));
     }, [dispatch]);
 
+    const getUserInfo = async () => {
+        const response = await fetch(`/API/users/0`, {
+            method: "GET",
+            headers: {
+                Authorization: `BEARER ${token}`,
+            },
+        });
+        const data = await response.json();
+        return data;
+    };
+
     const router = createBrowserRouter([
         {
-            element: <NavigationProvider />,
+            element: <RouterWrapper />,
+            loader: async () => getUserInfo(),
             errorElement: <ErrorBoundary />,
             children: [
                 {

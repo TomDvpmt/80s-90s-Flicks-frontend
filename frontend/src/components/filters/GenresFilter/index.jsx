@@ -7,7 +7,9 @@ import {
 } from "../../../services/features/filters";
 import { selectFiltersActiveGenres } from "../../../services/utils/selectors";
 
-import { getGenres } from "../../../utils/requests";
+import { TMDB_API_KEY } from "../../../utils/config";
+
+// import { getGenres } from "../../../utils/requests";
 
 import {
     FormControl,
@@ -35,6 +37,20 @@ const GenresFilter = () => {
     };
 
     useEffect(() => {
+        const getGenres = async () => {
+            try {
+                const results = await fetch(
+                    `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=fr`,
+                    {
+                        method: "GET",
+                    }
+                );
+                const data = await results.json();
+                return data.genres;
+            } catch (error) {
+                console.log(error);
+            }
+        };
         getGenres()
             .then((data) => {
                 // exclude Documentary (99) and Television film (10770)

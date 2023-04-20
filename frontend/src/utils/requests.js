@@ -1,47 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { API_URI, TMDB_API_KEY } from "./config";
-
-import store from "../services/utils/store";
-import { userSetInfo } from "../services/features/user";
+import { TMDB_API_KEY } from "./config";
 
 import { Typography } from "@mui/material";
-
-/**
- * Get user info from database
- * @param {String} token
- * @returns { Promise }
- */
-
-export const setUserInfo = async (token) => {
-    if (token) {
-        try {
-            const response = await fetch(`${API_URI}users/0`, {
-                method: "GET",
-                headers: {
-                    Authorization: `BEARER ${token}`,
-                },
-            });
-            const data = await response.json();
-            store.dispatch(userSetInfo(data));
-        } catch (error) {
-            console.log(error);
-        }
-    } else {
-        store.dispatch(
-            userSetInfo({
-                id: "",
-                username: "",
-                firstName: "",
-                lastName: "",
-                email: "",
-                moviesSeen: [""],
-                moviesToSee: [""],
-                language: "fr",
-            })
-        );
-    }
-};
 
 /**
  * Get movie's main data from The Movie Database

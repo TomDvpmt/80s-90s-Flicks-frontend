@@ -10,8 +10,6 @@ import FirstNameInput from "../form-fields/FirstNameInput";
 import LastNameInput from "../form-fields/LastNameInput";
 import ErrorMessage from "../ErrorMessage";
 
-import { API_URI } from "../../utils/config";
-
 import { userAuth, userSetInfo } from "../../services/features/user";
 
 import { Box, Button, Typography } from "@mui/material";
@@ -168,7 +166,7 @@ const UserForm = ({
             return;
         }
 
-        const response = await fetch(`${API_URI}${pageData.endPoint}`, {
+        const response = await fetch(`/API/${pageData.endPoint}`, {
             method: pageData.method,
             headers: {
                 "Content-type": "application/json",
