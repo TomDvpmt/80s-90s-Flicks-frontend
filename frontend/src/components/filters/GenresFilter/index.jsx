@@ -9,8 +9,6 @@ import { selectFiltersActiveGenres } from "../../../services/utils/selectors";
 
 import { TMDB_API_KEY } from "../../../utils/config";
 
-// import { getGenres } from "../../../utils/requests";
-
 import {
     FormControl,
     InputLabel,

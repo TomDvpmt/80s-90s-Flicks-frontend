@@ -1,13 +1,9 @@
-// import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Branding from "../../components/Branding";
 import UserMenu from "../../components/UserMenu";
 
-// import ErrorBoundary from "../../components/ErrorBoundary";
-
-// import { userSetInfo } from "../../services/features/user";
 import {
     selectUserIsSignedIn,
     selectUserUsername,
@@ -17,44 +13,8 @@ import { Box, Toolbar, Button, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Header = () => {
-    // const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const username = useSelector(selectUserUsername());
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     const setUserInfo = async (token) => {
-    //         if (token) {
-    //             try {
-    //                 const response = await fetch(`/API/users/0`, {
-    //                     method: "GET",
-    //                     headers: {
-    //                         Authorization: `BEARER ${token}`,
-    //                     },
-    //                 });
-    //                 const data = await response.json();
-    //                 dispatch(userSetInfo(data));
-    //             } catch (error) {
-    //                 console.log(error); // HANDLE ERROR
-    //             }
-    //         } else {
-    //             dispatch(
-    //                 userSetInfo({
-    //                     id: "",
-    //                     username: "",
-    //                     firstName: "",
-    //                     lastName: "",
-    //                     email: "",
-    //                     moviesSeen: [""],
-    //                     moviesToSee: [""],
-    //                     language: "fr",
-    //                 })
-    //             );
-    //         }
-    //     };
-    //     setUserInfo(token);
-    //     // to add : handle request error
-    // }, [token]);
 
     return (
         <Box component="header" bgcolor={theme.palette.secondary.light}>

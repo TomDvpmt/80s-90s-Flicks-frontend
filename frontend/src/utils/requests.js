@@ -119,23 +119,3 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
         })
         .catch((error) => console.log(error));
 };
-
-/**
- * Get the list of all available genres from The Movie Database
- * @returns {Promise}
- */
-
-export const getGenres = async () => {
-    try {
-        const results = await fetch(
-            `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=fr`,
-            {
-                method: "GET",
-            }
-        );
-        const data = await results.json();
-        return data.genres;
-    } catch (error) {
-        console.log(error);
-    }
-};

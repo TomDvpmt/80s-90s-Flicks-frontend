@@ -1,17 +1,10 @@
 import { useEffect } from "react";
-import {
-    createBrowserRouter,
-    RouterProvider,
-    // Outlet,
-    // ScrollRestoration,
-    // useLoaderData,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { TMDB_API_KEY } from "../utils/config";
 import { getMovieData } from "../utils/requests";
 
-// import { userSetInfo } from "../services/features/user";
 import { tmdbSetConfig } from "../services/features/tmdbConfig";
 
 import {
@@ -19,9 +12,6 @@ import {
     selectUserLanguage,
 } from "../services/utils/selectors";
 
-// import ScrollToHashElement from "../components/ScrollToHashElement";
-// import Header from "../layout/Header";
-// import Footer from "../layout/Footer";
 import RouterWrapper from "../components/RouterWrapper";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -32,37 +22,6 @@ import Movie from "../pages/Movie";
 import Person from "../pages/Person";
 import Error404 from "../pages/Error404";
 import ErrorBoundary from "../components/ErrorBoundary";
-
-// const RouterWrapper = () => {
-//     const token = sessionStorage.getItem("token");
-//     const dispatch = useDispatch();
-//     const data = useLoaderData();
-
-//     token
-//         ? dispatch(userSetInfo(data))
-//         : dispatch(
-//               userSetInfo({
-//                   id: "",
-//                   username: "",
-//                   firstName: "",
-//                   lastName: "",
-//                   email: "",
-//                   moviesSeen: [""],
-//                   moviesToSee: [""],
-//                   language: "fr",
-//               })
-//           );
-
-//     return (
-//         <>
-//             <ScrollRestoration />
-//             <ScrollToHashElement />
-//             <Header />
-//             <Outlet />
-//             <Footer />
-//         </>
-//     );
-// };
 
 function Router() {
     const token = sessionStorage.getItem("token");

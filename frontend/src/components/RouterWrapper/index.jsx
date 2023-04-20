@@ -10,8 +10,8 @@ import { userSetInfo } from "../../services/features/user";
 
 const RouterWrapper = () => {
     const token = sessionStorage.getItem("token");
-    const dispatch = useDispatch();
     const data = useLoaderData();
+    const dispatch = useDispatch();
 
     token
         ? dispatch(userSetInfo(data))
