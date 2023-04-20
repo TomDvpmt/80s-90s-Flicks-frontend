@@ -26,8 +26,11 @@ const GenresFilter = () => {
     const [allGenres, setAllGenres] = useState([]);
 
     const convertIdsToNames = (arrayOfIds) => {
-        return arrayOfIds.map(
-            (id) => allGenres.filter((genre) => genre.id === id)[0].name
+        return (
+            allGenres.length > 0 &&
+            arrayOfIds.map(
+                (id) => allGenres.find((genre) => genre.id === id).name
+            )
         );
     };
 
@@ -63,7 +66,10 @@ const GenresFilter = () => {
                 onChange={handleActiveGenresChange}
                 input={<OutlinedInput label="Tag" />}
                 renderValue={(selected) => {
-                    return convertIdsToNames(selected).join(", ");
+                    return (
+                        allGenres.length > 0 &&
+                        convertIdsToNames(selected).join(", ")
+                    );
                 }}>
                 {allGenres.map((genre) => (
                     <MenuItem key={genre.id} id={genre.id} value={genre.id}>

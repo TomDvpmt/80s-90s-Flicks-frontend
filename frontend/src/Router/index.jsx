@@ -1,12 +1,21 @@
 import { useEffect } from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import {
+    createBrowserRouter,
+    RouterProvider,
+    Outlet,
+    ScrollRestoration,
+} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { TMDB_API_KEY } from "../utils/config";
+import { getMovieData } from "../utils/requests";
 
 import { tmdbSetConfig } from "../services/features/tmdbConfig";
 
-import { selectUserIsSignedIn } from "../services/utils/selectors";
+import {
+    selectUserIsSignedIn,
+    selectUserLanguage,
+} from "../services/utils/selectors";
 
 import ScrollToHashElement from "../components/ScrollToHashElement";
 import Header from "../layout/Header";
@@ -19,10 +28,12 @@ import Home from "../pages/Home";
 import Movie from "../pages/Movie";
 import Person from "../pages/Person";
 import Error404 from "../pages/Error404";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const NavigationProvider = () => {
     return (
         <>
+            <ScrollRestoration />
             <ScrollToHashElement />
             <Header />
             <Outlet />
@@ -33,6 +44,7 @@ const NavigationProvider = () => {
 
 function Router() {
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const language = useSelector(selectUserLanguage());
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -48,6 +60,7 @@ function Router() {
     const router = createBrowserRouter([
         {
             element: <NavigationProvider />,
+            errorElement: <ErrorBoundary />,
             children: [
                 {
                     path: "/",
@@ -66,8 +79,10 @@ function Router() {
                     element: isSignedIn ? <Dashboard /> : <Login />,
                 },
                 {
-                    path: "movie/:id",
+                    path: "movies/:id",
                     element: <Movie />,
+                    loader: ({ params }) => getMovieData(params.id, language),
+                    errorElement: <ErrorBoundary page="movie" />,
                 },
                 {
                     path: "person/:id",

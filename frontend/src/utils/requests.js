@@ -50,21 +50,17 @@ export const setUserInfo = async (token) => {
  */
 
 export const getMovieData = async (id, language) => {
-    try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
+    const data = await response.json();
+    return data;
 };
 
 /**

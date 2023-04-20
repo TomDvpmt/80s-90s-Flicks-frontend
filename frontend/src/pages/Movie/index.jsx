@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import ErrorMessage from "../../components/ErrorMessage";
@@ -35,53 +35,6 @@ import theme from "../../assets/styles/theme";
 
 import styled from "styled-components";
 
-const StyledMovie = styled.main`
-    background-color: black;
-
-    .movie {
-        display: grid;
-        align-items: center;
-        color: white;
-    }
-
-    .backdrop {
-        grid-row: 1;
-        grid-column: 1;
-        display: block;
-        object-fit: scale-down;
-        opacity: 0.2;
-    }
-
-    .details {
-        grid-row: 1;
-        grid-column: 1;
-        max-width: 1280px;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        z-index: 99;
-    }
-
-    .poster {
-        object-fit: scale-down;
-        max-width: 500px;
-    }
-
-    .info {
-        padding: 3rem;
-
-        h1,
-        p,
-        label {
-            color: white;
-        }
-    }
-
-    h1 {
-        margin: 2rem 0 1rem 0;
-    }
-`;
-
 const Movie = () => {
     const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
@@ -92,11 +45,13 @@ const Movie = () => {
     const [actors, setActors] = useState([""]);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const id = useParams().id;
+    const movieData = useLoaderData();
+
+    const movieId = useParams().id;
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const moviesToSee = useSelector(selectUserMoviesToSee());
-    const userHasSeenMovie = moviesSeen.includes(id);
-    const userWantsToSeeMovie = moviesToSee.includes(id);
+    const userHasSeenMovie = moviesSeen.includes(movieId);
+    const userWantsToSeeMovie = moviesToSee.includes(movieId);
 
     const userId = useSelector(selectUserId());
     const language = useSelector(selectUserLanguage());
@@ -114,11 +69,11 @@ const Movie = () => {
     const [langData, setLangData] = useState({});
 
     const addToMoviesSeen = () => {
-        dispatch(userAddToMoviesSeen(id));
+        dispatch(userAddToMoviesSeen(movieId));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
-                body: JSON.stringify({ moviesSeen: [...moviesSeen, id] }),
+                body: JSON.stringify({ moviesSeen: [...moviesSeen, movieId] }),
             });
         } catch (error) {
             console.log(error);
@@ -126,12 +81,12 @@ const Movie = () => {
     };
 
     const removeFromMoviesSeen = () => {
-        dispatch(userRemoveFromMoviesSeen(id));
+        dispatch(userRemoveFromMoviesSeen(movieId));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
                 body: JSON.stringify({
-                    moviesSeen: moviesSeen.filter((movieId) => movieId !== id),
+                    moviesSeen: moviesSeen.filter((id) => id !== movieId),
                 }),
             });
         } catch (error) {
@@ -140,11 +95,13 @@ const Movie = () => {
     };
 
     const addToMoviesToSee = () => {
-        dispatch(userAddToMoviesToSee(id));
+        dispatch(userAddToMoviesToSee(movieId));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
-                body: JSON.stringify({ moviesToSee: [...moviesToSee, id] }),
+                body: JSON.stringify({
+                    moviesToSee: [...moviesToSee, movieId],
+                }),
             });
         } catch (error) {
             console.log(error);
@@ -152,14 +109,12 @@ const Movie = () => {
     };
 
     const removeFromMoviesToSee = () => {
-        dispatch(userRemoveFromMoviesToSee(id));
+        dispatch(userRemoveFromMoviesToSee(movieId));
         try {
             fetch(fetchURI, {
                 ...fetchParams,
                 body: JSON.stringify({
-                    moviesToSee: moviesToSee.filter(
-                        (movieId) => movieId !== id
-                    ),
+                    moviesToSee: moviesToSee.filter((id) => id !== movieId),
                 }),
             });
         } catch (error) {
@@ -194,21 +149,12 @@ const Movie = () => {
     }, [language]);
 
     useEffect(() => {
-        getMovieData(id, language)
-            .then((data) => {
-                setMovie(data);
-            })
-            .catch((error) => {
-                setErrorMessage(
-                    "Impossible d'afficher les informations du film."
-                );
-                console.error(error);
-            });
-    }, [id, language]);
+        setMovie(movieData);
+    }, [movieData]);
 
     useEffect(() => {
-        setCastAndCrew("movie", id, setDirector, setActors);
-    }, [actors.length, id]);
+        setCastAndCrew("movie", movieId, setDirector, setActors);
+    }, [actors.length, movieId]);
 
     return (
         <Box component="main">
