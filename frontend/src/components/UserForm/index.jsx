@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import UsernameInput from "../form-fields/UsernameInput";
@@ -12,7 +12,7 @@ import ErrorMessage from "../ErrorMessage";
 
 import { userAuth, userSetInfo } from "../../services/features/user";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Link } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
@@ -63,7 +63,9 @@ const UserForm = ({
                     redirectLine: (
                         <span>
                             Pas encore inscrit ?&nbsp;
-                            <Link to="/register">Créer un compte</Link>
+                            <Link component={RouterLink} to="/register">
+                                Créer un compte
+                            </Link>
                         </span>
                     ),
                     dataToSubmit: {
@@ -86,7 +88,9 @@ const UserForm = ({
                     redirectLine: (
                         <span>
                             Déjà inscrit ?&nbsp;
-                            <Link to="/login">Se connecter</Link>
+                            <Link component={RouterLink} to="/login">
+                                Se connecter
+                            </Link>
                         </span>
                     ),
                     dataToSubmit: {
@@ -146,6 +150,7 @@ const UserForm = ({
         setShowUpdateValidation,
         setUserData,
         navigate,
+        dispatch,
     ]);
 
     const handleSubmit = async (e) => {

@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { TMDB_API_KEY } from "../utils/config";
 import { getMovieData } from "../utils/requests";
+import { getPersonFullData } from "../utils/person";
 
 import { tmdbSetConfig } from "../services/features/tmdbConfig";
 
 import {
     selectUserIsSignedIn,
     selectUserLanguage,
+    selectUserMoviesSeen,
+    selectUserMoviesToSee,
 } from "../services/utils/selectors";
 
 import RouterWrapper from "../components/RouterWrapper";
@@ -26,6 +29,8 @@ import ErrorBoundary from "../components/ErrorBoundary";
 function Router() {
     const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    // const moviesSeen = useSelector(selectUserMoviesSeen());
+    // const moviesToSee = useSelector(selectUserMoviesToSee());
     const language = useSelector(selectUserLanguage());
     const dispatch = useDispatch();
 
@@ -65,12 +70,17 @@ function Router() {
                     element: <Register />,
                 },
                 {
+                    path: "login",
+                    element: <Login />,
+                },
+                {
                     path: "profile",
                     element: isSignedIn ? <Profile /> : <Login />,
                 },
                 {
                     path: "dashboard",
                     element: isSignedIn ? <Dashboard /> : <Login />,
+                    // loader : Get all movies data from MoviesSeen and MoviesToSee, return array of objects
                 },
                 {
                     path: "movies/:id",
@@ -81,10 +91,12 @@ function Router() {
                 {
                     path: "person/:id",
                     element: <Person />,
-                },
-                {
-                    path: "/login",
-                    element: <Login />,
+                    // loader : get main data, filmography data and wikipedia photo, return an object with all of it
+                    loader: async ({ params }) => {
+                        const personId = params.id;
+                        return getPersonFullData(personId, language);
+                    },
+                    errorElement: <ErrorBoundary page="person" />,
                 },
                 {
                     path: "*",

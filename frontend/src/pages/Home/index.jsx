@@ -32,6 +32,7 @@ const Home = () => {
     };
 
     useEffect(() => {
+        console.log("HOME results");
         const queryFilters = filters
             .filter((filter) => filter.value !== "")
             .map((filter) => filter.param + filter.value)

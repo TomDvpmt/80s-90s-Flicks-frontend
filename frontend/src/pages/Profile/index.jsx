@@ -3,7 +3,13 @@ import { useSelector } from "react-redux";
 
 import UserForm from "../../components/UserForm";
 
-import { selectUserInfo } from "../../services/utils/selectors";
+import {
+    selectUserUsername,
+    selectUserFirstName,
+    selectUserLastName,
+    selectUserEmail,
+    selectUserId,
+} from "../../services/utils/selectors";
 
 import {
     Box,
@@ -25,7 +31,11 @@ const leftCellStyle = {
 };
 
 const Profile = () => {
-    const user = useSelector(selectUserInfo());
+    const userId = useSelector(selectUserId());
+    const username = useSelector(selectUserUsername());
+    const firstName = useSelector(selectUserFirstName());
+    const lastName = useSelector(selectUserLastName());
+    const email = useSelector(selectUserEmail());
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
@@ -58,23 +68,23 @@ const Profile = () => {
                                 <TableCell sx={leftCellStyle}>
                                     Nom d'utilisateur :
                                 </TableCell>
-                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{username}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={leftCellStyle}>
                                     Prénom :
                                 </TableCell>
-                                <TableCell>{user.firstName}</TableCell>
+                                <TableCell>{firstName}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={leftCellStyle}>Nom :</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>{lastName}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={leftCellStyle}>
                                     Adresse e-mail :
                                 </TableCell>
-                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{email}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -93,12 +103,12 @@ const Profile = () => {
             {showUpdateForm && (
                 <UserForm
                     page="profile"
-                    userId={user.id}
+                    userId={userId}
                     defaultFormValues={{
-                        username: user.username,
-                        email: user.email,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
+                        username,
+                        email,
+                        firstName,
+                        lastName,
                     }}
                     setShowUpdateForm={setShowUpdateForm}
                     setShowUpdateValidation={setShowUpdateValidation}

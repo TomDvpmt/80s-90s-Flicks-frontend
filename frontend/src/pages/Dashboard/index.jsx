@@ -6,7 +6,7 @@ import MovieCard from "../../components/MovieCard";
 
 import { getMovieData } from "../../utils/requests";
 import {
-    selectUserInfo,
+    selectUserLanguage,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
 } from "../../services/utils/selectors";
@@ -22,21 +22,21 @@ const moviesTypeSx = {
 };
 
 const Dashboard = () => {
-    const user = useSelector(selectUserInfo());
+    const language = useSelector(selectUserLanguage());
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const moviesToSee = useSelector(selectUserMoviesToSee());
 
     const [uniqueMovies, setUniqueMovies] = useState([]);
-
     const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
     const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
 
-    // Get all movies data from MoviesSeen, MoviesToSee, MoviesLiked, without duplicates
+    // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
-        const allMoviesIds = user.moviesSeen.concat(user.moviesToSee);
+        const allMoviesIds = moviesSeen.concat(moviesToSee);
+
         Promise.all(
             allMoviesIds.map(async (id) => {
-                return getMovieData(id)
+                return getMovieData(id, language)
                     .then((movie) => {
                         return {
                             id: movie.id,
@@ -59,7 +59,7 @@ const Dashboard = () => {
                 )
             )
             .catch((error) => console.log(error));
-    }, [user]);
+    }, [moviesSeen, moviesToSee, language]);
 
     // Display movie cards for each section of the dashboard
     useEffect(() => {

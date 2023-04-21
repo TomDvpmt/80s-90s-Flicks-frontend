@@ -51,11 +51,12 @@ const GenresFilter = () => {
         };
         getGenres()
             .then((data) => {
+                console.log("GENRES");
                 // exclude Documentary (99) and Television film (10770)
-                const allGenres = data.filter(
+                const genres = data.filter(
                     (genre) => genre.id !== 99 && genre.id !== 10770
                 );
-                setAllGenres(allGenres);
+                setAllGenres(genres);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -66,7 +67,7 @@ const GenresFilter = () => {
 
     useEffect(() => {
         dispatch(filtersConvertActiveGenresToFilter(activeGenres));
-    }, [activeGenres]);
+    }, [activeGenres, dispatch]);
 
     return (
         <FormControl component="fieldset">
@@ -78,7 +79,7 @@ const GenresFilter = () => {
                 multiple
                 value={activeGenres}
                 onChange={handleActiveGenresChange}
-                input={<OutlinedInput label="Tag" />}
+                input={<OutlinedInput label="Genres" />}
                 renderValue={(selected) => {
                     return (
                         allGenres.length > 0 &&

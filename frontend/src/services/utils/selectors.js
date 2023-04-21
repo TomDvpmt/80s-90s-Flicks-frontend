@@ -1,5 +1,7 @@
 // User
 
+import { createSelector } from "@reduxjs/toolkit";
+
 export const selectUserInfo = () => {
     return (state) => state.user;
 };
@@ -14,6 +16,18 @@ export const selectUserId = () => {
 
 export const selectUserUsername = () => {
     return (state) => state.user.username;
+};
+
+export const selectUserFirstName = () => {
+    return (state) => state.user.firstName;
+};
+
+export const selectUserLastName = () => {
+    return (state) => state.user.lastName;
+};
+
+export const selectUserEmail = () => {
+    return (state) => state.user.email;
 };
 
 export const selectUserMoviesSeen = () => {

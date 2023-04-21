@@ -52,7 +52,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
 
     useEffect(() => {
         dispatch(filtersSetPageNumber(currentPage));
-    }, [currentPage]);
+    }, [currentPage, dispatch]);
 
     return (
         <StyledPagination className="pagination">

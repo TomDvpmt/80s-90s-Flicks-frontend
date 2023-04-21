@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-import { getMovieData, setCastAndCrew } from "../../utils/requests";
+import { setCastAndCrew } from "../../utils/requests";
 import displayBigNumber from "../../utils/bigNumbers";
 
 import {
@@ -31,8 +31,6 @@ import {
     Checkbox,
 } from "@mui/material";
 import theme from "../../assets/styles/theme";
-
-import styled from "styled-components";
 
 const Movie = () => {
     const token = sessionStorage.getItem("token");
@@ -160,7 +158,7 @@ const Movie = () => {
             <Box component="section">
                 <Box
                     maxWidth="100%"
-                    sx={{ display: { xs: "none", sm: "block" } }}>
+                    sx={{ display: { xs: "none", md: "block" } }}>
                     {movie.backdrop_path && (
                         <img
                             src={`${imageBaseUrl}${"original"}${

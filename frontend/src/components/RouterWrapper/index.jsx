@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, ScrollRestoration, useLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -13,20 +13,22 @@ const RouterWrapper = () => {
     const data = useLoaderData();
     const dispatch = useDispatch();
 
-    token
-        ? dispatch(userSetInfo(data))
-        : dispatch(
-              userSetInfo({
-                  id: "",
-                  username: "",
-                  firstName: "",
-                  lastName: "",
-                  email: "",
-                  moviesSeen: [""],
-                  moviesToSee: [""],
-                  language: "fr",
-              })
-          );
+    useEffect(() => {
+        token
+            ? dispatch(userSetInfo(data))
+            : dispatch(
+                  userSetInfo({
+                      id: "",
+                      username: "",
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      moviesSeen: [""],
+                      moviesToSee: [""],
+                      language: "fr",
+                  })
+              );
+    }, [token, data]);
 
     return (
         <>
