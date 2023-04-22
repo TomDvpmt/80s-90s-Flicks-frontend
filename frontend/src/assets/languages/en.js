@@ -102,6 +102,10 @@ export const language_en = {
         },
     },
     components: {
+        addToFavorites: {
+            add: "Add to favorites",
+            remove: "Remove from favorites",
+        },
         movieCard: {
             actorsWith: "With",
         },

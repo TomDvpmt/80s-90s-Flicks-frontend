@@ -2,39 +2,51 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import AddToFavorites from "../../components/AddToFavorites";
-import ToggleMovieSeenOrToSee from "../../components/ToggleMovieSeenOrToSee";
+import ToggleFavorite from "../../components/ToggleFavorite";
+import ToggleMovieSeen from "../../components/ToggleMovieSeen";
+import ToggleMovieToSee from "../../components/ToggleMovieToSee";
 import ErrorMessage from "../../components/ErrorMessage";
 
+import {
+    userAddToMoviesToSee,
+    userRemoveFromMoviesToSee,
+    userAddToMoviesSeen,
+    userRemoveFromMoviesSeen,
+} from "../../services/features/user";
+import { filtersAddActiveGenre } from "../../services/features/filters";
+
+import {
+    selectUserId,
+    selectUserIsSignedIn,
+    selectUserLanguage,
+    selectUserMoviesToSee,
+    selectUserMoviesSeen,
+    selectTmdbImagesSecureUrl,
+} from "../../services/utils/selectors";
+
+import { updateUserMoviesInDB } from "../../utils/user";
 import { setCastAndCrew } from "../../utils/movie";
 import displayBigNumber from "../../utils/bigNumbers";
 
-import {
-    selectUserIsSignedIn,
-    selectUserLanguage,
-    selectTmdbImagesSecureUrl,
-} from "../../services/utils/selectors";
-import { filtersAddActiveGenre } from "../../services/features/filters";
-
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, FormGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Movie = () => {
+    const userId = useSelector(selectUserId());
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const language = useSelector(selectUserLanguage());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const dispatch = useDispatch();
+
+    const movieId = parseInt(useParams().id);
+    const movieData = useLoaderData();
+    const moviesToSee = useSelector(selectUserMoviesToSee());
+    const moviesSeen = useSelector(selectUserMoviesSeen());
 
     const [movie, setMovie] = useState({});
     const [director, setDirector] = useState("");
     const [actors, setActors] = useState([""]);
     const [errorMessage, setErrorMessage] = useState("");
-
-    const movieData = useLoaderData();
-
-    const movieId = parseInt(useParams().id);
-
-    const language = useSelector(selectUserLanguage());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
-
     const [langData, setLangData] = useState({});
 
     const handleGenreClick = (e) => {
@@ -52,6 +64,37 @@ const Movie = () => {
     useEffect(() => {
         setCastAndCrew("movie", movieId, setDirector, setActors);
     }, [actors.length, movieId]);
+
+    const toggleMovieInUserMovies = (action) => {
+        let bodyObject = {};
+        switch (action) {
+            case userAddToMoviesToSee:
+                bodyObject = { moviesToSee: [...moviesToSee, movieId] };
+                break;
+            case userRemoveFromMoviesToSee:
+                bodyObject = {
+                    moviesToSee: moviesToSee.filter((id) => id !== movieId),
+                };
+                break;
+            case userAddToMoviesSeen:
+                bodyObject = { moviesSeen: [...moviesSeen, movieId] };
+                break;
+            case userRemoveFromMoviesSeen:
+                bodyObject = {
+                    moviesSeen: moviesSeen.filter((id) => id !== movieId),
+                };
+                break;
+            default:
+                bodyObject = {};
+        }
+
+        dispatch(action(movieId));
+        try {
+            updateUserMoviesInDB(userId, bodyObject);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Box component="main">
@@ -78,12 +121,12 @@ const Movie = () => {
                         />
                     )}
                     <Box sx={{ padding: ".5rem" }}>
-                        {isSignedIn && <AddToFavorites movieId={movieId} />}
+                        {isSignedIn && <ToggleFavorite movieId={movieId} />}
                         <Typography
                             component="h1"
                             variant="h1"
                             align="center"
-                            sx={{ ffontWeight: "700" }}>
+                            sx={{ fontWeight: "700" }}>
                             {movie.title}
                         </Typography>
                         <Typography
@@ -148,7 +191,22 @@ const Movie = () => {
                         <br />
                         {isSignedIn && (
                             <Box component="form">
-                                <ToggleMovieSeenOrToSee movieId={movieId} />
+                                <FormGroup>
+                                    <ToggleMovieSeen
+                                        movieId={movieId}
+                                        langData={langData}
+                                        toggleMovieInUserMovies={
+                                            toggleMovieInUserMovies
+                                        }
+                                    />
+                                    <ToggleMovieToSee
+                                        movieId={movieId}
+                                        langData={langData}
+                                        toggleMovieInUserMovies={
+                                            toggleMovieInUserMovies
+                                        }
+                                    />
+                                </FormGroup>
                             </Box>
                         )}
                     </Box>

@@ -102,6 +102,10 @@ export const language_fr = {
         },
     },
     components: {
+        addToFavorites: {
+            add: "Ajouter aux favoris",
+            remove: "Retirer des favoris",
+        },
         movieCard: {
             actorsWith: "Avec",
         },

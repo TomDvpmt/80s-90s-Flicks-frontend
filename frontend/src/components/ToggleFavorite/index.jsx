@@ -10,15 +10,15 @@ import {
     selectUserId,
 } from "../../services/utils/selectors";
 
-import { fetchMovieInUser } from "../../utils/movie";
+import { updateUserMoviesInDB } from "../../utils/user";
 
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
 
-const AddToFavorites = ({ movieId }) => {
-    AddToFavorites.propTypes = {
+const ToggleFavorite = ({ movieId }) => {
+    ToggleFavorite.propTypes = {
         movieId: PropTypes.number.isRequired,
     };
 
@@ -30,7 +30,7 @@ const AddToFavorites = ({ movieId }) => {
     const addToFavorites = () => {
         dispatch(userAddToFavorites(movieId));
         try {
-            fetchMovieInUser(userId, {
+            updateUserMoviesInDB(userId, {
                 favorites: [...favorites, movieId],
             });
         } catch (error) {
@@ -41,7 +41,7 @@ const AddToFavorites = ({ movieId }) => {
     const removeFromFavorites = () => {
         dispatch(userRemoveFromFavorites(movieId));
         try {
-            fetchMovieInUser(userId, {
+            updateUserMoviesInDB(userId, {
                 favorites: favorites.filter((id) => id !== movieId),
             });
         } catch (error) {
@@ -73,4 +73,4 @@ const AddToFavorites = ({ movieId }) => {
     );
 };
 
-export default AddToFavorites;
+export default ToggleFavorite;

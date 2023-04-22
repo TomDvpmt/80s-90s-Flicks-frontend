@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import AddToFavorites from "../AddToFavorites";
+import ToggleFavorite from "../ToggleFavorite";
 
 import {
     selectUserLanguage,
@@ -82,7 +82,7 @@ const MovieCard = ({ page, movie }) => {
                     className="card">
                     <StyledCardContainer>
                         {currentLocation === "home" && (
-                            <AddToFavorites movieId={movie.id} />
+                            <ToggleFavorite movieId={movie.id} />
                         )}
                         <CardContent
                             className="movieInfo"
