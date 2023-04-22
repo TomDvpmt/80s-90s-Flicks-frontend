@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 const YearFilter = ({ setCurrentPage }) => {
     YearFilter.propTypes = {
-        setCurrentPage: PropTypes.func,
+        setCurrentPage: PropTypes.func.isRequired,
     };
 
     const yearOption = useSelector(selectFiltersYear());

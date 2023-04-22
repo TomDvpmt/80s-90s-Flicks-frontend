@@ -2,20 +2,15 @@ import { TextField } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
+const UsernameInput = ({ username, setUsername }) => {
     UsernameInput.propTypes = {
-        username: PropTypes.string,
-        setUsername: PropTypes.func,
-        setErrorMessage: PropTypes.func,
+        username: PropTypes.string.isRequired,
+        setUsername: PropTypes.func.isRequired,
     };
 
     const handleChange = (e) => {
         setUsername(e.target.value);
     };
-
-    // const handleFocus = () => {
-    //     setErrorMessage("");
-    // };
 
     return (
         <TextField
@@ -29,8 +24,6 @@ const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
             label="Nom d'utilisateur"
             value={username}
             onChange={handleChange}
-            // onFocus={handleFocus}
-            // error={usernameError !== ""}
         />
     );
 };

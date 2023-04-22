@@ -119,3 +119,23 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
         })
         .catch((error) => console.log(error));
 };
+
+/**
+ * Send PUT request to update MoviesToSee, MoviesSeen or Favorites in database
+ *
+ * @param {Number} userId
+ * @param {Object} bodyObject
+ */
+
+export const fetchMovieInUser = (userId, bodyObject) => {
+    const token = sessionStorage.getItem("token");
+
+    fetch(`/API/users/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `BEARER ${token}`,
+        },
+        body: JSON.stringify(bodyObject),
+    });
+};

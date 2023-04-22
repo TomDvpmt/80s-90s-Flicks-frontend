@@ -1,6 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import ScrollToHashElement from "../../components/ScrollToHashElement";
 
 import {
     selectUserMoviesToSee,
@@ -16,6 +18,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Link,
 } from "@mui/material";
 import { LocalMovies, Check, Favorite } from "@mui/icons-material";
 
@@ -48,74 +51,91 @@ const SideNav = () => {
     ];
 
     return (
-        <Paper
-            component="nav"
-            elevation={4}
-            sx={{
-                bgcolor: "white",
-                width: { xs: "100%", sm: "auto" },
-                minWidth: "200px",
-                position: "sticky",
-                top: "0",
-                zIndex: "99",
-            }}>
-            <List
+        <>
+            <ScrollToHashElement />
+            <Paper
+                component="nav"
+                elevation={4}
                 sx={{
-                    display: "flex",
-                    flexDirection: {
-                        xs: "row",
-                        sm: "column",
-                    },
+                    bgcolor: "white",
+                    width: { xs: "100%", sm: "auto" },
+                    minWidth: "200px",
+                    position: "sticky",
+                    top: "0",
+                    zIndex: "99",
                 }}>
-                {sideNavLinks.map((item, index) => {
-                    return (
-                        <ListItem
-                            key={index}
-                            sx={{
-                                justifyContent: {
-                                    xs: "center",
-                                    sm: "flex-start",
-                                },
-                            }}>
-                            <NavLink to={`/dashboard/#${item.url}`}>
-                                <ListItemButton
-                                    sx={{
-                                        gap: { xs: ".5rem", sm: "1rem" },
-                                        flexDirection: {
-                                            xs: "column",
-                                            sm: "row",
-                                        },
-                                        padding: {
-                                            xs: "0",
-                                        },
-                                    }}>
-                                    <ListItemIcon
+                <List
+                    sx={{
+                        display: "flex",
+                        flexDirection: {
+                            xs: "row",
+                            sm: "column",
+                        },
+                    }}>
+                    {sideNavLinks.map((item, index) => {
+                        return (
+                            <ListItem
+                                key={index}
+                                sx={{
+                                    justifyContent: {
+                                        xs: "center",
+                                        sm: "flex-start",
+                                    },
+                                }}>
+                                <Link
+                                    component={RouterLink}
+                                    variant="button"
+                                    to={`/dashboard/#${item.url}`}
+                                    underline="none"
+                                    sx={{ flexGrow: "1" }}>
+                                    <ListItemButton
                                         sx={{
-                                            minWidth: "0",
-                                            color: theme.palette.primary.main,
+                                            padding: {
+                                                xs: "0 .5rem",
+                                            },
+
+                                            flexDirection: {
+                                                xs: "column",
+                                                sm: "row",
+                                            },
                                             justifyContent: {
-                                                xs: "center",
+                                                xs: "flex-start",
                                             },
                                         }}>
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={item.primary}
-                                        secondary={item.secondary}
-                                        sx={{
-                                            color: theme.palette.primary.main,
-                                            textAlign: {
-                                                xs: "center",
-                                            },
-                                        }}
-                                    />
-                                </ListItemButton>
-                            </NavLink>
-                        </ListItem>
-                    );
-                })}
-            </List>
-        </Paper>
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: "0",
+                                                color: theme.palette.primary
+                                                    .main,
+                                                justifyContent: {
+                                                    xs: "center",
+                                                },
+                                            }}>
+                                            {item.icon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={item.primary}
+                                            secondary={item.secondary}
+                                            sx={{
+                                                display: {
+                                                    xs: "none",
+                                                    sm: "block",
+                                                },
+                                                color: theme.palette.primary
+                                                    .main,
+                                                textAlign: {
+                                                    xs: "center",
+                                                },
+                                            }}
+                                        />
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem>
+                        );
+                    })}
+                </List>
+            </Paper>
+        </>
     );
 };
 

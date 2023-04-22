@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const Branding = ({ location }) => {
     Branding.propTypes = {
-        location: PropTypes.string,
+        location: PropTypes.string.isRequired,
     };
     return (
         <Box

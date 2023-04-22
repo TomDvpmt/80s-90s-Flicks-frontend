@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, ScrollRestoration, useLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import ScrollToHashElement from "../ScrollToHashElement";
+// import ScrollToHashElement from "../ScrollToHashElement";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 
@@ -25,6 +25,7 @@ const RouterWrapper = () => {
                       email: "",
                       moviesSeen: [""],
                       moviesToSee: [""],
+                      favorites: [""],
                       language: "fr",
                   })
               );
@@ -33,7 +34,7 @@ const RouterWrapper = () => {
     return (
         <>
             <ScrollRestoration />
-            <ScrollToHashElement />
+            {/* <ScrollToHashElement /> */}
             <Header />
             <Outlet />
             <Footer />

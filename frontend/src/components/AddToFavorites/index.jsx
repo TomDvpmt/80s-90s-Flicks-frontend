@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -6,32 +5,33 @@ import {
     userRemoveFromFavorites,
 } from "../../services/features/user";
 
-import { selectUserFavorites } from "../../services/utils/selectors";
+import {
+    selectUserFavorites,
+    selectUserId,
+} from "../../services/utils/selectors";
+
+import { fetchMovieInUser } from "../../utils/movie";
 
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
 
-const AddToFavorites = ({ movieId, fetchURI, fetchParams }) => {
+const AddToFavorites = ({ movieId }) => {
     AddToFavorites.propTypes = {
-        movieId: PropTypes.number,
-        fetchURI: PropTypes.string,
-        fetchParams: PropTypes.object,
+        movieId: PropTypes.number.isRequired,
     };
 
     const dispatch = useDispatch();
+    const userId = useSelector(selectUserId());
     const favorites = useSelector(selectUserFavorites());
     const isFavorite = favorites.includes(movieId);
 
     const addToFavorites = () => {
         dispatch(userAddToFavorites(movieId));
         try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({
-                    favorites: [...favorites, movieId],
-                }),
+            fetchMovieInUser(userId, {
+                favorites: [...favorites, movieId],
             });
         } catch (error) {
             console.log(error);
@@ -41,11 +41,8 @@ const AddToFavorites = ({ movieId, fetchURI, fetchParams }) => {
     const removeFromFavorites = () => {
         dispatch(userRemoveFromFavorites(movieId));
         try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({
-                    favorites: favorites.filter((id) => id !== movieId),
-                }),
+            fetchMovieInUser(userId, {
+                favorites: favorites.filter((id) => id !== movieId),
             });
         } catch (error) {
             console.log(error);

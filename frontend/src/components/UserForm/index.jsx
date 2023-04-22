@@ -23,14 +23,13 @@ const UserForm = ({
     defaultFormValues,
     setShowUpdateForm,
     setShowUpdateValidation,
-    setUserData,
 }) => {
     UserForm.propTypes = {
+        page: PropTypes.string.isRequired,
         userId: PropTypes.string,
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
         setShowUpdateValidation: PropTypes.func,
-        setUserData: PropTypes.func,
     };
 
     const navigate = useNavigate();
@@ -148,7 +147,6 @@ const UserForm = ({
         userId,
         setShowUpdateForm,
         setShowUpdateValidation,
-        setUserData,
         navigate,
         dispatch,
     ]);

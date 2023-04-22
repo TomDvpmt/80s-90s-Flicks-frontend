@@ -43,6 +43,7 @@ const userReducer = createReducer(initialState, (builder) => {
             draft.email = action.payload.email;
             draft.moviesSeen = action.payload.moviesSeen;
             draft.moviesToSee = action.payload.moviesToSee;
+            draft.favorites = action.payload.favorites;
             draft.language = action.payload.language;
         })
         .addCase(userSignOut, (draft, action) => {

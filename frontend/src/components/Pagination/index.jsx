@@ -29,9 +29,9 @@ const StyledPagination = styled.div`
 
 const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     Pagination.propTypes = {
-        numberOfPages: PropTypes.number,
-        currentPage: PropTypes.number,
-        setCurrentPage: PropTypes.func,
+        numberOfPages: PropTypes.number.isRequired,
+        currentPage: PropTypes.number.isRequired,
+        setCurrentPage: PropTypes.func.isRequired,
     };
 
     const dispatch = useDispatch();

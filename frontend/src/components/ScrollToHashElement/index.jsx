@@ -32,7 +32,7 @@ const ScrollToHashElement = () => {
         }
     }, [hashElement]);
 
-    return null;
+    return false;
 };
 
 export default ScrollToHashElement;

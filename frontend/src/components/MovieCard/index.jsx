@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import AddToFavorites from "../AddToFavorites";
+
 import {
     selectUserLanguage,
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
+    selectPageLocation,
 } from "../../services/utils/selectors";
 
 import { setCastAndCrew } from "../../utils/movie";
@@ -50,11 +53,12 @@ const StyledCardContainer = styled.div`
 
 const MovieCard = ({ page, movie }) => {
     MovieCard.propTypes = {
-        page: PropTypes.string,
-        movie: PropTypes.object,
+        page: PropTypes.string.isRequired,
+        movie: PropTypes.object.isRequired,
     };
 
     const language = useSelector(selectUserLanguage());
+    const currentLocation = useSelector(selectPageLocation());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
 
@@ -77,6 +81,9 @@ const MovieCard = ({ page, movie }) => {
                     }}
                     className="card">
                     <StyledCardContainer>
+                        {currentLocation === "home" && (
+                            <AddToFavorites movieId={movie.id} />
+                        )}
                         <CardContent
                             className="movieInfo"
                             sx={{

@@ -13,6 +13,7 @@ import {
     selectUserLanguage,
 } from "../services/utils/selectors";
 
+import SetPage from "../components/SetPage";
 import RouterWrapper from "../components/RouterWrapper";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -51,50 +52,72 @@ function Router() {
         return data;
     };
 
+    const routes = [
+        {
+            page: "home",
+            path: "/",
+            element: <Home />,
+        },
+        {
+            page: "register",
+            path: "register",
+            element: <Register />,
+        },
+        {
+            page: "login",
+            path: "login",
+            element: <Login />,
+        },
+        {
+            page: "profile",
+            path: "profile",
+            element: isSignedIn ? <Profile /> : <Login />,
+        },
+        {
+            page: "dashboard",
+            path: "dashboard",
+            element: isSignedIn ? <Dashboard /> : <Login />,
+        },
+        {
+            page: "movie",
+            path: "movies/:id",
+            element: <Movie />,
+            loader: ({ params }) => getMovieData(params.id, language),
+            errorElement: true,
+        },
+        {
+            page: "person",
+            path: "person/:id",
+            element: <Person />,
+            loader: async ({ params }) =>
+                getPersonFullData(params.id, language),
+            errorElement: true,
+        },
+        {
+            page: "error404",
+            path: "*",
+            element: <Error404 />,
+        },
+    ];
+
     const router = createBrowserRouter([
         {
             element: <RouterWrapper />,
             loader: async () => getUserInfo(),
             errorElement: <ErrorBoundary />,
-            children: [
-                {
-                    path: "/",
-                    element: <Home />,
-                },
-                {
-                    path: "register",
-                    element: <Register />,
-                },
-                {
-                    path: "login",
-                    element: <Login />,
-                },
-                {
-                    path: "profile",
-                    element: isSignedIn ? <Profile /> : <Login />,
-                },
-                {
-                    path: "dashboard",
-                    element: isSignedIn ? <Dashboard /> : <Login />,
-                },
-                {
-                    path: "movies/:id",
-                    element: <Movie />,
-                    loader: ({ params }) => getMovieData(params.id, language),
-                    errorElement: <ErrorBoundary page="movie" />,
-                },
-                {
-                    path: "person/:id",
-                    element: <Person />,
-                    loader: async ({ params }) =>
-                        getPersonFullData(params.id, language),
-                    errorElement: <ErrorBoundary page="person" />,
-                },
-                {
-                    path: "*",
-                    element: <Error404 />,
-                },
-            ],
+            children: routes.map((route) => ({
+                path: route.path,
+                element: (
+                    <>
+                        <SetPage page={route.page} />
+                        {route.element}
+                    </>
+                ),
+                loader: route.loader,
+                errorElement: route.errorElement && (
+                    <ErrorBoundary page={route.page} />
+                ),
+            })),
         },
     ]);
 

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 const ErrorMessage = ({ errorMessage }) => {
     ErrorMessage.propTypes = {
-        errorMessage: PropTypes.string,
+        errorMessage: PropTypes.string.isRequired,
     };
 
     return (

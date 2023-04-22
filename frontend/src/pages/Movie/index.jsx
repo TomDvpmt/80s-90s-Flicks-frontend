@@ -3,6 +3,7 @@ import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import AddToFavorites from "../../components/AddToFavorites";
+import ToggleMovieSeenOrToSee from "../../components/ToggleMovieSeenOrToSee";
 import ErrorMessage from "../../components/ErrorMessage";
 
 import { setCastAndCrew } from "../../utils/movie";
@@ -10,34 +11,15 @@ import displayBigNumber from "../../utils/bigNumbers";
 
 import {
     selectUserIsSignedIn,
-    selectUserId,
-    selectUserMoviesToSee,
-    selectUserMoviesSeen,
-    selectUserFavorites,
     selectUserLanguage,
     selectTmdbImagesSecureUrl,
 } from "../../services/utils/selectors";
 import { filtersAddActiveGenre } from "../../services/features/filters";
-import {
-    userAddToMoviesSeen,
-    userRemoveFromMoviesSeen,
-    userAddToMoviesToSee,
-    userRemoveFromMoviesToSee,
-    userAddToFavorites,
-    userRemoveFromFavorites,
-} from "../../services/features/user";
 
-import {
-    Box,
-    Typography,
-    FormGroup,
-    FormControlLabel,
-    Checkbox,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Movie = () => {
-    const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const dispatch = useDispatch();
 
@@ -48,126 +30,12 @@ const Movie = () => {
 
     const movieData = useLoaderData();
 
-    const movieId = useParams().id;
-    const moviesSeen = useSelector(selectUserMoviesSeen());
-    const moviesToSee = useSelector(selectUserMoviesToSee());
-    const userHasSeenMovie = moviesSeen.includes(movieId);
-    const userWantsToSeeMovie = moviesToSee.includes(movieId);
+    const movieId = parseInt(useParams().id);
 
-    const userId = useSelector(selectUserId());
     const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
-    const fetchURI = `/API/users/${userId}`;
-    const fetchParams = {
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json",
-            Authorization: `BEARER ${token}`,
-        },
-    };
-
     const [langData, setLangData] = useState({});
-
-    const addToMoviesSeen = () => {
-        dispatch(userAddToMoviesSeen(movieId));
-        try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({ moviesSeen: [...moviesSeen, movieId] }),
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const removeFromMoviesSeen = () => {
-        dispatch(userRemoveFromMoviesSeen(movieId));
-        try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({
-                    moviesSeen: moviesSeen.filter((id) => id !== movieId),
-                }),
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const addToMoviesToSee = () => {
-        dispatch(userAddToMoviesToSee(movieId));
-        try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({
-                    moviesToSee: [...moviesToSee, movieId],
-                }),
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const removeFromMoviesToSee = () => {
-        dispatch(userRemoveFromMoviesToSee(movieId));
-        try {
-            fetch(fetchURI, {
-                ...fetchParams,
-                body: JSON.stringify({
-                    moviesToSee: moviesToSee.filter((id) => id !== movieId),
-                }),
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    // const addToFavorites = () => {
-    //     dispatch(userAddToFavorites(movieId));
-    //     try {
-    //         fetch(fetchURI, {
-    //             ...fetchParams,
-    //             body: JSON.stringify({
-    //                 favorites: [...favorites, movieId],
-    //             }),
-    //         });
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    // const removeFromFavorites = () => {
-    //     dispatch(userRemoveFromFavorites(movieId));
-    //     try {
-    //         fetch(fetchURI, {
-    //             ...fetchParams,
-    //             body: JSON.stringify({
-    //                 favorites: favorites.filter((id) => id !== movieId),
-    //             }),
-    //         });
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    const handleMovieSeenCheckbox = () => {
-        if (userHasSeenMovie) {
-            removeFromMoviesSeen();
-        } else {
-            addToMoviesSeen();
-            userWantsToSeeMovie && removeFromMoviesToSee();
-        }
-    };
-
-    const handleMovieToSee = () => {
-        if (userWantsToSeeMovie) {
-            removeFromMoviesToSee();
-        } else {
-            addToMoviesToSee();
-            userHasSeenMovie && removeFromMoviesSeen();
-        }
-    };
 
     const handleGenreClick = (e) => {
         dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
@@ -210,11 +78,7 @@ const Movie = () => {
                         />
                     )}
                     <Box sx={{ padding: ".5rem" }}>
-                        <AddToFavorites
-                            movieId={movieId}
-                            fetchURI={fetchURI}
-                            fetchParams={fetchParams}
-                        />
+                        {isSignedIn && <AddToFavorites movieId={movieId} />}
                         <Typography
                             component="h1"
                             variant="h1"
@@ -284,28 +148,7 @@ const Movie = () => {
                         <br />
                         {isSignedIn && (
                             <Box component="form">
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={userWantsToSeeMovie}
-                                                onChange={handleMovieToSee}
-                                            />
-                                        }
-                                        label={langData.toSee}
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={userHasSeenMovie}
-                                                onChange={
-                                                    handleMovieSeenCheckbox
-                                                }
-                                            />
-                                        }
-                                        label={langData.seen}
-                                    />
-                                </FormGroup>
+                                <ToggleMovieSeenOrToSee movieId={movieId} />
                             </Box>
                         )}
                     </Box>

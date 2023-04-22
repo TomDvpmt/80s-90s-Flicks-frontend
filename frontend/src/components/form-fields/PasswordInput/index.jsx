@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 const PasswordInput = ({ password, setPassword }) => {
     PasswordInput.propTypes = {
-        password: PropTypes.string,
-        setPassword: PropTypes.func,
+        password: PropTypes.string.isRequired,
+        setPassword: PropTypes.func.isRequired,
     };
 
     const handleChange = (e) => {
