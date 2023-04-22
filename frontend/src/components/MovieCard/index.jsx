@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import ToggleFavorite from "../ToggleFavorite";
+import MovieCastAndCrew from "../MovieCastAndCrew";
 
 import {
     selectUserLanguage,
@@ -65,9 +66,9 @@ const MovieCard = ({ page, movie }) => {
     const [director, setDirector] = useState("");
     const [actors, setActors] = useState([""]);
 
-    useEffect(() => {
-        setCastAndCrew(page, movie.id, setDirector, setActors);
-    }, [page, movie.id]);
+    // useEffect(() => {
+    //     setCastAndCrew(page, movie.id, setDirector, setActors);
+    // }, [page, movie.id]);
 
     return (
         <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
@@ -109,7 +110,8 @@ const MovieCard = ({ page, movie }) => {
                                     {movie.originalTitle}
                                 </Typography>
                             )}
-                            <Box mb="1rem">
+                            <MovieCastAndCrew movie={movie} />
+                            {/* <Box mb="1rem">
                                 {director}
                                 {movie.releaseDate && (
                                     <Typography component="span" ml={1}>
@@ -125,7 +127,7 @@ const MovieCard = ({ page, movie }) => {
                                     }{" "}
                                     {actors}
                                 </Typography>
-                            )}
+                            )} */}
                         </CardContent>
                         <CardMedia
                             image={`${imageBaseUrl}${

@@ -30,18 +30,93 @@ export const getMovieData = async (id, language) => {
  */
 
 const getMovieCredits = async (movieId) => {
-    try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
-            {
-                method: "GET",
-            }
-        );
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error);
+    if (movieId) {
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
+                {
+                    method: "GET",
+                }
+            );
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
     }
+};
+
+/**
+ * Get the Link component for movie director
+ *
+ * @param {String} page
+ * @param {Object} crew
+ * @returns { HTMLAnchorElement }
+ */
+
+const getMovieDirectorElement = (page, crew) => {
+    const movieDirector = crew.filter((person) => person.job === "Director")[0];
+
+    let directorElement;
+
+    if (page === "home" || page === "dashboard") {
+        directorElement = movieDirector ? (
+            <Typography component="span" fontWeight="700">
+                {movieDirector.name}
+            </Typography>
+        ) : (
+            ""
+        );
+    } else if (page === "movie") {
+        directorElement = movieDirector ? (
+            <Link to={`/person/${movieDirector.id}`}>{movieDirector.name}</Link>
+        ) : (
+            ""
+        );
+    }
+    return directorElement;
+};
+
+/**
+ * Get the Link (React Router) or Typography (MUI) components for movie actors
+ *
+ * @param {String} page
+ * @param {Object} cast
+ * @returns {Array} // Array of HTMLAnchorElement
+ */
+
+const getMovieActorsElements = (page, cast) => {
+    const numberOfActors = page === "home" || "dashboard" ? 3 : 10;
+    let actorsElements;
+
+    actorsElements =
+        cast && cast.length > 0
+            ? cast
+                  .slice(
+                      0,
+                      cast.length >= numberOfActors
+                          ? numberOfActors
+                          : cast.length
+                  )
+                  .map((actor, index) => {
+                      if (page === "home" || page === "dashboard") {
+                          return (
+                              <Typography key={actor.id} component="span">
+                                  {actor.name}
+                                  {index === numberOfActors - 1 ? "" : ", "}
+                              </Typography>
+                          );
+                      } else if (page === "movie") {
+                          return (
+                              <Link key={actor.id} to={`/person/${actor.id}`}>
+                                  {actor.name}
+                                  {index === numberOfActors - 1 ? "" : ", "}
+                              </Link>
+                          );
+                      }
+                  })
+            : [""];
+    return actorsElements;
 };
 
 /**
@@ -53,69 +128,17 @@ const getMovieCredits = async (movieId) => {
  */
 
 export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
-    getMovieCredits(movieId)
-        .then((data) => {
-            const movieDirector = data.crew.filter(
-                (person) => person.job === "Director"
-            )[0];
-            let directorElement;
-            if (page === "home" || page === "dashboard") {
-                directorElement = movieDirector ? (
-                    <Typography component="span" fontWeight="700">
-                        {movieDirector.name}
-                    </Typography>
-                ) : (
-                    ""
+    movieId &&
+        getMovieCredits(movieId)
+            .then((data) => {
+                const directorElement = getMovieDirectorElement(
+                    page,
+                    data.crew
                 );
-            } else if (page === "movie") {
-                directorElement = movieDirector ? (
-                    <Link to={`/person/${movieDirector.id}`}>
-                        {movieDirector.name}
-                    </Link>
-                ) : (
-                    ""
-                );
-            }
-            setDirector(directorElement);
+                setDirector(directorElement);
 
-            const numberOfActors = page === "home" ? 3 : 10;
-
-            data.cast.length > 0
-                ? setActors(
-                      data.cast
-                          .slice(
-                              0,
-                              data.cast.length >= numberOfActors
-                                  ? numberOfActors
-                                  : data.cast.length
-                          )
-                          .map((actor, index) => {
-                              if (page === "home" || page === "dashboard") {
-                                  return (
-                                      <Typography
-                                          key={actor.id}
-                                          component="span">
-                                          {actor.name}
-                                          {index === numberOfActors - 1
-                                              ? ""
-                                              : ", "}
-                                      </Typography>
-                                  );
-                              } else if (page === "movie") {
-                                  return (
-                                      <Link
-                                          key={actor.id}
-                                          to={`/person/${actor.id}`}>
-                                          {actor.name}
-                                          {index === numberOfActors - 1
-                                              ? ""
-                                              : ", "}
-                                      </Link>
-                                  );
-                              }
-                          })
-                  )
-                : setActors([""]);
-        })
-        .catch((error) => console.log(error));
+                const actorsElements = getMovieActorsElements(page, data.cast);
+                setActors(actorsElements);
+            })
+            .catch((error) => console.error(error));
 };

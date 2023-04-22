@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import MovieHeading from "../../components/MovieHeading";
+import MovieCastAndCrew from "../../components/MovieCastAndCrew";
 import ToggleFavorite from "../../components/ToggleFavorite";
 import ToggleMovieSeen from "../../components/ToggleMovieSeen";
 import ToggleMovieToSee from "../../components/ToggleMovieToSee";
@@ -25,7 +27,6 @@ import {
 } from "../../services/utils/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
-import { setCastAndCrew } from "../../utils/movie";
 import displayBigNumber from "../../utils/bigNumbers";
 
 import { Box, Typography, FormGroup } from "@mui/material";
@@ -44,8 +45,6 @@ const Movie = () => {
     const moviesSeen = useSelector(selectUserMoviesSeen());
 
     const [movie, setMovie] = useState({});
-    const [director, setDirector] = useState("");
-    const [actors, setActors] = useState([""]);
     const [errorMessage, setErrorMessage] = useState("");
     const [langData, setLangData] = useState({});
 
@@ -60,10 +59,6 @@ const Movie = () => {
     useEffect(() => {
         setMovie(movieData);
     }, [movieData]);
-
-    useEffect(() => {
-        setCastAndCrew("movie", movieId, setDirector, setActors);
-    }, [actors.length, movieId]);
 
     const toggleMovieInUserMovies = (action) => {
         let bodyObject = {};
@@ -122,32 +117,16 @@ const Movie = () => {
                     )}
                     <Box sx={{ padding: ".5rem" }}>
                         {isSignedIn && <ToggleFavorite movieId={movieId} />}
-                        <Typography
-                            component="h1"
-                            variant="h1"
-                            align="center"
-                            sx={{ fontWeight: "700" }}>
-                            {movie.title}
-                        </Typography>
-                        <Typography
-                            paragraph
-                            align="center"
-                            sx={{ fontStyle: "italic" }}>
-                            {movie.title !== movie.original_title &&
-                                `(${movie.original_title})`}
-                        </Typography>
+                        <MovieHeading
+                            title={movie.title}
+                            originalTitle={movie.original_title}
+                        />
                         {movie.tagline && (
                             <Typography paragraph fontWeight="700">
                                 {movie.tagline}
                             </Typography>
                         )}
-                        <Typography paragraph>
-                            {director}
-                            {director && movie.release_date && " | "}
-                            {movie.release_date &&
-                                movie.release_date.slice(0, 4)}
-                        </Typography>
-                        <Typography paragraph>{actors}</Typography>
+                        <MovieCastAndCrew movie={movie} />
                         {movie.genres && (
                             <Box>
                                 {movie.genres.map((genre, index) => (
