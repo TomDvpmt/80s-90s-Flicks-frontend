@@ -1,11 +1,5 @@
 // User
 
-import { createSelector } from "@reduxjs/toolkit";
-
-export const selectUserInfo = () => {
-    return (state) => state.user;
-};
-
 export const selectUserIsSignedIn = () => {
     return (state) => state.user.isSignedIn;
 };
@@ -30,12 +24,16 @@ export const selectUserEmail = () => {
     return (state) => state.user.email;
 };
 
-export const selectUserMoviesSeen = () => {
+export const selectUserMoviesSeen = (state) => {
     return (state) => state.user.moviesSeen;
 };
 
 export const selectUserMoviesToSee = () => {
     return (state) => state.user.moviesToSee;
+};
+
+export const selectUserFavorites = () => {
+    return (state) => state.user.favorites;
 };
 
 export const selectUserLanguage = () => {

@@ -47,17 +47,19 @@ const Person = () => {
                     alt={person.name}
                 />
             )}
-            <Typography component="h2">Filmography</Typography>
+            <Typography component="h2">Filmographie</Typography>
             {personDirectingMovies.length > 0 && (
                 <>
-                    <Typography component="h3">Director</Typography>
+                    <Typography component="h3">
+                        {person.gender === 1 ? "Réalisatrice" : "Réalisateur"}
+                    </Typography>
                     <ul>{personDirectingMovies}</ul>
                 </>
             )}
             {personActingMovies.length > 0 && (
                 <>
                     <Typography component="h3">
-                        {person.gender === 1 ? "Actress" : "Actor"}
+                        {person.gender === 1 ? "Actrice" : "Acteur"}
                     </Typography>
                     <ul>{personActingMovies}</ul>
                 </>
@@ -65,7 +67,7 @@ const Person = () => {
             <Link
                 to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
                 target="_blank">
-                See on Wikipedia
+                Voir sur Wikipédia
             </Link>
         </StyledPerson>
     );

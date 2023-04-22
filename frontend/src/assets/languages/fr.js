@@ -8,6 +8,20 @@ export const language_fr = {
                 favorites: "Favoris",
                 myReviews: "Mes critiques",
             },
+            sideNav: {
+                toSee: {
+                    primary: "À voir",
+                    secondary: "Total : ",
+                },
+                seen: {
+                    primary: "Déjà vus",
+                    secondary: "Total : ",
+                },
+                favorites: {
+                    primary: "Favoris",
+                    secondary: "Total : ",
+                },
+            },
             errorMessage: "Impossible d'afficher les données.",
         },
         error404: {

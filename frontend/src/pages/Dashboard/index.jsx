@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
+import SideNav from "../../layout/SideNav";
 
-import { getMovieData } from "../../utils/requests";
+import { getMovieData } from "../../utils/movie";
 import {
-    selectUserLanguage,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
+    selectUserFavorites,
+    selectUserLanguage,
 } from "../../services/utils/selectors";
 
-import { Stack, Box, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 
-const moviesTypeSx = {
-    border: "1px solid black",
+import theme from "../../assets/styles/theme";
+
+const moviesSectionSx = {
     padding: "1rem",
     "& h2": {
         mb: "1rem",
@@ -25,14 +27,16 @@ const Dashboard = () => {
     const language = useSelector(selectUserLanguage());
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const moviesToSee = useSelector(selectUserMoviesToSee());
+    const favorites = useSelector(selectUserFavorites());
 
     const [uniqueMovies, setUniqueMovies] = useState([]);
     const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
     const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
+    const [favoritesLinks, setFavoritesLinks] = useState([]);
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
-        const allMoviesIds = moviesSeen.concat(moviesToSee);
+        const allMoviesIds = moviesSeen.concat(moviesToSee).concat(favorites);
 
         Promise.all(
             allMoviesIds.map(async (id) => {
@@ -63,9 +67,9 @@ const Dashboard = () => {
 
     // Display movie cards for each section of the dashboard
     useEffect(() => {
-        const getLinks = (uniqueMovies, moviesType) =>
+        const getLinks = (uniqueMovies, moviesSection) =>
             uniqueMovies
-                .filter((movie) => moviesType.includes(`${movie.id}`))
+                .filter((movie) => moviesSection.includes(`${movie.id}`))
                 .map((movie) => {
                     return (
                         <MovieCard
@@ -78,44 +82,48 @@ const Dashboard = () => {
 
         setMoviesSeenLinks(getLinks(uniqueMovies, moviesSeen));
         setMoviesToSeeLinks(getLinks(uniqueMovies, moviesToSee));
+        setFavoritesLinks(getLinks(uniqueMovies, favorites));
     }, [uniqueMovies, moviesSeen, moviesToSee]);
 
     return (
         <>
-            <Box component="main">
+            <Box maxWidth={theme.maxWidth.main} margin="auto">
                 <Typography component="h1" variant="h1">
                     Tableau de bord
                 </Typography>
-                <Box sx={{ display: "flex", gap: "1rem" }}>
+                <Box
+                    sx={{
+                        padding: {
+                            sm: ".5rem",
+                        },
+                        display: "flex",
+                        gap: "1rem",
+                        alignItems: "flex-start",
+                        flexDirection: {
+                            xs: "column",
+                            sm: "row",
+                        },
+                    }}>
+                    <SideNav />
                     <Box
-                        component="section"
+                        component="main"
                         sx={{
-                            minHeight: "100vh",
-                            padding: "1rem",
-                            border: "1px solid black",
-                        }}>
-                        <Stack component="nav">
-                            <NavLink to="/dashboard/#toSee">À voir</NavLink>
-                            <NavLink to="/dashboard/#seen">Déjà vus</NavLink>
-                            <NavLink to="/dashboard/#liked">Favoris</NavLink>
-                            <NavLink to="/dashboard/#reviews">
-                                Mes critiques
-                            </NavLink>
-                        </Stack>
-                    </Box>
-
-                    <Box
-                        component="section"
-                        sx={{
-                            border: "1px solid black",
-                            padding: "1rem",
+                            width: "100%",
+                            padding: {
+                                xs: "0 .5rem .5rem",
+                            },
                             flexGrow: "1",
                             display: "flex",
                             flexDirection: "column",
                             gap: "1rem",
                         }}>
-                        <Box sx={moviesTypeSx}>
-                            <h2 id="toSee">À voir</h2>
+                        <Paper
+                            component="section"
+                            elevation={4}
+                            sx={moviesSectionSx}>
+                            <Typography id="toSee" component="h2" variant="h2">
+                                À voir
+                            </Typography>
                             <Box
                                 sx={{
                                     display: "flex",
@@ -124,9 +132,14 @@ const Dashboard = () => {
                                 }}>
                                 {moviesToSeeLinks}
                             </Box>
-                        </Box>
-                        <Box sx={moviesTypeSx}>
-                            <h2 id="seen">Déjà vus</h2>
+                        </Paper>
+                        <Paper
+                            component="section"
+                            elevation={4}
+                            sx={moviesSectionSx}>
+                            <Typography id="seen" component="h2" variant="h2">
+                                Déjà vus
+                            </Typography>
                             <Box
                                 sx={{
                                     display: "flex",
@@ -135,13 +148,26 @@ const Dashboard = () => {
                                 }}>
                                 {moviesSeenLinks}
                             </Box>
-                        </Box>
-                        <Box sx={moviesTypeSx}>
-                            <h2 id="liked">J'aime</h2>
-                        </Box>
-                        <Box>
-                            <h2 id="reviews">Mes critiques</h2>
-                        </Box>
+                        </Paper>
+                        <Paper
+                            component="section"
+                            elevation={4}
+                            sx={moviesSectionSx}>
+                            <Typography
+                                id="favorites"
+                                component="h2"
+                                variant="h2">
+                                Favoris
+                            </Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: "1rem",
+                                }}>
+                                {favoritesLinks}
+                            </Box>
+                        </Paper>
                     </Box>
                 </Box>
             </Box>

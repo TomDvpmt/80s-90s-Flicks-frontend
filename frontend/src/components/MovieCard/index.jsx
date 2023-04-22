@@ -8,7 +8,7 @@ import {
     selectTmdbImagesPosterSizes,
 } from "../../services/utils/selectors";
 
-import { setCastAndCrew } from "../../utils/requests";
+import { setCastAndCrew } from "../../utils/movie";
 
 import {
     Box,

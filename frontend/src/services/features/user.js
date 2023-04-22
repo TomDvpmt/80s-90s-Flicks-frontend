@@ -7,8 +7,9 @@ const initialState = {
     firstName: "",
     lastName: "",
     email: "",
-    moviesSeen: [""],
-    moviesToSee: [""],
+    moviesSeen: [],
+    moviesToSee: [],
+    favorites: [],
     language: "fr",
 };
 
@@ -23,6 +24,8 @@ export const userAddToMoviesToSee = createAction("user/addToMoviesToSee");
 export const userRemoveFromMoviesToSee = createAction(
     "user/removeFromMoviesToSee"
 );
+export const userAddToFavorites = createAction("user/addToFavorites");
+export const userRemoveFromFavorites = createAction("user/removeFromFavorites");
 export const userSetLanguage = createAction("user/setLanguage");
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -58,6 +61,14 @@ const userReducer = createReducer(initialState, (builder) => {
         })
         .addCase(userRemoveFromMoviesToSee, (draft, action) => {
             draft.moviesToSee = draft.moviesToSee.filter(
+                (movieId) => movieId !== action.payload
+            );
+        })
+        .addCase(userAddToFavorites, (draft, action) => {
+            draft.favorites.push(action.payload);
+        })
+        .addCase(userRemoveFromFavorites, (draft, action) => {
+            draft.favorites = draft.favorites.filter(
                 (movieId) => movieId !== action.payload
             );
         })

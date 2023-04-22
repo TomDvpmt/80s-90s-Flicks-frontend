@@ -5,7 +5,7 @@ import Branding from "../../components/Branding";
 import { useSelector } from "react-redux";
 import { selectUserIsSignedIn } from "../../services/utils/selectors";
 
-import logout from "../../utils/logout";
+import logout from "../../utils/user";
 
 import {
     Box,

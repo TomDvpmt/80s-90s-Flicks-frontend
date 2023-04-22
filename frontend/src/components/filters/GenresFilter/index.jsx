@@ -51,7 +51,6 @@ const GenresFilter = () => {
         };
         getGenres()
             .then((data) => {
-                console.log("GENRES");
                 // exclude Documentary (99) and Television film (10770)
                 const genres = data.filter(
                     (genre) => genre.id !== 99 && genre.id !== 10770

@@ -114,7 +114,7 @@ export const furyRoadPalette = {
         // sand
         main: "#FFD1B5",
         dark: "#B98F73",
-        light: "white",
+        light: "#fce3d4",
     },
     warning: {
         // red

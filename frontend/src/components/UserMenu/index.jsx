@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
 
-import logout from "../../utils/logout";
+import logout from "../../utils/user";
 
 import { selectUserIsSignedIn } from "../../services/utils/selectors";
 

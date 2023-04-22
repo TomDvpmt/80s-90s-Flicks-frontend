@@ -8,6 +8,20 @@ export const language_en = {
                 favorites: "favorites",
                 myReviews: "My reviews",
             },
+            sideNav: {
+                toSee: {
+                    primary: "To see",
+                    secondary: "Total: ",
+                },
+                seen: {
+                    primary: "Already seen",
+                    secondary: "Total: ",
+                },
+                favorites: {
+                    primary: "Favorites",
+                    secondary: "Total: ",
+                },
+            },
             errorMessage: "Unable to display data.",
         },
         error404: {

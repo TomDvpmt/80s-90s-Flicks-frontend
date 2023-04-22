@@ -1,7 +1,4 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-import { selectUserLanguage } from "../services/utils/selectors";
 
 import { TMDB_API_KEY } from "./config";
 

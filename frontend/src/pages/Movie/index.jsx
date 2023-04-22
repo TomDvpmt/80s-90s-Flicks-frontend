@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import AddToFavorites from "../../components/AddToFavorites";
 import ErrorMessage from "../../components/ErrorMessage";
 
-import { setCastAndCrew } from "../../utils/requests";
+import { setCastAndCrew } from "../../utils/movie";
 import displayBigNumber from "../../utils/bigNumbers";
 
 import {
     selectUserIsSignedIn,
     selectUserId,
-    selectUserMoviesSeen,
     selectUserMoviesToSee,
+    selectUserMoviesSeen,
+    selectUserFavorites,
     selectUserLanguage,
     selectTmdbImagesSecureUrl,
 } from "../../services/utils/selectors";
@@ -21,6 +23,8 @@ import {
     userRemoveFromMoviesSeen,
     userAddToMoviesToSee,
     userRemoveFromMoviesToSee,
+    userAddToFavorites,
+    userRemoveFromFavorites,
 } from "../../services/features/user";
 
 import {
@@ -119,7 +123,35 @@ const Movie = () => {
         }
     };
 
-    const handleMovieSeen = () => {
+    // const addToFavorites = () => {
+    //     dispatch(userAddToFavorites(movieId));
+    //     try {
+    //         fetch(fetchURI, {
+    //             ...fetchParams,
+    //             body: JSON.stringify({
+    //                 favorites: [...favorites, movieId],
+    //             }),
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    // const removeFromFavorites = () => {
+    //     dispatch(userRemoveFromFavorites(movieId));
+    //     try {
+    //         fetch(fetchURI, {
+    //             ...fetchParams,
+    //             body: JSON.stringify({
+    //                 favorites: favorites.filter((id) => id !== movieId),
+    //             }),
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    const handleMovieSeenCheckbox = () => {
         if (userHasSeenMovie) {
             removeFromMoviesSeen();
         } else {
@@ -178,6 +210,11 @@ const Movie = () => {
                         />
                     )}
                     <Box sx={{ padding: ".5rem" }}>
+                        <AddToFavorites
+                            movieId={movieId}
+                            fetchURI={fetchURI}
+                            fetchParams={fetchParams}
+                        />
                         <Typography
                             component="h1"
                             variant="h1"
@@ -251,20 +288,22 @@ const Movie = () => {
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                checked={userHasSeenMovie}
-                                                onChange={handleMovieSeen}
-                                            />
-                                        }
-                                        label={langData.seen}
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
                                                 checked={userWantsToSeeMovie}
                                                 onChange={handleMovieToSee}
                                             />
                                         }
                                         label={langData.toSee}
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={userHasSeenMovie}
+                                                onChange={
+                                                    handleMovieSeenCheckbox
+                                                }
+                                            />
+                                        }
+                                        label={langData.seen}
                                     />
                                 </FormGroup>
                             </Box>
