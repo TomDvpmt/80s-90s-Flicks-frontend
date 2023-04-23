@@ -10,13 +10,12 @@ import { Box, Typography, Link } from "@mui/material";
 import PropTypes from "prop-types";
 
 const ErrorBoundary = ({ page }) => {
-    console.log("page : ", page);
     ErrorBoundary.propTypes = {
-        page: PropTypes.string.isRequired,
+        page: PropTypes.string,
     };
 
     let error = useRouteError();
-    console.error(error);
+    error !== undefined && console.error(error);
 
     const currentLocation = useLocation();
 

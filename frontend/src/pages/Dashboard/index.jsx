@@ -13,7 +13,7 @@ import {
 
 import { getMovieData } from "../../utils/movie";
 
-import { Box, Paper, Typography } from "@mui/material";
+import { Grid, Box, Paper, Typography } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
 
@@ -45,8 +45,9 @@ const Dashboard = () => {
                         return {
                             id: movie.id,
                             title: movie.title,
+                            originalTitle: movie.original_title,
                             releaseDate: movie.release_date,
-                            posterPath: movie.poster_path,
+                            posterPath: movie.poster_path || "", // to add : default picture
                         };
                     })
                     .catch((error) => console.log(error));
@@ -86,10 +87,7 @@ const Dashboard = () => {
     }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
     return (
-        <Box maxWidth={theme.maxWidth.main} margin="auto">
-            <Typography component="h1" variant="h1">
-                Tableau de bord
-            </Typography>
+        <>
             <Box
                 sx={{
                     padding: {
@@ -105,7 +103,6 @@ const Dashboard = () => {
                 }}>
                 <SideNav />
                 <Box
-                    component="main"
                     sx={{
                         width: "100%",
                         padding: {
@@ -123,14 +120,12 @@ const Dashboard = () => {
                         <Typography id="toSee" component="h2" variant="h2">
                             À voir
                         </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "1rem",
-                            }}>
+                        <Grid
+                            container
+                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                            spacing={{ xs: 2, md: 6 }}>
                             {moviesToSeeLinks}
-                        </Box>
+                        </Grid>
                     </Paper>
                     <Paper
                         component="section"
@@ -139,14 +134,12 @@ const Dashboard = () => {
                         <Typography id="seen" component="h2" variant="h2">
                             Déjà vus
                         </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "1rem",
-                            }}>
+                        <Grid
+                            container
+                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                            spacing={{ xs: 2, md: 6 }}>
                             {moviesSeenLinks}
-                        </Box>
+                        </Grid>
                     </Paper>
                     <Paper
                         component="section"
@@ -155,18 +148,16 @@ const Dashboard = () => {
                         <Typography id="favorites" component="h2" variant="h2">
                             Favoris
                         </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "1rem",
-                            }}>
+                        <Grid
+                            container
+                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                            spacing={{ xs: 2, md: 6 }}>
                             {favoritesLinks}
-                        </Box>
+                        </Grid>
                     </Paper>
                 </Box>
             </Box>
-        </Box>
+        </>
     );
 };
 

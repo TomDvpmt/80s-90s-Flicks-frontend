@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import UserForm from "../../components/UserForm";
+import ValidationMessage from "../../components/ValidationMessage";
 
 import {
     selectUserUsername,
@@ -14,7 +15,6 @@ import {
 import {
     Box,
     Paper,
-    Typography,
     Button,
     TableContainer,
     Table,
@@ -46,20 +46,14 @@ const Profile = () => {
     };
 
     return (
-        <Box component="main" padding="1rem">
-            <Typography component="h1" variant="h1">
-                Mon Profil
-            </Typography>
-
+        <>
             <Box
                 sx={{
                     maxWidth: theme.maxWidth.userForm,
                     margin: "0 auto 3rem",
                 }}>
                 {showUpdateValidation && (
-                    <Typography color={theme.palette.success.main} mb="1rem">
-                        Profil mis à jour.
-                    </Typography>
+                    <ValidationMessage text="Profil mis à jour." />
                 )}
                 <TableContainer component={Paper}>
                     <Table>
@@ -102,7 +96,6 @@ const Profile = () => {
 
             {showUpdateForm && (
                 <UserForm
-                    page="profile"
                     userId={userId}
                     defaultFormValues={{
                         username,
@@ -114,7 +107,7 @@ const Profile = () => {
                     setShowUpdateValidation={setShowUpdateValidation}
                 />
             )}
-        </Box>
+        </>
     );
 };
 

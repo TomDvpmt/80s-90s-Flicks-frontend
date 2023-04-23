@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 const MovieCastAndCrew = ({ movieId, releaseDate }) => {
     MovieCastAndCrew.propTypes = {
-        movie: PropTypes.number.isRequired,
+        movieId: PropTypes.number.isRequired,
         releaseDate: PropTypes.string.isRequired,
     };
 

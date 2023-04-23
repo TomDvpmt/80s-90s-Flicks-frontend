@@ -11,35 +11,11 @@ import {
     selectPageLocation,
 } from "../../services/utils/selectors";
 
-import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 
-import styled from "styled-components";
+import defaultPoster from "../../assets/img/defaultPoster.jpeg";
+
 import PropTypes from "prop-types";
-
-const StyledCardContainer = styled.div`
-    background-color: black;
-
-    img {
-        transition: opacity ease 150ms;
-    }
-    .movieInfo {
-        display: none;
-
-        span {
-            color: white;
-        }
-    }
-
-    &:hover {
-        .movieInfo {
-            display: block;
-        }
-
-        img {
-            opacity: 0.2;
-        }
-    }
-`;
 
 const MovieCard = ({ page, movie }) => {
     MovieCard.propTypes = {
@@ -51,6 +27,16 @@ const MovieCard = ({ page, movie }) => {
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
 
+    const posterSize = posterSizes[3];
+    const cardMaxWidth = posterSize.includes("w")
+        ? posterSize.split("").splice(1).join("") + "px"
+        : "auto";
+
+    const hasPoster = movie.posterPath !== null && movie.posterPath !== "";
+    const imgSrc = hasPoster
+        ? `${imageBaseUrl}${posterSize}${movie.posterPath}`
+        : defaultPoster;
+
     return (
         <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
             <Link to={`/movies/${movie.id}`}>
@@ -58,17 +44,29 @@ const MovieCard = ({ page, movie }) => {
                     component="article"
                     sx={{
                         position: "relative",
-                        maxWidth: page === "home" ? "300px" : "inherit",
+                        maxWidth: cardMaxWidth,
                         margin: "auto",
                     }}
                     className="card">
-                    <StyledCardContainer>
+                    <Box
+                        sx={{
+                            backgroundColor: "black",
+                            "&:hover": {
+                                "& .movieInfo": {
+                                    display: "block",
+                                },
+                                img: {
+                                    opacity: "0.2",
+                                },
+                            },
+                        }}>
                         {currentLocation === "home" && (
                             <ToggleFavorite movieId={movie.id} />
                         )}
                         <CardContent
                             className="movieInfo"
                             sx={{
+                                display: hasPoster ? "none" : "block",
                                 position: "absolute",
                                 zIndex: "99",
                                 "& *": {
@@ -77,7 +75,7 @@ const MovieCard = ({ page, movie }) => {
                             }}>
                             <MovieHeading
                                 title={movie.title}
-                                originalTitle={movie.original_title}
+                                originalTitle={movie.originalTitle}
                             />
                             <MovieCastAndCrew
                                 movieId={movie.id}
@@ -85,15 +83,15 @@ const MovieCard = ({ page, movie }) => {
                             />
                         </CardContent>
                         <CardMedia
-                            image={`${imageBaseUrl}${
-                                page === "home"
-                                    ? posterSizes[3]
-                                    : posterSizes[2]
-                            }${movie.posterPath}`}
+                            image={imgSrc}
                             component="img"
                             alt={movie.title}
+                            sx={{
+                                opacity: hasPoster ? "1" : "0.2",
+                                transition: "opacity ease 150ms",
+                            }}
                         />
-                    </StyledCardContainer>
+                    </Box>
                 </Card>
             </Link>
         </Grid>

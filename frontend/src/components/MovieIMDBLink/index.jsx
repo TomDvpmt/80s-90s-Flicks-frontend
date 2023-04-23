@@ -10,7 +10,8 @@ const MovieIMDBLink = ({ imdbId, imdbLang }) => {
         imdbLang: PropTypes.string.isRequired,
     };
     return (
-        imdbId !== undefined && (
+        imdbId !== undefined &&
+        imdbId !== null && (
             <Typography paragraph>
                 <Link
                     to={`https://www.imdb.com/title/${imdbId}/`}

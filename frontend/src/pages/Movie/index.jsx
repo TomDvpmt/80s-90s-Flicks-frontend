@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useLoaderData } from "react-router-dom";
+import { useParams, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import MovieBackdrop from "../../components/MovieBackdrop";
@@ -31,7 +31,6 @@ import {
     selectUserLanguage,
     selectUserMoviesToSee,
     selectUserMoviesSeen,
-    selectTmdbImagesSecureUrl,
 } from "../../services/utils/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
@@ -44,7 +43,6 @@ const Movie = () => {
     const userId = useSelector(selectUserId());
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const dispatch = useDispatch();
 
     const movieId = parseInt(useParams().id);
@@ -96,7 +94,7 @@ const Movie = () => {
     };
 
     return (
-        <Box component="main">
+        <>
             {!isEmptyObject(movie) && movie.success !== false ? (
                 <Box component="section">
                     <MovieBackdrop
@@ -104,10 +102,13 @@ const Movie = () => {
                         movieTitle={movie.title}
                     />
                     <Box>
-                        <MoviePoster
-                            path={movie.poster_path}
-                            movieTitle={movie.title}
-                        />
+                        {movie.poster_path !== "" &&
+                            movie.poster_path !== null && (
+                                <MoviePoster
+                                    path={movie.poster_path}
+                                    movieTitle={movie.title}
+                                />
+                            )}
                         <Box sx={{ padding: ".5rem" }}>
                             {isSignedIn && <ToggleFavorite movieId={movieId} />}
                             <MovieHeading
@@ -160,7 +161,7 @@ const Movie = () => {
                 <ErrorBoundary page="movie" />
             )}
             <ErrorMessage errorMessage={errorMessage} />
-        </Box>
+        </>
     );
 };
 

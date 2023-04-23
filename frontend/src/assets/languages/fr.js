@@ -83,7 +83,7 @@ export const language_fr = {
             wikiLink: "Voir sur Wikipédia",
         },
         profile: {
-            h1: "Mon profil :",
+            h1: "Mon profil",
             buttons: {
                 showForm: "Modifier les informations",
                 submit: "Enregistrer les modififcations",

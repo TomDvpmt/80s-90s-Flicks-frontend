@@ -13,8 +13,7 @@ import {
     selectUserLanguage,
 } from "../services/utils/selectors";
 
-import SetPage from "../components/SetPage";
-import RouterWrapper from "../components/RouterWrapper";
+import PageWrapper from "../layout/PageWrapper";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
@@ -23,6 +22,7 @@ import Home from "../pages/Home";
 import Movie from "../pages/Movie";
 import Person from "../pages/Person";
 import Error404 from "../pages/Error404";
+import SetPage from "../components/SetPage";
 import ErrorBoundary from "../components/ErrorBoundary";
 
 function Router() {
@@ -42,14 +42,17 @@ function Router() {
     }, [dispatch]);
 
     const getUserInfo = async () => {
-        const response = await fetch(`/API/users/0`, {
-            method: "GET",
-            headers: {
-                Authorization: `BEARER ${token}`,
-            },
-        });
-        const data = await response.json();
-        return data;
+        if (token) {
+            const response = await fetch(`/API/users/0`, {
+                method: "GET",
+                headers: {
+                    Authorization: `BEARER ${token}`,
+                },
+            });
+            const data = await response.json();
+            return data;
+        }
+        return {};
     };
 
     const routes = [
@@ -102,7 +105,7 @@ function Router() {
 
     const router = createBrowserRouter([
         {
-            element: <RouterWrapper />,
+            element: <PageWrapper />,
             loader: async () => getUserInfo(),
             errorElement: <ErrorBoundary />,
             children: routes.map((route) => ({

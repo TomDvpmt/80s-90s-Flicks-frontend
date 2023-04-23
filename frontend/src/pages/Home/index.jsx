@@ -6,7 +6,6 @@ import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
 import Pagination from "../../components/Pagination";
 import ErrorMessage from "../../components/ErrorMessage";
-import Language from "../../components/Language";
 
 import { filtersClearAll } from "../../services/features/filters";
 import { selectFiltersAll } from "../../services/utils/selectors";
@@ -54,13 +53,13 @@ const Home = () => {
                         id: movie.id,
                         imdbId: movie.imdb_id,
                         title: movie.title,
-                        originalTitle: movie.original_title,
-                        tagline: movie.tagline,
+                        originalTitle: movie.original_title || "",
+                        tagline: movie.tagline || "",
                         genres: movie.genres,
-                        overview: movie.overview,
+                        overview: movie.overview || "",
                         backdropPath: movie.backdrop_path,
                         posterPath: movie.poster_path,
-                        releaseDate: movie.release_date,
+                        releaseDate: movie.release_date || "",
                         voteAverage: movie.vote_average,
                         budget: movie.budget,
                         revenue: movie.revenue,
@@ -82,10 +81,7 @@ const Home = () => {
     }, [filters]);
 
     return (
-        <Box component="main">
-            <Typography component="h1" variant="h1">
-                Explorer
-            </Typography>
+        <>
             <Box
                 component="section"
                 maxWidth={theme.maxWidth.filters}
@@ -156,7 +152,7 @@ const Home = () => {
                     {movies}
                 </Grid>
             </Box>
-        </Box>
+        </>
     );
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
@@ -12,20 +12,20 @@ import ErrorMessage from "../ErrorMessage";
 
 import { userAuth, userSetInfo } from "../../services/features/user";
 
+import { selectPageLocation } from "../../services/utils/selectors";
+
 import { Box, Button, Typography, Link } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
 const UserForm = ({
-    page,
     userId,
     defaultFormValues,
     setShowUpdateForm,
     setShowUpdateValidation,
 }) => {
     UserForm.propTypes = {
-        page: PropTypes.string.isRequired,
         userId: PropTypes.string,
         defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
@@ -34,6 +34,7 @@ const UserForm = ({
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const page = useSelector(selectPageLocation());
 
     const [username, setUsername] = useState(
         page === "profile" ? defaultFormValues.username : ""
@@ -58,7 +59,7 @@ const UserForm = ({
                 setPageData({
                     endPoint: "users/login",
                     method: "POST",
-                    submitButtonText: "Log in",
+                    submitButtonText: "Se connecter",
                     redirectLine: (
                         <span>
                             Pas encore inscrit ?&nbsp;
@@ -83,7 +84,7 @@ const UserForm = ({
                 setPageData({
                     endPoint: "users/",
                     method: "POST",
-                    submitButtonText: "Register",
+                    submitButtonText: "S'enregistrer",
                     redirectLine: (
                         <span>
                             Déjà inscrit ?&nbsp;

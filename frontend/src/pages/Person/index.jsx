@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import ErrorMessage from "../../components/ErrorMessage";
+import PageHeading from "../../components/PageHeading";
 
-import { TMDB_API_KEY } from "../../utils/config";
 import { selectUserLanguage } from "../../services/utils/selectors";
+
+import { isEmptyObject } from "../../utils/utils";
 
 import { Typography } from "@mui/material";
 
 import styled from "styled-components";
 
-const StyledPerson = styled.main`
-    .person__img {
+const StyledImg = styled.div`
+    img: {
         max-width: 300px;
     }
 `;
 
 const Person = () => {
     const [person, setPerson] = useState({});
-    const [personFormatedName, setPersonFormatedName] = useState("");
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);
     const [personDirectingMovies, setPersonDirectingMovies] = useState([]);
@@ -27,49 +27,53 @@ const Person = () => {
     const language = useSelector(selectUserLanguage());
 
     const personData = useLoaderData();
+    const personFormatedName =
+        person.name !== undefined && person.name.replace(" ", "_");
 
     useEffect(() => {
-        setPerson(personData.mainData);
-        setPersonImgUrl(personData.imgUrl);
-        setPersonActingMovies(personData.filmography.actingMovies);
-        setPersonDirectingMovies(personData.filmography.directingMovies);
+        if (!isEmptyObject(personData)) {
+            setPerson(personData.mainData);
+            setPersonImgUrl(personData.imgUrl);
+            setPersonActingMovies(personData.filmography.actingMovies);
+            setPersonDirectingMovies(personData.filmography.directingMovies);
+        }
     }, [personData]);
 
     return (
-        <StyledPerson>
-            <Typography component="h1" variant="h1">
-                {person.name}
-            </Typography>
-            {personImgUrl && (
-                <img
-                    className="person__img"
-                    src={personImgUrl}
-                    alt={person.name}
-                />
-            )}
-            <Typography component="h2">Filmographie</Typography>
-            {personDirectingMovies.length > 0 && (
-                <>
-                    <Typography component="h3">
-                        {person.gender === 1 ? "Réalisatrice" : "Réalisateur"}
-                    </Typography>
-                    <ul>{personDirectingMovies}</ul>
-                </>
-            )}
-            {personActingMovies.length > 0 && (
-                <>
-                    <Typography component="h3">
-                        {person.gender === 1 ? "Actrice" : "Acteur"}
-                    </Typography>
-                    <ul>{personActingMovies}</ul>
-                </>
-            )}
-            <Link
-                to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
-                target="_blank">
-                Voir sur Wikipédia
-            </Link>
-        </StyledPerson>
+        person !== undefined && (
+            <>
+                <PageHeading text={person.name} />
+                {personImgUrl && (
+                    <StyledImg>
+                        <img src={personImgUrl} alt={person.name} />
+                    </StyledImg>
+                )}
+                <Typography component="h2">Filmographie</Typography>
+                {personDirectingMovies.length > 0 && (
+                    <>
+                        <Typography component="h3">
+                            {person.gender === 1
+                                ? "Réalisatrice"
+                                : "Réalisateur"}
+                        </Typography>
+                        <ul>{personDirectingMovies}</ul>
+                    </>
+                )}
+                {personActingMovies.length > 0 && (
+                    <>
+                        <Typography component="h3">
+                            {person.gender === 1 ? "Actrice" : "Acteur"}
+                        </Typography>
+                        <ul>{personActingMovies}</ul>
+                    </>
+                )}
+                <Link
+                    to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
+                    target="_blank">
+                    Voir sur Wikipédia
+                </Link>
+            </>
+        )
     );
 };
 
