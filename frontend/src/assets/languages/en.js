@@ -4,7 +4,7 @@ export const language_en = {
             h1: "Dashboard",
             titles: {
                 toSee: "To see",
-                alreadySeen: "Already seen",
+                seen: "Already seen",
                 favorites: "favorites",
                 myReviews: "My reviews",
             },
@@ -127,6 +127,14 @@ export const language_en = {
                 firstName: "Your first name",
                 lastName: "Your last name",
             },
+        },
+        sideNav: {
+            primary: {
+                toSee: "To see",
+                seen: "Already seen",
+                favorites: "Favorites",
+            },
+            secondary: "Total:",
         },
         userMenu: {
             profile: "Profile",

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
+import MovieCardsGrid from "../../components/MovieCardsGrid";
 import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
 import Pagination from "../../components/Pagination";
@@ -144,13 +145,7 @@ const Home = () => {
             </Box>
             <Box component="section">
                 <ErrorMessage errorMessage={errorMessage} />
-                <Grid
-                    container
-                    columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                    spacing={{ xs: 2, md: 6 }}
-                    bgcolor={theme.palette.secondary.darkest}>
-                    {movies}
-                </Grid>
+                <MovieCardsGrid movies={movies} />
             </Box>
         </>
     );

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import DashboardSection from "../../components/DashboardSection";
 import MovieCard from "../../components/MovieCard";
+import MovieCardsGrid from "../../components/MovieCardsGrid";
 import SideNav from "../../layout/SideNav";
 
 import {
@@ -13,9 +15,7 @@ import {
 
 import { getMovieData } from "../../utils/movie";
 
-import { Grid, Box, Paper, Typography } from "@mui/material";
-
-import theme from "../../assets/styles/theme";
+import { Box, Paper, Typography } from "@mui/material";
 
 const moviesSectionSx = {
     padding: "1rem",
@@ -113,48 +113,15 @@ const Dashboard = () => {
                         flexDirection: "column",
                         gap: "1rem",
                     }}>
-                    <Paper
-                        component="section"
-                        elevation={4}
-                        sx={moviesSectionSx}>
-                        <Typography id="toSee" component="h2" variant="h2">
-                            À voir
-                        </Typography>
-                        <Grid
-                            container
-                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                            spacing={{ xs: 2, md: 6 }}>
-                            {moviesToSeeLinks}
-                        </Grid>
-                    </Paper>
-                    <Paper
-                        component="section"
-                        elevation={4}
-                        sx={moviesSectionSx}>
-                        <Typography id="seen" component="h2" variant="h2">
-                            Déjà vus
-                        </Typography>
-                        <Grid
-                            container
-                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                            spacing={{ xs: 2, md: 6 }}>
-                            {moviesSeenLinks}
-                        </Grid>
-                    </Paper>
-                    <Paper
-                        component="section"
-                        elevation={4}
-                        sx={moviesSectionSx}>
-                        <Typography id="favorites" component="h2" variant="h2">
-                            Favoris
-                        </Typography>
-                        <Grid
-                            container
-                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                            spacing={{ xs: 2, md: 6 }}>
-                            {favoritesLinks}
-                        </Grid>
-                    </Paper>
+                    <DashboardSection
+                        hashId="toSee"
+                        movies={moviesToSeeLinks}
+                    />
+                    <DashboardSection hashId="seen" movies={moviesSeenLinks} />
+                    <DashboardSection
+                        hashId="favorites"
+                        movies={favoritesLinks}
+                    />
                 </Box>
             </Box>
         </>

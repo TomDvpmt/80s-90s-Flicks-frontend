@@ -2,16 +2,14 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import ScrollToHashElement from "../../components/ScrollToHashElement";
-
 import {
     selectUserMoviesToSee,
     selectUserMoviesSeen,
     selectUserFavorites,
+    selectUserLanguage,
 } from "../../services/utils/selectors";
 
 import {
-    Box,
     Paper,
     List,
     ListItem,
@@ -28,31 +26,28 @@ const SideNav = () => {
     const moviesToSee = useSelector(selectUserMoviesToSee());
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const favorites = useSelector(selectUserFavorites());
+    const language = useSelector(selectUserLanguage());
 
-    const sideNavLinks = [
-        {
-            primary: "À voir",
-            secondary: `Total : ${moviesToSee.length}`,
-            url: "toSee",
-            icon: <LocalMovies />,
-        },
-        {
-            primary: "Déjà vus",
-            secondary: `Total : ${moviesSeen.length}`,
-            url: "seen",
-            icon: <Check />,
-        },
-        {
-            primary: "Favoris",
-            secondary: `Total : ${favorites.length}`,
-            url: "favorites",
-            icon: <Favorite />,
-        },
-    ];
+    const sideNavLinks = [];
+
+    class SideNavLink {
+        constructor(movies, tag, icon) {
+            this.primary =
+                theme.languages[language].components.sideNav.primary[tag];
+            this.secondary = `${theme.languages[language].components.sideNav.secondary} ${movies.length}`;
+            this.url = tag;
+            this.icon = icon;
+
+            sideNavLinks.push(this);
+        }
+    }
+
+    new SideNavLink(moviesToSee, "toSee", <LocalMovies />);
+    new SideNavLink(moviesSeen, "seen", <Check />);
+    new SideNavLink(favorites, "favorites", <Favorite />);
 
     return (
         <>
-            <ScrollToHashElement />
             <Paper
                 component="nav"
                 elevation={4}

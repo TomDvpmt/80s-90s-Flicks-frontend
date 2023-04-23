@@ -55,7 +55,29 @@ function Router() {
         return {};
     };
 
-    const routes = [
+    let routes = [];
+
+    class Route {
+        constructor(
+            page = "",
+            path = "",
+            element = null,
+            loader = null,
+            errorElement = false
+        ) {
+            this.path = path;
+            this.element = (
+                <>
+                    <SetPage page={page} />
+                    {element}
+                </>
+            );
+            this.loader = loader;
+            this.errorElement = errorElement && <ErrorBoundary page={page} />;
+        }
+    }
+
+    const routesData = [
         {
             page: "home",
             path: "/",
@@ -103,24 +125,25 @@ function Router() {
         },
     ];
 
+    routes = routesData.map(
+        (route) =>
+            new Route(
+                route.page,
+                route.path,
+                route.element,
+                route.loader || null,
+                route.errorElement || false
+            )
+    );
+
+    console.log(routes);
+
     const router = createBrowserRouter([
         {
             element: <PageWrapper />,
             loader: async () => getUserInfo(),
             errorElement: <ErrorBoundary />,
-            children: routes.map((route) => ({
-                path: route.path,
-                element: (
-                    <>
-                        <SetPage page={route.page} />
-                        {route.element}
-                    </>
-                ),
-                loader: route.loader,
-                errorElement: route.errorElement && (
-                    <ErrorBoundary page={route.page} />
-                ),
-            })),
+            children: routes,
         },
     ]);
 

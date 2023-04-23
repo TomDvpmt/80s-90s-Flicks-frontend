@@ -4,7 +4,7 @@ export const language_fr = {
             h1: "Tableau de bord",
             titles: {
                 toSee: "À voir",
-                alreadySeen: "Déjà vus",
+                seen: "Déjà vus",
                 favorites: "Favoris",
                 myReviews: "Mes critiques",
             },
@@ -127,6 +127,14 @@ export const language_fr = {
                 firstName: "Votre prénom",
                 lastName: "Votre nom",
             },
+        },
+        sideNav: {
+            primary: {
+                toSee: "À voir",
+                seen: "Déjà vus",
+                favorites: "Favoris",
+            },
+            secondary: "Total :",
         },
         userMenu: {
             profile: "Profil",
