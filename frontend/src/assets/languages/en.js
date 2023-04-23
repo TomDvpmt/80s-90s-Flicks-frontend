@@ -63,6 +63,7 @@ export const language_en = {
         movie: {
             budget: "Budget:",
             revenue: "Revenue:",
+            unavailable: "No data",
             imdbLink: "See on IMDB",
             seen: "I've seen this movie!",
             toSee: "I want to see this movie!",

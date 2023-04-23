@@ -2,12 +2,21 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import MovieBackdrop from "../../components/MovieBackdrop";
+import MoviePoster from "../../components/MoviePoster";
 import MovieHeading from "../../components/MovieHeading";
+import MovieTagline from "../../components/MovieTagline";
 import MovieCastAndCrew from "../../components/MovieCastAndCrew";
+import MovieGenres from "../../components/MovieGenres";
+import MovieOverview from "../../components/MovieOverview";
+import MovieBudget from "../../components/MovieBudget";
+import MovieRevenue from "../../components/MovieRevenue";
+import MovieIMDBLink from "../../components/MovieIMDBLink";
 import ToggleFavorite from "../../components/ToggleFavorite";
 import ToggleMovieSeen from "../../components/ToggleMovieSeen";
 import ToggleMovieToSee from "../../components/ToggleMovieToSee";
 import ErrorMessage from "../../components/ErrorMessage";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 import {
     userAddToMoviesToSee,
@@ -15,7 +24,6 @@ import {
     userAddToMoviesSeen,
     userRemoveFromMoviesSeen,
 } from "../../services/features/user";
-import { filtersAddActiveGenre } from "../../services/features/filters";
 
 import {
     selectUserId,
@@ -27,9 +35,9 @@ import {
 } from "../../services/utils/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
-import displayBigNumber from "../../utils/bigNumbers";
+import { isEmptyObject } from "../../utils/utils";
 
-import { Box, Typography, FormGroup } from "@mui/material";
+import { Box, FormGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Movie = () => {
@@ -48,16 +56,12 @@ const Movie = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [langData, setLangData] = useState({});
 
-    const handleGenreClick = (e) => {
-        dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
-    };
-
     useEffect(() => {
         setLangData(theme.languages[language].pages.movie);
     }, [language]);
 
     useEffect(() => {
-        setMovie(movieData);
+        setMovie({ ...movieData, releaseDate: movieData.release_date });
     }, [movieData]);
 
     const toggleMovieInUserMovies = (action) => {
@@ -93,104 +97,68 @@ const Movie = () => {
 
     return (
         <Box component="main">
-            <Box component="section">
-                <Box
-                    maxWidth="100%"
-                    sx={{ display: { xs: "none", md: "block" } }}>
-                    {movie.backdrop_path && (
-                        <img
-                            src={`${imageBaseUrl}${"original"}${
-                                movie.backdrop_path
-                            }`}
-                            alt={movie.title + "(backdrop)"}
-                            width="100%"
+            {!isEmptyObject(movie) && movie.success !== false ? (
+                <Box component="section">
+                    <MovieBackdrop
+                        path={movie.backdrop_path}
+                        movieTitle={movie.title}
+                    />
+                    <Box>
+                        <MoviePoster
+                            path={movie.poster_path}
+                            movieTitle={movie.title}
                         />
-                    )}
-                </Box>
-                <Box>
-                    {movie.poster_path && (
-                        <img
-                            src={`${imageBaseUrl}w500${movie.poster_path}`}
-                            alt={movie.title + "(poster)"}
-                            width="100%"
-                        />
-                    )}
-                    <Box sx={{ padding: ".5rem" }}>
-                        {isSignedIn && <ToggleFavorite movieId={movieId} />}
-                        <MovieHeading
-                            title={movie.title}
-                            originalTitle={movie.original_title}
-                        />
-                        {movie.tagline && (
-                            <Typography paragraph fontWeight="700">
-                                {movie.tagline}
-                            </Typography>
-                        )}
-                        <MovieCastAndCrew movie={movie} />
-                        {movie.genres && (
-                            <Box>
-                                {movie.genres.map((genre, index) => (
-                                    <Link
-                                        key={index}
-                                        id={genre.id}
-                                        to="/"
-                                        onClick={handleGenreClick}
-                                        state={{
-                                            param: "&with_genres=",
-                                            value: genre.id,
-                                        }}>
-                                        {genre.name}
-                                        {index === movie.genres.length - 1
-                                            ? ""
-                                            : ", "}
-                                    </Link>
-                                ))}
-                            </Box>
-                        )}
-                        <Typography paragraph>{movie.overview}</Typography>
-                        <Typography paragraph>
-                            {langData.budget}{" "}
-                            {!movie.budget || movie.budget === 0
-                                ? "non-disponible"
-                                : "$ " + displayBigNumber(movie.budget)}
-                        </Typography>
-
-                        <Typography paragraph>
-                            {langData.revenue}{" "}
-                            {!movie.revenue || movie.revenue === 0
-                                ? "non-disponible"
-                                : "$ " + displayBigNumber(movie.revenue)}
-                        </Typography>
-
-                        <Link
-                            to={`https://www.imdb.com/title/${movie.imdb_id}/`}
-                            target="_blank">
-                            {langData.imdbLink}
-                        </Link>
-                        <br />
-                        {isSignedIn && (
-                            <Box component="form">
-                                <FormGroup>
-                                    <ToggleMovieSeen
-                                        movieId={movieId}
-                                        langData={langData}
-                                        toggleMovieInUserMovies={
-                                            toggleMovieInUserMovies
-                                        }
-                                    />
-                                    <ToggleMovieToSee
-                                        movieId={movieId}
-                                        langData={langData}
-                                        toggleMovieInUserMovies={
-                                            toggleMovieInUserMovies
-                                        }
-                                    />
-                                </FormGroup>
-                            </Box>
-                        )}
+                        <Box sx={{ padding: ".5rem" }}>
+                            {isSignedIn && <ToggleFavorite movieId={movieId} />}
+                            <MovieHeading
+                                title={movie.title}
+                                originalTitle={movie.original_title}
+                            />
+                            <MovieTagline tagline={movie.tagline} />
+                            <MovieCastAndCrew
+                                movieId={movieId}
+                                releaseDate={movie.releaseDate}
+                            />
+                            <MovieGenres genres={movie.genres} />
+                            <MovieOverview overview={movie.overview} />
+                            <MovieBudget
+                                movieLangData={langData}
+                                budget={movie.budget}
+                            />
+                            <MovieRevenue
+                                movieLangData={langData}
+                                revenue={movie.revenue}
+                            />
+                            <MovieIMDBLink
+                                imdbId={movie.imdb_id}
+                                imdbLang={langData.imdbLink}
+                            />
+                            {isSignedIn && (
+                                <Box component="form">
+                                    <FormGroup>
+                                        <ToggleMovieSeen
+                                            movieId={movieId}
+                                            langData={langData}
+                                            toggleMovieInUserMovies={
+                                                toggleMovieInUserMovies
+                                            }
+                                        />
+                                        <ToggleMovieToSee
+                                            movieId={movieId}
+                                            langData={langData}
+                                            toggleMovieInUserMovies={
+                                                toggleMovieInUserMovies
+                                            }
+                                        />
+                                    </FormGroup>
+                                </Box>
+                            )}
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+            ) : (
+                <ErrorBoundary page="movie" />
+            )}
             <ErrorMessage errorMessage={errorMessage} />
         </Box>
     );

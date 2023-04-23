@@ -1,31 +1,20 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import ToggleFavorite from "../ToggleFavorite";
+import MovieHeading from "../MovieHeading";
 import MovieCastAndCrew from "../MovieCastAndCrew";
 
 import {
-    selectUserLanguage,
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
     selectPageLocation,
 } from "../../services/utils/selectors";
 
-import { setCastAndCrew } from "../../utils/movie";
-
-import {
-    Box,
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Grid,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
 
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import theme from "../../assets/styles/theme";
 
 const StyledCardContainer = styled.div`
     background-color: black;
@@ -58,17 +47,9 @@ const MovieCard = ({ page, movie }) => {
         movie: PropTypes.object.isRequired,
     };
 
-    const language = useSelector(selectUserLanguage());
     const currentLocation = useSelector(selectPageLocation());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
-
-    const [director, setDirector] = useState("");
-    const [actors, setActors] = useState([""]);
-
-    // useEffect(() => {
-    //     setCastAndCrew(page, movie.id, setDirector, setActors);
-    // }, [page, movie.id]);
 
     return (
         <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
@@ -94,40 +75,14 @@ const MovieCard = ({ page, movie }) => {
                                     color: "white",
                                 },
                             }}>
-                            <Typography
-                                component="h3"
-                                variant="h5"
-                                sx={{
-                                    margin: "4rem 0 2rem",
-                                    textAlign: "center",
-                                }}>
-                                {movie.title}
-                            </Typography>
-                            {movie.title !== movie.originalTitle && (
-                                <Typography
-                                    paragraph
-                                    sx={{ fontStyle: "italic" }}>
-                                    {movie.originalTitle}
-                                </Typography>
-                            )}
-                            <MovieCastAndCrew movie={movie} />
-                            {/* <Box mb="1rem">
-                                {director}
-                                {movie.releaseDate && (
-                                    <Typography component="span" ml={1}>
-                                        ({movie.releaseDate.slice(0, 4)})
-                                    </Typography>
-                                )}
-                            </Box>
-                            {actors[0] && (
-                                <Typography>
-                                    {
-                                        theme.languages[language].components
-                                            .movieCard.actorsWith
-                                    }{" "}
-                                    {actors}
-                                </Typography>
-                            )} */}
+                            <MovieHeading
+                                title={movie.title}
+                                originalTitle={movie.original_title}
+                            />
+                            <MovieCastAndCrew
+                                movieId={movie.id}
+                                releaseDate={movie.releaseDate}
+                            />
                         </CardContent>
                         <CardMedia
                             image={`${imageBaseUrl}${

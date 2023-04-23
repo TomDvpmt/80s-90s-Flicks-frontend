@@ -139,7 +139,7 @@ const Home = () => {
                         )}
                     </Typography>
                 </Paper>
-                <Language />
+                {/* <Language /> */}
                 <Pagination
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}

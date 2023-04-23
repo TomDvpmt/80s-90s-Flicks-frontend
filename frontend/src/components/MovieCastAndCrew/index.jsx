@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import MovieReleaseDate from "../MovieReleaseDate";
+
 import { selectPageLocation } from "../../services/utils/selectors";
 
 import { setCastAndCrew } from "../../utils/movie";
@@ -9,9 +11,10 @@ import { Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const MovieCastAndCrew = ({ movie }) => {
+const MovieCastAndCrew = ({ movieId, releaseDate }) => {
     MovieCastAndCrew.propTypes = {
-        movie: PropTypes.object.isRequired,
+        movie: PropTypes.number.isRequired,
+        releaseDate: PropTypes.string.isRequired,
     };
 
     const page = useSelector(selectPageLocation());
@@ -20,16 +23,15 @@ const MovieCastAndCrew = ({ movie }) => {
     const [actors, setActors] = useState([""]);
 
     useEffect(() => {
-        movie && setCastAndCrew(page, movie.id, setDirector, setActors);
-    }, [page, movie.id]);
+        setCastAndCrew(page, movieId, setDirector, setActors);
+    }, [page, movieId]);
 
     return (
         <>
-            {" "}
             <Typography paragraph>
                 {director}
-                {director && movie.release_date && " | "}
-                {movie.release_date && movie.release_date.slice(0, 4)}
+                {director && releaseDate && " | "}
+                {releaseDate && <MovieReleaseDate date={releaseDate} />}
             </Typography>
             <Typography paragraph>{actors}</Typography>
         </>
