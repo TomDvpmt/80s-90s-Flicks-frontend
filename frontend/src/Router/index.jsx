@@ -136,8 +136,6 @@ function Router() {
             )
     );
 
-    console.log(routes);
-
     const router = createBrowserRouter([
         {
             element: <PageWrapper />,

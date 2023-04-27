@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // import ScrollToHashElement from "../ScrollToHashElement";
 import Header from "../../layout/Header";
+import NavBar from "../NavBar";
 import PageHeading from "../../components/PageHeading";
 import Footer from "../../layout/Footer";
 
@@ -56,6 +57,7 @@ const PageWrapper = () => {
             <ScrollRestoration />
             {/* <ScrollToHashElement /> */}
             <Header />
+            <NavBar />
             <Box component="main" maxWidth={theme.maxWidth.main} margin="auto">
                 {heading !== "" && <PageHeading text={heading} />}
                 <Outlet />
