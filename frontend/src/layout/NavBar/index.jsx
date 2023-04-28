@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import UserMenu from "../../components/UserMenu";
+import NavUserMenu from "../../components/NavUserMenu";
+import NavPagesMenu from "../../components/NavPagesMenu";
 
 import {
     selectUserIsSignedIn,
@@ -9,6 +10,7 @@ import {
 } from "../../services/utils/selectors";
 
 import { Box, AppBar, Toolbar, Button, Typography } from "@mui/material";
+import { Menu as MenuIcon, Rowing } from "@mui/icons-material";
 import theme from "../../assets/styles/theme";
 
 const NavBar = () => {
@@ -21,54 +23,68 @@ const NavBar = () => {
             position="sticky"
             sx={{
                 backgroundColor: theme.palette.primary.light,
+                flexDirection: "row",
+                justifyContent: "center",
             }}>
             <Toolbar
                 component="nav"
                 sx={{
                     flexGrow: 1,
                     maxWidth: theme.maxWidth.nav,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
                 }}>
-                <Box>
-                    <Button component={NavLink} to="/" sx={{ color: "white" }}>
-                        Explorer
-                    </Button>
-                    {isSignedIn && (
+                <NavPagesMenu />
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: {
+                            xs: "none",
+                            sm: "flex",
+                        },
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}>
+                    <Box>
                         <Button
                             component={NavLink}
-                            to="/dashboard"
+                            to="/"
                             sx={{ color: "white" }}>
-                            Mon tableau de bord
+                            Explorer
                         </Button>
-                    )}
-                    {!isSignedIn && (
-                        <>
+                        {isSignedIn && (
                             <Button
                                 component={NavLink}
-                                to="/login"
+                                to="/dashboard"
                                 sx={{ color: "white" }}>
-                                Se connecter
+                                Mon tableau de bord
                             </Button>
-                            <Button
-                                component={NavLink}
-                                to="/register"
-                                sx={{ color: "white" }}>
-                                Créer un compte
-                            </Button>
-                        </>
+                        )}
+                        {!isSignedIn && (
+                            <>
+                                <Button
+                                    component={NavLink}
+                                    to="/login"
+                                    sx={{ color: "white" }}>
+                                    Se connecter
+                                </Button>
+                                <Button
+                                    component={NavLink}
+                                    to="/register"
+                                    sx={{ color: "white" }}>
+                                    Créer un compte
+                                </Button>
+                            </>
+                        )}
+                    </Box>
+
+                    {isSignedIn && (
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Typography component="span" color="white">
+                                {username}
+                            </Typography>
+                            <NavUserMenu />
+                        </Box>
                     )}
                 </Box>
-
-                {isSignedIn && (
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography component="span" color="white">
-                            {username}
-                        </Typography>
-                        <UserMenu />
-                    </Box>
-                )}
             </Toolbar>
         </AppBar>
     );

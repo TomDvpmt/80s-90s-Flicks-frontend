@@ -21,6 +21,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Collapse,
 } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
@@ -86,7 +87,7 @@ const Profile = () => {
                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                     <Button
                         type="button"
-                        variant="contained"
+                        variant={showUpdateForm ? "outlined" : "contained"}
                         sx={{ mt: theme.margin.buttonTop.notSpaced }}
                         onClick={handleUpdateUser}>
                         Modifier les informations
@@ -94,7 +95,7 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {showUpdateForm && (
+            <Collapse in={showUpdateForm}>
                 <UserForm
                     userId={userId}
                     defaultFormValues={{
@@ -106,7 +107,7 @@ const Profile = () => {
                     setShowUpdateForm={setShowUpdateForm}
                     setShowUpdateValidation={setShowUpdateValidation}
                 />
-            )}
+            </Collapse>
         </>
     );
 };

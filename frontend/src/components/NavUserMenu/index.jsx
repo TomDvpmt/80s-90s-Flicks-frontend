@@ -8,7 +8,7 @@ import { logout } from "../../utils/user";
 
 import { selectUserIsSignedIn } from "../../services/utils/selectors";
 
-const UserMenu = () => {
+const NavUserMenu = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -61,4 +61,4 @@ const UserMenu = () => {
     );
 };
 
-export default UserMenu;
+export default NavUserMenu;
