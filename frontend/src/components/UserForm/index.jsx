@@ -12,22 +12,22 @@ import ErrorMessage from "../ErrorMessage";
 
 import { userAuth, userSetInfo } from "../../services/features/user";
 
-import { selectPageLocation } from "../../services/utils/selectors";
+import {
+    selectPageLocation,
+    selectUserUsername,
+    selectUserFirstName,
+    selectUserLastName,
+    selectUserEmail,
+} from "../../services/utils/selectors";
 
 import { Box, Button, Typography, Link } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
-const UserForm = ({
-    userId,
-    defaultFormValues,
-    setShowUpdateForm,
-    setShowUpdateValidation,
-}) => {
+const UserForm = ({ userId, setShowUpdateForm, setShowUpdateValidation }) => {
     UserForm.propTypes = {
         userId: PropTypes.string,
-        defaultFormValues: PropTypes.object,
         setShowUpdateForm: PropTypes.func,
         setShowUpdateValidation: PropTypes.func,
     };
@@ -35,6 +35,13 @@ const UserForm = ({
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const page = useSelector(selectPageLocation());
+
+    const defaultFormValues = {
+        username: useSelector(selectUserUsername()),
+        firstName: useSelector(selectUserFirstName()),
+        lastName: useSelector(selectUserLastName()),
+        email: useSelector(selectUserEmail()),
+    };
 
     const [username, setUsername] = useState(
         page === "profile" ? defaultFormValues.username : ""
@@ -138,13 +145,13 @@ const UserForm = ({
                 setPageData({});
         }
     }, [
+        page,
         username,
         firstName,
         lastName,
         email,
         password,
         passwordConfirm,
-        page,
         userId,
         setShowUpdateForm,
         setShowUpdateValidation,

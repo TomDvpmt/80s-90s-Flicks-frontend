@@ -31,7 +31,7 @@ const PageWrapper = () => {
     useEffect(() => {
         page === "movie" || page === "person"
             ? setHeading("")
-            : setHeading(theme.languages[language].pages[page].h1);
+            : language && setHeading(theme.languages[language].pages[page].h1);
     }, [language, page]);
 
     useEffect(() => {

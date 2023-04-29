@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 import DashboardSection from "../../components/DashboardSection";
 import MovieCard from "../../components/MovieCard";
-import MovieCardsGrid from "../../components/MovieCardsGrid";
 import SideNav from "../../layout/SideNav";
+import Loader from "../../components/Loader";
 
 import {
     selectUserMoviesSeen,
@@ -15,14 +15,7 @@ import {
 
 import { getMovieData } from "../../utils/movie";
 
-import { Box, Paper, Typography } from "@mui/material";
-
-const moviesSectionSx = {
-    padding: "1rem",
-    "& h2": {
-        mb: "1rem",
-    },
-};
+import { Box } from "@mui/material";
 
 const Dashboard = () => {
     const language = useSelector(selectUserLanguage());
@@ -34,9 +27,13 @@ const Dashboard = () => {
     const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
     const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
     const [favoritesLinks, setFavoritesLinks] = useState([]);
+    const [activeCategory, setActiveCategory] = useState("toSee");
+    const [activeCategoryLinks, setActiveCategoryLinks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
+        setLoading(true);
         const allMoviesIds = moviesSeen.concat(moviesToSee).concat(favorites);
         Promise.all(
             allMoviesIds.map(async (id) => {
@@ -63,7 +60,8 @@ const Dashboard = () => {
                     )
                 )
             )
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))
+            .finally(() => setLoading(false));
     }, [moviesSeen, moviesToSee, favorites, language]);
 
     // Display movie cards for each section of the dashboard
@@ -86,6 +84,24 @@ const Dashboard = () => {
         setFavoritesLinks(getLinks(uniqueMovies, favorites));
     }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
+    useEffect(() => {
+        // setLoading(true);
+        switch (activeCategory) {
+            case "toSee":
+                setActiveCategoryLinks(moviesToSeeLinks);
+                break;
+            case "seen":
+                setActiveCategoryLinks(moviesSeenLinks);
+                break;
+            case "favorites":
+                setActiveCategoryLinks(favoritesLinks);
+                break;
+            default:
+                setActiveCategoryLinks(moviesToSeeLinks);
+        }
+        // setLoading(false);
+    }, [activeCategory, moviesToSeeLinks, moviesSeenLinks, favoritesLinks]);
+
     return (
         <>
             <Box
@@ -101,7 +117,7 @@ const Dashboard = () => {
                         sm: "row",
                     },
                 }}>
-                <SideNav />
+                <SideNav setActiveCategory={setActiveCategory} />
                 <Box
                     sx={{
                         width: "100%",
@@ -113,15 +129,14 @@ const Dashboard = () => {
                         flexDirection: "column",
                         gap: "1rem",
                     }}>
-                    <DashboardSection
-                        hashId="toSee"
-                        movies={moviesToSeeLinks}
-                    />
-                    <DashboardSection hashId="seen" movies={moviesSeenLinks} />
-                    <DashboardSection
-                        hashId="favorites"
-                        movies={favoritesLinks}
-                    />
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <DashboardSection
+                            categoryId={activeCategory}
+                            movies={activeCategoryLinks}
+                        />
+                    )}
                 </Box>
             </Box>
         </>

@@ -13,9 +13,9 @@ import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
-const DashboardSection = ({ hashId, movies }) => {
+const DashboardSection = ({ categoryId, movies }) => {
     DashboardSection.propTypes = {
-        hashId: PropTypes.string.isRequired,
+        categoryId: PropTypes.string.isRequired,
         movies: PropTypes.arrayOf(PropTypes.object.isRequired),
     };
 
@@ -25,8 +25,8 @@ const DashboardSection = ({ hashId, movies }) => {
     const [title, setTitle] = useState("");
 
     useEffect(() => {
-        setTitle(theme.languages[language].pages.dashboard.titles[hashId]);
-    }, [page, language]);
+        setTitle(theme.languages[language].pages.dashboard.titles[categoryId]);
+    }, [page, language, categoryId]);
 
     return (
         <Paper
@@ -35,7 +35,7 @@ const DashboardSection = ({ hashId, movies }) => {
             sx={{
                 padding: "1rem",
             }}>
-            <Typography id={hashId} component="h2" variant="h2" mb="1rem">
+            <Typography id={categoryId} component="h2" variant="h2" mb="1rem">
                 {title}
             </Typography>
             <MovieCardsGrid movies={movies} />

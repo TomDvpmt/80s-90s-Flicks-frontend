@@ -7,6 +7,7 @@ import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
 import Pagination from "../../components/Pagination";
 import ErrorMessage from "../../components/ErrorMessage";
+import Loader from "../../components/Loader";
 
 import { filtersClearAll } from "../../services/features/filters";
 import { selectFiltersAll } from "../../services/utils/selectors";
@@ -15,7 +16,7 @@ import { TMDB_API_KEY } from "../../utils/config";
 
 import theme from "../../assets/styles/theme";
 
-import { Box, Paper, Typography, Button, Grid } from "@mui/material";
+import { Box, Paper, Typography, Button } from "@mui/material";
 
 const Home = () => {
     const filters = useSelector(selectFiltersAll());
@@ -26,12 +27,15 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const handleFiltersClearAll = () => {
         dispatch(filtersClearAll());
     };
 
     useEffect(() => {
+        setLoading(true);
+
         const queryFilters = filters
             .filter((filter) => filter.value !== "")
             .map((filter) => filter.param + filter.value)
@@ -78,7 +82,8 @@ const Home = () => {
             .catch((error) => {
                 setErrorMessage("Impossible d'afficher les films.");
                 console.error(error);
-            });
+            })
+            .finally(() => setLoading(false));
     }, [filters]);
 
     return (
@@ -145,7 +150,7 @@ const Home = () => {
             </Box>
             <Box component="section">
                 <ErrorMessage errorMessage={errorMessage} />
-                <MovieCardsGrid movies={movies} />
+                {loading ? <Loader /> : <MovieCardsGrid movies={movies} />}
             </Box>
         </>
     );

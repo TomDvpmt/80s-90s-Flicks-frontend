@@ -10,7 +10,6 @@ import {
 } from "../../services/utils/selectors";
 
 import { Box, AppBar, Toolbar, Button, Typography } from "@mui/material";
-import { Menu as MenuIcon, Rowing } from "@mui/icons-material";
 import theme from "../../assets/styles/theme";
 
 const NavBar = () => {
@@ -20,8 +19,8 @@ const NavBar = () => {
     return (
         <AppBar
             component="div"
-            position="sticky"
             sx={{
+                position: { xs: "sticky", sm: "static" },
                 backgroundColor: theme.palette.primary.light,
                 flexDirection: "row",
                 justifyContent: "center",

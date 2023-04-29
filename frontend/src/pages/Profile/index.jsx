@@ -21,15 +21,10 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Collapse,
+    // Collapse,
 } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
-
-const leftCellStyle = {
-    textAlign: "right",
-    fontWeight: "700",
-};
 
 const Profile = () => {
     const userId = useSelector(selectUserId());
@@ -44,6 +39,11 @@ const Profile = () => {
     const handleUpdateUser = () => {
         setShowUpdateValidation(false);
         setShowUpdateForm((showUpdateForm) => !showUpdateForm);
+    };
+
+    const leftCellStyle = {
+        textAlign: "right",
+        fontWeight: "700",
     };
 
     return (
@@ -95,19 +95,23 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            <Collapse in={showUpdateForm}>
+            {/* <Collapse
+                in={showUpdateForm}
+                children={
+                    <UserForm
+                        userId={userId}
+                        setShowUpdateForm={setShowUpdateForm}
+                        setShowUpdateValidation={setShowUpdateValidation}
+                    />
+                }
+            /> */}
+            {showUpdateForm && (
                 <UserForm
                     userId={userId}
-                    defaultFormValues={{
-                        username,
-                        email,
-                        firstName,
-                        lastName,
-                    }}
                     setShowUpdateForm={setShowUpdateForm}
                     setShowUpdateValidation={setShowUpdateValidation}
                 />
-            </Collapse>
+            )}
         </>
     );
 };
