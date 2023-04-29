@@ -5,12 +5,13 @@ import MovieCard from "../../components/MovieCard";
 import MovieCardsGrid from "../../components/MovieCardsGrid";
 import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
+// import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loader from "../../components/Loader";
 
-import { filtersClearAll } from "../../services/features/filters";
-import { selectFiltersAll } from "../../services/utils/selectors";
+import { filtersClearAll } from "../../features/filters";
+import { selectFiltersAll } from "../../app/selectors";
 
 import { TMDB_API_KEY } from "../../utils/config";
 

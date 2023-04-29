@@ -6,7 +6,7 @@ import {
     selectUserMoviesSeen,
     selectUserFavorites,
     selectUserLanguage,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import {
     Paper,

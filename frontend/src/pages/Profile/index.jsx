@@ -10,7 +10,7 @@ import {
     selectUserLastName,
     selectUserEmail,
     selectUserId,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import {
     Box,

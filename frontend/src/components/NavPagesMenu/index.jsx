@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../services/utils/selectors";
+import { selectUserIsSignedIn } from "../../app/selectors";
 
 import { logout } from "../../utils/user";
 

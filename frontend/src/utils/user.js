@@ -1,5 +1,31 @@
-import store from "../services/utils/store";
-import { userSignOut } from "../services/features/user";
+import store from "../app/store";
+import { userSignOut } from "../features/user";
+
+/**
+ * Get current user info
+ *
+ * @returns {Object}
+ */
+
+export const getUserInfo = async () => {
+    const token = sessionStorage.getItem("token");
+    try {
+        if (token) {
+            const response = await fetch(`/API/users/profile`, {
+                method: "GET",
+                headers: {
+                    Authorization: `BEARER ${token}`,
+                },
+            });
+            const data = await response.json();
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
 
 /**
  * Log out user

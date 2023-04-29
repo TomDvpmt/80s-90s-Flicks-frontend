@@ -14,7 +14,7 @@ const { auth } = require("../middleware/auth");
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/", auth, getAllUsers);
-router.get("/:id", auth, getOneUser);
+router.get("/profile", auth, getOneUser);
 router.post("/", createUser);
 router.put("/:id", auth, updateUser);
 router.delete("/:id", auth, deleteUser);

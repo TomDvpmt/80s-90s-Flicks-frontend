@@ -11,7 +11,7 @@ import {
     selectUserMoviesToSee,
     selectUserFavorites,
     selectUserLanguage,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { getMovieData } from "../../utils/movie";
 
@@ -85,7 +85,6 @@ const Dashboard = () => {
     }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
     useEffect(() => {
-        // setLoading(true);
         switch (activeCategory) {
             case "toSee":
                 setActiveCategoryLinks(moviesToSeeLinks);
@@ -99,7 +98,6 @@ const Dashboard = () => {
             default:
                 setActiveCategoryLinks(moviesToSeeLinks);
         }
-        // setLoading(false);
     }, [activeCategory, moviesToSeeLinks, moviesSeenLinks, favoritesLinks]);
 
     return (

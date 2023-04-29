@@ -4,7 +4,7 @@ import {
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
     selectPageLocation,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 

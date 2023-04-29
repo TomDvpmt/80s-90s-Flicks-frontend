@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import {
     selectUserMoviesSeen,
     selectUserMoviesToSee,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { FormControlLabel, Checkbox } from "@mui/material";
 
@@ -12,7 +12,7 @@ import {
     userAddToMoviesToSee,
     userRemoveFromMoviesSeen,
     userRemoveFromMoviesToSee,
-} from "../../services/features/user";
+} from "../../features/user";
 
 const ToggleMovieToSee = ({
     toggleMovieInUserMovies,

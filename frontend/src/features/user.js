@@ -36,15 +36,15 @@ const userReducer = createReducer(initialState, (builder) => {
         .addCase(userSetInfo, (draft, action) => {
             const token = sessionStorage.getItem("token");
             draft.isSignedIn = token !== "" && token !== null;
-            draft.id = action.payload.id;
-            draft.username = action.payload.username;
-            draft.firstName = action.payload.firstName;
-            draft.lastName = action.payload.lastName;
-            draft.email = action.payload.email;
-            draft.moviesSeen = action.payload.moviesSeen;
-            draft.moviesToSee = action.payload.moviesToSee;
-            draft.favorites = action.payload.favorites;
-            draft.language = action.payload.language;
+            draft.id = action.payload.id || draft.id;
+            draft.username = action.payload.username || draft.username;
+            draft.firstName = action.payload.firstName || draft.firstName;
+            draft.lastName = action.payload.lastName || draft.lastName;
+            draft.email = action.payload.email || draft.email;
+            draft.moviesSeen = action.payload.moviesSeen || draft.moviesSeen;
+            draft.moviesToSee = action.payload.moviesToSee || draft.moviesToSee;
+            draft.favorites = action.payload.favorites || draft.favorites;
+            draft.language = action.payload.language || draft.language;
         })
         .addCase(userSignOut, (draft, action) => {
             return initialState;

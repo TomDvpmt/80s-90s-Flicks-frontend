@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { filtersSetYear } from "../../../services/features/filters";
-import { selectFiltersYear } from "../../../services/utils/selectors";
+import { filtersSetYear } from "../../../features/filters";
+import { selectFiltersYear } from "../../../app/selectors";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 

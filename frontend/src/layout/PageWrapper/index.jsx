@@ -8,12 +8,12 @@ import NavBar from "../NavBar";
 import PageHeading from "../../components/PageHeading";
 import Footer from "../../layout/Footer";
 
-import { userSetInfo } from "../../services/features/user";
+import { userSetInfo } from "../../features/user";
 
-import {
-    selectPageLocation,
-    selectUserLanguage,
-} from "../../services/utils/selectors";
+import { TMDB_API_KEY } from "../../utils/config";
+import { tmdbSetConfig } from "../../features/tmdbConfig";
+
+import { selectPageLocation, selectUserLanguage } from "../../app/selectors";
 
 import { Box } from "@mui/material";
 
@@ -28,12 +28,7 @@ const PageWrapper = () => {
 
     const [heading, setHeading] = useState("");
 
-    useEffect(() => {
-        page === "movie" || page === "person"
-            ? setHeading("")
-            : language && setHeading(theme.languages[language].pages[page].h1);
-    }, [language, page]);
-
+    // Set user's info in global state
     useEffect(() => {
         token
             ? dispatch(userSetInfo(data))
@@ -52,6 +47,22 @@ const PageWrapper = () => {
               );
     }, [token, data, dispatch]);
 
+    // Get The Movie Database config infos
+    useEffect(() => {
+        fetch(
+            `https://api.themoviedb.org/3/configuration?api_key=${TMDB_API_KEY}`,
+            { method: "GET" }
+        )
+            .then((response) => response.json())
+            .then((data) => dispatch(tmdbSetConfig(data)))
+            .catch((error) => console.error(error));
+    }, [dispatch]);
+
+    // Set page's heading
+    useEffect(() => {
+        language && setHeading(theme.languages[language].pages[page].h1);
+    }, [language, page]);
+
     return (
         <>
             <ScrollRestoration />
@@ -59,7 +70,7 @@ const PageWrapper = () => {
             <Header />
             <NavBar />
             <Box component="main" maxWidth={theme.maxWidth.main} margin="auto">
-                {heading !== "" && <PageHeading text={heading} />}
+                {heading && page !== "movie" && <PageHeading text={heading} />}
                 <Outlet />
             </Box>
             <Footer />

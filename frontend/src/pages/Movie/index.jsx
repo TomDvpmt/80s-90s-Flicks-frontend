@@ -23,7 +23,7 @@ import {
     userRemoveFromMoviesToSee,
     userAddToMoviesSeen,
     userRemoveFromMoviesSeen,
-} from "../../services/features/user";
+} from "../../features/user";
 
 import {
     selectUserId,
@@ -31,7 +31,7 @@ import {
     selectUserLanguage,
     selectUserMoviesToSee,
     selectUserMoviesSeen,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 import { isEmptyObject } from "../../utils/utils";

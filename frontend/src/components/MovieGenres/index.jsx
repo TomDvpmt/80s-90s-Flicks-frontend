@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { filtersAddActiveGenre } from "../../services/features/filters";
+import { filtersAddActiveGenre } from "../../features/filters";
 
 import { Box } from "@mui/material";
 

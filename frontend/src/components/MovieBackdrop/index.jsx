@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectTmdbImagesSecureUrl } from "../../services/utils/selectors";
+import { selectTmdbImagesSecureUrl } from "../../app/selectors";
 
 import { Box } from "@mui/material";
 

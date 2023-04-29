@@ -9,7 +9,7 @@ import {
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
     selectPageLocation,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 

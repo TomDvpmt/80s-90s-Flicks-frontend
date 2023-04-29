@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema(
         moviesSeen: { type: Array },
         favorites: { type: Array },
         imgUrl: { type: String },
-        language: { type: String, default: "en" },
+        language: { type: String, default: "fr" },
     },
     {
         timestamps: true,

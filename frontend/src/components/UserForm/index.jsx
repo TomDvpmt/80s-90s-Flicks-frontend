@@ -10,7 +10,7 @@ import FirstNameInput from "../form-fields/FirstNameInput";
 import LastNameInput from "../form-fields/LastNameInput";
 import ErrorMessage from "../ErrorMessage";
 
-import { userAuth, userSetInfo } from "../../services/features/user";
+import { userAuth, userSetInfo } from "../../features/user";
 
 import {
     selectPageLocation,
@@ -18,7 +18,7 @@ import {
     selectUserFirstName,
     selectUserLastName,
     selectUserEmail,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { Box, Button, Typography, Link } from "@mui/material";
 import theme from "../../assets/styles/theme";
@@ -142,7 +142,7 @@ const UserForm = ({ userId, setShowUpdateForm, setShowUpdateValidation }) => {
                 });
                 break;
             default:
-                setPageData({});
+                navigate("/login");
         }
     }, [
         page,
@@ -164,6 +164,7 @@ const UserForm = ({ userId, setShowUpdateForm, setShowUpdateValidation }) => {
 
         const token = sessionStorage.getItem("token");
 
+        // If default values and input values are the same, close the form
         if (
             page === "profile" &&
             Object.keys(defaultFormValues).reduce(

@@ -1,58 +1,39 @@
-import { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
-import { TMDB_API_KEY } from "../utils/config";
-import { getMovieData } from "../utils/movie";
-import { getPersonFullData } from "../utils/person";
-
-import { tmdbSetConfig } from "../services/features/tmdbConfig";
-
 import {
-    selectUserIsSignedIn,
-    selectUserLanguage,
-} from "../services/utils/selectors";
+    createBrowserRouter,
+    redirect,
+    RouterProvider,
+} from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import PageWrapper from "../layout/PageWrapper";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Profile from "../pages/Profile";
-import Dashboard from "../pages/Dashboard";
-import Home from "../pages/Home";
-import Movie from "../pages/Movie";
-import Person from "../pages/Person";
-import Error404 from "../pages/Error404";
-import SetPage from "../components/SetPage";
-import ErrorBoundary from "../components/ErrorBoundary";
+import { getMovieData } from "../../utils/movie";
+import { getPersonFullData } from "../../utils/person";
+
+import { selectUserIsSignedIn, selectUserLanguage } from "../selectors";
+
+import { getUserInfo } from "../../utils/user";
+
+import PageWrapper from "../../layout/PageWrapper";
+import Login from "../../pages/Login";
+import Register from "../../pages/Register";
+import Profile from "../../pages/Profile";
+import Dashboard from "../../pages/Dashboard";
+import Home from "../../pages/Home";
+import Movie from "../../pages/Movie";
+import Person from "../../pages/Person";
+import Error404 from "../../pages/Error404";
+import SetPageLocation from "../../components/SetPageLocation";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
-    const token = sessionStorage.getItem("token");
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        fetch(
-            `https://api.themoviedb.org/3/configuration?api_key=${TMDB_API_KEY}`,
-            { method: "GET" }
-        )
-            .then((response) => response.json())
-            .then((data) => dispatch(tmdbSetConfig(data)))
-            .catch((error) => console.error(error));
-    }, [dispatch]);
-
-    const getUserInfo = async () => {
-        if (token) {
-            const response = await fetch(`/API/users/0`, {
-                method: "GET",
-                headers: {
-                    Authorization: `BEARER ${token}`,
-                },
-            });
-            const data = await response.json();
-            return data;
+    const privateRouteLoader = () => {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+            return redirect("/login");
         }
-        return {};
+        return null;
     };
 
     let routes = [];
@@ -68,7 +49,7 @@ function Router() {
             this.path = path;
             this.element = (
                 <>
-                    <SetPage page={page} />
+                    <SetPageLocation page={page} />
                     {element}
                 </>
             );
@@ -96,12 +77,16 @@ function Router() {
         {
             page: "profile",
             path: "profile",
-            element: isSignedIn ? <Profile /> : <Login />,
+            element: <Profile />,
+            loader: () => privateRouteLoader(),
+            errorElement: true,
         },
         {
             page: "dashboard",
             path: "dashboard",
             element: isSignedIn ? <Dashboard /> : <Login />,
+            loader: () => privateRouteLoader(),
+            errorElement: true,
         },
         {
             page: "movie",

@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     filtersSetActiveGenres,
     filtersConvertActiveGenresToFilter,
-} from "../../../services/features/filters";
-import { selectFiltersActiveGenres } from "../../../services/utils/selectors";
+} from "../../../features/filters";
+import { selectFiltersActiveGenres } from "../../../app/selectors";
 
 import { TMDB_API_KEY } from "../../../utils/config";
 

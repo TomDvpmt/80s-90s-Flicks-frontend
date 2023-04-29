@@ -4,10 +4,7 @@ import { useSelector } from "react-redux";
 import NavUserMenu from "../../components/NavUserMenu";
 import NavPagesMenu from "../../components/NavPagesMenu";
 
-import {
-    selectUserIsSignedIn,
-    selectUserUsername,
-} from "../../services/utils/selectors";
+import { selectUserIsSignedIn, selectUserUsername } from "../../app/selectors";
 
 import { Box, AppBar, Toolbar, Button, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";

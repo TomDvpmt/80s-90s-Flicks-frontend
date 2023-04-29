@@ -4,12 +4,12 @@ import {
     userAddToMoviesSeen,
     userRemoveFromMoviesSeen,
     userRemoveFromMoviesToSee,
-} from "../../services/features/user";
+} from "../../features/user";
 
 import {
     selectUserMoviesSeen,
     selectUserMoviesToSee,
-} from "../../services/utils/selectors";
+} from "../../app/selectors";
 
 import { FormControlLabel, Checkbox } from "@mui/material";
 

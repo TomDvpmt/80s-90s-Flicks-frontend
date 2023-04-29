@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { filtersSetPageNumber } from "../../services/features/filters";
+import { filtersSetPageNumber } from "../../features/filters";
 
 // import { Stack, Pagination as MUIPagination } from "@mui/material";
 

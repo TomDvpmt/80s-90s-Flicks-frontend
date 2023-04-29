@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import PageHeading from "../../components/PageHeading";
 
-import { selectUserLanguage } from "../../services/utils/selectors";
+import { selectUserLanguage } from "../../app/selectors";
 
 import { isEmptyObject } from "../../utils/utils";
 
@@ -40,7 +40,7 @@ const Person = () => {
     }, [personData]);
 
     return (
-        person !== undefined && (
+        !isEmptyObject(person) && (
             <>
                 <PageHeading text={person.name} />
                 {personImgUrl && (

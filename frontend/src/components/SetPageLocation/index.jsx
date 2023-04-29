@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { pageUpdateLocation } from "../../services/features/page";
+import { pageUpdateLocation } from "../../features/page";
 
 import PropTypes from "prop-types";
 
-const SetPage = ({ page }) => {
-    SetPage.propTypes = {
+const SetPageLocation = ({ page }) => {
+    SetPageLocation.propTypes = {
         page: PropTypes.string.isRequired,
     };
     const dispatch = useDispatch();
@@ -18,4 +18,4 @@ const SetPage = ({ page }) => {
     return false;
 };
 
-export default SetPage;
+export default SetPageLocation;

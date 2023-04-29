@@ -6,7 +6,7 @@ import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
 
 import { logout } from "../../utils/user";
 
-import { selectUserIsSignedIn } from "../../services/utils/selectors";
+import { selectUserIsSignedIn } from "../../app/selectors";
 
 const NavUserMenu = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());

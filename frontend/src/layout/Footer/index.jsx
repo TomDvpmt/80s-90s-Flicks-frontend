@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Branding from "../../components/Branding";
 
 import { useSelector } from "react-redux";
-import { selectUserIsSignedIn } from "../../services/utils/selectors";
+import { selectUserIsSignedIn } from "../../app/selectors";
 
 import { logout } from "../../utils/user";
 

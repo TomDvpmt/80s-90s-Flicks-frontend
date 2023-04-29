@@ -3,12 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     userAddToFavorites,
     userRemoveFromFavorites,
-} from "../../services/features/user";
+} from "../../features/user";
 
-import {
-    selectUserFavorites,
-    selectUserId,
-} from "../../services/utils/selectors";
+import { selectUserFavorites, selectUserId } from "../../app/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 

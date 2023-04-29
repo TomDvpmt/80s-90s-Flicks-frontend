@@ -61,6 +61,7 @@ export const language_en = {
             },
         },
         movie: {
+            h1: "",
             budget: "Budget:",
             revenue: "Revenue:",
             unavailable: "No data",

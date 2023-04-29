@@ -1,11 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { userSetLanguage } from "../../services/features/user";
-import { filtersSetLanguage } from "../../services/features/filters";
-import {
-    selectUserLanguage,
-    selectUserId,
-} from "../../services/utils/selectors";
+import { userSetLanguage } from "../../features/user";
+import { filtersSetLanguage } from "../../features/filters";
+import { selectUserLanguage, selectUserId } from "../../app/selectors";
 
 import {
     Paper,

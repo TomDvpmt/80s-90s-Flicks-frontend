@@ -3,10 +3,7 @@ import { useSelector } from "react-redux";
 
 import MovieCardsGrid from "../MovieCardsGrid";
 
-import {
-    selectPageLocation,
-    selectUserLanguage,
-} from "../../services/utils/selectors";
+import { selectPageLocation, selectUserLanguage } from "../../app/selectors";
 
 import { Paper, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
