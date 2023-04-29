@@ -9,7 +9,8 @@ import { selectUserFavorites, selectUserId } from "../../app/selectors";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 
-import { Checkbox, FormControlLabel } from "@mui/material";
+import theme from "../../assets/styles/theme";
+import { Checkbox, FormControl, FormControlLabel } from "@mui/material";
 import { Star, StarBorder } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
@@ -59,8 +60,20 @@ const ToggleFavorite = ({ movieId }) => {
             control={
                 <Checkbox
                     inputProps={{ "aria-label": "add to favorite" }}
-                    icon={<StarBorder />}
-                    checkedIcon={<Star />}
+                    icon={
+                        <StarBorder
+                            sx={{
+                                color: theme.palette.primary.light,
+                            }}
+                        />
+                    }
+                    checkedIcon={
+                        <Star
+                            sx={{
+                                color: theme.palette.primary.light,
+                            }}
+                        />
+                    }
                     checked={isFavorite}
                     onChange={handleFavoriteCheckbox}
                 />
