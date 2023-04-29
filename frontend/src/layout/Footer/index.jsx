@@ -40,7 +40,10 @@ const Footer = () => {
     };
 
     return (
-        <Box bgcolor={theme.palette.secondary.light}>
+        <Box
+            component="footer"
+            bgcolor={theme.palette.secondary.light}
+            mt="3rem">
             <Box
                 sx={{
                     display: "flex",

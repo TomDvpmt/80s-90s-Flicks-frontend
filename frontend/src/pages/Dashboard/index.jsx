@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import DashboardSection from "../../components/DashboardSection";
 import MovieCard from "../../components/MovieCard";
-import SideNav from "../../layout/SideNav";
-import Loader from "../../components/Loader";
+import DashboardTabs from "../../components/DashboardTabs";
 
 import {
     selectUserMoviesSeen,
@@ -14,8 +12,6 @@ import {
 } from "../../app/selectors";
 
 import { getMovieData } from "../../utils/movie";
-
-import { Box } from "@mui/material";
 
 const Dashboard = () => {
     const language = useSelector(selectUserLanguage());
@@ -27,8 +23,6 @@ const Dashboard = () => {
     const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
     const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
     const [favoritesLinks, setFavoritesLinks] = useState([]);
-    const [activeCategory, setActiveCategory] = useState("toSee");
-    const [activeCategoryLinks, setActiveCategoryLinks] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
@@ -84,59 +78,14 @@ const Dashboard = () => {
         setFavoritesLinks(getLinks(uniqueMovies, favorites));
     }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
-    useEffect(() => {
-        switch (activeCategory) {
-            case "toSee":
-                setActiveCategoryLinks(moviesToSeeLinks);
-                break;
-            case "seen":
-                setActiveCategoryLinks(moviesSeenLinks);
-                break;
-            case "favorites":
-                setActiveCategoryLinks(favoritesLinks);
-                break;
-            default:
-                setActiveCategoryLinks(moviesToSeeLinks);
-        }
-    }, [activeCategory, moviesToSeeLinks, moviesSeenLinks, favoritesLinks]);
-
     return (
         <>
-            <Box
-                sx={{
-                    padding: {
-                        sm: ".5rem",
-                    },
-                    display: "flex",
-                    gap: "1rem",
-                    alignItems: "flex-start",
-                    flexDirection: {
-                        xs: "column",
-                        sm: "row",
-                    },
-                }}>
-                <SideNav setActiveCategory={setActiveCategory} />
-                <Box
-                    sx={{
-                        width: "100%",
-                        padding: {
-                            xs: "0 .5rem .5rem",
-                        },
-                        flexGrow: "1",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1rem",
-                    }}>
-                    {loading ? (
-                        <Loader />
-                    ) : (
-                        <DashboardSection
-                            categoryId={activeCategory}
-                            movies={activeCategoryLinks}
-                        />
-                    )}
-                </Box>
-            </Box>
+            <DashboardTabs
+                moviesSeenLinks={moviesSeenLinks}
+                moviesToSeeLinks={moviesToSeeLinks}
+                favoritesLinks={favoritesLinks}
+                loading={loading}
+            />
         </>
     );
 };

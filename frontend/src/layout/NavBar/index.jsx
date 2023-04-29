@@ -15,7 +15,7 @@ const NavBar = () => {
 
     return (
         <AppBar
-            component="div"
+            component="nav"
             sx={{
                 position: { xs: "sticky", sm: "static" },
                 backgroundColor: theme.palette.primary.light,
@@ -23,7 +23,6 @@ const NavBar = () => {
                 justifyContent: "center",
             }}>
             <Toolbar
-                component="nav"
                 sx={{
                     flexGrow: 1,
                     maxWidth: theme.maxWidth.nav,

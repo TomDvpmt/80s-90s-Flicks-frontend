@@ -12,11 +12,11 @@ const MovieCardsGrid = ({ movies }) => {
     return (
         <Grid
             container
-            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-            spacing={{ xs: 2, md: 6 }}
-            bgcolor={page === "home" && theme.palette.secondary.darkest}>
-            {movies}
-        </Grid>
+            columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+            spacing={{ xs: 2, md: 4, lg: 5 }}
+            // bgcolor={page === "home" && theme.palette.secondary.darkest}
+            children={movies}
+        />
     );
 };
 

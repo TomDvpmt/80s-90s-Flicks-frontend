@@ -36,8 +36,6 @@ function Router() {
         return null;
     };
 
-    let routes = [];
-
     class Route {
         constructor(
             page = "",
@@ -110,7 +108,7 @@ function Router() {
         },
     ];
 
-    routes = routesData.map(
+    const routes = routesData.map(
         (route) =>
             new Route(
                 route.page,
