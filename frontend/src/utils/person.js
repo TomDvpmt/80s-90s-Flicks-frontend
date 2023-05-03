@@ -67,7 +67,7 @@ const getPersonMainData = async (personId, language) => {
             const person = response.json();
             return person;
         } catch (error) {
-            console.log(error);
+            throw new Error(error);
         }
     }
 };
@@ -91,7 +91,7 @@ const getFilmography = async (personId, language) => {
             const filmography = { actingMovies, directingMovies };
             return filmography;
         } catch (error) {
-            console.log(error);
+            throw new Error(error);
         }
     }
 };
@@ -109,24 +109,28 @@ const getPersonPhotoFromWikipedia = async (personId) => {
     const personFormatedName = person.name.replace(" ", "_");
 
     if (personFormatedName) {
-        // To avoid CORS blocking, include "origin=*" in fetch url
-        const response = await fetch(
-            `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&pithumbsize=300&origin=*&titles=${personFormatedName}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        const data = await response.json();
-        const firstPart = data.query.pages;
-        const imgUrl = Object.keys(firstPart).reduce(
-            (acc, key) =>
-                firstPart[key].thumbnail && firstPart[key].thumbnail.source,
-            ""
-        );
-        return imgUrl;
+        try {
+            // To avoid CORS blocking, include "origin=*" in fetch url
+            const response = await fetch(
+                `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&pithumbsize=300&origin=*&titles=${personFormatedName}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const data = await response.json();
+            const firstPart = data.query.pages;
+            const imgUrl = Object.keys(firstPart).reduce(
+                (acc, key) =>
+                    firstPart[key].thumbnail && firstPart[key].thumbnail.source,
+                ""
+            );
+            return imgUrl;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 };
 

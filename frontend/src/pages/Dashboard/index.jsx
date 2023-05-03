@@ -24,11 +24,13 @@ const Dashboard = () => {
     const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
     const [favoritesLinks, setFavoritesLinks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
+        setHasError(false);
         setLoading(true);
-        const allMoviesIds = moviesSeen.concat(moviesToSee).concat(favorites);
+        const allMoviesIds = moviesSeen?.concat(moviesToSee).concat(favorites);
         Promise.all(
             allMoviesIds.map(async (id) => {
                 return getMovieData(id, language)
@@ -41,7 +43,10 @@ const Dashboard = () => {
                             posterPath: movie.poster_path || "", // to add : default picture
                         };
                     })
-                    .catch((error) => console.log(error));
+                    .catch((error) => {
+                        console.log(error);
+                        setHasError(true);
+                    });
             })
         )
             .then((data) =>
@@ -79,14 +84,13 @@ const Dashboard = () => {
     }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
     return (
-        <>
-            <DashboardTabs
-                moviesSeenLinks={moviesSeenLinks}
-                moviesToSeeLinks={moviesToSeeLinks}
-                favoritesLinks={favoritesLinks}
-                loading={loading}
-            />
-        </>
+        <DashboardTabs
+            moviesSeenLinks={moviesSeenLinks}
+            moviesToSeeLinks={moviesToSeeLinks}
+            favoritesLinks={favoritesLinks}
+            loading={loading}
+            hasError={hasError}
+        />
     );
 };
 

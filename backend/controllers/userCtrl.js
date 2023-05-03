@@ -112,25 +112,26 @@ exports.createUser = asyncHandler(async (req, res) => {
 exports.getOneUser = asyncHandler(async (req, res) => {
     const userId = req.auth.id;
 
-    const user = await User.findOne({ _id: userId });
+    try {
+        const user = await User.findOne({ _id: userId });
 
-    if (!user) {
-        res.status(400);
+        res.status(200).json({
+            id: userId,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            moviesSeen: user.moviesSeen,
+            moviesToSee: user.moviesToSee,
+            favorites: user.favorites,
+            language: user.language,
+        });
+    } catch (error) {
+        res.status(404);
         throw new Error(
             "Impossible de récupérer les données de l'utilisateur."
         );
     }
-    res.status(200).json({
-        id: userId,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        moviesSeen: user.moviesSeen,
-        moviesToSee: user.moviesToSee,
-        favorites: user.favorites,
-        language: user.language,
-    });
 });
 
 /**
@@ -154,11 +155,16 @@ exports.updateUser = asyncHandler(async (req, res) => {
         throw new Error("Non autorisé.");
     }
 
-    await User.updateOne({ _id: loggedUserId }, updateData);
-    res.status(200).json({
-        ...updateData,
-        message: "Informations mises à jour.",
-    });
+    try {
+        await User.updateOne({ _id: loggedUserId }, updateData);
+        res.status(200).json({
+            ...updateData,
+            message: "Informations mises à jour.",
+        });
+    } catch (error) {
+        res.status(400);
+        throw new Error("Impossible de mettre à jour l'utilisateur.");
+    }
 });
 
 /**

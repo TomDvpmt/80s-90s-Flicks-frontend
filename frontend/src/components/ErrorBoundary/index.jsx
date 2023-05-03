@@ -25,7 +25,7 @@ const ErrorBoundary = ({ page }) => {
     let error = useRouteError();
     error !== undefined && console.error(error);
 
-    const currentLocation = useLocation();
+    const currentLocation = useLocation().pathname;
 
     let message;
 

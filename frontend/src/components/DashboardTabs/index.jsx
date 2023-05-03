@@ -5,6 +5,7 @@ import { selectUserLanguage } from "../../app/selectors";
 
 import MovieCardsGrid from "../MovieCardsGrid";
 import Loader from "../Loader";
+import ErrorBoundary from "../ErrorBoundary";
 
 import theme from "../../assets/styles/theme";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
@@ -36,12 +37,14 @@ const DashboardTabs = ({
     moviesSeenLinks,
     favoritesLinks,
     loading,
+    hasError,
 }) => {
     DashboardTabs.propTypes = {
         moviesToSeeLinks: PropTypes.array.isRequired,
         moviesSeenLinks: PropTypes.array.isRequired,
         favoritesLinks: PropTypes.array.isRequired,
         loading: PropTypes.bool.isRequired,
+        hasError: PropTypes.bool.isRequired,
     };
 
     const language = useSelector(selectUserLanguage());
@@ -98,55 +101,58 @@ const DashboardTabs = ({
                     borderRight: mdBreakpoint ? 1 : 0,
                     borderColor: "divider",
                 }}>
-                {dashboardTabs &&
-                    dashboardTabs.map((item, index) => (
-                        <Tab
-                            key={index}
-                            icon={item.icon}
-                            iconPosition={mdBreakpoint ? "start" : "top"}
-                            sx={{ p: { xs: ".5rem", sm: "2rem" } }}
-                            label={
-                                <Box
+                {dashboardTabs?.map((item, index) => (
+                    <Tab
+                        key={index}
+                        icon={item.icon}
+                        iconPosition={mdBreakpoint ? "start" : "top"}
+                        sx={{ p: { xs: ".5rem", sm: "2rem" } }}
+                        label={
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    minWidth: "max-content",
+                                }}>
+                                <Typography
+                                    fontWeight="700"
                                     sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        minWidth: "max-content",
+                                        fontSize: {
+                                            xs: ".7rem",
+                                            sm: ".9rem",
+                                            md: "initial",
+                                        },
                                     }}>
-                                    <Typography
-                                        fontWeight="700"
-                                        sx={{
-                                            fontSize: {
-                                                xs: ".7rem",
-                                                sm: ".9rem",
-                                                md: "initial",
-                                            },
-                                        }}>
-                                        {item.primary}
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontSize: {
-                                                xs: ".7rem",
-                                                sm: ".9rem",
-                                                md: "initial",
-                                            },
-                                            textTransform: "capitalize",
-                                        }}>
-                                        {item.secondary}
-                                    </Typography>
-                                </Box>
-                            }
-                            {...allyProps(0)}
-                        />
-                    ))}
+                                    {item.primary}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize: {
+                                            xs: ".7rem",
+                                            sm: ".9rem",
+                                            md: "initial",
+                                        },
+                                        textTransform: "capitalize",
+                                    }}>
+                                    {item.secondary}
+                                </Typography>
+                            </Box>
+                        }
+                        {...allyProps(0)}
+                    />
+                ))}
             </Tabs>
 
             {loading ? (
                 <Loader />
             ) : (
                 <Box width="100%" p="0 1rem">
-                    {dashboardTabs &&
-                        dashboardTabs.map((item, index) => (
+                    {hasError ? (
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
+                            <ErrorBoundary page="dashboard" />
+                        </Box>
+                    ) : (
+                        dashboardTabs?.map((item, index) => (
                             <TabPanel
                                 key={index}
                                 value={value}
@@ -155,7 +161,8 @@ const DashboardTabs = ({
                                     <MovieCardsGrid movies={item.movies} />
                                 }
                             />
-                        ))}
+                        ))
+                    )}
                 </Box>
             )}
         </Box>

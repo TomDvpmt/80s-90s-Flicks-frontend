@@ -11,38 +11,22 @@ import { Typography } from "@mui/material";
  */
 
 export const getMovieData = async (id, language) => {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-    );
-    const data = await response.json();
-    return data;
-};
-
-/**
- * Get cast and crew of a movie from The Movie Database
- * @param {Number} movieId
- */
-
-const getMovieCredits = async (movieId) => {
-    if (movieId) {
-        try {
-            const response = await fetch(
-                `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
-                {
-                    method: "GET",
-                }
-            );
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error(error);
-        }
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error(
+            "Impossible de récupérer les données depuis l'API The Movie Database."
+        );
     }
 };
 
@@ -128,17 +112,25 @@ const getMovieActorsElements = (page, cast) => {
  */
 
 export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
-    movieId &&
-        getMovieCredits(movieId)
-            .then((data) => {
-                const directorElement = getMovieDirectorElement(
-                    page,
-                    data.crew
-                );
-                setDirector(directorElement);
+    if (movieId) {
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
+                {
+                    method: "GET",
+                }
+            );
+            const data = await response.json();
 
-                const actorsElements = getMovieActorsElements(page, data.cast);
-                setActors(actorsElements);
-            })
-            .catch((error) => console.error(error));
+            const directorElement = getMovieDirectorElement(page, data.crew);
+            setDirector(directorElement);
+
+            const actorsElements = getMovieActorsElements(page, data.cast);
+            setActors(actorsElements);
+            return;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    return;
 };
