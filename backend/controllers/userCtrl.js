@@ -1,33 +1,8 @@
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/User");
-
-/** Create a token for a user
- *
- * @param {Object} user
- * @returns {String}
- */
-
-const createToken = (user) => {
-    return jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET_PHRASE, {
-        expiresIn: "24h",
-    });
-};
-
-// /** Stores the user's token in a cookie
-//  *
-//  * @param {Response} res
-//  * @param {String} token
-//  */
-
-// const setCookie = (res, token) => {
-//     res.setHeader("Set-Cookie", [
-//         `token=${token};HttpOnly;Max-Age=${60 * 60 * 24};${
-//             process.env.NODE_ENV === "production" && "Secure;"
-//         }`,
-//     ]);
-// };
+const { createToken } = require("../utils/user");
 
 /**
  * Authenticate a user.
@@ -56,7 +31,6 @@ exports.login = asyncHandler(async (req, res) => {
     }
 
     const token = createToken(user);
-    // setCookie(res, token);
 
     res.status(200).json({
         message: "Utilisateur connecté.",
@@ -67,16 +41,6 @@ exports.login = asyncHandler(async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
     });
-});
-
-exports.logout = asyncHandler(async (req, res) => {
-    // res.setHeader(
-    //     "Set-Cookie",
-    //     `token=null;HttpOnly;SameSite=Lax;expires=Thu, 01 Jan 1970 00:00:00 GMT;${
-    //         process.env.NODE_ENV === "production" && "Secure;"
-    //     }`
-    // );
-    // res.status(200).json({ message: "utilisateur déconnecté." });
 });
 
 /**
@@ -122,7 +86,6 @@ exports.createUser = asyncHandler(async (req, res) => {
         throw new Error("Impossible de créer l'utilisateur.");
     }
     const token = createToken(user);
-    // setCookie(res, token);
 
     res.status(201).json({
         message: "Utilisateur créé.",
@@ -209,4 +172,15 @@ exports.updateUser = asyncHandler(async (req, res) => {
  * @returns {Promise}
  */
 
-exports.deleteUser = asyncHandler(async (req, res) => {});
+exports.deleteUser = asyncHandler(async (req, res) => {
+    const paramId = req.params.id;
+    const userId = req.auth.id;
+
+    if (paramId !== userId) {
+        res.status(401);
+        throw new Error("Non autorisé");
+    }
+
+    await User.deleteOne({ _id: userId });
+    res.status(200).json({ message: "Utilisateur supprimé." });
+});

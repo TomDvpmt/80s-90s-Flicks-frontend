@@ -1,5 +1,3 @@
-// import UserForm from "../../components/UserForm";
-
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -106,7 +104,7 @@ const Register = () => {
                     type="submit"
                     variant="contained"
                     sx={{ margin: `${theme.margin.buttonTop.spaced} 0` }}>
-                    Enregistrer
+                    Créer le compte
                 </Button>
                 <Typography paragraph>
                     <Typography component="span">
@@ -118,9 +116,6 @@ const Register = () => {
                 </Typography>
             </Box>
         </Box>
-        // <>
-        //     <UserForm />
-        // </>
     );
 };
 

@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { userSetInfo } from "../../features/user";
 
-// import UserForm from "../../components/UserForm";
 import UsernameInput from "../../components/form-fields/UsernameInput";
 import EmailInput from "../../components/form-fields/EmailInput";
 import FirstNameInput from "../../components/form-fields/FirstNameInput";
 import LastNameInput from "../../components/form-fields/LastNameInput";
 import ValidationMessage from "../../components/ValidationMessage";
 import ErrorMessage from "../../components/ErrorMessage";
+import DeleteAccountDialog from "../../components/DeleteAccountDialog";
 
 import {
     selectUserUsername,
@@ -51,6 +51,7 @@ const Profile = () => {
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     useEffect(() => {
         setNewUsername(prevUsername);
@@ -63,6 +64,10 @@ const Profile = () => {
         setShowUpdateValidation(false);
         setErrorMessage("");
         setShowUpdateForm((showUpdateForm) => !showUpdateForm);
+    };
+
+    const handleDeleteClick = () => {
+        setShowDeleteDialog((show) => !show);
     };
 
     const handleSubmit = async (e) => {
@@ -154,14 +159,35 @@ const Profile = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: ".5rem",
+                    }}>
                     <Button
                         type="button"
                         variant={showUpdateForm ? "outlined" : "contained"}
+                        size="small"
                         sx={{ mt: theme.margin.buttonTop.notSpaced }}
                         onClick={handleUpdateUser}>
                         Modifier les informations
                     </Button>
+                    <Button
+                        type="button"
+                        variant="text"
+                        size="small"
+                        sx={{
+                            mt: theme.margin.buttonTop.notSpaced,
+                        }}
+                        onClick={handleDeleteClick}>
+                        Supprimer le compte
+                    </Button>
+                    <DeleteAccountDialog
+                        showDeleteDialog={showDeleteDialog}
+                        setShowDeleteDialog={setShowDeleteDialog}
+                        setErrorMessage={setErrorMessage}
+                    />
                 </Box>
             </Box>
 
@@ -210,13 +236,6 @@ const Profile = () => {
                     </Box>
                 </Box>
             </Collapse>
-            {/* {showUpdateForm && (
-                <UserForm
-                    userId={userId}
-                    setShowUpdateForm={setShowUpdateForm}
-                    setShowUpdateValidation={setShowUpdateValidation}
-                />
-            )} */}
         </>
     );
 };

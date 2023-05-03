@@ -1,5 +1,3 @@
-// import UserForm from "../../components/UserForm";
-
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -84,9 +82,6 @@ const Login = () => {
                 </Typography>
             </Box>
         </Box>
-        // <>
-        //     <UserForm />
-        // </>
     );
 };
 
