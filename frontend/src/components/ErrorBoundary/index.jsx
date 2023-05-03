@@ -2,8 +2,14 @@ import React from "react";
 import {
     useRouteError,
     useLocation,
+    useNavigate,
     Link as RouterLink,
 } from "react-router-dom";
+
+import Header from "../../layout/Header";
+import Footer from "../../layout/Footer";
+
+import { logout } from "../../utils/user";
 
 import { Box, Typography, Link } from "@mui/material";
 
@@ -14,6 +20,8 @@ const ErrorBoundary = ({ page }) => {
         page: PropTypes.string,
     };
 
+    const navigate = useNavigate();
+
     let error = useRouteError();
     error !== undefined && console.error(error);
 
@@ -22,6 +30,9 @@ const ErrorBoundary = ({ page }) => {
     let message;
 
     switch (page) {
+        case "all":
+            message = "Quelque chose s'est mal passé.";
+            break;
         case "movie":
             message = "Aïe ! Impossible d'afficher les données du film.";
             break;
@@ -38,43 +49,64 @@ const ErrorBoundary = ({ page }) => {
             message = "Quelque chose s'est mal passé.";
     }
 
-    return (
-        <Box component="main">
-            <Box component="section" padding="3rem">
-                <Typography variant="h2" align="center" mb="2rem">
-                    {message}
-                </Typography>
+    const handleLogout = () => {
+        logout(navigate);
+        window.location.reload();
+    };
 
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "1rem",
-                    }}>
-                    <Link
-                        href={currentLocation}
-                        underline="hover"
+    return (
+        <>
+            {page === "all" && <Header />}
+            <Box component="main">
+                <Box component="section" padding="3rem">
+                    <Typography variant="h2" align="center" mb="2rem">
+                        {message}
+                    </Typography>
+
+                    <Box
                         sx={{
-                            "&:hover": {
-                                cursor: "pointer",
-                            },
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "1rem",
                         }}>
-                        Rafraîchir la page
-                    </Link>
-                    <Link
-                        component={RouterLink}
-                        to="/"
-                        underline="hover"
-                        sx={{
-                            "&:hover": {
-                                cursor: "pointer",
-                            },
-                        }}>
-                        Revenir à l'accueil
-                    </Link>
+                        <Link
+                            href={currentLocation}
+                            underline="hover"
+                            sx={{
+                                "&:hover": {
+                                    cursor: "pointer",
+                                },
+                            }}>
+                            Essayer de rafraîchir la page
+                        </Link>
+                        {page === "all" ? (
+                            <Link
+                                onClick={handleLogout}
+                                sx={{
+                                    "&:hover": {
+                                        cursor: "pointer",
+                                    },
+                                }}>
+                                Revenir à l'accueil
+                            </Link>
+                        ) : (
+                            <Link
+                                component={RouterLink}
+                                to="/"
+                                underline="hover"
+                                sx={{
+                                    "&:hover": {
+                                        cursor: "pointer",
+                                    },
+                                }}>
+                                Revenir à l'accueil
+                            </Link>
+                        )}
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+            {page === "all" && <Footer />}
+        </>
     );
 };
 

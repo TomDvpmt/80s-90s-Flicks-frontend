@@ -15,19 +15,19 @@ const createToken = (user) => {
     });
 };
 
-/** Stores the user's token in a cookie
- *
- * @param {Response} res
- * @param {String} token
- */
+// /** Stores the user's token in a cookie
+//  *
+//  * @param {Response} res
+//  * @param {String} token
+//  */
 
-const setCookie = (res, token) => {
-    res.setHeader("Set-Cookie", [
-        `token=${token};HttpOnly;Max-Age=${60 * 60 * 24};${
-            process.env.NODE_ENV === "production" && "Secure;"
-        }`,
-    ]);
-};
+// const setCookie = (res, token) => {
+//     res.setHeader("Set-Cookie", [
+//         `token=${token};HttpOnly;Max-Age=${60 * 60 * 24};${
+//             process.env.NODE_ENV === "production" && "Secure;"
+//         }`,
+//     ]);
+// };
 
 /**
  * Authenticate a user.
@@ -50,23 +50,23 @@ exports.login = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ username });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-        const token = createToken(user);
-        // setCookie(res, token);
-
-        res.status(200).json({
-            message: "Utilisateur connecté.",
-            _id: user.id,
-            token: token,
-            username: user.username,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-        });
-    } else {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
         res.status(401);
         throw new Error("Nom d'utilisateur ou mot de passe incorrect.");
     }
+
+    const token = createToken(user);
+    // setCookie(res, token);
+
+    res.status(200).json({
+        message: "Utilisateur connecté.",
+        _id: user.id,
+        token: token,
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+    });
 });
 
 exports.logout = asyncHandler(async (req, res) => {
@@ -117,38 +117,22 @@ exports.createUser = asyncHandler(async (req, res) => {
         lastName,
     });
 
-    if (user) {
-        const token = createToken(user);
-        // setCookie(res, token);
-
-        res.status(201).json({
-            message: "Utilisateur créé.",
-            _id: user.id,
-            token: token,
-            username: user.username,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-        });
-    } else {
+    if (!user) {
         res.status(400);
         throw new Error("Impossible de créer l'utilisateur.");
     }
-});
+    const token = createToken(user);
+    // setCookie(res, token);
 
-/**
- * Get all users.
- *
- * @async
- * @route GET /API/users/
- * @access Private
- * @param {Request} req
- * @param {Response} res
- * @returns {Promise}
- */
-
-exports.getAllUsers = asyncHandler(async (req, res) => {
-    res.status(200).json();
+    res.status(201).json({
+        message: "Utilisateur créé.",
+        _id: user.id,
+        token: token,
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+    });
 });
 
 /**
@@ -164,7 +148,15 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
 
 exports.getOneUser = asyncHandler(async (req, res) => {
     const userId = req.auth.id;
+
     const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+        res.status(400);
+        throw new Error(
+            "Impossible de récupérer les données de l'utilisateur."
+        );
+    }
     res.status(200).json({
         id: userId,
         username: user.username,
@@ -194,16 +186,16 @@ exports.updateUser = asyncHandler(async (req, res) => {
     const loggedUserId = req.auth.id;
     const updateData = req.body;
 
-    if (paramUserId === loggedUserId) {
-        await User.updateOne({ _id: loggedUserId }, updateData);
-        res.status(200).json({
-            ...updateData,
-            message: "Informations mises à jour.",
-        });
-    } else {
+    if (paramUserId !== loggedUserId) {
         res.status(401);
         throw new Error("Non autorisé.");
     }
+
+    await User.updateOne({ _id: loggedUserId }, updateData);
+    res.status(200).json({
+        ...updateData,
+        message: "Informations mises à jour.",
+    });
 });
 
 /**

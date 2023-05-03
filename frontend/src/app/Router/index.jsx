@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     createBrowserRouter,
     redirect,
@@ -27,6 +28,8 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 function Router() {
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
+
+    const [isError, setIsError] = useState(false);
 
     const privateRouteLoader = () => {
         const token = sessionStorage.getItem("token");
@@ -122,9 +125,9 @@ function Router() {
     const router = createBrowserRouter([
         {
             element: <PageWrapper />,
-            loader: async () => getUserInfo(),
-            errorElement: <ErrorBoundary />,
-            children: routes,
+            loader: async () => getUserInfo(setIsError),
+            errorElement: <ErrorBoundary page="all" />,
+            children: !isError && routes,
         },
     ]);
 

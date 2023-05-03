@@ -1,10 +1,92 @@
-import UserForm from "../../components/UserForm";
+// import UserForm from "../../components/UserForm";
+
+import { useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { userAuth } from "../../features/user";
+
+import UsernameInput from "../../components/form-fields/UsernameInput";
+import PasswordInput from "../../components/form-fields/PasswordInput";
+import ErrorMessage from "../../components/ErrorMessage";
+
+import { Box, Link, Button, Typography } from "@mui/material";
+
+import theme from "../../assets/styles/theme";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(e);
+
+        const response = await fetch(`/API/users/login`, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+        });
+        const data = await response.json();
+        if (data.statusCode >= 400) {
+            setErrorMessage(data.message);
+            return;
+        }
+
+        sessionStorage.setItem("token", data.token);
+        dispatch(userAuth());
+        navigate("/");
+    };
+
     return (
-        <>
-            <UserForm />
-        </>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+                maxWidth: theme.maxWidth.userForm,
+                margin: "0 auto 3rem",
+            }}>
+            <ErrorMessage errorMessage={errorMessage} />
+            <UsernameInput
+                username={username}
+                setUsername={setUsername}
+                setErrorMessage={setErrorMessage}
+            />
+            <PasswordInput
+                password={password}
+                setPassword={setPassword}
+                setErrorMessage={setErrorMessage}
+            />
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                }}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ margin: `${theme.margin.buttonTop.spaced} 0` }}>
+                    Se connecter
+                </Button>
+                <Typography paragraph>
+                    <span>
+                        Pas encore inscrit ?&nbsp;
+                        <Link component={RouterLink} to="/register">
+                            Créer un compte
+                        </Link>
+                    </span>
+                </Typography>
+            </Box>
+        </Box>
+        // <>
+        //     <UserForm />
+        // </>
     );
 };
 

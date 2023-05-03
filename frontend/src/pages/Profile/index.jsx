@@ -1,8 +1,15 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import UserForm from "../../components/UserForm";
+import { userSetInfo } from "../../features/user";
+
+// import UserForm from "../../components/UserForm";
+import UsernameInput from "../../components/form-fields/UsernameInput";
+import EmailInput from "../../components/form-fields/EmailInput";
+import FirstNameInput from "../../components/form-fields/FirstNameInput";
+import LastNameInput from "../../components/form-fields/LastNameInput";
 import ValidationMessage from "../../components/ValidationMessage";
+import ErrorMessage from "../../components/ErrorMessage";
 
 import {
     selectUserUsername,
@@ -21,24 +28,87 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    // Collapse,
+    Collapse,
 } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
 
 const Profile = () => {
+    const token = sessionStorage.getItem("token");
+    const dispatch = useDispatch();
+
     const userId = useSelector(selectUserId());
-    const username = useSelector(selectUserUsername());
-    const firstName = useSelector(selectUserFirstName());
-    const lastName = useSelector(selectUserLastName());
-    const email = useSelector(selectUserEmail());
+    const prevUsername = useSelector(selectUserUsername());
+    const prevEmail = useSelector(selectUserEmail());
+    const prevFirstName = useSelector(selectUserFirstName());
+    const prevLastName = useSelector(selectUserLastName());
+
+    const [newUsername, setNewUsername] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newFirstName, setNewFirstName] = useState("");
+    const [newLastName, setNewLastName] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
 
+    useEffect(() => {
+        setNewUsername(prevUsername);
+        setNewEmail(prevEmail);
+        setNewFirstName(prevFirstName);
+        setNewLastName(prevLastName);
+    }, [prevUsername, prevEmail, prevFirstName, prevLastName]);
+
     const handleUpdateUser = () => {
         setShowUpdateValidation(false);
+        setErrorMessage("");
         setShowUpdateForm((showUpdateForm) => !showUpdateForm);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // If default values and input values are the same, close the form
+        if (
+            prevUsername === newUsername &&
+            prevEmail === newEmail &&
+            prevFirstName === newFirstName &&
+            prevLastName === newLastName
+        ) {
+            setShowUpdateForm(false);
+            return;
+        }
+
+        const response = await fetch(`/API/users/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `BEARER ${token}`,
+            },
+            body: JSON.stringify({
+                username: newUsername,
+                email: newEmail,
+                firstName: newFirstName,
+                lastName: newLastName,
+            }),
+        });
+        const data = await response.json();
+        if (data.statusCode >= 400) {
+            setErrorMessage(data.message);
+            return;
+        }
+
+        dispatch(
+            userSetInfo({
+                id: userId,
+                username: data.username,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+            })
+        );
+        setShowUpdateValidation(true);
+        setShowUpdateForm(false);
     };
 
     const leftCellStyle = {
@@ -63,23 +133,23 @@ const Profile = () => {
                                 <TableCell sx={leftCellStyle}>
                                     Nom d'utilisateur :
                                 </TableCell>
-                                <TableCell>{username}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={leftCellStyle}>
-                                    Prénom :
-                                </TableCell>
-                                <TableCell>{firstName}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={leftCellStyle}>Nom :</TableCell>
-                                <TableCell>{lastName}</TableCell>
+                                <TableCell>{prevUsername}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={leftCellStyle}>
                                     Adresse e-mail :
                                 </TableCell>
-                                <TableCell>{email}</TableCell>
+                                <TableCell>{prevEmail}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>
+                                    Prénom :
+                                </TableCell>
+                                <TableCell>{prevFirstName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={leftCellStyle}>Nom :</TableCell>
+                                <TableCell>{prevLastName}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -95,23 +165,58 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {/* <Collapse
-                in={showUpdateForm}
-                children={
-                    <UserForm
-                        userId={userId}
-                        setShowUpdateForm={setShowUpdateForm}
-                        setShowUpdateValidation={setShowUpdateValidation}
+            <Collapse in={showUpdateForm}>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        maxWidth: theme.maxWidth.userForm,
+                        margin: "0 auto 3rem",
+                    }}>
+                    <ErrorMessage errorMessage={errorMessage} />
+                    <UsernameInput
+                        username={newUsername}
+                        setUsername={setNewUsername}
+                        setErrorMessage={setErrorMessage}
                     />
-                }
-            /> */}
-            {showUpdateForm && (
+                    <EmailInput
+                        email={newEmail}
+                        setEmail={setNewEmail}
+                        setErrorMessage={setErrorMessage}
+                    />
+                    <FirstNameInput
+                        firstName={newFirstName}
+                        setFirstName={setNewFirstName}
+                        setErrorMessage={setErrorMessage}
+                    />
+                    <LastNameInput
+                        lastName={newLastName}
+                        setLastName={setNewLastName}
+                        setErrorMessage={setErrorMessage}
+                    />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                        }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                margin: `${theme.margin.buttonTop.spaced} 0`,
+                            }}>
+                            Enregistrer
+                        </Button>
+                    </Box>
+                </Box>
+            </Collapse>
+            {/* {showUpdateForm && (
                 <UserForm
                     userId={userId}
                     setShowUpdateForm={setShowUpdateForm}
                     setShowUpdateValidation={setShowUpdateValidation}
                 />
-            )}
+            )} */}
         </>
     );
 };
