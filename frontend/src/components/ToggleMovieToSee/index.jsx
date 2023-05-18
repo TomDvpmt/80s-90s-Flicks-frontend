@@ -47,6 +47,16 @@ const ToggleMovieToSee = ({
                 <Checkbox
                     checked={userWantsToSeeMovie}
                     onChange={handleMovieToSee}
+                    sx={{
+                        color: {
+                            md: "white",
+                        },
+                        "&.Mui-checked": {
+                            color: {
+                                md: "white",
+                            },
+                        },
+                    }}
                 />
             }
             label={langData.toSee}

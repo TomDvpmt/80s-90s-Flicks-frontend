@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectPageLocation } from "../../app/selectors";
 
 import { Typography } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
@@ -22,13 +23,15 @@ const MovieHeading = ({ title, originalTitle }) => {
                     variant: "h5",
                     margin: "4rem 0 2rem",
                     fontWeight: "700",
+                    color: "inherit",
                 };
             case "movie":
                 return {
                     component: "h1",
                     variant: "h1",
-                    margin: "4rem 0",
+                    margin: { xs: "4rem 0 1rem", md: "1rem 0" },
                     fontWeight: "inherit",
+                    color: theme.palette.brandingWarm.main,
                 };
             default:
                 return {
@@ -36,6 +39,7 @@ const MovieHeading = ({ title, originalTitle }) => {
                     variant: "h5",
                     margin: "4rem 0 2rem",
                     fontWeight: "inherit",
+                    color: "inherit",
                 };
         }
     };
@@ -52,6 +56,7 @@ const MovieHeading = ({ title, originalTitle }) => {
                     sx={{
                         margin: titleStyle.margin,
                         fontWeight: titleStyle.fontWeight,
+                        color: titleStyle.color,
                     }}>
                     {title}
                 </Typography>

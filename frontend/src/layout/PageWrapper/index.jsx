@@ -69,7 +69,14 @@ const PageWrapper = () => {
             {/* <ScrollToHashElement /> */}
             <Header />
             <NavBar />
-            <Box component="main" maxWidth={theme.maxWidth.main} margin="auto">
+            <Box
+                component="main"
+                maxWidth={page === "movie" ? "initial" : theme.maxWidth.main}
+                margin="auto"
+                pb="3rem"
+                sx={{
+                    bgcolor: page === "movie" && { md: "black" },
+                }}>
                 {heading && page !== "movie" && <PageHeading text={heading} />}
                 <Outlet />
             </Box>

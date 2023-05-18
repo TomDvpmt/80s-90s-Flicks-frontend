@@ -1,4 +1,4 @@
-export const language_fr = {
+export const LANGUAGE_FR = {
     pages: {
         dashboard: {
             h1: "Tableau de bord",

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useLoaderData } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import MovieBackdrop from "../../components/MovieBackdrop";
 import MoviePoster from "../../components/MoviePoster";
+import MovieCheckboxes from "../../components/MovieCheckboxes";
 import MovieHeading from "../../components/MovieHeading";
 import MovieTagline from "../../components/MovieTagline";
 import MovieCastAndCrew from "../../components/MovieCastAndCrew";
@@ -12,43 +13,23 @@ import MovieOverview from "../../components/MovieOverview";
 import MovieBudget from "../../components/MovieBudget";
 import MovieRevenue from "../../components/MovieRevenue";
 import MovieIMDBLink from "../../components/MovieIMDBLink";
-import ToggleFavorite from "../../components/ToggleFavorite";
-import ToggleMovieSeen from "../../components/ToggleMovieSeen";
-import ToggleMovieToSee from "../../components/ToggleMovieToSee";
+import MovieWikiLink from "../../components/MovieWikiLink";
 import ErrorMessage from "../../components/ErrorMessage";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import {
-    userAddToMoviesToSee,
-    userRemoveFromMoviesToSee,
-    userAddToMoviesSeen,
-    userRemoveFromMoviesSeen,
-} from "../../features/user";
+import { selectUserIsSignedIn, selectUserLanguage } from "../../app/selectors";
 
-import {
-    selectUserId,
-    selectUserIsSignedIn,
-    selectUserLanguage,
-    selectUserMoviesToSee,
-    selectUserMoviesSeen,
-} from "../../app/selectors";
-
-import { updateUserMoviesInDB } from "../../utils/user";
 import { isEmptyObject } from "../../utils/utils";
 
-import { Box, FormGroup } from "@mui/material";
+import { Box, ButtonGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Movie = () => {
-    const userId = useSelector(selectUserId());
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
-    const dispatch = useDispatch();
 
     const movieId = parseInt(useParams().id);
     const movieData = useLoaderData();
-    const moviesToSee = useSelector(selectUserMoviesToSee());
-    const moviesSeen = useSelector(selectUserMoviesSeen());
 
     const [movie, setMovie] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
@@ -62,46 +43,34 @@ const Movie = () => {
         setMovie({ ...movieData, releaseDate: movieData.release_date });
     }, [movieData]);
 
-    const toggleMovieInUserMovies = (action) => {
-        let bodyObject = {};
-        switch (action) {
-            case userAddToMoviesToSee:
-                bodyObject = { moviesToSee: [...moviesToSee, movieId] };
-                break;
-            case userRemoveFromMoviesToSee:
-                bodyObject = {
-                    moviesToSee: moviesToSee.filter((id) => id !== movieId),
-                };
-                break;
-            case userAddToMoviesSeen:
-                bodyObject = { moviesSeen: [...moviesSeen, movieId] };
-                break;
-            case userRemoveFromMoviesSeen:
-                bodyObject = {
-                    moviesSeen: moviesSeen.filter((id) => id !== movieId),
-                };
-                break;
-            default:
-                bodyObject = {};
-        }
-
-        dispatch(action(movieId));
-        try {
-            updateUserMoviesInDB(userId, bodyObject);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <>
             {!isEmptyObject(movie) && movie.success !== false ? (
-                <Box component="section">
+                <Box
+                    component="section"
+                    sx={{
+                        display: "grid",
+                        justifyItems: "center",
+                        color: { md: theme.palette.text.darkBg },
+                        "& a": {
+                            color: { md: theme.palette.text.darkBg },
+                        },
+                    }}>
                     <MovieBackdrop
                         path={movie.backdrop_path}
                         movieTitle={movie.title}
                     />
-                    <Box>
+                    <Box
+                        maxWidth={theme.maxWidth.main}
+                        sx={{
+                            gridColumn: "1",
+                            gridRow: "1",
+                            zIndex: "2",
+                            display: { md: "grid" },
+                            gridTemplateColumns: "1fr 1fr",
+                            columnGap: "2rem",
+                            alignItems: "center",
+                        }}>
                         {movie.poster_path !== "" &&
                             movie.poster_path !== null && (
                                 <MoviePoster
@@ -109,30 +78,21 @@ const Movie = () => {
                                     movieTitle={movie.title}
                                 />
                             )}
-                        <Box sx={{ padding: ".5rem" }}>
-                            {isSignedIn && (
-                                <>
-                                    <ToggleFavorite movieId={movieId} />
-                                    <Box component="form">
-                                        <FormGroup>
-                                            <ToggleMovieSeen
-                                                movieId={movieId}
-                                                langData={langData}
-                                                toggleMovieInUserMovies={
-                                                    toggleMovieInUserMovies
-                                                }
-                                            />
-                                            <ToggleMovieToSee
-                                                movieId={movieId}
-                                                langData={langData}
-                                                toggleMovieInUserMovies={
-                                                    toggleMovieInUserMovies
-                                                }
-                                            />
-                                        </FormGroup>
-                                    </Box>
-                                </>
-                            )}
+                        {isSignedIn && (
+                            <MovieCheckboxes
+                                movieId={movieId}
+                                langData={langData}
+                            />
+                        )}
+                        <Box
+                            sx={{
+                                gridColumn: "2",
+                                gridRow: "1",
+                                padding: ".5rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                            }}>
                             <MovieHeading
                                 title={movie.title}
                                 originalTitle={movie.original_title}
@@ -142,7 +102,7 @@ const Movie = () => {
                                 movieId={movieId}
                                 releaseDate={movie.releaseDate}
                             />
-                            <Box sx={{ p: "3rem 4rem" }}>
+                            <Box sx={{ p: "2rem" }}>
                                 <MovieGenres genres={movie.genres} />
                                 <MovieOverview overview={movie.overview} />
                             </Box>
@@ -154,10 +114,19 @@ const Movie = () => {
                                 movieLangData={langData}
                                 revenue={movie.revenue}
                             />
-                            <MovieIMDBLink
-                                imdbId={movie.imdb_id}
-                                imdbLang={langData.imdbLink}
-                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                            }}>
+                            <ButtonGroup variant="outlined">
+                                <MovieIMDBLink
+                                    imdbId={movie.imdb_id}
+                                    imdbLang={langData.imdbLink}
+                                />
+                                <MovieWikiLink movieTitle={movie.title} />
+                            </ButtonGroup>
                         </Box>
                     </Box>
                 </Box>

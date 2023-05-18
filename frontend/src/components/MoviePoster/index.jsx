@@ -34,6 +34,8 @@ const MoviePoster = ({ path, movieTitle }) => {
             posterSize = posterSizes[2];
     }
 
+    console.log(posterSize.slice(1));
+
     const hasPoster = path !== null && path !== "";
     const imgSrc = hasPoster
         ? `${imageBaseUrl}${posterSize}${path}`
@@ -42,10 +44,14 @@ const MoviePoster = ({ path, movieTitle }) => {
     return (
         <Box
             sx={{
+                gridColumn: "1",
+                gridRow: "1",
                 "& .poster": {
-                    maxWidth: "100%",
-                    display: "block",
-                    margin: "0 auto",
+                    minWidth: {
+                        xs: "100%",
+                        md: `${posterSizes[4].slice(1)}px`,
+                    },
+                    maxWidth: `${posterSizes[4].slice(1)}px`,
                 },
             }}>
             <img

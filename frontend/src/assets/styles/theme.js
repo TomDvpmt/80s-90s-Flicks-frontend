@@ -1,12 +1,12 @@
 import { alienPalette } from "./palettes";
-import { language_fr } from "../languages/fr";
-import { language_en } from "../languages/en";
+import { LANGUAGE_FR } from "../languages/fr";
+import { LANGUAGE_EN } from "../languages/en";
 
 import { createTheme } from "@mui/material/styles";
 
 const languages = {
-    fr: language_fr,
-    en: language_en,
+    fr: LANGUAGE_FR,
+    en: LANGUAGE_EN,
 };
 
 // Intermediate theme in order to use breakpoints and palette inside createTheme, see https://github.com/mui/material-ui/issues/28330
@@ -52,7 +52,6 @@ theme = createTheme(theme, {
         },
     },
     languages,
-    favoriteStarColor: "#E17811",
 });
 
 export default theme;

@@ -79,7 +79,7 @@ const MovieCard = ({ page, movie }) => {
                                 position: "absolute",
                                 zIndex: "3",
                                 m: ".5rem",
-                                color: theme.palette.favoriteStar.main,
+                                color: theme.palette.brandingWarm.main,
                             }}
                         />
                     )}

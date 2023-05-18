@@ -17,7 +17,15 @@ const MovieBackdrop = ({ path, movieTitle }) => {
     return (
         path !== null &&
         path !== "" && (
-            <Box maxWidth="100%" sx={{ display: { xs: "none", md: "block" } }}>
+            <Box
+                maxWidth="100%"
+                sx={{
+                    gridColumn: "1",
+                    gridRow: "1",
+                    display: { xs: "none", md: "block" },
+                    zIndex: "1",
+                    opacity: ".15",
+                }}>
                 {
                     <img
                         src={`${imageBaseUrl}${"original"}${path}`}

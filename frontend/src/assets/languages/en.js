@@ -1,4 +1,4 @@
-export const language_en = {
+export const LANGUAGE_EN = {
     pages: {
         dashboard: {
             h1: "Dashboard",

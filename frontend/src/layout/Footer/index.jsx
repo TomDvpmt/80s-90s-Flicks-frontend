@@ -41,10 +41,7 @@ const Footer = () => {
     };
 
     return (
-        <Box
-            component="footer"
-            bgcolor={theme.palette.secondary.light}
-            mt="3rem">
+        <Box component="footer" bgcolor={theme.palette.secondary.light}>
             <Box
                 sx={{
                     maxWidth: theme.maxWidth.main,

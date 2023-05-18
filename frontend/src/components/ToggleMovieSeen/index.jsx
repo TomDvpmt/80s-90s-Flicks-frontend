@@ -43,6 +43,16 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
                 <Checkbox
                     checked={userHasSeenMovie}
                     onChange={handleMovieSeen}
+                    sx={{
+                        color: {
+                            md: "white",
+                        },
+                        "&.Mui-checked": {
+                            color: {
+                                md: "white",
+                            },
+                        },
+                    }}
                 />
             }
             label={langData.seen}

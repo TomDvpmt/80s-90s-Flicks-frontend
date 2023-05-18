@@ -29,8 +29,8 @@ export const indianaJonesPalette = {
         darkBg: "white",
         lightBg: "black",
     },
-    favoriteStar: {
-        main: "#E17811",
+    brandingWarm: {
+        main: "#EA7D4E",
     },
 };
 
@@ -68,8 +68,8 @@ export const matrixPalette = {
         darkBg: "white",
         lightBg: "black",
     },
-    favoriteStar: {
-        main: "#E17811",
+    brandingWarm: {
+        main: "#EA7D4E",
     },
 };
 
@@ -108,8 +108,8 @@ export const alienPalette = {
         darkBg: "white",
         lightBg: "black",
     },
-    favoriteStar: {
-        main: "#E17811",
+    brandingWarm: {
+        main: "#EA7D4E",
     },
 };
 
@@ -149,7 +149,7 @@ export const furyRoadPalette = {
         darkBg: "white",
         lightBg: "#0F1217",
     },
-    favoriteStar: {
-        main: "#E17811",
+    brandingWarm: {
+        main: "#EA7D4E",
     },
 };
