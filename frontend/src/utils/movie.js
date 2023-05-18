@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { TMDB_API_KEY } from "./config";
 
-import { Typography } from "@mui/material";
+import { Typography, Link } from "@mui/material";
 
 /**
  * Get movie's main data from The Movie Database
@@ -53,7 +53,12 @@ const getMovieDirectorElement = (page, crew) => {
         );
     } else if (page === "movie") {
         directorElement = movieDirector ? (
-            <Link to={`/person/${movieDirector.id}`}>{movieDirector.name}</Link>
+            <Link
+                component={RouterLink}
+                to={`/person/${movieDirector.id}`}
+                underline="hover">
+                {movieDirector.name}
+            </Link>
         ) : (
             ""
         );
@@ -70,7 +75,7 @@ const getMovieDirectorElement = (page, crew) => {
  */
 
 const getMovieActorsElements = (page, cast) => {
-    const numberOfActors = page === "home" || "dashboard" ? 3 : 10;
+    const numberOfActors = page === "home" || page === "dashboard" ? 3 : 10;
     let actorsElements;
 
     actorsElements =
@@ -92,7 +97,11 @@ const getMovieActorsElements = (page, cast) => {
                           );
                       } else if (page === "movie") {
                           return (
-                              <Link key={actor.id} to={`/person/${actor.id}`}>
+                              <Link
+                                  key={actor.id}
+                                  component={RouterLink}
+                                  to={`/person/${actor.id}`}
+                                  underline="hover">
                                   {actor.name}
                                   {index === numberOfActors - 1 ? "" : ", "}
                               </Link>

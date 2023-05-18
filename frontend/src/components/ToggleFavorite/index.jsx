@@ -63,14 +63,14 @@ const ToggleFavorite = ({ movieId }) => {
                     icon={
                         <StarBorder
                             sx={{
-                                color: theme.palette.primary.light,
+                                color: theme.palette.favoriteStar.main,
                             }}
                         />
                     }
                     checkedIcon={
                         <Star
                             sx={{
-                                color: theme.palette.primary.light,
+                                color: theme.palette.favoriteStar.main,
                             }}
                         />
                     }

@@ -110,7 +110,29 @@ const Movie = () => {
                                 />
                             )}
                         <Box sx={{ padding: ".5rem" }}>
-                            {isSignedIn && <ToggleFavorite movieId={movieId} />}
+                            {isSignedIn && (
+                                <>
+                                    <ToggleFavorite movieId={movieId} />
+                                    <Box component="form">
+                                        <FormGroup>
+                                            <ToggleMovieSeen
+                                                movieId={movieId}
+                                                langData={langData}
+                                                toggleMovieInUserMovies={
+                                                    toggleMovieInUserMovies
+                                                }
+                                            />
+                                            <ToggleMovieToSee
+                                                movieId={movieId}
+                                                langData={langData}
+                                                toggleMovieInUserMovies={
+                                                    toggleMovieInUserMovies
+                                                }
+                                            />
+                                        </FormGroup>
+                                    </Box>
+                                </>
+                            )}
                             <MovieHeading
                                 title={movie.title}
                                 originalTitle={movie.original_title}
@@ -120,8 +142,10 @@ const Movie = () => {
                                 movieId={movieId}
                                 releaseDate={movie.releaseDate}
                             />
-                            <MovieGenres genres={movie.genres} />
-                            <MovieOverview overview={movie.overview} />
+                            <Box sx={{ p: "3rem 4rem" }}>
+                                <MovieGenres genres={movie.genres} />
+                                <MovieOverview overview={movie.overview} />
+                            </Box>
                             <MovieBudget
                                 movieLangData={langData}
                                 budget={movie.budget}
@@ -134,26 +158,6 @@ const Movie = () => {
                                 imdbId={movie.imdb_id}
                                 imdbLang={langData.imdbLink}
                             />
-                            {isSignedIn && (
-                                <Box component="form">
-                                    <FormGroup>
-                                        <ToggleMovieSeen
-                                            movieId={movieId}
-                                            langData={langData}
-                                            toggleMovieInUserMovies={
-                                                toggleMovieInUserMovies
-                                            }
-                                        />
-                                        <ToggleMovieToSee
-                                            movieId={movieId}
-                                            langData={langData}
-                                            toggleMovieInUserMovies={
-                                                toggleMovieInUserMovies
-                                            }
-                                        />
-                                    </FormGroup>
-                                </Box>
-                            )}
                         </Box>
                     </Box>
                 </Box>

@@ -8,6 +8,8 @@ import {
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
+import { Box } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 const MoviePoster = ({ path, movieTitle }) => {
@@ -37,7 +39,22 @@ const MoviePoster = ({ path, movieTitle }) => {
         ? `${imageBaseUrl}${posterSize}${path}`
         : defaultPoster;
 
-    return <img src={imgSrc} alt={movieTitle + "(poster)"} />;
+    return (
+        <Box
+            sx={{
+                "& .poster": {
+                    maxWidth: "100%",
+                    display: "block",
+                    margin: "0 auto",
+                },
+            }}>
+            <img
+                className="poster"
+                src={imgSrc}
+                alt={movieTitle + "(poster)"}
+            />
+        </Box>
+    );
 };
 
 export default MoviePoster;

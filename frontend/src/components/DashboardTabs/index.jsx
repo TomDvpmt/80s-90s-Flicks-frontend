@@ -85,7 +85,6 @@ const DashboardTabs = ({
     return (
         <Box
             sx={{
-                bgcolor: "background.paper",
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
             }}>

@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
-import { Typography } from "@mui/material";
+import { Typography, Link } from "@mui/material";
 
 import PropTypes from "prop-types";
 
@@ -12,10 +12,12 @@ const MovieIMDBLink = ({ imdbId, imdbLang }) => {
     return (
         imdbId !== undefined &&
         imdbId !== null && (
-            <Typography paragraph>
+            <Typography paragraph mt="4rem" align="center">
                 <Link
+                    component={RouterLink}
                     to={`https://www.imdb.com/title/${imdbId}/`}
-                    target="_blank">
+                    target="_blank"
+                    underline="hover">
                     {imdbLang}
                 </Link>
             </Typography>

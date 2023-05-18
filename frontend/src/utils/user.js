@@ -53,7 +53,7 @@ export const userMovieMethods = {
 export const updateUserMoviesInDB = (userId, bodyObject) => {
     const token = sessionStorage.getItem("token");
 
-    fetch(`/ERRORAPI/users/${userId}`, {
+    fetch(`/API/users/${userId}`, {
         method: "PUT",
         headers: {
             "Content-type": "application/json",

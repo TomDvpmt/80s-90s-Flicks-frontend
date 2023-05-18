@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { filtersAddActiveGenre } from "../../features/filters";
 
-import { Box } from "@mui/material";
+import { Box, Link, Button } from "@mui/material";
 
 import PropTypes from "prop-types";
 
@@ -13,25 +13,27 @@ const MovieGenres = ({ genres }) => {
     };
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleGenreClick = (e) => {
         dispatch(filtersAddActiveGenre(parseInt(e.target.id)));
+        navigate("/");
     };
 
     return (
         genres !== undefined &&
         genres !== null &&
         genres.length > 0 && (
-            <Box>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: ".5rem" }}>
                 {genres.map((genre, index) => (
-                    <Link
+                    <Button
                         key={index}
                         id={genre.id}
-                        to="/"
+                        variant="contained"
+                        size="small"
                         onClick={handleGenreClick}>
                         {genre.name}
-                        {index === genres.length - 1 ? "" : ", "}
-                    </Link>
+                    </Button>
                 ))}
             </Box>
         )

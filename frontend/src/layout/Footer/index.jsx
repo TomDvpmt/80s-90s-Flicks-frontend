@@ -21,8 +21,9 @@ import theme from "../../assets/styles/theme";
 
 const cellStyle = {
     border: "none",
-    color: theme.palette.tertiary.light,
-    padding: ".5rem",
+    padding: ".2rem .5rem",
+    color: theme.palette.text.darkBg,
+    fontSize: ".8rem",
 };
 
 const leftCellStyle = {
@@ -46,6 +47,8 @@ const Footer = () => {
             mt="3rem">
             <Box
                 sx={{
+                    maxWidth: theme.maxWidth.main,
+                    margin: "0 auto",
                     display: "flex",
                     flexDirection: "column-reverse",
                 }}>
@@ -56,7 +59,7 @@ const Footer = () => {
                     sx={{
                         padding: "2rem",
                         "& *": {
-                            color: theme.palette.tertiary.light,
+                            color: theme.palette.text.darkBg,
                             fontWeight: "400",
 
                             "&:hover": {
@@ -99,7 +102,7 @@ const Footer = () => {
                                 target="_blank"
                                 rel="noopener"
                                 underline="hover"
-                                color={theme.palette.tertiary.light}>
+                                color={theme.palette.text.darkBg}>
                                 The Movie Database
                             </MUILink>
                             ,{" "}
@@ -108,7 +111,7 @@ const Footer = () => {
                                 target="_blank"
                                 rel="noopener"
                                 underline="hover"
-                                color={theme.palette.tertiary.light}>
+                                color={theme.palette.text.darkBg}>
                                 MediaWiki
                             </MUILink>
                         </TableCell>
@@ -123,7 +126,7 @@ const Footer = () => {
                                 target="_blank"
                                 rel="noopener"
                                 underline="hover"
-                                color={theme.palette.tertiary.light}>
+                                color={theme.palette.text.darkBg}>
                                 github.com/TomDvpmt/80s-90s-Flix
                             </MUILink>
                         </TableCell>

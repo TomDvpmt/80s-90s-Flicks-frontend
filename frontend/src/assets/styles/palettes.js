@@ -22,9 +22,15 @@ export const indianaJonesPalette = {
         // green
         main: "#13a83a",
     },
+    background: {
+        default: "#f5f5f5",
+    },
     text: {
         darkBg: "white",
         lightBg: "black",
+    },
+    favoriteStar: {
+        main: "#E17811",
     },
 };
 
@@ -55,9 +61,15 @@ export const matrixPalette = {
         // green
         main: "#13a83a",
     },
+    background: {
+        default: "#f5f5f5",
+    },
     text: {
         darkBg: "white",
         lightBg: "black",
+    },
+    favoriteStar: {
+        main: "#E17811",
     },
 };
 
@@ -89,9 +101,15 @@ export const alienPalette = {
         // green
         main: "#13a83a",
     },
+    background: {
+        default: "#f5f5f5",
+    },
     text: {
         darkBg: "white",
         lightBg: "black",
+    },
+    favoriteStar: {
+        main: "#E17811",
     },
 };
 
@@ -124,8 +142,14 @@ export const furyRoadPalette = {
         // green
         main: "#13a83a",
     },
+    background: {
+        default: "#f5f5f5",
+    },
     text: {
         darkBg: "white",
         lightBg: "#0F1217",
+    },
+    favoriteStar: {
+        main: "#E17811",
     },
 };

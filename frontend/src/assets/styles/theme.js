@@ -1,4 +1,4 @@
-import { furyRoadPalette } from "./palettes";
+import { alienPalette } from "./palettes";
 import { language_fr } from "../languages/fr";
 import { language_en } from "../languages/en";
 
@@ -9,11 +9,10 @@ const languages = {
     en: language_en,
 };
 
-// Intermediate theme in order to use breakpoints inside createTheme, see https://github.com/mui/material-ui/issues/28330
-let theme = createTheme();
+// Intermediate theme in order to use breakpoints and palette inside createTheme, see https://github.com/mui/material-ui/issues/28330
+let theme = createTheme({ palette: alienPalette });
 
 theme = createTheme(theme, {
-    palette: furyRoadPalette,
     typography: {
         fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",
         h1: {
@@ -26,6 +25,15 @@ theme = createTheme(theme, {
         },
         h2: {
             fontSize: "1.5rem",
+        },
+    },
+    components: {
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    color: theme.palette.secondary.light,
+                },
+            },
         },
     },
 
@@ -44,6 +52,7 @@ theme = createTheme(theme, {
         },
     },
     languages,
+    favoriteStarColor: "#E17811",
 });
 
 export default theme;

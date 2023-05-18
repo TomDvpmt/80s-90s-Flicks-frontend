@@ -28,12 +28,14 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
 
     return (
         <>
-            <Typography paragraph>
+            <Typography paragraph fontWeight="700">
                 {director}
                 {director && releaseDate && " | "}
                 {releaseDate && <MovieReleaseDate date={releaseDate} />}
             </Typography>
-            <Typography paragraph>{actors}</Typography>
+            <Typography paragraph fontWeight="700">
+                {actors}
+            </Typography>
         </>
     );
 };

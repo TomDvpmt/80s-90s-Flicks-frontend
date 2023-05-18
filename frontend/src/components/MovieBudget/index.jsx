@@ -16,7 +16,9 @@ const MovieBudget = ({ movieLangData, budget }) => {
     return (
         budget !== null && (
             <Typography paragraph>
-                {movieLangData.budget}{" "}
+                <Typography component="span" fontWeight="700">
+                    {movieLangData.budget}
+                </Typography>{" "}
                 {!budget || budget === 0
                     ? movieLangData.unavailable
                     : "$ " + displayBigNumber(budget)}

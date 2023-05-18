@@ -3,7 +3,9 @@ import { ThemeProvider, CssBaseline, GlobalStyles } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const styles = {
-    a: { textDecoration: "none" },
+    a: {
+        textDecoration: "none",
+    },
 };
 
 const App = () => {

@@ -15,7 +15,9 @@ const MovieRevenue = ({ movieLangData, revenue }) => {
 
     return (
         <Typography paragraph>
-            {movieLangData.revenue}{" "}
+            <Typography component="span" fontWeight="700">
+                {movieLangData.revenue}
+            </Typography>{" "}
             {revenue === null || revenue === 0
                 ? movieLangData.unavailable
                 : "$ " + displayBigNumber(revenue)}

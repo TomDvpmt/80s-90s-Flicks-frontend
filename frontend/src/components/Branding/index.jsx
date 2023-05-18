@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 import { Box } from "@mui/material";
+
 import logo from "../../assets/80s-90s_Branding.png";
 
 import PropTypes from "prop-types";
@@ -18,11 +21,13 @@ const Branding = ({ location }) => {
                 alignItems: "center",
                 justifyContent: "center",
             }}>
-            <img
-                src={logo}
-                alt="Logo"
-                width={location === "header" ? "300" : "300"}
-            />
+            <Link to="/">
+                <img
+                    src={logo}
+                    alt="Logo"
+                    width={location === "header" ? "300" : "300"}
+                />
+            </Link>
         </Box>
     );
 };
