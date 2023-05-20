@@ -9,7 +9,11 @@ import { useSelector } from "react-redux";
 import { getMovieData } from "../../utils/movie";
 import { getPersonFullData } from "../../utils/person";
 
-import { selectUserIsSignedIn, selectUserLanguage } from "../selectors";
+import {
+    selectUserIsSignedIn,
+    selectUserLanguage,
+    selectTmdbImagesSecureUrl,
+} from "../selectors";
 
 import { getUserInfo } from "../../utils/user";
 
@@ -28,6 +32,7 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 function Router() {
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
     const [isError, setIsError] = useState(false);
 
@@ -98,10 +103,8 @@ function Router() {
         },
         {
             page: "person",
-            path: "person/:id",
+            path: "person/:personId",
             element: <Person />,
-            loader: async ({ params }) =>
-                getPersonFullData(params.id, language),
             errorElement: true,
         },
         {

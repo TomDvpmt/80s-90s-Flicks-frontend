@@ -24,7 +24,7 @@ const NavPagesMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
 
-    const menuItemsData = [
+    const MENU_ITEMS_DATA = [
         {
             name: "explore",
             label: "Explorer",
@@ -84,25 +84,23 @@ const NavPagesMenu = () => {
 
     useEffect(() => {
         setMenuItems(
-            menuItemsData
-                .filter((item) => {
-                    return isSignedIn
-                        ? item.limitation !== "signedOut"
-                        : item.limitation !== "signedIn";
-                })
-                .map((item, index) => (
-                    <MenuItem
-                        key={index}
-                        label={item.label}
-                        component={Link}
-                        to={item.linkTo}
-                        onClick={
-                            item.name === "logout" ? handleLogout : handleClose
-                        }>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        {item.label}
-                    </MenuItem>
-                ))
+            MENU_ITEMS_DATA.filter((item) => {
+                return isSignedIn
+                    ? item.limitation !== "signedOut"
+                    : item.limitation !== "signedIn";
+            }).map((item, index) => (
+                <MenuItem
+                    key={index}
+                    label={item.label}
+                    component={Link}
+                    to={item.linkTo}
+                    onClick={
+                        item.name === "logout" ? handleLogout : handleClose
+                    }>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                </MenuItem>
+            ))
         );
     }, [isSignedIn]);
 

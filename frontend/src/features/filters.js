@@ -1,38 +1,40 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
+const ALL_FILTERS = [
+    {
+        name: "allYearsMin",
+        param: "&primary_release_date.gte=",
+        value: "1980-01-01",
+    },
+    {
+        name: "allYearsMax",
+        param: "&release_date.lte=",
+        value: "1999-12-31",
+    },
+    { name: "language", param: "&language=", value: "fr" },
+    {
+        name: "page",
+        param: "&page=",
+        value: 1,
+    },
+    {
+        name: "primaryReleaseYear",
+        param: "&primary_release_year=",
+        value: "",
+    },
+    { name: "sortBy", param: "&sort_by=", value: "revenue.desc" },
+    { name: "withGenres", param: "&with_genres=", value: "" },
+    { name: "withoutGenres", param: "&without_genres=", value: "99,10770" },
+    {
+        name: "originalLanguage",
+        param: "&with_original_language=",
+        value: "en",
+    },
+    { name: "withPeople", param: "&with_people=", value: "" },
+];
+
 const initialState = {
-    allFilters: [
-        {
-            name: "allYearsMin",
-            param: "&primary_release_date.gte=",
-            value: "1980-01-01",
-        },
-        {
-            name: "allYearsMax",
-            param: "&release_date.lte=",
-            value: "1999-12-31",
-        },
-        { name: "language", param: "&language=", value: "fr" },
-        {
-            name: "page",
-            param: "&page=",
-            value: 1,
-        },
-        {
-            name: "primaryReleaseYear",
-            param: "&primary_release_year=",
-            value: "",
-        },
-        { name: "sortBy", param: "&sort_by=", value: "revenue.desc" },
-        { name: "withGenres", param: "&with_genres=", value: "" },
-        { name: "withoutGenres", param: "&without_genres=", value: "99,10770" },
-        {
-            name: "originalLanguage",
-            param: "&with_original_language=",
-            value: "en",
-        },
-        { name: "withPeople", param: "&with_people=", value: "" },
-    ],
+    allFilters: ALL_FILTERS,
     activeGenres: [],
     searchQuery: "",
 };

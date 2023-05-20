@@ -1,4 +1,4 @@
-export const indianaJonesPalette = {
+export const INDIANA_JONES_PALETTE = {
     primary: {
         // orange
         main: "#DE8E49",
@@ -34,7 +34,7 @@ export const indianaJonesPalette = {
     },
 };
 
-export const matrixPalette = {
+export const MATRIX_PALETTE = {
     primary: {
         // Green-blue
         main: "#7B9A88",
@@ -73,7 +73,7 @@ export const matrixPalette = {
     },
 };
 
-export const alienPalette = {
+export const ALIEN_PALETTE = {
     primary: {
         // Blue-green
         main: "#303E48",
@@ -113,7 +113,7 @@ export const alienPalette = {
     },
 };
 
-export const furyRoadPalette = {
+export const FURY_ROAD_PALETTE = {
     primary: {
         // orange to brown
         main: "#5C2A08",

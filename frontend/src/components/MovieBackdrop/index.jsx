@@ -24,7 +24,7 @@ const MovieBackdrop = ({ path, movieTitle }) => {
                     gridRow: "1",
                     display: { xs: "none", md: "block" },
                     zIndex: "1",
-                    opacity: ".15",
+                    opacity: ".2",
                 }}>
                 {
                     <img

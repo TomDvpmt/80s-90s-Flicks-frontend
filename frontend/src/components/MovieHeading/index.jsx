@@ -21,9 +21,9 @@ const MovieHeading = ({ title, originalTitle }) => {
                 return {
                     component: "h2",
                     variant: "h5",
-                    margin: "4rem 0 2rem",
+                    margin: "0 0 4rem",
                     fontWeight: "700",
-                    color: "inherit",
+                    color: theme.palette.text.bgDark,
                 };
             case "movie":
                 return {
@@ -32,6 +32,14 @@ const MovieHeading = ({ title, originalTitle }) => {
                     margin: { xs: "4rem 0 1rem", md: "1rem 0" },
                     fontWeight: "inherit",
                     color: theme.palette.brandingWarm.main,
+                };
+            case "dashboard":
+                return {
+                    component: "h3",
+                    variant: "h5",
+                    margin: "0 0 4rem",
+                    fontWeight: "inherit",
+                    color: theme.palette.text.bgDark,
                 };
             default:
                 return {

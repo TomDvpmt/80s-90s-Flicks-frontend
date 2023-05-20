@@ -59,7 +59,11 @@ const ErrorBoundary = ({ page }) => {
             {page === "all" && <Header />}
             <Box component="main">
                 <Box component="section" padding="3rem">
-                    <Typography variant="h2" align="center" mb="2rem">
+                    <Typography
+                        variant="h2"
+                        align="center"
+                        mb="2rem"
+                        textTransform="none">
                         {message}
                     </Typography>
 

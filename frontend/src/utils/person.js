@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
-
 import { TMDB_API_KEY } from "./config";
+import defaultPoster from "../assets/img/defaultPoster.jpeg";
 
 /**
  * Get list items from filmography data
@@ -10,7 +9,7 @@ import { TMDB_API_KEY } from "./config";
  * @returns
  */
 
-const getFilmographyElements = (data, type) => {
+const getFilmographyElements = (data, type, imageBaseUrl) => {
     let baseArray = [];
     if (type === "acting" && data.cast) baseArray = data.cast;
     else if (type === "directing" && data.crew) baseArray = data.crew;
@@ -32,22 +31,15 @@ const getFilmographyElements = (data, type) => {
                     parseInt(a.release_date.slice(0, 4)) -
                     parseInt(b.release_date.slice(0, 4))
             )
-            .map((movie) => (
-                <li key={movie.id}>
-                    <Link to={`/movies/${movie.id}`}>{movie.title} </Link>
-                    {movie.title !== movie.original_title && (
-                        <span>
-                            (<em>{movie.original_title}</em>)
-                        </span>
-                    )}{" "}
-                    {movie.release_date && (
-                        <span>({movie.release_date.slice(0, 4)})</span>
-                    )}{" "}
-                    {type === "acting" && movie.character && (
-                        <span>: {movie.character}</span>
-                    )}
-                </li>
-            ));
+            .map((movie) => {
+                const posterPath = movie.poster_path;
+                const hasPoster = posterPath !== null && posterPath !== "";
+                const imgSrc = hasPoster
+                    ? `${imageBaseUrl}w92${posterPath}`
+                    : defaultPoster;
+
+                return { ...movie, imgSrc };
+            });
     return movies;
 };
 
@@ -64,7 +56,7 @@ const getPersonMainData = async (personId, language) => {
             const response = await fetch(
                 `https://api.themoviedb.org/3/person/${personId}?api_key=${TMDB_API_KEY}&language=${language}`
             );
-            const person = response.json();
+            const person = await response.json();
             return person;
         } catch (error) {
             throw new Error(error);
@@ -79,15 +71,23 @@ const getPersonMainData = async (personId, language) => {
  * @returns { Object }
  */
 
-const getFilmography = async (personId, language) => {
+const getFilmography = async (personId, language, imageBaseUrl) => {
     if (personId) {
         try {
             const response = await fetch(
                 `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${TMDB_API_KEY}&language=${language}&with_original_language=en`
             );
             const data = await response.json();
-            const actingMovies = getFilmographyElements(data, "acting");
-            const directingMovies = getFilmographyElements(data, "directing");
+            const actingMovies = getFilmographyElements(
+                data,
+                "acting",
+                imageBaseUrl
+            );
+            const directingMovies = getFilmographyElements(
+                data,
+                "directing",
+                imageBaseUrl
+            );
             const filmography = { actingMovies, directingMovies };
             return filmography;
         } catch (error) {
@@ -138,13 +138,15 @@ const getPersonPhotoFromWikipedia = async (personId) => {
  * get a person's complete data
  *
  * @param {Number} personId
+ * @param {String} language
+ * @param {String} imageBaseUrl
  * @returns
  */
 
-export const getPersonFullData = async (personId, language) => {
+export const getPersonFullData = async (personId, language, imageBaseUrl) => {
     const mainData = await getPersonMainData(personId, language);
     const imgUrl = await getPersonPhotoFromWikipedia(personId);
-    const filmography = await getFilmography(personId, language);
+    const filmography = await getFilmography(personId, language, imageBaseUrl);
     return {
         mainData,
         imgUrl,

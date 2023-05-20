@@ -2,7 +2,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { TMDB_API_KEY } from "./config";
 
-import { Typography, Link } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
 
 /**
  * Get movie's main data from The Movie Database
@@ -97,14 +97,15 @@ const getMovieActorsElements = (page, cast) => {
                           );
                       } else if (page === "movie") {
                           return (
-                              <Link
-                                  key={actor.id}
-                                  component={RouterLink}
-                                  to={`/person/${actor.id}`}
-                                  underline="hover">
-                                  {actor.name}
+                              <Box key={actor.id} component="span">
+                                  <Link
+                                      component={RouterLink}
+                                      to={`/person/${actor.id}`}
+                                      underline="hover">
+                                      {actor.name}
+                                  </Link>
                                   {index === numberOfActors - 1 ? "" : ", "}
-                              </Link>
+                              </Box>
                           );
                       }
                   })

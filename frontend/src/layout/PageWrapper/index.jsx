@@ -73,7 +73,7 @@ const PageWrapper = () => {
                 component="main"
                 maxWidth={page === "movie" ? "initial" : theme.maxWidth.main}
                 margin="auto"
-                pb="3rem"
+                p=".5rem .5rem 3rem .5rem"
                 sx={{
                     bgcolor: page === "movie" && { md: "black" },
                 }}>

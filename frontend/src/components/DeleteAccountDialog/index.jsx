@@ -59,7 +59,9 @@ const DeleteAccountDialog = ({
                 Cette opération est irréversible.
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleYes}>Supprimer le compte</Button>
+                <Button variant="contained" color="warning" onClick={handleYes}>
+                    Supprimer le compte
+                </Button>
                 <Button onClick={handleNo}>Annuler</Button>
             </DialogActions>
         </Dialog>

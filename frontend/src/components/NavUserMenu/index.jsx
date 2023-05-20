@@ -2,7 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Box, IconButton, Menu, MenuItem, Avatar } from "@mui/material";
+import {
+    Box,
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon,
+    Avatar,
+} from "@mui/material";
+import { Settings, Logout } from "@mui/icons-material";
 
 import { logout } from "../../utils/user";
 
@@ -52,8 +60,18 @@ const NavUserMenu = () => {
                             horizontal: "right",
                             vertical: "bottom",
                         }}>
-                        <MenuItem onClick={handleProfileClick}>Profil</MenuItem>
-                        <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
+                        <MenuItem onClick={handleProfileClick}>
+                            <ListItemIcon>
+                                <Settings />
+                            </ListItemIcon>
+                            Profil
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>
+                            <ListItemIcon>
+                                <Logout />
+                            </ListItemIcon>
+                            Déconnexion
+                        </MenuItem>
                     </Menu>
                 </Box>
             )}

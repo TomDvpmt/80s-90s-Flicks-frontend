@@ -39,8 +39,8 @@ const MovieCard = ({ page, movie }) => {
     const isFavorite = favorites.includes(movie.id);
 
     const posterSize = posterSizes[3];
-    const cardMaxWidth = posterSize.includes("w")
-        ? posterSize.split("").splice(1).join("") + "px"
+    const cardMaxWidth = posterSize?.includes("w")
+        ? posterSize?.split("").splice(1).join("") + "px"
         : "auto";
 
     const hasPoster = movie.posterPath !== null && movie.posterPath !== "";
@@ -53,7 +53,6 @@ const MovieCard = ({ page, movie }) => {
             <Card
                 component="article"
                 sx={{
-                    // position: "relative",
                     maxWidth: cardMaxWidth,
                     margin: "auto",
                 }}
@@ -66,7 +65,9 @@ const MovieCard = ({ page, movie }) => {
                         backgroundColor: "black",
                         "&:hover": {
                             "& .movieInfo": {
-                                display: "block",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
                             },
                             img: {
                                 opacity: "0.2",
@@ -86,8 +87,11 @@ const MovieCard = ({ page, movie }) => {
                     <CardContent
                         className="movieInfo"
                         sx={{
-                            display: hasPoster ? "none" : "block",
+                            display: hasPoster ? "none" : "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
                             position: "absolute",
+                            height: "100%",
                             zIndex: "2",
                             "& *": {
                                 color: "white",

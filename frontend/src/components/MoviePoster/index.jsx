@@ -22,7 +22,7 @@ const MoviePoster = ({ path, movieTitle }) => {
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
 
-    let posterSize;
+    let posterSize = "";
     switch (page) {
         case "home":
             posterSize = posterSizes[3];
@@ -34,32 +34,36 @@ const MoviePoster = ({ path, movieTitle }) => {
             posterSize = posterSizes[2];
     }
 
-    console.log(posterSize.slice(1));
-
     const hasPoster = path !== null && path !== "";
     const imgSrc = hasPoster
         ? `${imageBaseUrl}${posterSize}${path}`
         : defaultPoster;
 
     return (
-        <Box
-            sx={{
-                gridColumn: "1",
-                gridRow: "1",
-                "& .poster": {
-                    minWidth: {
-                        xs: "100%",
-                        md: `${posterSizes[4].slice(1)}px`,
-                    },
-                    maxWidth: `${posterSizes[4].slice(1)}px`,
-                },
-            }}>
-            <img
-                className="poster"
-                src={imgSrc}
-                alt={movieTitle + "(poster)"}
-            />
-        </Box>
+        <>
+            {posterSizes[4] && (
+                <Box
+                    sx={{
+                        gridColumn: "1",
+                        gridRow: "1",
+                        display: "flex",
+                        justifyContent: "center",
+                        "& .poster": {
+                            minWidth: {
+                                xs: "100%",
+                                md: `${posterSizes[4].slice(1)}px`,
+                            },
+                            maxWidth: `${posterSizes[4].slice(1)}px`,
+                        },
+                    }}>
+                    <img
+                        className="poster"
+                        src={imgSrc}
+                        alt={movieTitle + "(poster)"}
+                    />
+                </Box>
+            )}
+        </>
     );
 };
 

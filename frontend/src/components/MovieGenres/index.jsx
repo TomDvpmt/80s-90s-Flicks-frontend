@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { filtersAddActiveGenre } from "../../features/filters";
 
-import { Box, Link, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import PropTypes from "prop-types";
 
