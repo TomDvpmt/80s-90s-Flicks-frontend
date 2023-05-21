@@ -76,8 +76,8 @@ const PersonFilmographyCard = ({ movie, type, imgSrc }) => {
                     <Typography>{movie.title}</Typography>
                     {movie.title !== movie.original_title && (
                         <Typography
-                            color={theme.palette.primary.light}
-                            fontSize=".9rem">
+                            color={theme.palette.text.faded}
+                            sx={{ fontSize: { xs: ".75rem", md: ".9rem" } }}>
                             (<em>{movie.original_title}</em>)
                         </Typography>
                     )}

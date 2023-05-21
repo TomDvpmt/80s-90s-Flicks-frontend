@@ -15,6 +15,7 @@ import { getPersonFullData } from "../../utils/person";
 import { isEmptyObject } from "../../utils/utils";
 
 import { Box, Link, Typography, Button, Container } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 const Person = () => {
     const language = useSelector(selectUserLanguage());
@@ -142,7 +143,8 @@ const Person = () => {
                             component={RouterLink}
                             underline="none"
                             to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
-                            target="_blank">
+                            target="_blank"
+                            color={theme.palette.text.lightBg}>
                             Voir sur Wikipédia
                         </Link>
                     </Button>

@@ -19,19 +19,15 @@ const MovieBackdrop = ({ path, movieTitle }) => {
     return (
         <Box
             sx={{
-                width: "100%",
                 position: "absolute",
-                top: "0",
-                left: "0",
-                gridColumn: "1",
-                gridRow: "1",
+                // gridColumn: "1",
+                // gridRow: "1",
                 display: { xs: "none", md: "block" },
                 zIndex: "1",
                 opacity: path ? ".2" : ".1",
                 overflow: "hidden",
                 "& img": {
-                    // minHeight: "100%",
-                    maxWidth: "1920px",
+                    maxWidth: "2200px",
                     objectFit: "cover",
                 },
             }}>

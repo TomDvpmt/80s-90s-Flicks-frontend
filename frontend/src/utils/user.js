@@ -1,5 +1,6 @@
 import store from "../app/store";
 import { userSignOut } from "../features/user";
+import { filtersClearAll } from "../features/filters";
 
 /**
  * Get current user info
@@ -36,6 +37,7 @@ export const getUserInfo = async (setIsError) => {
 export const logout = (navigate) => {
     sessionStorage.removeItem("token");
     store.dispatch(userSignOut());
+    store.dispatch(filtersClearAll());
     navigate("/login");
 };
 

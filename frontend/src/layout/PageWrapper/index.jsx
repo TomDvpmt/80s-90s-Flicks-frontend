@@ -68,7 +68,9 @@ const PageWrapper = () => {
     }, [language, page]);
 
     return isLoading ? (
-        <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+        <Box
+            component="main"
+            sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
             <Loader />
         </Box>
     ) : (
@@ -86,6 +88,8 @@ const PageWrapper = () => {
                     m: "auto",
                     p: page === "movie" ? "0" : ".5rem .5rem 3rem .5rem",
                     bgcolor: page === "movie" && { md: "black" },
+                    display: "flex",
+                    flexDirection: "column",
                 }}>
                 {heading && page !== "movie" && <PageHeading text={heading} />}
                 <Outlet />

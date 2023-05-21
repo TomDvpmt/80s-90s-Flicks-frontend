@@ -60,7 +60,7 @@ const MoviePoster = ({ path, movieTitle }) => {
                                 xs: "100%",
                                 md: `${posterSizes[4].slice(1)}px`,
                             },
-                            maxWidth: `${posterSizes[4].slice(1)}px`,
+                            maxWidth: "100%",
                             borderRadius: { md: "5px" },
                             boxShadow: {
                                 xs: "none",

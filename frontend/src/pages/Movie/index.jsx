@@ -55,7 +55,9 @@ const Movie = () => {
     }, [movieId, language]);
 
     return isLoading ? (
-        <Loader />
+        <Box>
+            <Loader />
+        </Box>
     ) : hasError ? (
         <ErrorBoundary page="movie" />
     ) : (
@@ -120,7 +122,14 @@ const Movie = () => {
                                 releaseDate={movie.releaseDate}
                             />
                             <Box sx={{ p: "2rem" }}>
-                                <MovieGenres genres={movie.genres} />
+                                <MovieGenres
+                                    // exclude Documentary (99) and Television film (10770)
+                                    genres={movie.genres?.filter(
+                                        (genre) =>
+                                            genre.id !== 99 &&
+                                            genre.id !== 10770
+                                    )}
+                                />
                                 <MovieOverview overview={movie.overview} />
                             </Box>
                             <MovieBudget

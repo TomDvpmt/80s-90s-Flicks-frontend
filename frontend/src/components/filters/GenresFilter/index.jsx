@@ -29,7 +29,7 @@ const GenresFilter = () => {
         return (
             allGenres.length > 0 &&
             arrayOfIds.map(
-                (id) => allGenres.find((genre) => genre.id === id).name
+                (id) => allGenres.find((genre) => genre.id === id)?.name
             )
         );
     };

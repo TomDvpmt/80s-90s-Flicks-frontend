@@ -118,13 +118,19 @@ const Register = () => {
                 <Button
                     type="submit"
                     variant="contained"
-                    sx={{ margin: `${theme.margin.buttonTop.spaced} 0` }}>
+                    sx={{
+                        margin: `${theme.margin.buttonTop.spaced} 0`,
+                        color: "white",
+                    }}>
                     Créer le compte
                 </Button>
                 <Typography paragraph>
                     <Typography component="span">
                         Déjà inscrit ?&nbsp;
-                        <Link component={RouterLink} to="/login">
+                        <Link
+                            component={RouterLink}
+                            to="/login"
+                            sx={{ color: theme.palette.primary.main }}>
                             Se connecter
                         </Link>
                     </Typography>

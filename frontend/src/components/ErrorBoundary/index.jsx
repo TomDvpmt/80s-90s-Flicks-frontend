@@ -14,6 +14,7 @@ import { logout } from "../../utils/user";
 import { Box, Typography, Link } from "@mui/material";
 
 import PropTypes from "prop-types";
+import theme from "../../assets/styles/theme";
 
 const ErrorBoundary = ({ page }) => {
     ErrorBoundary.propTypes = {
@@ -80,6 +81,7 @@ const ErrorBoundary = ({ page }) => {
                             href={currentLocation}
                             underline="hover"
                             sx={{
+                                color: theme.palette.primary.main,
                                 "&:hover": {
                                     cursor: "pointer",
                                 },
@@ -90,6 +92,7 @@ const ErrorBoundary = ({ page }) => {
                             <Link
                                 onClick={handleLogout}
                                 sx={{
+                                    color: theme.palette.primary.main,
                                     "&:hover": {
                                         cursor: "pointer",
                                     },
@@ -103,6 +106,7 @@ const ErrorBoundary = ({ page }) => {
                                     to="/"
                                     underline="hover"
                                     sx={{
+                                        color: theme.palette.primary.main,
                                         "&:hover": {
                                             cursor: "pointer",
                                         },

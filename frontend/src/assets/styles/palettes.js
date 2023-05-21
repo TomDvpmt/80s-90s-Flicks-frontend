@@ -17,6 +17,7 @@ const COMMON_PALETTE = {
     text: {
         darkBg: "white",
         lightBg: "black",
+        faded: "#919191",
     },
     brandingWarm: {
         // orange

@@ -91,6 +91,7 @@ const Home = () => {
         <>
             <Box
                 component="section"
+                width="100%"
                 maxWidth={theme.maxWidth.filters}
                 margin="auto">
                 <Paper
@@ -158,6 +159,11 @@ const Home = () => {
                     <MovieCardsGrid movies={movies} />
                 )}
             </Box>
+            <Pagination
+                numberOfPages={numberOfPages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </>
     );
 };

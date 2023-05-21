@@ -53,6 +53,13 @@ theme = createTheme(theme, {
                 },
             },
         },
+        MuiInputBase: {
+            styleOverrides: {
+                input: {
+                    backgroundColor: "white",
+                },
+            },
+        },
     },
 
     // Custom properties

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const MovieIMDBLink = ({ imdbId, imdbLang }) => {
     MovieIMDBLink.propTypes = {
-        imdbId: PropTypes.string.isRequired,
+        imdbId: PropTypes.string,
         imdbLang: PropTypes.string.isRequired,
     };
     return (

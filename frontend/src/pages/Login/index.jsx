@@ -88,16 +88,22 @@ const Login = () => {
                 <Button
                     type="submit"
                     variant="contained"
-                    sx={{ margin: `${theme.margin.buttonTop.spaced} 0` }}>
+                    sx={{
+                        margin: `${theme.margin.buttonTop.spaced} 0`,
+                        color: "white",
+                    }}>
                     Se connecter
                 </Button>
                 <Typography paragraph>
-                    <span>
+                    <Typography component="span">
                         Pas encore inscrit ?&nbsp;
-                        <Link component={RouterLink} to="/register">
+                        <Link
+                            component={RouterLink}
+                            to="/register"
+                            sx={{ color: theme.palette.primary.main }}>
                             Créer un compte
                         </Link>
-                    </span>
+                    </Typography>
                 </Typography>
             </Box>
         </Box>
