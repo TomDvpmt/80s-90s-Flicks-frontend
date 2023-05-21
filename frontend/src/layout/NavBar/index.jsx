@@ -18,7 +18,7 @@ const NavBar = () => {
             component="nav"
             sx={{
                 position: { xs: "sticky", sm: "static" },
-                backgroundColor: theme.palette.primary.light,
+                backgroundColor: theme.palette.primary.main,
                 flexDirection: "row",
                 justifyContent: "center",
             }}>

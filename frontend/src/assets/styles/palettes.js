@@ -1,4 +1,31 @@
+const COMMON_PALETTE = {
+    warning: {
+        // red
+        main: "#ff0000",
+    },
+    success: {
+        // green
+        main: "#13a83a",
+    },
+    background: {
+        // grey to black
+        default: "#f5f5f5",
+        dark: "#bababa",
+        darker: "#242424",
+        darkest: "black",
+    },
+    text: {
+        darkBg: "white",
+        lightBg: "black",
+    },
+    brandingWarm: {
+        // orange
+        main: "#EA7D4E",
+    },
+};
+
 export const INDIANA_JONES_PALETTE = {
+    ...COMMON_PALETTE,
     primary: {
         // orange
         main: "#DE8E49",
@@ -14,28 +41,13 @@ export const INDIANA_JONES_PALETTE = {
         dark: "#271811",
         main: "#54331D",
     },
-    warning: {
-        // red
-        main: "#ff0000",
-    },
-    success: {
-        // green
-        main: "#13a83a",
-    },
-    background: {
-        default: "#f5f5f5",
-        darkest: "black",
-    },
-    text: {
-        darkBg: "white",
-        lightBg: "black",
-    },
     brandingWarm: {
-        main: "#EA7D4E",
+        main: "#DE8E49",
     },
 };
 
 export const MATRIX_PALETTE = {
+    ...COMMON_PALETTE,
     primary: {
         // Green-blue
         main: "#7B9A88",
@@ -54,28 +66,10 @@ export const MATRIX_PALETTE = {
         // Red
         main: "#841016",
     },
-    warning: {
-        // red
-        main: "#ff0000",
-    },
-    success: {
-        // green
-        main: "#13a83a",
-    },
-    background: {
-        default: "#f5f5f5",
-        darkest: "black",
-    },
-    text: {
-        darkBg: "white",
-        lightBg: "black",
-    },
-    brandingWarm: {
-        main: "#EA7D4E",
-    },
 };
 
 export const ALIEN_PALETTE = {
+    ...COMMON_PALETTE,
     primary: {
         // Blue-green
         main: "#303E48",
@@ -95,28 +89,10 @@ export const ALIEN_PALETTE = {
         light: "#8F7978",
         dark: "#261B19",
     },
-    warning: {
-        // red
-        main: "#ff0000",
-    },
-    success: {
-        // green
-        main: "#13a83a",
-    },
-    background: {
-        default: "#f5f5f5",
-        darkest: "black",
-    },
-    text: {
-        darkBg: "white",
-        lightBg: "black",
-    },
-    brandingWarm: {
-        main: "#EA7D4E",
-    },
 };
 
 export const FURY_ROAD_PALETTE = {
+    ...COMMON_PALETTE,
     primary: {
         // orange to brown
         main: "#5C2A08",
@@ -136,24 +112,5 @@ export const FURY_ROAD_PALETTE = {
         main: "#FFD1B5",
         dark: "#B98F73",
         light: "#fce3d4",
-    },
-    warning: {
-        // red
-        main: "#ff0000",
-    },
-    success: {
-        // green
-        main: "#13a83a",
-    },
-    background: {
-        default: "#f5f5f5",
-        darkest: "black",
-    },
-    text: {
-        darkBg: "white",
-        lightBg: "#0F1217",
-    },
-    brandingWarm: {
-        main: "#EA7D4E",
     },
 };

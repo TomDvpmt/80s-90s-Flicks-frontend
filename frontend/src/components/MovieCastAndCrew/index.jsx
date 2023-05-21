@@ -31,8 +31,6 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
         }
     }, [page, movieId]);
 
-    useEffect(() => console.log("writers elements : ", writers), [writers]);
-
     return (
         <>
             <Typography paragraph>

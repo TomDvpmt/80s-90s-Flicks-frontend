@@ -26,6 +26,7 @@ const Person = () => {
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);
     const [personDirectingMovies, setPersonDirectingMovies] = useState([]);
+    const [personWritingMovies, setPersonWritingMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
@@ -58,6 +59,16 @@ const Person = () => {
                                 key={movie.id}
                                 movie={movie}
                                 type="directing"
+                                imgSrc={movie.imgSrc}
+                            />
+                        ))
+                    );
+                    setPersonWritingMovies(
+                        personData.filmography.writingMovies.map((movie) => (
+                            <PersonFilmographyCard
+                                key={movie.id}
+                                movie={movie}
+                                type="writing"
                                 imgSrc={movie.imgSrc}
                             />
                         ))
@@ -112,6 +123,11 @@ const Person = () => {
                             personGender={person.gender}
                             movies={personDirectingMovies}
                             type="directing"
+                        />
+                        <PersonFilmographyList
+                            personGender={person.gender}
+                            movies={personWritingMovies}
+                            type="writing"
                         />
                         <PersonFilmographyList
                             personGender={person.gender}

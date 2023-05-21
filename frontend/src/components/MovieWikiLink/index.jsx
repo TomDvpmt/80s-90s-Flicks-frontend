@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectUserLanguage } from "../../app/selectors";
 
 import { Button, Link } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 const MovieWikiLink = ({ movieTitle }) => {
     const language = useSelector(selectUserLanguage());
@@ -13,7 +14,13 @@ const MovieWikiLink = ({ movieTitle }) => {
             <Link
                 href={`https://${language}.wikipedia.org/wiki/${movieFormatedName}`}
                 target="_blank"
-                underline="none">
+                underline="none"
+                sx={{
+                    color: {
+                        xs: theme.palette.text.lightBg,
+                        md: theme.palette.text.darkBg,
+                    },
+                }}>
                 Voir sur Wikipédia
             </Link>
         </Button>

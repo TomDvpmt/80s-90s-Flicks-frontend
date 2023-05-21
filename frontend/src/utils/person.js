@@ -13,19 +13,44 @@ const getFilmographyElements = (data, type, imageBaseUrl) => {
     let baseArray = [];
     if (type === "acting" && data.cast) baseArray = data.cast;
     else if (type === "directing" && data.crew) baseArray = data.crew;
+    else if (type === "writing" && data.crew) baseArray = data.crew;
 
     const movies =
         baseArray &&
         baseArray
-            .filter(
-                (movie) =>
-                    movie.release_date &&
-                    (type === "acting"
-                        ? movie.adult === false
-                        : movie.adult === false && movie.job === "Director") &&
-                    !movie.genre_ids.includes(99 || 10770) &&
-                    movie.genre_ids.length > 0
-            )
+            .filter((movie) => {
+                if (type === "acting") {
+                    return (
+                        movie.release_date &&
+                        movie.adult === false &&
+                        !movie.genre_ids.includes(99 || 10770) &&
+                        movie.genre_ids.length > 0
+                    );
+                } else if (type === "directing") {
+                    return (
+                        movie.release_date &&
+                        movie.adult === false &&
+                        movie.job === "Director" &&
+                        !movie.genre_ids.includes(99 || 10770) &&
+                        movie.genre_ids.length > 0
+                    );
+                } else if (type === "writing") {
+                    return (
+                        movie.release_date &&
+                        movie.adult === false &&
+                        movie.job === "Screenplay" &&
+                        !movie.genre_ids.includes(99 || 10770) &&
+                        movie.genre_ids.length > 0
+                    );
+                }
+
+                //     movie.release_date &&
+                // (type === "acting"
+                //     ? movie.adult === false
+                //     : movie.adult === false && movie.job === "Director") &&
+                // !movie.genre_ids.includes(99 || 10770) &&
+                // movie.genre_ids.length > 0
+            })
             .sort(
                 (a, b) =>
                     parseInt(a.release_date.slice(0, 4)) -
@@ -88,7 +113,16 @@ const getFilmography = async (personId, language, imageBaseUrl) => {
                 "directing",
                 imageBaseUrl
             );
-            const filmography = { actingMovies, directingMovies };
+            const writingMovies = getFilmographyElements(
+                data,
+                "writing",
+                imageBaseUrl
+            );
+            const filmography = {
+                actingMovies,
+                directingMovies,
+                writingMovies,
+            };
             return filmography;
         } catch (error) {
             throw new Error(error);

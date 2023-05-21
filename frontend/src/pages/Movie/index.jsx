@@ -64,8 +64,11 @@ const Movie = () => {
                 <Box
                     component="section"
                     sx={{
+                        position: "relative",
+                        overflow: "hidden",
                         display: "grid",
                         justifyItems: "center",
+                        alignItems: "start",
                         color: { md: theme.palette.text.darkBg },
                         "& a": {
                             color: { md: theme.palette.text.darkBg },
@@ -76,8 +79,9 @@ const Movie = () => {
                         movieTitle={movie.title}
                     />
                     <Box
-                        maxWidth={theme.maxWidth.main}
                         sx={{
+                            width: "100%",
+                            maxWidth: theme.maxWidth.main,
                             gridColumn: "1",
                             gridRow: "1",
                             zIndex: "2",
@@ -87,15 +91,10 @@ const Movie = () => {
                             columnGap: "2rem",
                             alignItems: "center",
                         }}>
-                        {movie.poster_path !== "" &&
-                            movie.poster_path !== null && (
-                                <Suspense fallback={<Loader />}>
-                                    <MoviePoster
-                                        path={movie.poster_path}
-                                        movieTitle={movie.title}
-                                    />
-                                </Suspense>
-                            )}
+                        <MoviePoster
+                            path={movie.poster_path}
+                            movieTitle={movie.title}
+                        />
                         {isSignedIn && (
                             <MovieCheckboxes
                                 movieId={movieId}

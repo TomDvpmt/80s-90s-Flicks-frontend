@@ -1,4 +1,4 @@
-import { ALIEN_PALETTE } from "./palettes";
+import { INDIANA_JONES_PALETTE } from "./palettes";
 import { LANGUAGE_FR } from "../languages/fr";
 import { LANGUAGE_EN } from "../languages/en";
 
@@ -10,7 +10,7 @@ const languages = {
 };
 
 // Intermediate theme in order to use breakpoints and palette inside createTheme, see https://github.com/mui/material-ui/issues/28330
-let theme = createTheme({ palette: ALIEN_PALETTE });
+let theme = createTheme({ palette: INDIANA_JONES_PALETTE });
 
 theme = createTheme(theme, {
     typography: {

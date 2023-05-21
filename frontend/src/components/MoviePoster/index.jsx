@@ -12,12 +12,13 @@ import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 import Loader from "../Loader";
 
 import { Box } from "@mui/material";
+import theme from "../../assets/styles/theme";
 
 import PropTypes from "prop-types";
 
 const MoviePoster = ({ path, movieTitle }) => {
     MoviePoster.propTypes = {
-        path: PropTypes.string.isRequired,
+        path: PropTypes.string,
         movieTitle: PropTypes.string,
     };
 
@@ -51,7 +52,7 @@ const MoviePoster = ({ path, movieTitle }) => {
                     sx={{
                         gridColumn: "1",
                         gridRow: "1",
-                        display: "flex",
+                        display: { xs: path ? "flex" : "none", md: "flex" },
                         justifyContent: "center",
                         "& .poster": {
                             display: isLoading ? "none" : "block",
@@ -60,6 +61,11 @@ const MoviePoster = ({ path, movieTitle }) => {
                                 md: `${posterSizes[4].slice(1)}px`,
                             },
                             maxWidth: `${posterSizes[4].slice(1)}px`,
+                            borderRadius: { md: "5px" },
+                            boxShadow: {
+                                xs: "none",
+                                md: `0 0 8px 2px ${theme.palette.background.darker}`,
+                            },
                         },
                         "& .loader": {
                             display: isLoading ? "block" : "none",

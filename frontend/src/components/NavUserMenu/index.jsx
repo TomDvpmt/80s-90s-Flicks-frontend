@@ -59,7 +59,8 @@ const NavUserMenu = () => {
                         anchorOrigin={{
                             horizontal: "right",
                             vertical: "bottom",
-                        }}>
+                        }}
+                        disableScrollLock={true}>
                         <MenuItem onClick={handleProfileClick}>
                             <ListItemIcon>
                                 <Settings />

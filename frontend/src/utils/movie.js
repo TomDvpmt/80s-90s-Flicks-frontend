@@ -3,6 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { TMDB_API_KEY } from "./config";
 
 import { Box, Typography, Link } from "@mui/material";
+import theme from "../assets/styles/theme";
 
 /**
  * Get movie's main data from The Movie Database
@@ -38,32 +39,42 @@ export const getMovieData = async (id, language) => {
  * @returns { HTMLAnchorElement }
  */
 
-const getMovieDirectorElement = (page, crew) => {
-    const movieDirector = crew?.find((person) => person.job === "Director");
+const getMovieDirectorElements = (page, crew) => {
+    const numberOfDirectors = 2;
 
-    let directorElement;
+    const movieDirectors = crew
+        ?.filter((person) => person.job === "Director")
+        .slice(
+            0,
+            crew.length >= numberOfDirectors ? numberOfDirectors : crew.length
+        );
+
+    let directorsElements = [];
 
     if (page === "home" || page === "dashboard") {
-        directorElement = movieDirector ? (
-            <Typography component="span" fontWeight="700">
-                {movieDirector.name}
-            </Typography>
-        ) : (
-            ""
-        );
+        directorsElements = movieDirectors?.map((director, index) => (
+            <Box key={director.id} component="span">
+                <Typography component="span" fontWeight="700">
+                    {director.name}
+                </Typography>
+                {index === movieDirectors.length - 1 ? "" : ", "}
+            </Box>
+        ));
     } else if (page === "movie") {
-        directorElement = movieDirector ? (
-            <Link
-                component={RouterLink}
-                to={`/person/${movieDirector.id}`}
-                underline="hover">
-                {movieDirector.name}
-            </Link>
-        ) : (
-            ""
-        );
+        directorsElements = movieDirectors.map((director, index) => (
+            <Box key={director.id} component="span" fontWeight="700">
+                <Link
+                    component={RouterLink}
+                    to={`/person/${director.id}`}
+                    underline="hover"
+                    color={theme.palette.text.lightBg}>
+                    {director.name}
+                </Link>
+                {index === movieDirectors.length - 1 ? "" : ", "}
+            </Box>
+        ));
     }
-    return directorElement;
+    return directorsElements;
 };
 
 /**
@@ -75,16 +86,22 @@ const getMovieDirectorElement = (page, crew) => {
  */
 
 const getMovieWritersElements = (crew) => {
-    const writersElements = crew?.filter(
-        (person) => person.job === "Screenplay"
-    );
+    const numberOfWriters = 2;
+
+    const writersElements = crew
+        ?.filter((person) => person.job === "Screenplay")
+        ?.slice(
+            0,
+            crew.length >= numberOfWriters ? numberOfWriters : crew.length
+        );
 
     return writersElements.map((writer, index) => (
         <Box key={writer.id} component="span">
             <Link
                 component={RouterLink}
                 to={`/person/${writer.id}`}
-                underline="hover">
+                underline="hover"
+                color={theme.palette.text.lightBg}>
                 {writer.name}
             </Link>
             {index === writersElements.length - 1 ? "" : ", "}
@@ -127,7 +144,8 @@ const getMovieActorsElements = (page, cast) => {
                                   <Link
                                       component={RouterLink}
                                       to={`/person/${actor.id}`}
-                                      underline="hover">
+                                      underline="hover"
+                                      color={theme.palette.text.lightBg}>
                                       {actor.name}
                                   </Link>
                                   {index === numberOfActors - 1 ? "" : ", "}
@@ -168,7 +186,7 @@ export const setCastAndCrew = async (
                 throw new Error(data.message);
             }
 
-            const directorElement = getMovieDirectorElement(page, data.crew);
+            const directorElement = getMovieDirectorElements(page, data.crew);
             setDirector(directorElement);
 
             const writersElements = getMovieWritersElements(data.crew);

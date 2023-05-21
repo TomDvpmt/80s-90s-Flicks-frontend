@@ -31,7 +31,7 @@ const MovieHeading = ({ title, originalTitle }) => {
                     variant: "h1",
                     margin: { xs: "4rem 0 1rem", md: "1rem 0" },
                     fontWeight: "inherit",
-                    color: theme.palette.brandingWarm.main,
+                    // color: theme.palette.brandingWarm.main,
                 };
             case "dashboard":
                 return {

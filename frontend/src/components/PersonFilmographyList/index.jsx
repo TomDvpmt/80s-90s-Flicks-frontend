@@ -25,9 +25,11 @@ const PersonFilmographyList = ({ personGender, movies, type }) => {
                             ? personGender === 1
                                 ? "Réalisatrice"
                                 : "Réalisateur"
-                            : personGender === 1
-                            ? "Actrice"
-                            : "Acteur"}
+                            : type === "acting"
+                            ? personGender === 1
+                                ? "Actrice"
+                                : "Acteur"
+                            : "Scénariste"}
                     </Typography>
                     <Box
                         sx={{
