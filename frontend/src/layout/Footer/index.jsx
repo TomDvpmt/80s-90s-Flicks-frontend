@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { selectUserIsSignedIn, selectUserLanguage } from "../../app/selectors";
 
 import Branding from "../../components/Branding";
-
-import { useSelector } from "react-redux";
-import { selectUserIsSignedIn } from "../../app/selectors";
+import FooterExternalLink from "../../components/FooterExternalLink";
 
 import { logout } from "../../utils/user";
 
@@ -33,6 +34,7 @@ const leftCellStyle = {
 
 const Footer = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const language = useSelector(selectUserLanguage());
     const navigate = useNavigate();
 
     const handleLogout = (e) => {
@@ -41,7 +43,7 @@ const Footer = () => {
     };
 
     return (
-        <Box component="footer" bgcolor={theme.palette.secondary.light}>
+        <Box component="footer" bgcolor={theme.palette.background.darkest}>
             <Box
                 sx={{
                     maxWidth: theme.maxWidth.main,
@@ -94,23 +96,9 @@ const Footer = () => {
                             API externes utilisées :{" "}
                         </TableCell>
                         <TableCell>
-                            <MUILink
-                                href="https://developers.themoviedb.org/3"
-                                target="_blank"
-                                rel="noopener"
-                                underline="hover"
-                                color={theme.palette.text.darkBg}>
-                                The Movie Database
-                            </MUILink>
-                            ,{" "}
-                            <MUILink
-                                href="https://www.mediawiki.org/wiki/API:Main_page/fr"
-                                target="_blank"
-                                rel="noopener"
-                                underline="hover"
-                                color={theme.palette.text.darkBg}>
-                                MediaWiki
-                            </MUILink>
+                            <FooterExternalLink type="tmdbAPI" />
+                            {", "}
+                            <FooterExternalLink type="mediaWikiAPI" />
                         </TableCell>
                     </TableRow>
                     <TableRow>
@@ -118,14 +106,7 @@ const Footer = () => {
                             Code source :{" "}
                         </TableCell>
                         <TableCell>
-                            <MUILink
-                                href="https://github.com/TomDvpmt/80s-90s-Flix"
-                                target="_blank"
-                                rel="noopener"
-                                underline="hover"
-                                color={theme.palette.text.darkBg}>
-                                github.com/TomDvpmt/80s-90s-Flix
-                            </MUILink>
+                            <FooterExternalLink type="sourceCode" />
                         </TableCell>
                     </TableRow>
                 </TableBody>

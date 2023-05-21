@@ -7,7 +7,7 @@ import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
 // import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
 import { filtersClearAll } from "../../features/filters";
@@ -27,8 +27,8 @@ const Home = () => {
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     const handleFiltersClearAll = () => {
         dispatch(filtersClearAll());
@@ -81,7 +81,7 @@ const Home = () => {
                 setMovies(results);
             })
             .catch((error) => {
-                setErrorMessage("Impossible d'afficher les films.");
+                setHasError(true);
                 console.error(error);
             })
             .finally(() => setLoading(false));
@@ -150,8 +150,13 @@ const Home = () => {
                 />
             </Box>
             <Box component="section">
-                <ErrorMessage errorMessage={errorMessage} />
-                {loading ? <Loader /> : <MovieCardsGrid movies={movies} />}
+                {loading ? (
+                    <Loader />
+                ) : hasError ? (
+                    <ErrorBoundary page="home" />
+                ) : (
+                    <MovieCardsGrid movies={movies} />
+                )}
             </Box>
         </>
     );

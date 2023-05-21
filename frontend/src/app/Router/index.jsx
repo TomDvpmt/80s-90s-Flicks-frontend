@@ -98,7 +98,6 @@ function Router() {
             page: "movie",
             path: "movies/:id",
             element: <Movie />,
-            loader: async ({ params }) => getMovieData(params.id, language),
             errorElement: true,
         },
         {

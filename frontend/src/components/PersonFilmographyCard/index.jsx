@@ -73,9 +73,7 @@ const PersonFilmographyCard = ({ movie, type, imgSrc }) => {
                         display: "flex",
                         flexDirection: "column",
                     }}>
-                    <Typography>
-                        {movie.title} {type === "acting" && movie.character}
-                    </Typography>
+                    <Typography>{movie.title}</Typography>
                     {movie.title !== movie.original_title && (
                         <Typography
                             color={theme.palette.primary.light}

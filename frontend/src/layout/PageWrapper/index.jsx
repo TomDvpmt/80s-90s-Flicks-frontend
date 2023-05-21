@@ -7,6 +7,7 @@ import Header from "../../layout/Header";
 import NavBar from "../NavBar";
 import PageHeading from "../../components/PageHeading";
 import Footer from "../../layout/Footer";
+import Loader from "../../components/Loader";
 
 import { userSetInfo } from "../../features/user";
 
@@ -27,6 +28,7 @@ const PageWrapper = () => {
     const dispatch = useDispatch();
 
     const [heading, setHeading] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     // Set user's info in global state
     useEffect(() => {
@@ -49,13 +51,15 @@ const PageWrapper = () => {
 
     // Get The Movie Database config infos
     useEffect(() => {
+        setIsLoading(true);
         fetch(
             `https://api.themoviedb.org/3/configuration?api_key=${TMDB_API_KEY}`,
             { method: "GET" }
         )
             .then((response) => response.json())
             .then((data) => dispatch(tmdbSetConfig(data)))
-            .catch((error) => console.error(error));
+            .catch((error) => console.error(error))
+            .finally(() => setIsLoading(false));
     }, [dispatch]);
 
     // Set page's heading
@@ -63,25 +67,31 @@ const PageWrapper = () => {
         language && setHeading(theme.languages[language].pages[page].h1);
     }, [language, page]);
 
-    return (
-        <>
+    return isLoading ? (
+        <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+            <Loader />
+        </Box>
+    ) : (
+        <Box>
             <ScrollRestoration />
             {/* <ScrollToHashElement /> */}
             <Header />
             <NavBar />
             <Box
                 component="main"
-                maxWidth={page === "movie" ? "initial" : theme.maxWidth.main}
-                margin="auto"
-                p=".5rem .5rem 3rem .5rem"
                 sx={{
+                    flexGrow: "1",
+                    maxWidth:
+                        page === "movie" ? "initial" : theme.maxWidth.main,
+                    m: "auto",
+                    p: page === "movie" ? "0" : ".5rem .5rem 3rem .5rem",
                     bgcolor: page === "movie" && { md: "black" },
                 }}>
                 {heading && page !== "movie" && <PageHeading text={heading} />}
                 <Outlet />
             </Box>
             <Footer />
-        </>
+        </Box>
     );
 };
 

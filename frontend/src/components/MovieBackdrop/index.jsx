@@ -18,19 +18,23 @@ const MovieBackdrop = ({ path, movieTitle }) => {
         path !== null &&
         path !== "" && (
             <Box
-                maxWidth="100%"
                 sx={{
                     gridColumn: "1",
                     gridRow: "1",
                     display: { xs: "none", md: "block" },
                     zIndex: "1",
                     opacity: ".2",
+                    overflow: "hidden",
+                    "& img": {
+                        minHeight: "100%",
+                        maxWidth: "1920px",
+                        objectFit: "cover",
+                    },
                 }}>
                 {
                     <img
                         src={`${imageBaseUrl}${"original"}${path}`}
                         alt={movieTitle + "(backdrop)"}
-                        width="100%"
                     />
                 }
             </Box>

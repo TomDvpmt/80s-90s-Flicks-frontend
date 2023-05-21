@@ -24,6 +24,7 @@ export const INDIANA_JONES_PALETTE = {
     },
     background: {
         default: "#f5f5f5",
+        darkest: "black",
     },
     text: {
         darkBg: "white",
@@ -63,6 +64,7 @@ export const MATRIX_PALETTE = {
     },
     background: {
         default: "#f5f5f5",
+        darkest: "black",
     },
     text: {
         darkBg: "white",
@@ -103,6 +105,7 @@ export const ALIEN_PALETTE = {
     },
     background: {
         default: "#f5f5f5",
+        darkest: "black",
     },
     text: {
         darkBg: "white",
@@ -144,6 +147,7 @@ export const FURY_ROAD_PALETTE = {
     },
     background: {
         default: "#f5f5f5",
+        darkest: "black",
     },
     text: {
         darkBg: "white",

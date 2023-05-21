@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 
 const MovieCheckboxes = ({ movieId, langData }) => {
     MovieCheckboxes.propTypes = {
-        movieId: PropTypes.string.isRequired,
+        movieId: PropTypes.number.isRequired,
         langData: PropTypes.object.isRequired,
     };
 

@@ -39,7 +39,7 @@ export const getMovieData = async (id, language) => {
  */
 
 const getMovieDirectorElement = (page, crew) => {
-    const movieDirector = crew.filter((person) => person.job === "Director")[0];
+    const movieDirector = crew?.find((person) => person.job === "Director");
 
     let directorElement;
 
@@ -64,6 +64,32 @@ const getMovieDirectorElement = (page, crew) => {
         );
     }
     return directorElement;
+};
+
+/**
+ * Get the Link components for movie writers
+ *
+ * @param {String} page
+ * @param {Object} crew
+ * @returns {Array} // Array of HTMLAnchorElement
+ */
+
+const getMovieWritersElements = (crew) => {
+    const writersElements = crew?.filter(
+        (person) => person.job === "Screenplay"
+    );
+
+    return writersElements.map((writer, index) => (
+        <Box key={writer.id} component="span">
+            <Link
+                component={RouterLink}
+                to={`/person/${writer.id}`}
+                underline="hover">
+                {writer.name}
+            </Link>
+            {index === writersElements.length - 1 ? "" : ", "}
+        </Box>
+    ));
 };
 
 /**
@@ -118,10 +144,17 @@ const getMovieActorsElements = (page, cast) => {
  * @param {String} page
  * @param {Number} movieId
  * @param {import("react").SetStateAction} setDirector
+ * @param {import("react").SetStateAction} setWriters
  * @param {import("react").SetStateAction} setActors
  */
 
-export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
+export const setCastAndCrew = async (
+    page,
+    movieId,
+    setDirector,
+    setWriters,
+    setActors
+) => {
     if (movieId) {
         try {
             const response = await fetch(
@@ -131,15 +164,21 @@ export const setCastAndCrew = async (page, movieId, setDirector, setActors) => {
                 }
             );
             const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
 
             const directorElement = getMovieDirectorElement(page, data.crew);
             setDirector(directorElement);
+
+            const writersElements = getMovieWritersElements(data.crew);
+            setWriters(writersElements);
 
             const actorsElements = getMovieActorsElements(page, data.cast);
             setActors(actorsElements);
             return;
         } catch (error) {
-            throw new Error(error);
+            console.error(error);
         }
     }
     return;

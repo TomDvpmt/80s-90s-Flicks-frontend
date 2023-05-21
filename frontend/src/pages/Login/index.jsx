@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { userAuth } from "../../features/user";
+import { selectUserIsSignedIn } from "../../app/selectors";
 
 import UsernameInput from "../../components/form-fields/UsernameInput";
 import PasswordInput from "../../components/form-fields/PasswordInput";
@@ -16,29 +17,47 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const isSignedIn = useSelector(selectUserIsSignedIn());
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    useEffect(() => {
+        isSignedIn && navigate("/");
+    }, [isSignedIn, navigate]);
+
     const handleSubmit = async (e) => {
         e.preventDefault(e);
 
-        const response = await fetch(`/API/users/login`, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        if (data.statusCode >= 400) {
-            setErrorMessage(data.message);
-            return;
-        }
+        try {
+            const response = await fetch(`/API/users/login`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({ username, password }),
+            });
+            if (response.status === 404) {
+                throw new Error(
+                    "Connexion impossible. Veuillez réessayer ultérieurement."
+                );
+            }
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
 
-        sessionStorage.setItem("token", data.token);
-        dispatch(userAuth());
-        navigate("/");
+            sessionStorage.setItem("token", data.token);
+            dispatch(userAuth());
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            setErrorMessage(
+                error.message
+                // "Connexion impossible. Veuillez réessayer ultérieurement."
+            );
+        }
     };
 
     return (

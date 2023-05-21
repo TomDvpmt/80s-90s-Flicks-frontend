@@ -33,6 +33,9 @@ const ErrorBoundary = ({ page }) => {
         case "all":
             message = "Quelque chose s'est mal passé.";
             break;
+        case "home":
+            message = "Aïe ! Impossible d'afficher les films.";
+            break;
         case "movie":
             message = "Aïe ! Impossible d'afficher les données du film.";
             break;
@@ -94,17 +97,19 @@ const ErrorBoundary = ({ page }) => {
                                 Revenir à l'accueil
                             </Link>
                         ) : (
-                            <Link
-                                component={RouterLink}
-                                to="/"
-                                underline="hover"
-                                sx={{
-                                    "&:hover": {
-                                        cursor: "pointer",
-                                    },
-                                }}>
-                                Revenir à l'accueil
-                            </Link>
+                            page !== "home" && (
+                                <Link
+                                    component={RouterLink}
+                                    to="/"
+                                    underline="hover"
+                                    sx={{
+                                        "&:hover": {
+                                            cursor: "pointer",
+                                        },
+                                    }}>
+                                    Revenir à l'accueil
+                                </Link>
+                            )
                         )}
                     </Box>
                 </Box>

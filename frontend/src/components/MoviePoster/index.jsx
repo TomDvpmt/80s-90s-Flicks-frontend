@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -7,6 +8,8 @@ import {
 } from "../../app/selectors";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
+
+import Loader from "../Loader";
 
 import { Box } from "@mui/material";
 
@@ -21,6 +24,8 @@ const MoviePoster = ({ path, movieTitle }) => {
     const page = useSelector(selectPageLocation());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const posterSizes = useSelector(selectTmdbImagesPosterSizes());
+
+    const [isLoading, setIsLoading] = useState(true);
 
     let posterSize = "";
     switch (page) {
@@ -49,18 +54,24 @@ const MoviePoster = ({ path, movieTitle }) => {
                         display: "flex",
                         justifyContent: "center",
                         "& .poster": {
+                            display: isLoading ? "none" : "block",
                             minWidth: {
                                 xs: "100%",
                                 md: `${posterSizes[4].slice(1)}px`,
                             },
                             maxWidth: `${posterSizes[4].slice(1)}px`,
                         },
+                        "& .loader": {
+                            display: isLoading ? "block" : "none",
+                        },
                     }}>
                     <img
                         className="poster"
                         src={imgSrc}
                         alt={movieTitle + "(poster)"}
+                        onLoad={() => setIsLoading(false)}
                     />
+                    <Loader />
                 </Box>
             )}
         </>

@@ -5,7 +5,7 @@ import theme from "../../assets/styles/theme";
 
 const Header = () => {
     return (
-        <Box component="header" bgcolor={theme.palette.secondary.light}>
+        <Box component="header" bgcolor={theme.palette.background.darkest}>
             <Branding location="header" />
         </Box>
     );

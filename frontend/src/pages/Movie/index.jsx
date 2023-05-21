@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useParams, useLoaderData } from "react-router-dom";
+import { useState, useEffect, Suspense } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import MovieBackdrop from "../../components/MovieBackdrop";
@@ -14,11 +14,12 @@ import MovieBudget from "../../components/MovieBudget";
 import MovieRevenue from "../../components/MovieRevenue";
 import MovieIMDBLink from "../../components/MovieIMDBLink";
 import MovieWikiLink from "../../components/MovieWikiLink";
-import ErrorMessage from "../../components/ErrorMessage";
+import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 import { selectUserIsSignedIn, selectUserLanguage } from "../../app/selectors";
 
+import { getMovieData } from "../../utils/movie";
 import { isEmptyObject } from "../../utils/utils";
 
 import { Box, ButtonGroup } from "@mui/material";
@@ -28,22 +29,36 @@ const Movie = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
 
-    const movieId = parseInt(useParams().id);
-    const movieData = useLoaderData();
+    const { id } = useParams();
+    const movieId = parseInt(id);
 
-    const [movie, setMovie] = useState({});
-    const [errorMessage, setErrorMessage] = useState("");
     const [langData, setLangData] = useState({});
+    const [movie, setMovie] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         setLangData(theme.languages[language].pages.movie);
     }, [language]);
 
     useEffect(() => {
-        setMovie({ ...movieData, releaseDate: movieData.release_date });
-    }, [movieData]);
+        setIsLoading(true);
+        getMovieData(movieId, language)
+            .then((movieData) =>
+                setMovie({ ...movieData, releaseDate: movieData.release_date })
+            )
+            .catch((error) => {
+                console.error(error);
+                setHasError(true);
+            })
+            .finally(() => setIsLoading(false));
+    }, [movieId, language]);
 
-    return (
+    return isLoading ? (
+        <Loader />
+    ) : hasError ? (
+        <ErrorBoundary page="movie" />
+    ) : (
         <>
             {!isEmptyObject(movie) && movie.success !== false ? (
                 <Box
@@ -66,6 +81,7 @@ const Movie = () => {
                             gridColumn: "1",
                             gridRow: "1",
                             zIndex: "2",
+                            p: { xs: "0 0 3rem", md: "3rem 0 3rem" },
                             display: { md: "grid" },
                             gridTemplateColumns: "1fr 1fr",
                             columnGap: "2rem",
@@ -73,10 +89,12 @@ const Movie = () => {
                         }}>
                         {movie.poster_path !== "" &&
                             movie.poster_path !== null && (
-                                <MoviePoster
-                                    path={movie.poster_path}
-                                    movieTitle={movie.title}
-                                />
+                                <Suspense fallback={<Loader />}>
+                                    <MoviePoster
+                                        path={movie.poster_path}
+                                        movieTitle={movie.title}
+                                    />
+                                </Suspense>
                             )}
                         {isSignedIn && (
                             <MovieCheckboxes
@@ -133,7 +151,6 @@ const Movie = () => {
             ) : (
                 <ErrorBoundary page="movie" />
             )}
-            <ErrorMessage errorMessage={errorMessage} />
         </>
     );
 };

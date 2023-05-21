@@ -20,21 +20,47 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
     const page = useSelector(selectPageLocation());
 
     const [director, setDirector] = useState("");
+    const [writers, setWriters] = useState([""]);
     const [actors, setActors] = useState([""]);
 
     useEffect(() => {
-        setCastAndCrew(page, movieId, setDirector, setActors);
+        try {
+            setCastAndCrew(page, movieId, setDirector, setWriters, setActors);
+        } catch (error) {
+            console.log(error);
+        }
     }, [page, movieId]);
+
+    useEffect(() => console.log("writers elements : ", writers), [writers]);
 
     return (
         <>
-            <Typography paragraph fontWeight="700">
-                {director}
+            <Typography paragraph>
+                {page === "movie" && (
+                    <Typography component="span">De </Typography>
+                )}
+                <Typography component="span" fontWeight="700">
+                    {director}
+                </Typography>
+
                 {director && releaseDate && " | "}
                 {releaseDate && <MovieReleaseDate date={releaseDate} />}
             </Typography>
-            <Typography paragraph fontWeight="700">
-                {actors}
+            {page === "movie" && writers.length > 0 && (
+                <Typography paragraph>
+                    <Typography component="span">Écrit par </Typography>
+                    <Typography component="span" fontWeight="700">
+                        {writers}
+                    </Typography>
+                </Typography>
+            )}
+            <Typography paragraph>
+                {page === "movie" && (
+                    <Typography component="span">Avec </Typography>
+                )}
+                <Typography component="span" fontWeight="700">
+                    {actors}
+                </Typography>
             </Typography>
         </>
     );

@@ -74,9 +74,21 @@ const DashboardTabs = ({
         }
     }
 
-    new DashboardTab(moviesToSeeLinks, "toSee", <LocalMovies />);
-    new DashboardTab(moviesSeenLinks, "seen", <Check />);
-    new DashboardTab(favoritesLinks, "favorites", <Star />);
+    new DashboardTab(
+        moviesToSeeLinks,
+        "toSee",
+        <LocalMovies sx={{ color: theme.palette.brandingWarm.main }} />
+    );
+    new DashboardTab(
+        moviesSeenLinks,
+        "seen",
+        <Check sx={{ color: theme.palette.brandingWarm.main }} />
+    );
+    new DashboardTab(
+        favoritesLinks,
+        "favorites",
+        <Star sx={{ color: theme.palette.brandingWarm.main }} />
+    );
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
