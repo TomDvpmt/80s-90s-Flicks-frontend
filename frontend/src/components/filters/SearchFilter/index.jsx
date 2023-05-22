@@ -7,11 +7,11 @@ const SearchFilter = () => {
 
     const handleChange = (e) => {
         setQuery(e.target.value);
-        // https://developers.themoviedb.org/3/search/search-movies
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // https://developers.themoviedb.org/3/search/search-movies
     };
 
     return (
@@ -19,18 +19,6 @@ const SearchFilter = () => {
             component="form"
             onSubmit={handleSubmit}
             sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            {/* <fieldset>
-                <legend>Recherche directe</legend>
-                <label>Films dont le titre contient : </label>
-                <input
-                    type="text"
-                    name="search"
-                    id="search"
-                    value={query}
-                    onChange={handleChange}
-                />
-                <button type="submit">Chercher</button>
-            </fieldset> */}
             <TextField
                 id="search"
                 label="Titre (complet ou partiel)"

@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 
 import PageHeading from "../../components/PageHeading";
 import PersonFilmographyList from "../../components/PersonFilmographyList";
-import PersonFilmographyCard from "../../components/PersonFilmographyCard";
+// import PersonFilmographyCard from "../../components/PersonFilmographyCard";
+import ListMovieCard from "../../components/ListMovieCard";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
@@ -14,7 +15,7 @@ import { selectTmdbImagesSecureUrl } from "../../app/selectors";
 import { getPersonFullData } from "../../utils/person";
 import { isEmptyObject } from "../../utils/utils";
 
-import { Box, Link, Typography, Button, Container } from "@mui/material";
+import { Box, Link, Typography, Button, ButtonGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const Person = () => {
@@ -24,6 +25,8 @@ const Person = () => {
 
     const [person, setPerson] = useState({});
     const [personFormatedName, setPersonFormatedName] = useState("");
+    const [personFormatedBirthday, setPersonFormatedBirthday] = useState("");
+    const [personFormatedDeathday, setPersonFormatedDeathday] = useState("");
     const [personImgUrl, setPersonImgUrl] = useState("");
     const [personActingMovies, setPersonActingMovies] = useState([]);
     const [personDirectingMovies, setPersonDirectingMovies] = useState([]);
@@ -34,7 +37,19 @@ const Person = () => {
     useEffect(() => {
         person.name !== undefined &&
             setPersonFormatedName(person.name.replace(" ", "_"));
-    }, [person.name]);
+
+        const dateOptions = { year: "numeric", month: "long", day: "numeric" };
+
+        const birthday = new Date(person.birthday);
+        setPersonFormatedBirthday(
+            birthday.toLocaleDateString(language, dateOptions)
+        );
+
+        const deathday = new Date(person.deathday);
+        setPersonFormatedDeathday(
+            deathday.toLocaleDateString(language, dateOptions)
+        );
+    }, [person.name, person.birthday, person.deathday]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -46,30 +61,27 @@ const Person = () => {
                     setPersonImgUrl(personData.imgUrl);
                     setPersonActingMovies(
                         personData.filmography.actingMovies.map((movie) => (
-                            <PersonFilmographyCard
+                            <ListMovieCard
                                 key={movie.id}
                                 movie={movie}
-                                type="acting"
                                 imgSrc={movie.imgSrc}
                             />
                         ))
                     );
                     setPersonDirectingMovies(
                         personData.filmography.directingMovies.map((movie) => (
-                            <PersonFilmographyCard
+                            <ListMovieCard
                                 key={movie.id}
                                 movie={movie}
-                                type="directing"
                                 imgSrc={movie.imgSrc}
                             />
                         ))
                     );
                     setPersonWritingMovies(
                         personData.filmography.writingMovies.map((movie) => (
-                            <PersonFilmographyCard
+                            <ListMovieCard
                                 key={movie.id}
                                 movie={movie}
-                                type="writing"
                                 imgSrc={movie.imgSrc}
                             />
                         ))
@@ -91,18 +103,90 @@ const Person = () => {
         !isEmptyObject(person) && (
             <>
                 <PageHeading text={person.name} />
-                {personImgUrl && (
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: { xs: "column", md: "row" },
+                        gap: "2rem",
+                        "& img": {
+                            maxWidth: "300px",
+                        },
+                    }}>
+                    {personImgUrl && (
+                        <img src={personImgUrl} alt={person.name} />
+                    )}
                     <Box
                         sx={{
                             display: "flex",
-                            justifyContent: "center",
-                            "& img": {
-                                maxWidth: "300px",
-                            },
+                            flexDirection: "column",
+                            gap: "1rem",
                         }}>
-                        <img src={personImgUrl} alt={person.name} />
+                        <Typography>
+                            <Typography component="span" fontWeight="700">
+                                Naissance :{" "}
+                            </Typography>
+                            <Typography component="span">
+                                {personFormatedBirthday}
+                            </Typography>
+                        </Typography>
+                        {person.deathday && (
+                            <Typography>
+                                <Typography component="span" fontWeight="700">
+                                    Mort :{" "}
+                                </Typography>
+                                <Typography component="span">
+                                    {personFormatedDeathday}
+                                </Typography>
+                            </Typography>
+                        )}
+                        {person.biography && (
+                            <Typography
+                                align="justify"
+                                sx={{
+                                    maxWidth: { md: theme.maxWidth.biography },
+                                }}>
+                                {person.biography}
+                            </Typography>
+                        )}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: {
+                                    xs: "center",
+                                    md: "flex-start",
+                                },
+                            }}>
+                            <ButtonGroup variant="outlined">
+                                <Button size="small">
+                                    <Link
+                                        component={RouterLink}
+                                        underline="none"
+                                        to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
+                                        target="_blank"
+                                        color={theme.palette.text.lightBg}
+                                        fontWeight="400">
+                                        Voir sur Wikipédia
+                                    </Link>
+                                </Button>
+                                <Button size="small">
+                                    <Link
+                                        component={RouterLink}
+                                        underline="none"
+                                        to={`https://www.imdb.com/name/${person.imdb_id}/`}
+                                        target="_blank"
+                                        color={theme.palette.text.lightBg}
+                                        fontWeight="400">
+                                        Voir sur IMDB
+                                    </Link>
+                                </Button>
+                            </ButtonGroup>
+                        </Box>
                     </Box>
-                )}
+                </Box>
+
                 <Box>
                     <Typography component="h2" variant="h2" m="4rem 0 3rem">
                         Filmographie
@@ -136,18 +220,6 @@ const Person = () => {
                             type="acting"
                         />
                     </Box>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    <Button variant="outlined" sx={{ mt: "3rem" }}>
-                        <Link
-                            component={RouterLink}
-                            underline="none"
-                            to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
-                            target="_blank"
-                            color={theme.palette.text.lightBg}>
-                            Voir sur Wikipédia
-                        </Link>
-                    </Button>
                 </Box>
             </>
         )

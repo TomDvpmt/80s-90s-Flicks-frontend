@@ -169,7 +169,10 @@ const Profile = () => {
                         type="button"
                         variant={showUpdateForm ? "outlined" : "contained"}
                         size="small"
-                        sx={{ mt: theme.margin.buttonTop.notSpaced }}
+                        sx={{
+                            mt: theme.margin.buttonTop.notSpaced,
+                            color: showUpdateForm ? "inherit" : "white",
+                        }}
                         onClick={handleUpdateUser}>
                         Modifier les informations
                     </Button>
@@ -230,6 +233,7 @@ const Profile = () => {
                             variant="contained"
                             sx={{
                                 margin: `${theme.margin.buttonTop.spaced} 0`,
+                                color: "white",
                             }}>
                             Enregistrer
                         </Button>

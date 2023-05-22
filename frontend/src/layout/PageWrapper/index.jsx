@@ -70,7 +70,11 @@ const PageWrapper = () => {
     return isLoading ? (
         <Box
             component="main"
-            sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+            }}>
             <Loader />
         </Box>
     ) : (

@@ -5,6 +5,7 @@ import MovieCard from "../../components/MovieCard";
 import MovieCardsGrid from "../../components/MovieCardsGrid";
 import YearFilter from "../../components/filters/YearFilter";
 import GenresFilter from "../../components/filters/GenresFilter";
+import SearchMovieDialog from "../../components/SearchMovieDialog";
 // import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
 import ErrorBoundary from "../../components/ErrorBoundary";
@@ -27,6 +28,7 @@ const Home = () => {
     const [numberOfResults, setNumberOfResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [movies, setMovies] = useState([]);
+    const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
     const [loading, setLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
@@ -43,10 +45,7 @@ const Home = () => {
             .join("");
 
         fetch(
-            `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}`,
-            {
-                method: "GET",
-            }
+            `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}`
         )
             .then((response) => response.json())
             .then((data) => {
@@ -130,6 +129,18 @@ const Home = () => {
                         </Button>
                     </Box>
                 </Paper>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        onClick={() => setShowSearchMovieDialog(true)}
+                        sx={{ color: "white" }}>
+                        Recherche par titre
+                    </Button>
+                    <SearchMovieDialog
+                        showSearchMovieDialog={showSearchMovieDialog}
+                        setShowSearchMovieDialog={setShowSearchMovieDialog}
+                    />
+                </Box>
                 <Paper
                     elevation={2}
                     sx={{

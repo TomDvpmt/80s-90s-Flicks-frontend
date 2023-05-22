@@ -15,9 +15,9 @@ const MovieTagline = ({ tagline }) => {
                 }}>
                 <Typography
                     paragraph
-                    variant="h3"
+                    variant="h4"
                     maxWidth="500px"
-                    mb="4rem"
+                    m="3rem 0 4rem"
                     fontStyle="italic">
                     {tagline}
                 </Typography>

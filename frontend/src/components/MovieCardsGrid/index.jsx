@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
-
-import { selectPageLocation } from "../../app/selectors";
-
 import { Grid } from "@mui/material";
 
+import PropTypes from "prop-types";
+
 const MovieCardsGrid = ({ movies }) => {
-    const page = useSelector(selectPageLocation());
+    MovieCardsGrid.propTypes = {
+        movies: PropTypes.array.isRequired,
+    };
 
     return (
         <Grid

@@ -30,14 +30,20 @@ const MovieGenres = ({ genres }) => {
         genres !== undefined &&
         genres !== null &&
         genres.length > 0 && (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: ".5rem" }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: ".5rem",
+                }}>
                 {genres.map((genre, index) => (
                     <Button
                         key={index}
                         id={genre.id}
                         variant="contained"
                         size="small"
-                        onClick={handleGenreClick}>
+                        onClick={handleGenreClick}
+                        sx={{ color: "white" }}>
                         {genre.name}
                     </Button>
                 ))}

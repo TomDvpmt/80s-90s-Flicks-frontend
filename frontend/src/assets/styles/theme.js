@@ -17,18 +17,30 @@ theme = createTheme(theme, {
         fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",
         h1: {
             margin: "3rem 0",
-            fontSize: "1.5rem",
+            textAlign: "center",
+            fontSize: "2rem",
             [theme.breakpoints.up("sm")]: {
                 fontSize: "3rem",
             },
-            textAlign: "center",
         },
         h2: {
-            fontSize: "2rem",
             textTransform: "uppercase",
+            fontSize: "1.5rem",
+            [theme.breakpoints.up("sm")]: {
+                fontSize: "2.5rem",
+            },
         },
         h3: {
-            fontSize: "1.5rem",
+            fontSize: "1.3rem",
+            [theme.breakpoints.up("sm")]: {
+                fontSize: "2rem",
+            },
+        },
+        h4: {
+            fontSize: "1.2rem",
+            [theme.breakpoints.up("sm")]: {
+                fontSize: "1.7rem",
+            },
         },
         body1: {
             [theme.breakpoints.up("xs")]: {
@@ -70,6 +82,7 @@ theme = createTheme(theme, {
         filters: "700px",
         userForm: "400px",
         filmography: "500px",
+        biography: "700px",
     },
     margin: {
         buttonTop: {

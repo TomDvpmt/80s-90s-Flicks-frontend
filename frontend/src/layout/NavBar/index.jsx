@@ -6,12 +6,24 @@ import NavPagesMenu from "../../components/NavPagesMenu";
 
 import { selectUserIsSignedIn, selectUserUsername } from "../../app/selectors";
 
-import { Box, AppBar, Toolbar, Button, Typography } from "@mui/material";
+import {
+    Box,
+    AppBar,
+    Toolbar,
+    Button,
+    Typography,
+    IconButton,
+} from "@mui/material";
+import { Search } from "@mui/icons-material";
 import theme from "../../assets/styles/theme";
 
 const NavBar = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const username = useSelector(selectUserUsername());
+
+    const handleSearch = () => {
+        //
+    };
 
     return (
         <AppBar
@@ -69,8 +81,12 @@ const NavBar = () => {
                                 </Button>
                             </>
                         )}
+                        {/* <IconButton
+                            onClick={handleSearch}
+                            sx={{ color: "white" }}>
+                            <Search />
+                        </IconButton> */}
                     </Box>
-
                     {isSignedIn && (
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                             <Typography component="span" color="white">
