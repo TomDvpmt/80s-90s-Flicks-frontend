@@ -10,7 +10,7 @@ import { selectUserFavorites, selectUserId } from "../../app/selectors";
 import { updateUserMoviesInDB } from "../../utils/user";
 
 import theme from "../../assets/styles/theme";
-import { Checkbox, FormControl, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { Star, StarBorder } from "@mui/icons-material";
 
 import PropTypes from "prop-types";

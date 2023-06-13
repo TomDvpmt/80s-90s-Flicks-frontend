@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -24,85 +24,91 @@ const NavPagesMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
 
-    const MENU_ITEMS_DATA = [
-        {
-            name: "explore",
-            label: "Explorer",
-            icon: <LocalMovies />,
-            limitation: null,
-            linkTo: "/",
-        },
-        {
-            name: "login",
-            label: "Connexion",
-            icon: <Login />,
-            limitation: "signedOut",
-            linkTo: "/login",
-        },
-        {
-            name: "register",
-            label: "Créer un compte",
-            icon: <PersonAdd />,
-            limitation: "signedOut",
-            linkTo: "/register",
-        },
-        {
-            name: "dashboard",
-            label: "Mon tableau de bord",
-            icon: <Dashboard />,
-            limitation: "signedIn",
-            linkTo: "/dashboard",
-        },
-        {
-            name: "profile",
-            label: "Mon profil",
-            icon: <Settings />,
-            limitation: "signedIn",
-            linkTo: "/profile",
-        },
-        {
-            name: "logout",
-            label: "Déconnexion",
-            icon: <Logout />,
-            limitation: "signedIn",
-            linkTo: "/login",
-        },
-    ];
+    const getMenuItemsData = useCallback(
+        () => [
+            {
+                name: "explore",
+                label: "Explorer",
+                icon: <LocalMovies />,
+                limitation: null,
+                linkTo: "/",
+            },
+            {
+                name: "login",
+                label: "Connexion",
+                icon: <Login />,
+                limitation: "signedOut",
+                linkTo: "/login",
+            },
+            {
+                name: "register",
+                label: "Créer un compte",
+                icon: <PersonAdd />,
+                limitation: "signedOut",
+                linkTo: "/register",
+            },
+            {
+                name: "dashboard",
+                label: "Mon tableau de bord",
+                icon: <Dashboard />,
+                limitation: "signedIn",
+                linkTo: "/dashboard",
+            },
+            {
+                name: "profile",
+                label: "Mon profil",
+                icon: <Settings />,
+                limitation: "signedIn",
+                linkTo: "/profile",
+            },
+            {
+                name: "logout",
+                label: "Déconnexion",
+                icon: <Logout />,
+                limitation: "signedIn",
+                linkTo: "/login",
+            },
+        ],
+        []
+    );
 
     const handleOpen = (e) => {
         setAnchorEl(e.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchorEl(null);
-    };
+    }, []);
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         setAnchorEl(null);
         logout(navigate);
-    };
+    }, [navigate]);
 
     useEffect(() => {
+        const menuItemsData = getMenuItemsData();
         setMenuItems(
-            MENU_ITEMS_DATA.filter((item) => {
-                return isSignedIn
-                    ? item.limitation !== "signedOut"
-                    : item.limitation !== "signedIn";
-            }).map((item, index) => (
-                <MenuItem
-                    key={index}
-                    label={item.label}
-                    component={Link}
-                    to={item.linkTo}
-                    onClick={
-                        item.name === "logout" ? handleLogout : handleClose
-                    }>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    {item.label}
-                </MenuItem>
-            ))
+            menuItemsData
+                .filter((item) => {
+                    return isSignedIn
+                        ? item.limitation !== "signedOut"
+                        : item.limitation !== "signedIn";
+                })
+                .map((item, index) => (
+                    <MenuItem
+                        key={index}
+                        label={item.label}
+                        component={Link}
+                        to={item.linkTo}
+                        onClick={
+                            item.name === "logout" ? handleLogout : handleClose
+                        }>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        {item.label}
+                    </MenuItem>
+                ))
         );
-    }, [isSignedIn]);
+    }, [isSignedIn, handleLogout, handleClose, getMenuItemsData]);
 
     return (
         <Box

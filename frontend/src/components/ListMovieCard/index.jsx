@@ -36,6 +36,7 @@ const ListMovieCard = ({ movie, imgSrc }) => {
                 bgcolor: is80s90s ? "white" : theme.palette.background.default,
                 maxWidth: theme.maxWidth.filmography,
                 width: "100%",
+
                 ":hover": {
                     boxShadow: is80s90s && 4,
                     cursor: is80s90s && "pointer",
@@ -49,8 +50,8 @@ const ListMovieCard = ({ movie, imgSrc }) => {
                 image={imgSrc}
                 alt={movie.title}
                 sx={{
-                    maxHeight: "75px",
-                    maxWidth: "50px",
+                    minHeight: "100%",
+                    width: "50px",
                 }}
             />
             <CardContent

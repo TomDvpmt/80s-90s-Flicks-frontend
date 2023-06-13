@@ -36,6 +36,12 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(e);
+        setErrorMessage("");
+
+        if (password !== passwordConfirm) {
+            setErrorMessage("Les mots de passe ne correspondent pas.");
+            return;
+        }
 
         try {
             const response = await fetch(`/API/users/`, {

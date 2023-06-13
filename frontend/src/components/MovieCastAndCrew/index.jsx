@@ -19,13 +19,13 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
 
     const page = useSelector(selectPageLocation());
 
-    const [director, setDirector] = useState("");
+    const [directors, setDirectors] = useState("");
     const [writers, setWriters] = useState([""]);
     const [actors, setActors] = useState([""]);
 
     useEffect(() => {
         try {
-            setCastAndCrew(page, movieId, setDirector, setWriters, setActors);
+            setCastAndCrew(page, movieId, setDirectors, setWriters, setActors);
         } catch (error) {
             console.log(error);
         }
@@ -34,14 +34,19 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
     return (
         <>
             <Typography paragraph>
-                {page === "movie" && (
-                    <Typography component="span">De </Typography>
-                )}
+                {page === "movie" &&
+                    directors.length > 0 &&
+                    directors[0] !== "" && (
+                        <Typography component="span">De </Typography>
+                    )}
                 <Typography component="span" fontWeight="700">
-                    {director}
+                    {directors}
                 </Typography>
 
-                {director && releaseDate && " | "}
+                {directors.length > 0 &&
+                    directors[0] !== "" &&
+                    releaseDate &&
+                    " | "}
                 {releaseDate && <MovieReleaseDate date={releaseDate} />}
             </Typography>
             {page === "movie" && writers.length > 0 && (
@@ -53,7 +58,7 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                 </Typography>
             )}
             <Typography paragraph>
-                {page === "movie" && (
+                {page === "movie" && actors.length > 0 && actors[0] !== "" && (
                     <Typography component="span">Avec </Typography>
                 )}
                 <Typography component="span" fontWeight="700">

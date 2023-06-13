@@ -51,6 +51,10 @@ const SearchMovieDialog = ({
     };
 
     useEffect(() => {
+        setResults([]);
+    }, []);
+
+    useEffect(() => {
         setQuery("");
     }, [showSearchMovieDialog]);
 
@@ -61,7 +65,6 @@ const SearchMovieDialog = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 const movies = data.results?.filter((result) => {
                     const year = parseInt(result.release_date?.slice(0, 4));
                     return (
@@ -78,7 +81,6 @@ const SearchMovieDialog = ({
                         <Typography>Aucun résultat.</Typography>
                     ) : (
                         movies.map((movie) => {
-                            console.log(movie);
                             const posterPath = movie.poster_path;
                             const hasPoster =
                                 posterPath !== null && posterPath !== "";
@@ -99,7 +101,7 @@ const SearchMovieDialog = ({
             })
             .catch((error) => console.log(error))
             .finally(() => setIsLoading(false));
-    }, [query]);
+    }, [query, imageBaseUrl, language]);
 
     return (
         <Dialog
@@ -117,7 +119,7 @@ const SearchMovieDialog = ({
                     <Close />
                 </IconButton>
             </DialogTitle>
-            <DialogContent fullWidth>
+            <DialogContent>
                 <Box component="form">
                     <TextField
                         fullWidth

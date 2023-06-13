@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import ToggleFavorite from "../ToggleFavorite";
 import MovieHeading from "../MovieHeading";
 import MovieCastAndCrew from "../MovieCastAndCrew";
 
@@ -15,7 +14,6 @@ import {
 
 import theme from "../../assets/styles/theme";
 import {
-    Box,
     Card,
     CardActionArea,
     CardContent,
@@ -76,6 +74,7 @@ const MovieCard = ({ page, movie }) => {
                     }}>
                     {page === "home" && isFavorite && (
                         <Star
+                            titleAccess="Ce film fait partie de vos favoris"
                             sx={{
                                 position: "absolute",
                                 zIndex: "3",

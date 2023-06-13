@@ -13,7 +13,7 @@ const SetPageLocation = ({ page }) => {
 
     useEffect(() => {
         dispatch(pageUpdateLocation(page));
-    }, [page]);
+    }, [page, dispatch]);
 
     return false;
 };

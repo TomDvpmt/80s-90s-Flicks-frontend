@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -143,6 +143,7 @@ const Movie = () => {
                         </Box>
                         <Box
                             sx={{
+                                mt: "1rem",
                                 display: "flex",
                                 justifyContent: "center",
                             }}>

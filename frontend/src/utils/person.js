@@ -43,13 +43,7 @@ const getFilmographyElements = (data, type, imageBaseUrl) => {
                         movie.genre_ids.length > 0
                     );
                 }
-
-                //     movie.release_date &&
-                // (type === "acting"
-                //     ? movie.adult === false
-                //     : movie.adult === false && movie.job === "Director") &&
-                // !movie.genre_ids.includes(99 || 10770) &&
-                // movie.genre_ids.length > 0
+                return null;
             })
             .sort(
                 (a, b) =>

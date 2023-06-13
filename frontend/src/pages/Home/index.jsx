@@ -93,6 +93,18 @@ const Home = () => {
                 width="100%"
                 maxWidth={theme.maxWidth.filters}
                 margin="auto">
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        onClick={() => setShowSearchMovieDialog(true)}
+                        sx={{ color: "white" }}>
+                        Recherche par titre
+                    </Button>
+                    <SearchMovieDialog
+                        showSearchMovieDialog={showSearchMovieDialog}
+                        setShowSearchMovieDialog={setShowSearchMovieDialog}
+                    />
+                </Box>
                 <Paper
                     elevation={2}
                     sx={{
@@ -129,18 +141,6 @@ const Home = () => {
                         </Button>
                     </Box>
                 </Paper>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                        variant="contained"
-                        onClick={() => setShowSearchMovieDialog(true)}
-                        sx={{ color: "white" }}>
-                        Recherche par titre
-                    </Button>
-                    <SearchMovieDialog
-                        showSearchMovieDialog={showSearchMovieDialog}
-                        setShowSearchMovieDialog={setShowSearchMovieDialog}
-                    />
-                </Box>
                 <Paper
                     elevation={2}
                     sx={{
@@ -155,11 +155,13 @@ const Home = () => {
                     </Typography>
                 </Paper>
                 {/* <Language /> */}
-                <Pagination
-                    numberOfPages={numberOfPages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                />
+                {movies?.length > 0 && (
+                    <Pagination
+                        numberOfPages={numberOfPages}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
+                )}
             </Box>
             <Box component="section">
                 {loading ? (
@@ -167,14 +169,18 @@ const Home = () => {
                 ) : hasError ? (
                     <ErrorBoundary page="home" />
                 ) : (
-                    <MovieCardsGrid movies={movies} />
+                    <>
+                        <MovieCardsGrid movies={movies} />
+                    </>
                 )}
             </Box>
-            <Pagination
-                numberOfPages={numberOfPages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
+            {movies?.length > 0 && (
+                <Pagination
+                    numberOfPages={numberOfPages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
+            )}
         </>
     );
 };

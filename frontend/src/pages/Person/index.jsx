@@ -49,7 +49,7 @@ const Person = () => {
         setPersonFormatedDeathday(
             deathday.toLocaleDateString(language, dateOptions)
         );
-    }, [person.name, person.birthday, person.deathday]);
+    }, [person.name, person.birthday, person.deathday, language]);
 
     useEffect(() => {
         setIsLoading(true);

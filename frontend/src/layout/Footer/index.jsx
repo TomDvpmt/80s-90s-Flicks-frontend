@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserIsSignedIn, selectUserLanguage } from "../../app/selectors";
+import { selectUserIsSignedIn } from "../../app/selectors";
 
 import Branding from "../../components/Branding";
 import FooterExternalLink from "../../components/FooterExternalLink";
@@ -15,7 +15,6 @@ import {
     TableRow,
     TableCell,
     Stack,
-    Link as MUILink,
 } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
@@ -34,7 +33,6 @@ const leftCellStyle = {
 
 const Footer = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
-    const language = useSelector(selectUserLanguage());
     const navigate = useNavigate();
 
     const handleLogout = (e) => {

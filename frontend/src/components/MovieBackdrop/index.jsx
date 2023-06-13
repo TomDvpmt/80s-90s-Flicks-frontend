@@ -22,7 +22,7 @@ const MovieBackdrop = ({ path, movieTitle }) => {
                 position: "absolute",
                 display: { xs: "none", md: "block" },
                 zIndex: "1",
-                opacity: path ? ".3" : ".1",
+                opacity: path ? ".2" : ".1",
                 overflow: "hidden",
                 "& img": {
                     maxWidth: "2200px",

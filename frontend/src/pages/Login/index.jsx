@@ -30,13 +30,25 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(e);
 
+        let loginData = {
+            username,
+            password,
+        };
+
+        if (e.target.id === "demo") {
+            loginData = {
+                username: "DemoUser",
+                password: "password",
+            };
+        }
+
         try {
             const response = await fetch(`/API/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify(loginData),
             });
             if (response.status === 404) {
                 throw new Error(
@@ -68,6 +80,15 @@ const Login = () => {
                 maxWidth: theme.maxWidth.userForm,
                 margin: "0 auto 3rem",
             }}>
+            <Box mb="2rem" display="flex" justifyContent="center">
+                <Button
+                    id="demo"
+                    onClick={handleSubmit}
+                    variant="contained"
+                    color="secondary">
+                    Utilisateur démo
+                </Button>
+            </Box>
             <ErrorMessage errorMessage={errorMessage} />
             <UsernameInput
                 username={username}

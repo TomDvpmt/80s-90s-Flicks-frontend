@@ -1,5 +1,4 @@
-import { Box, Typography } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import { Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
 

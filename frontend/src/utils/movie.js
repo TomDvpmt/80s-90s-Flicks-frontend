@@ -152,6 +152,7 @@ const getMovieActorsElements = (page, cast) => {
                               </Box>
                           );
                       }
+                      return null;
                   })
             : [""];
     return actorsElements;

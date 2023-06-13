@@ -6,14 +6,7 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { getMovieData } from "../../utils/movie";
-import { getPersonFullData } from "../../utils/person";
-
-import {
-    selectUserIsSignedIn,
-    selectUserLanguage,
-    selectTmdbImagesSecureUrl,
-} from "../selectors";
+import { selectUserIsSignedIn } from "../selectors";
 
 import { getUserInfo } from "../../utils/user";
 
@@ -31,8 +24,6 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
     const isSignedIn = useSelector(selectUserIsSignedIn());
-    const language = useSelector(selectUserLanguage());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
     const [isError, setIsError] = useState(false);
 

@@ -24,8 +24,8 @@ const FooterExternalLink = ({ type }) => {
             path: `https://www.mediawiki.org/wiki/API:Main_page/${language}`,
         },
         sourceCode: {
-            label: "Code Source",
-            path: "https://github.com/TomDvpmt/80s-90s-Flix",
+            label: "github.com/TomDvpmt",
+            path: "https://github.com/TomDvpmt/80s-90s-Flicks",
         },
     };
 
