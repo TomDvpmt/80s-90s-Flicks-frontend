@@ -12,6 +12,7 @@ import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 import ListMovieCard from "../ListMovieCard";
 import Loader from "../Loader";
 
+import theme from "../../assets/styles/theme";
 import {
     Dialog,
     DialogTitle,
@@ -21,6 +22,7 @@ import {
     Typography,
     IconButton,
     TextField,
+    useMediaQuery,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -37,6 +39,8 @@ const SearchMovieDialog = ({
 
     const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
+
+    const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
@@ -107,7 +111,8 @@ const SearchMovieDialog = ({
         <Dialog
             open={showSearchMovieDialog}
             onClose={handleClose}
-            fullWidth={true}>
+            fullWidth={isSmallScreen}
+            fullScreen={!isSmallScreen}>
             <DialogTitle
                 sx={{
                     display: "flex",

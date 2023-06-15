@@ -1,4 +1,4 @@
-![Logo de l'application 80s-90s Flicks](/src/assets/flix-logo-on-black.png)
+![Logo de l'application 80s-90s Flicks](/src/assets/logo/flix-logo-on-black.png)
 
 # Contexte
 
@@ -9,6 +9,8 @@ Cette application est un projet personnel développé en 2023.
 **80s-90s Flicks** est une application de recherche de films des années 80 et 90, avec un module de filtrage des recherches et un tableau de bord permettant d'enregistrer des favoris, des films vus et des films à voir.
 
 # Lien vers l'application
+
+[https://flicks80s90s.onrender.com/](https://flicks80s90s.onrender.com/)
 
 # Dépôts
 
