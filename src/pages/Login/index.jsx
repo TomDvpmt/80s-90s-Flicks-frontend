@@ -8,6 +8,7 @@ import { selectUserIsSignedIn } from "../../app/selectors";
 import UsernameInput from "../../components/form-fields/UsernameInput";
 import PasswordInput from "../../components/form-fields/PasswordInput";
 import ErrorMessage from "../../components/ErrorMessage";
+import Loader from "../../components/Loader";
 
 import { BASE_API_URI } from "../../utils/config";
 
@@ -24,6 +25,7 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         isSignedIn && navigate("/");
@@ -31,6 +33,8 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(e);
+
+        setIsLoading(true);
 
         let loginData = {
             username,
@@ -72,9 +76,13 @@ const Login = () => {
                 // "Connexion impossible. Veuillez réessayer ultérieurement."
             );
         }
+
+        setIsLoading(false);
     };
 
-    return (
+    return isLoading ? (
+        <Loader />
+    ) : (
         <Box
             component="form"
             onSubmit={handleSubmit}
