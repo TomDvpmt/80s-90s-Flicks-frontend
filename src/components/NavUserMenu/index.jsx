@@ -1,81 +1,100 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import {
-    Box,
-    IconButton,
-    Menu,
-    MenuItem,
-    ListItemIcon,
-    Avatar,
-} from "@mui/material";
-import { Settings, Logout } from "@mui/icons-material";
-
-import { logout } from "../../utils/user";
 
 import { selectUserIsSignedIn } from "../../app/selectors";
 
+import { logout } from "../../utils/user";
+
+import {
+    Box,
+    Menu,
+    MenuItem,
+    IconButton,
+    ListItemIcon,
+    Avatar,
+} from "@mui/material";
+import { Settings, Logout, Dashboard } from "@mui/icons-material";
+
 const NavUserMenu = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
     const navigate = useNavigate();
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [menuItems, setMenuItems] = useState([]);
 
-    const handleAvatarClick = (e) => {
+    const getMenuItemsData = useCallback(
+        () => [
+            {
+                name: "dashboard",
+                label: "Mon tableau de bord",
+                icon: <Dashboard />,
+                limitation: "signedIn",
+                linkTo: "/dashboard",
+            },
+            {
+                name: "profile",
+                label: "Mon profil",
+                icon: <Settings />,
+                limitation: "signedIn",
+                linkTo: "/profile",
+            },
+            {
+                name: "logout",
+                label: "Déconnexion",
+                icon: <Logout />,
+                limitation: "signedIn",
+                linkTo: "/login",
+            },
+        ],
+        []
+    );
+
+    const handleOpen = (e) => {
         setAnchorEl(e.currentTarget);
     };
 
-    const handleProfileClick = () => {
-        handleClose();
-        navigate("/profile");
-    };
+    const handleClose = useCallback(() => {
+        setAnchorEl(null);
+    }, []);
 
-    const handleLogout = async () => {
-        handleClose();
+    const handleLogout = useCallback(() => {
+        setAnchorEl(null);
         logout(navigate);
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        const menuItemsData = getMenuItemsData();
+        setMenuItems(
+            menuItemsData.map((item, index) => (
+                <MenuItem
+                    key={index}
+                    label={item.label}
+                    component={Link}
+                    to={item.linkTo}
+                    onClick={
+                        item.name === "logout" ? handleLogout : handleClose
+                    }>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                </MenuItem>
+            ))
+        );
+    }, [isSignedIn, handleLogout, handleClose, getMenuItemsData]);
 
     return (
         <>
-            {isSignedIn && (
-                <Box>
-                    <IconButton onClick={handleAvatarClick}>
-                        <Avatar sx={{ width: "2.5rem", height: "2.5rem" }} />
-                    </IconButton>
-                    <Menu
-                        open={open}
-                        onClose={handleClose}
-                        anchorEl={anchorEl}
-                        transformOrigin={{
-                            horizontal: "right",
-                            vertical: "top",
-                        }}
-                        anchorOrigin={{
-                            horizontal: "right",
-                            vertical: "bottom",
-                        }}
-                        disableScrollLock={true}>
-                        <MenuItem onClick={handleProfileClick}>
-                            <ListItemIcon>
-                                <Settings />
-                            </ListItemIcon>
-                            Profil
-                        </MenuItem>
-                        <MenuItem onClick={handleLogout}>
-                            <ListItemIcon>
-                                <Logout />
-                            </ListItemIcon>
-                            Déconnexion
-                        </MenuItem>
-                    </Menu>
-                </Box>
-            )}
+            <IconButton onClick={handleOpen}>
+                <Avatar sx={{ fontSize: "2.5rem" }} />
+            </IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                onClose={handleClose}>
+                {menuItems}
+            </Menu>
         </>
     );
 };

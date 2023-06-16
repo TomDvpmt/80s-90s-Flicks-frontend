@@ -1,12 +1,12 @@
-import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import NavExploreButton from "../../components/NavExploreButton";
 import NavUserMenu from "../../components/NavUserMenu";
-import NavPagesMenu from "../../components/NavPagesMenu";
+import NavLoginMenu from "../../components/NavLoginMenu";
 
 import { selectUserIsSignedIn, selectUserUsername } from "../../app/selectors";
 
-import { Box, AppBar, Toolbar, Button, Typography } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const NavBar = () => {
@@ -18,6 +18,7 @@ const NavBar = () => {
             component="nav"
             sx={{
                 position: { xs: "sticky", sm: "static" },
+                pr: "0 !important",
                 backgroundColor: theme.palette.primary.main,
                 flexDirection: "row",
                 justifyContent: "center",
@@ -26,58 +27,14 @@ const NavBar = () => {
                 sx={{
                     flexGrow: 1,
                     maxWidth: theme.maxWidth.nav,
+                    justifyContent: "space-between",
                 }}>
-                <NavPagesMenu />
-                <Box
-                    sx={{
-                        flexGrow: 1,
-                        display: {
-                            xs: "none",
-                            sm: "flex",
-                        },
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}>
-                    <Box>
-                        <Button
-                            component={NavLink}
-                            to="/"
-                            sx={{ color: "white" }}>
-                            Explorer
-                        </Button>
-                        {isSignedIn && (
-                            <Button
-                                component={NavLink}
-                                to="/dashboard"
-                                sx={{ color: "white" }}>
-                                Mon tableau de bord
-                            </Button>
-                        )}
-                        {!isSignedIn && (
-                            <>
-                                <Button
-                                    component={NavLink}
-                                    to="/login"
-                                    sx={{ color: "white" }}>
-                                    Se connecter
-                                </Button>
-                                <Button
-                                    component={NavLink}
-                                    to="/register"
-                                    sx={{ color: "white" }}>
-                                    Créer un compte
-                                </Button>
-                            </>
-                        )}
-                    </Box>
-                    {isSignedIn && (
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Typography component="span" color="white">
-                                {username}
-                            </Typography>
-                            <NavUserMenu />
-                        </Box>
-                    )}
+                <NavExploreButton />
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography component="span" color="white">
+                        {username}
+                    </Typography>
+                    {isSignedIn ? <NavUserMenu /> : <NavLoginMenu />}
                 </Box>
             </Toolbar>
         </AppBar>

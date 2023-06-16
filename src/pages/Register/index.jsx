@@ -12,6 +12,7 @@ import EmailInput from "../../components/form-fields/EmailInput";
 import FirstNameInput from "../../components/form-fields/FirstNameInput";
 import LastNameInput from "../../components/form-fields/LastNameInput";
 import ErrorMessage from "../../components/ErrorMessage";
+import Loader from "../../components/Loader";
 
 import { BASE_API_URI } from "../../utils/config";
 
@@ -31,6 +32,7 @@ const Register = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         isSignedIn && navigate("/");
@@ -39,6 +41,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(e);
         setErrorMessage("");
+        setIsLoading(true);
 
         if (password !== passwordConfirm) {
             setErrorMessage("Les mots de passe ne correspondent pas.");
@@ -76,9 +79,13 @@ const Register = () => {
             console.error(error);
             setErrorMessage(error.message);
         }
+
+        setIsLoading(false);
     };
 
-    return (
+    return isLoading ? (
+        <Loader />
+    ) : (
         <Box
             component="form"
             onSubmit={handleSubmit}

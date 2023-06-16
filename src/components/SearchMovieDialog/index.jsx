@@ -51,6 +51,7 @@ const SearchMovieDialog = ({
     };
 
     const handleClose = () => {
+        console.log("test");
         setShowSearchMovieDialog(false);
     };
 
