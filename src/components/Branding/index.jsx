@@ -19,8 +19,8 @@ const Branding = ({ location }) => {
         <Box
             component="div"
             sx={{
-                pt: location === "header" ? "8rem" : "2rem",
-                pb: location === "header" ? "8rem" : "2rem",
+                pt: location === "header" && isSmallScreen ? "8rem" : "2rem",
+                pb: location === "header" && isSmallScreen ? "8rem" : "2rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

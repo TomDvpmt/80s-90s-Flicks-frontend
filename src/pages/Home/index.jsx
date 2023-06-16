@@ -108,7 +108,7 @@ const Home = () => {
                 <Paper
                     elevation={2}
                     sx={{
-                        margin: "2rem",
+                        margin: "2rem 0",
                         padding: "1rem",
                         display: "flex",
                         flexDirection: "column",
@@ -144,7 +144,7 @@ const Home = () => {
                 <Paper
                     elevation={2}
                     sx={{
-                        margin: "2rem",
+                        margin: "2rem 0",
                         padding: "1rem",
                     }}>
                     <Typography>
