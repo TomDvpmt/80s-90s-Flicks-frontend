@@ -16,7 +16,6 @@ import theme from "../../assets/styles/theme";
 import {
     Dialog,
     DialogTitle,
-    DialogActions,
     DialogContent,
     Box,
     Typography,
@@ -98,6 +97,9 @@ const SearchMovieDialog = ({
                                     key={movie.id}
                                     movie={movie}
                                     imgSrc={imgSrc}
+                                    setShowSearchMovieDialog={
+                                        setShowSearchMovieDialog
+                                    }
                                 />
                             );
                         })
@@ -106,7 +108,7 @@ const SearchMovieDialog = ({
             })
             .catch((error) => console.log(error))
             .finally(() => setIsLoading(false));
-    }, [query, imageBaseUrl, language]);
+    }, [query, imageBaseUrl, language, setShowSearchMovieDialog]);
 
     return (
         <Dialog
@@ -155,7 +157,6 @@ const SearchMovieDialog = ({
                     </Box>
                 )}
             </DialogContent>
-            <DialogActions></DialogActions>
         </Dialog>
     );
 };

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import NavExploreButton from "../../components/NavExploreButton";
+import NavExploreButtons from "../../components/NavExploreButtons";
 import NavUserMenu from "../../components/NavUserMenu";
 import NavLoginMenu from "../../components/NavLoginMenu";
 
@@ -29,7 +29,7 @@ const NavBar = () => {
                     maxWidth: theme.maxWidth.nav,
                     justifyContent: "space-between",
                 }}>
-                <NavExploreButton />
+                <NavExploreButtons />
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography component="span" color="white">
                         {username}

@@ -12,10 +12,11 @@ import {
 import PropTypes from "prop-types";
 import theme from "../../assets/styles/theme";
 
-const ListMovieCard = ({ movie, imgSrc }) => {
+const ListMovieCard = ({ movie, imgSrc, setShowSearchMovieDialog }) => {
     ListMovieCard.propTypes = {
         movie: PropTypes.object.isRequired,
         imgSrc: PropTypes.string.isRequired,
+        setShowSearchMovieDialog: PropTypes.func.isRequired,
     };
 
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const ListMovieCard = ({ movie, imgSrc }) => {
 
     const handleCardClick = (e) => {
         e.preventDefault();
+        setShowSearchMovieDialog(false);
         is80s90s && navigate(`/movies/${movie.id}`);
     };
 
