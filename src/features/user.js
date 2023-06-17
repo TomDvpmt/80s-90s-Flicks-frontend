@@ -3,6 +3,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 const initialState = {
     isSignedIn: false,
     id: "",
+    avatarUrl: "",
     username: "",
     firstName: "",
     lastName: "",
@@ -16,6 +17,7 @@ const initialState = {
 export const userAuth = createAction("user/auth");
 export const userSetInfo = createAction("user/setInfo");
 export const userSignOut = createAction("user/signOut");
+export const userUpdateAvatar = createAction("user/updateAvatar");
 export const userAddToMoviesSeen = createAction("user/addToMoviesSeen");
 export const userRemoveFromMoviesSeen = createAction(
     "user/removeFromMoviesSeen"
@@ -37,6 +39,7 @@ const userReducer = createReducer(initialState, (builder) => {
             const token = sessionStorage.getItem("token");
             draft.isSignedIn = token !== "" && token !== null;
             draft.id = action.payload.id || draft.id;
+            draft.avatarUrl = action.payload.avatarUrl || draft.avatarUrl;
             draft.username = action.payload.username || draft.username;
             draft.firstName = action.payload.firstName || draft.firstName;
             draft.lastName = action.payload.lastName || draft.lastName;
@@ -48,6 +51,9 @@ const userReducer = createReducer(initialState, (builder) => {
         })
         .addCase(userSignOut, (draft, action) => {
             return initialState;
+        })
+        .addCase(userUpdateAvatar, (draft, action) => {
+            draft.avatarUrl = action.payload.avatarUrl;
         })
         .addCase(userAddToMoviesSeen, (draft, action) => {
             draft.moviesSeen.push(action.payload);

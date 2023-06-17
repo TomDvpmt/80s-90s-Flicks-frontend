@@ -13,7 +13,7 @@ const store = configureStore({
         theme: themeReducer,
         tmdbConfig: tmdbConfigReducer,
     },
-    devTools: false,
+    devTools: process.env.NODE_ENV === "development",
 });
 
 export default store;

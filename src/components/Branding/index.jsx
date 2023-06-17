@@ -12,15 +12,21 @@ const Branding = ({ location }) => {
         location: PropTypes.string.isRequired,
     };
 
-    const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
-    const headerWidth = isSmallScreen ? "500" : "250";
+    const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
+    const headerWidth = isWiderThanSmallScreen ? "500" : "250";
 
     return (
         <Box
             component="div"
             sx={{
-                pt: location === "header" && isSmallScreen ? "8rem" : "2rem",
-                pb: location === "header" && isSmallScreen ? "8rem" : "2rem",
+                pt:
+                    location === "header" && isWiderThanSmallScreen
+                        ? "6rem"
+                        : "2rem",
+                pb:
+                    location === "header" && isWiderThanSmallScreen
+                        ? "6rem"
+                        : "2rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

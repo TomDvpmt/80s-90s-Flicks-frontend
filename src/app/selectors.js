@@ -8,6 +8,10 @@ export const selectUserId = () => {
     return (state) => state.user.id;
 };
 
+export const selectUserAvatarUrl = () => {
+    return (state) => state.user.avatarUrl;
+};
+
 export const selectUserUsername = () => {
     return (state) => state.user.username;
 };

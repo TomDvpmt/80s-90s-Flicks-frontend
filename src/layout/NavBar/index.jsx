@@ -30,8 +30,16 @@ const NavBar = () => {
                     justifyContent: "space-between",
                 }}>
                 <NavExploreButtons />
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography component="span" color="white">
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: ".5rem",
+                    }}>
+                    <Typography
+                        component="span"
+                        color="white"
+                        fontSize="1.3rem">
                         {username}
                     </Typography>
                     {isSignedIn ? <NavUserMenu /> : <NavLoginMenu />}

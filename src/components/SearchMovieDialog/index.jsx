@@ -39,7 +39,7 @@ const SearchMovieDialog = ({
     const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
 
-    const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
+    const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
@@ -114,8 +114,8 @@ const SearchMovieDialog = ({
         <Dialog
             open={showSearchMovieDialog}
             onClose={handleClose}
-            fullWidth={isSmallScreen}
-            fullScreen={!isSmallScreen}>
+            fullWidth={isWiderThanSmallScreen}
+            fullScreen={!isWiderThanSmallScreen}>
             <DialogTitle
                 sx={{
                     display: "flex",

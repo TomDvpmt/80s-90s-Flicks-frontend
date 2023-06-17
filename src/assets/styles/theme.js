@@ -77,12 +77,13 @@ theme = createTheme(theme, {
     // Custom properties
 
     maxWidth: {
-        nav: "1200px",
         main: "1200px",
+        nav: "1200px",
         filters: "700px",
-        userForm: "400px",
         filmography: "500px",
         biography: "700px",
+        userForm: "400px",
+        profileAvatar: "10rem",
     },
     margin: {
         buttonTop: {

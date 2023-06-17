@@ -45,6 +45,7 @@ const PageWrapper = () => {
                       moviesToSee: [""],
                       favorites: [""],
                       language: "fr",
+                      avatarUrl: "",
                   })
               );
     }, [token, data, dispatch]);
@@ -95,6 +96,7 @@ const PageWrapper = () => {
                     display: "flex",
                     flexDirection: "column",
                 }}>
+                {/* {!token && <Box>Pas encore de compte ? Découvrez les avantages de l'inscription</Box>} */}
                 {heading && page !== "movie" && <PageHeading text={heading} />}
                 <Outlet />
             </Box>

@@ -2,12 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../app/selectors";
+import { selectUserAvatarUrl, selectUserIsSignedIn } from "../../app/selectors";
 
 import { logout } from "../../utils/user";
 
 import {
-    Box,
     Menu,
     MenuItem,
     IconButton,
@@ -18,6 +17,7 @@ import { Settings, Logout, Dashboard } from "@mui/icons-material";
 
 const NavUserMenu = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const avatarUrl = useSelector(selectUserAvatarUrl());
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -85,7 +85,14 @@ const NavUserMenu = () => {
     return (
         <>
             <IconButton onClick={handleOpen}>
-                <Avatar sx={{ fontSize: "2.5rem" }} />
+                <Avatar
+                    sx={{
+                        width: "3rem",
+                        height: "3rem",
+                    }}
+                    src={avatarUrl}
+                    alt="Avatar"
+                />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
