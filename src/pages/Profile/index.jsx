@@ -139,34 +139,31 @@ const Profile = () => {
             justifyContent="center"
             alignItems={{ xs: "center", md: "flex-start" }}
             gap={{ xs: "2rem", md: "4rem" }}>
-            {userId === "644402ac1fd20a21337a94bf" && (
-                <Box>
-                    <Badge
-                        badgeContent={
-                            <IconButton
-                                onClick={() =>
-                                    setShowUserAvatarUpdateDialog(true)
-                                }>
-                                <Settings />
-                            </IconButton>
-                        }
+            <Box>
+                <Badge
+                    badgeContent={
+                        <IconButton
+                            onClick={() => setShowUserAvatarUpdateDialog(true)}>
+                            <Settings />
+                        </IconButton>
+                    }
+                    sx={{
+                        "& .MuiBadge-badge": {
+                            top: "inherit",
+                            bottom: "0",
+                        },
+                    }}>
+                    <Avatar
                         sx={{
-                            "& .MuiBadge-badge": {
-                                top: "inherit",
-                                bottom: "0",
-                            },
-                        }}>
-                        <Avatar
-                            sx={{
-                                width: theme.maxWidth.profileAvatar,
-                                height: theme.maxWidth.profileAvatar,
-                            }}
-                            src={avatarUrl}
-                            alt="Avatar"
-                        />
-                    </Badge>
-                </Box>
-            )}
+                            width: theme.maxWidth.profileAvatar,
+                            height: theme.maxWidth.profileAvatar,
+                        }}
+                        src={avatarUrl}
+                        alt="Avatar"
+                    />
+                </Badge>
+            </Box>
+
             <UserAvatarUpdateDialog
                 showUserAvatarUpdateDialog={showUserAvatarUpdateDialog}
                 setShowUserAvatarUpdateDialog={setShowUserAvatarUpdateDialog}
