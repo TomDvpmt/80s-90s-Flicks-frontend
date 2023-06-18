@@ -11,29 +11,34 @@ import { BASE_API_URI } from "./config";
  */
 
 export const getUserInfo = async (setIsError) => {
-    const tokenResponse = await fetch(`${BASE_API_URI}/API/users/token`, {
-        credentials: "include",
-    });
-    if (!tokenResponse.ok) {
-        return {};
-    }
-    const token = await tokenResponse.json();
-
-    if (token) {
-        store.dispatch(userAuth(token));
-
-        const profileResponse = await fetch(
-            `${BASE_API_URI}/API/users/profile`,
-            {
-                credentials: "include",
-            }
-        );
-        if (!profileResponse.ok) {
-            setIsError(true);
-            return {};
+    try {
+        const tokenResponse = await fetch(`${BASE_API_URI}/API/users/token`, {
+            credentials: "include",
+        });
+        if (!tokenResponse.ok) {
+            throw new Error("Aucun token d'accès trouvé.");
         }
-        const data = await profileResponse.json();
-        return data;
+        const token = await tokenResponse.json();
+
+        if (token) {
+            store.dispatch(userAuth(token));
+
+            const profileResponse = await fetch(
+                `${BASE_API_URI}/API/users/profile`,
+                {
+                    credentials: "include",
+                }
+            );
+            if (!profileResponse.ok) {
+                setIsError(true);
+                return {};
+            }
+            const data = await profileResponse.json();
+            return data;
+        }
+    } catch (error) {
+        console.log(error.message);
+        return {};
     }
 
     return {};

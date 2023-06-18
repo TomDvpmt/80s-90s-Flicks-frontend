@@ -5,5 +5,4 @@ export const BASE_API_URI =
         ? "http://localhost:3000"
         : "https://eight0s-90s-flicks-api.onrender.com";
 
-export const BASE_IMGUR_URI = "https://api.imgur.com/3/image";
 export const BASE_IMGBB_URI = "https://api.imgbb.com/1";
