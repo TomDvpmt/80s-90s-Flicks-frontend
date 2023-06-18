@@ -46,6 +46,7 @@ const Profile = () => {
 
     const avatarUrl = useSelector(selectUserAvatarUrl());
     const userId = useSelector(selectUserId());
+
     const prevUsername = useSelector(selectUserUsername());
     const prevEmail = useSelector(selectUserEmail());
     const prevFirstName = useSelector(selectUserFirstName());
@@ -55,6 +56,7 @@ const Profile = () => {
     const [newEmail, setNewEmail] = useState("");
     const [newFirstName, setNewFirstName] = useState("");
     const [newLastName, setNewLastName] = useState("");
+
     const [errorMessage, setErrorMessage] = useState("");
 
     const [showUpdateValidation, setShowUpdateValidation] = useState(false);
@@ -83,7 +85,6 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // If default values and input values are the same, close the form
         if (
             prevUsername === newUsername &&
             prevEmail === newEmail &&

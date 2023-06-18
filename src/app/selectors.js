@@ -48,12 +48,6 @@ export const selectUserLanguage = () => {
     return (state) => state.user.language;
 };
 
-// Page
-
-export const selectPageLocation = () => {
-    return (state) => state.page.location;
-};
-
 // Filters
 
 export const selectFiltersYear = () => {
@@ -69,20 +63,4 @@ export const selectFiltersActiveGenres = () => {
 
 export const selectFiltersAll = () => {
     return (state) => state.filters.allFilters;
-};
-
-// Theme
-
-export const selectThemeMode = () => {
-    return (state) => state.theme.darkMode;
-};
-
-// TMDB config
-
-export const selectTmdbImagesSecureUrl = () => {
-    return (state) => state.tmdbConfig.images.secure_base_url;
-};
-
-export const selectTmdbImagesPosterSizes = () => {
-    return (state) => state.tmdbConfig.images.poster_sizes;
 };

@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import {
-    selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
-    selectPageLocation,
-} from "../../app/selectors";
+    selectTmdbImagesSecureUrl,
+} from "../../features/tmdbSlice";
+import { selectPageLocation } from "../../features/pageSlice";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
@@ -22,9 +22,9 @@ const MoviePoster = ({ path, movieTitle }) => {
         movieTitle: PropTypes.string,
     };
 
-    const page = useSelector(selectPageLocation());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
-    const posterSizes = useSelector(selectTmdbImagesPosterSizes());
+    const page = useSelector(selectPageLocation);
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
+    const posterSizes = useSelector(selectTmdbImagesPosterSizes);
 
     const [isLoading, setIsLoading] = useState(true);
 

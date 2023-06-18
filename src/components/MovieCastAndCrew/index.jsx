@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 
 import MovieReleaseDate from "../MovieReleaseDate";
 
-import { selectPageLocation } from "../../app/selectors";
+// import { selectPageLocation } from "../../app/selectors";
+import { selectPageLocation } from "../../features/pageSlice";
 
 import { setCastAndCrew } from "../../utils/movie";
 
@@ -17,7 +18,7 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
         releaseDate: PropTypes.string.isRequired,
     };
 
-    const page = useSelector(selectPageLocation());
+    const page = useSelector(selectPageLocation);
 
     const [directors, setDirectors] = useState("");
     const [writers, setWriters] = useState([""]);

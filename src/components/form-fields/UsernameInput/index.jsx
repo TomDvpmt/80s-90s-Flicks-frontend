@@ -26,6 +26,7 @@ const UsernameInput = ({ username, setUsername, setErrorMessage }) => {
             value={username}
             onFocus={() => setErrorMessage("")}
             onChange={handleChange}
+            error={username.length > 20}
         />
     );
 };

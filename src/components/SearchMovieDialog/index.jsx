@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 
-import {
-    selectTmdbImagesSecureUrl,
-    selectUserLanguage,
-} from "../../app/selectors";
+import { selectUserLanguage } from "../../app/selectors";
+import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
 import { TMDB_API_KEY } from "../../utils/config";
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
@@ -27,6 +25,12 @@ import { Close } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
 
+const ACTIONS = {
+    setQuery: "setQuery",
+    setResults: "setResults",
+    setIsLoading: "setIsLoading",
+};
+
 const SearchMovieDialog = ({
     showSearchMovieDialog,
     setShowSearchMovieDialog,
@@ -36,17 +40,32 @@ const SearchMovieDialog = ({
         setShowSearchMovieDialog: PropTypes.func.isRequired,
     };
 
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
+            case "setQuery":
+                return { ...state, query: payload };
+            case "setResults":
+                return { ...state, results: payload };
+            case "setIsLoading":
+                return { ...state, isLoading: payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+
+    const [state, dispatch] = useReducer(reducer, {
+        query: "",
+        results: [],
+        isLoading: false,
+    });
+
     const language = useSelector(selectUserLanguage());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
 
     const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-
     const handleChange = (e) => {
-        setQuery(e.target.value);
+        dispatch({ type: ACTIONS.setQuery, payload: e.target.value });
     };
 
     const handleClose = () => {
@@ -55,17 +74,17 @@ const SearchMovieDialog = ({
     };
 
     useEffect(() => {
-        setResults([]);
+        dispatch({ type: ACTIONS.setResults, payload: [] });
     }, []);
 
     useEffect(() => {
-        setQuery("");
+        dispatch({ type: ACTIONS.setQuery, payload: "" });
     }, [showSearchMovieDialog]);
 
     useEffect(() => {
-        setIsLoading(true);
+        dispatch({ type: ACTIONS.setIsLoading, payload: true });
         fetch(
-            `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${query}&include_adult=false&language=${language}`
+            `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${state.query}&include_adult=false&language=${language}`
         )
             .then((response) => response.json())
             .then((data) => {
@@ -79,37 +98,40 @@ const SearchMovieDialog = ({
                         !result.genre_ids.includes(10770)
                     );
                 });
+                dispatch({
+                    type: ACTIONS.setResults,
+                    payload:
+                        movies.length === 0 ? (
+                            <Typography>Aucun résultat.</Typography>
+                        ) : (
+                            movies.map((movie) => {
+                                const posterPath = movie.poster_path;
+                                const hasPoster =
+                                    posterPath !== null && posterPath !== "";
+                                const imgSrc = hasPoster
+                                    ? `${imageBaseUrl}w92${posterPath}`
+                                    : defaultPoster;
 
-                setResults(
-                    movies.length === 0 ? (
-                        <Typography>Aucun résultat.</Typography>
-                    ) : (
-                        movies.map((movie) => {
-                            const posterPath = movie.poster_path;
-                            const hasPoster =
-                                posterPath !== null && posterPath !== "";
-                            const imgSrc = hasPoster
-                                ? `${imageBaseUrl}w92${posterPath}`
-                                : defaultPoster;
-
-                            return (
-                                <ListMovieCard
-                                    key={movie.id}
-                                    movie={movie}
-                                    imgSrc={imgSrc}
-                                    setShowSearchMovieDialog={
-                                        setShowSearchMovieDialog
-                                    }
-                                    location="searchMovieDialog"
-                                />
-                            );
-                        })
-                    )
-                );
+                                return (
+                                    <ListMovieCard
+                                        key={movie.id}
+                                        movie={movie}
+                                        imgSrc={imgSrc}
+                                        setShowSearchMovieDialog={
+                                            setShowSearchMovieDialog
+                                        }
+                                        location="searchMovieDialog"
+                                    />
+                                );
+                            })
+                        ),
+                });
             })
             .catch((error) => console.log(error))
-            .finally(() => setIsLoading(false));
-    }, [query, imageBaseUrl, language, setShowSearchMovieDialog]);
+            .finally(() =>
+                dispatch({ type: ACTIONS.setIsLoading, payload: false })
+            );
+    }, [state.query, imageBaseUrl, language, setShowSearchMovieDialog]);
 
     return (
         <Dialog
@@ -132,18 +154,18 @@ const SearchMovieDialog = ({
                 <Box component="form">
                     <TextField
                         fullWidth
-                        value={query}
+                        value={state.query}
                         onChange={handleChange}
                     />
                 </Box>
-                {results?.length > 0 && (
+                {state.results?.length > 0 && (
                     <Box sx={{ p: "2rem 0 0" }}>
                         <Typography pb=".5rem" fontWeight="700">
-                            {`${results.length} résultat${
-                                results.length > 1 ? "s" : ""
+                            {`${state.results.length} résultat${
+                                state.results.length > 1 ? "s" : ""
                             } : `}
                         </Typography>
-                        {isLoading ? (
+                        {state.isLoading ? (
                             <Loader />
                         ) : (
                             <Box
@@ -152,7 +174,7 @@ const SearchMovieDialog = ({
                                     flexDirection: "column",
                                     gap: ".5rem",
                                 }}>
-                                {results}
+                                {state.results}
                             </Box>
                         )}
                     </Box>

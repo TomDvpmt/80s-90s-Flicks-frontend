@@ -39,16 +39,16 @@ const Movie = () => {
     const { id } = useParams();
     const movieId = parseInt(id);
 
-    const reducer = (state, action) => {
-        switch (action.type) {
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
             case "setLangData":
-                return { ...state, langData: action.payload };
+                return { ...state, langData: payload };
             case "setMovie":
-                return { ...state, movie: action.payload };
+                return { ...state, movie: payload };
             case "setIsLoading":
-                return { ...state, isLoading: action.payload };
+                return { ...state, isLoading: payload };
             case "setHasError":
-                return { ...state, hasError: action.payload };
+                return { ...state, hasError: payload };
             default:
                 throw new Error("Reducer: unknown action.");
         }

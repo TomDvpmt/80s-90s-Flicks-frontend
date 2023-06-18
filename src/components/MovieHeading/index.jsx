@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 
-import { selectPageLocation } from "../../app/selectors";
+// import { selectPageLocation } from "../../app/selectors";
+import { selectPageLocation } from "../../features/pageSlice";
 
 import { Typography } from "@mui/material";
 import theme from "../../assets/styles/theme";
@@ -13,7 +14,7 @@ const MovieHeading = ({ title, originalTitle }) => {
         originalTitle: PropTypes.string.isRequired,
     };
 
-    const page = useSelector(selectPageLocation());
+    const page = useSelector(selectPageLocation);
 
     const getTitleStyle = (page) => {
         switch (page) {

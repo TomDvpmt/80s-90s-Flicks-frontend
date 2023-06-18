@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import userReducer from "../features/user";
 import filtersReducer from "../features/filters";
-import themeReducer from "../features/theme";
-import tmdbConfigReducer from "../features/tmdbConfig";
-import pageReducer from "../features/page";
+
+import themeReducer from "../features/themeSlice";
+import tmdbReducer from "../features/tmdbSlice";
+import pageReducer from "../features/pageSlice";
 
 const store = configureStore({
     reducer: {
@@ -11,7 +13,7 @@ const store = configureStore({
         page: pageReducer,
         filters: filtersReducer,
         theme: themeReducer,
-        tmdbConfig: tmdbConfigReducer,
+        tmdb: tmdbReducer,
     },
     devTools: process.env.NODE_ENV === "development",
 });

@@ -28,20 +28,20 @@ const Dashboard = () => {
     const moviesToSee = useSelector(selectUserMoviesToSee());
     const favorites = useSelector(selectUserFavorites());
 
-    const reducer = (state, action) => {
-        switch (action.type) {
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
             case "setUniqueMovies":
-                return { ...state, uniqueMovies: action.payload };
+                return { ...state, uniqueMovies: payload };
             case "setMoviesSeenLinks":
-                return { ...state, moviesSeenLinks: action.payload };
+                return { ...state, moviesSeenLinks: payload };
             case "setMoviesToSeeLinks":
-                return { ...state, moviesToSeeLinks: action.payload };
+                return { ...state, moviesToSeeLinks: payload };
             case "setFavoritesLinks":
-                return { ...state, favoritesLinks: action.payload };
+                return { ...state, favoritesLinks: payload };
             case "setLoading":
-                return { ...state, loading: action.payload };
+                return { ...state, loading: payload };
             case "setHasError":
-                return { ...state, hasError: action.payload };
+                return { ...state, hasError: payload };
             default:
                 throw new Error("Reducer: unknown action.");
         }

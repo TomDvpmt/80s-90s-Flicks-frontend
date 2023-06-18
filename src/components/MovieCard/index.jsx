@@ -6,11 +6,11 @@ import MovieCastAndCrew from "../MovieCastAndCrew";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
+import { selectUserFavorites } from "../../app/selectors";
 import {
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
-    selectUserFavorites,
-} from "../../app/selectors";
+} from "../../features/tmdbSlice";
 
 import theme from "../../assets/styles/theme";
 import {
@@ -30,8 +30,8 @@ const MovieCard = ({ page, movie }) => {
         movie: PropTypes.object.isRequired,
     };
 
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
-    const posterSizes = useSelector(selectTmdbImagesPosterSizes());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
+    const posterSizes = useSelector(selectTmdbImagesPosterSizes);
     const favorites = useSelector(selectUserFavorites());
 
     const isFavorite = favorites.includes(movie.id);

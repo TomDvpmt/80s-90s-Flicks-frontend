@@ -32,18 +32,18 @@ const Home = () => {
     const filters = useSelector(selectFiltersAll());
     const dispatch = useDispatch();
 
-    const reducer = (state, action) => {
-        switch (action.type) {
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
             case "setNumberOfPages":
-                return { ...state, numberOfPages: action.payload };
+                return { ...state, numberOfPages: payload };
             case "setNumberOfResults":
-                return { ...state, numberOfResults: action.payload };
+                return { ...state, numberOfResults: payload };
             case "setMovies":
-                return { ...state, movies: action.payload };
+                return { ...state, movies: payload };
             case "setLoading":
-                return { ...state, loading: action.payload };
+                return { ...state, loading: payload };
             case "setHasError":
-                return { ...state, hasError: action.payload };
+                return { ...state, hasError: payload };
             default:
                 throw new Error("Reducer: unknown action.");
         }

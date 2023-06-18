@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Outlet, ScrollRestoration, useLoaderData } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-// import ScrollToHashElement from "../ScrollToHashElement";
 import Header from "../../layout/Header";
 import NavBar from "../NavBar";
 import PageHeading from "../../components/PageHeading";
@@ -12,16 +11,17 @@ import Loader from "../../components/Loader";
 import { userSetInfo } from "../../features/user";
 
 import { TMDB_API_KEY } from "../../utils/config";
-import { tmdbSetConfig } from "../../features/tmdbConfig";
+import { tmdbSetConfig } from "../../features/tmdbSlice";
 
-import { selectPageLocation, selectUserLanguage } from "../../app/selectors";
+import { selectUserLanguage } from "../../app/selectors";
+import { selectPageLocation } from "../../features/pageSlice";
 
 import { Box } from "@mui/material";
 
 import theme from "../../assets/styles/theme";
 
 const PageWrapper = () => {
-    const page = useSelector(selectPageLocation());
+    const page = useSelector(selectPageLocation);
     const language = useSelector(selectUserLanguage());
     const data = useLoaderData();
     const dispatch = useDispatch();

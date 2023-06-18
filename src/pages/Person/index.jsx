@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 import { selectUserLanguage } from "../../app/selectors";
-import { selectTmdbImagesSecureUrl } from "../../app/selectors";
+import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
 import { getPersonFullData } from "../../utils/person";
 import { isEmptyObject } from "../../utils/utils";
@@ -32,31 +32,31 @@ const ACTIONS = {
 
 const Person = () => {
     const language = useSelector(selectUserLanguage());
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
     const { personId } = useParams();
 
-    const reducer = (state, action) => {
-        switch (action.type) {
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
             case "setPerson":
-                return { ...state, person: action.payload };
+                return { ...state, person: payload };
             case "setPersonFormatedName":
-                return { ...state, personFormatedName: action.payload };
+                return { ...state, personFormatedName: payload };
             case "setPersonFormatedBirthday":
-                return { ...state, personFormatedBirthday: action.payload };
+                return { ...state, personFormatedBirthday: payload };
             case "setPersonFormatedDeathday":
-                return { ...state, personFormatedDeathday: action.payload };
+                return { ...state, personFormatedDeathday: payload };
             case "setPersonImgUrl":
-                return { ...state, personImgUrl: action.payload };
+                return { ...state, personImgUrl: payload };
             case "setPersonActingMovies":
-                return { ...state, personActingMovies: action.payload };
+                return { ...state, personActingMovies: payload };
             case "setPersonDirectingMovies":
-                return { ...state, personDirectingMovies: action.payload };
+                return { ...state, personDirectingMovies: payload };
             case "setPersonWritingMovies":
-                return { ...state, personWritingMovies: action.payload };
+                return { ...state, personWritingMovies: payload };
             case "setIsLoading":
-                return { ...state, isLoading: action.payload };
+                return { ...state, isLoading: payload };
             case "setHasError":
-                return { ...state, hasError: action.payload };
+                return { ...state, hasError: payload };
             default:
                 throw new Error("Reducer: unknown action.");
         }

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectTmdbImagesSecureUrl } from "../../app/selectors";
+import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
 import defaultBackdrop from "../../assets/img/defaultBackdrop.jpg";
 
@@ -14,7 +14,7 @@ const MovieBackdrop = ({ path, movieTitle }) => {
         movieTitle: PropTypes.string,
     };
 
-    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
+    const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
 
     return (
         <Box
