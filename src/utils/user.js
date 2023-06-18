@@ -52,7 +52,10 @@ export const getUserInfo = async (setIsError) => {
 
 export const logout = (navigate) => {
     fetch(`${BASE_API_URI}/API/users/logout`, { credentials: "include" })
-        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
         .then((data) => {
             console.log(data);
         })
