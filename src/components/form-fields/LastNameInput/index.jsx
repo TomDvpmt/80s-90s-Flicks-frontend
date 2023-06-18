@@ -1,10 +1,11 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const LastNameInput = ({ lastName, setLastName }) => {
+const LastNameInput = ({ lastName, setLastName, setErrorMessage }) => {
     LastNameInput.propTypes = {
         lastName: PropTypes.string.isRequired,
         setLastName: PropTypes.func.isRequired,
+        setErrorMessage: PropTypes.func.isRequired,
     };
 
     const handleChange = (e) => {
@@ -21,7 +22,7 @@ const LastNameInput = ({ lastName, setLastName }) => {
             label="Nom"
             value={lastName}
             onChange={handleChange}
-            // onFocus={handleFocus}
+            onFocus={() => setErrorMessage("")}
             // error={lastNameError !== ""}
         />
     );

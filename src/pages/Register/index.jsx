@@ -44,6 +44,7 @@ const Register = () => {
         setIsLoading(true);
 
         if (password !== passwordConfirm) {
+            setIsLoading(false);
             setErrorMessage("Les mots de passe ne correspondent pas.");
             return;
         }
@@ -61,6 +62,7 @@ const Register = () => {
                     firstName,
                     lastName,
                 }),
+                credentials: "include",
             });
             if (response.status === 404) {
                 throw new Error(
@@ -68,9 +70,6 @@ const Register = () => {
                 );
             }
             const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
             dispatch(userAuth(data.token));
             navigate("/");
         } catch (error) {

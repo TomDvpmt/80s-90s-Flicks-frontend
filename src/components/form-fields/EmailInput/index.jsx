@@ -2,10 +2,11 @@ import { TextField } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const EmailInput = ({ email, setEmail }) => {
+const EmailInput = ({ email, setEmail, setErrorMessage }) => {
     EmailInput.propTypes = {
         email: PropTypes.string.isRequired,
         setEmail: PropTypes.func.isRequired,
+        setErrorMessage: PropTypes.func.isRequired,
     };
 
     const handleChange = (e) => {
@@ -24,7 +25,7 @@ const EmailInput = ({ email, setEmail }) => {
             label="Adresse e-mail"
             value={email}
             onChange={handleChange}
-            // onFocus={handleFocus}
+            onFocus={() => setErrorMessage("")}
             // error={emailError !== ""}
         />
     );
