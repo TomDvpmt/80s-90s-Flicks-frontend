@@ -117,7 +117,7 @@ function Router() {
     const router = createBrowserRouter([
         {
             element: <PageWrapper />,
-            loader: async () => getUserInfo(setIsError),
+            loader: async () => await getUserInfo(setIsError),
             errorElement: <ErrorBoundary page="all" />,
             children: !isError && routes,
         },

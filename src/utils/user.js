@@ -51,19 +51,17 @@ export const getUserInfo = async (setIsError) => {
  */
 
 export const logout = (navigate) => {
-    fetch(`${BASE_API_URI}/API/users/logout`, { credentials: "include" })
-        .then((response) => {
-            console.log(response);
-            return response.json();
-        })
+    fetch(`${BASE_API_URI}/API/users/logout`, {
+        credentials: "include",
+    })
+        .then((response) => response.json())
         .then((data) => {
             console.log(data);
+            store.dispatch(userSignOut());
+            store.dispatch(filtersClearAll());
+            navigate("/login");
         })
         .catch((error) => console.log(error));
-
-    store.dispatch(userSignOut());
-    store.dispatch(filtersClearAll());
-    navigate("/login");
 };
 
 /**
