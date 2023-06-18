@@ -42,7 +42,6 @@ import { Settings } from "@mui/icons-material";
 import theme from "../../assets/styles/theme";
 
 const Profile = () => {
-    const token = sessionStorage.getItem("token");
     const dispatch = useDispatch();
 
     const avatarUrl = useSelector(selectUserAvatarUrl());
@@ -99,7 +98,6 @@ const Profile = () => {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
-                Authorization: `BEARER ${token}`,
             },
             body: JSON.stringify({
                 username: newUsername,
@@ -107,6 +105,7 @@ const Profile = () => {
                 firstName: newFirstName,
                 lastName: newLastName,
             }),
+            credentials: "include",
         });
         const data = await response.json();
         if (data.statusCode >= 400) {

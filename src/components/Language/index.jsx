@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 
 const Language = () => {
-    const token = sessionStorage.getItem("token");
     const userId = useSelector(selectUserId());
     const languageOption = useSelector(selectUserLanguage());
     const dispatch = useDispatch();
@@ -27,9 +26,9 @@ const Language = () => {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
-                Authorization: `BEARER ${token}`,
             },
             body: JSON.stringify({ language: e.target.value }),
+            credentials: "include",
         }).catch((error) => console.log(error));
     };
 

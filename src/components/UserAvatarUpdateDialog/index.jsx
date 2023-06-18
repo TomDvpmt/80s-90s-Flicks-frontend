@@ -33,7 +33,6 @@ const UserAvatarUpdateDialog = ({
         setShowUserAvatarUpdateDialog: PropTypes.func.isRequired,
     };
 
-    const token = sessionStorage.getItem("token");
     const userId = useSelector(selectUserId());
     const avatarUrl = useSelector(selectUserAvatarUrl());
     const dispatch = useDispatch();
@@ -76,9 +75,7 @@ const UserAvatarUpdateDialog = ({
         } else {
             setIsLoading(true);
             fetch(`${BASE_API_URI}/API/config/imgbb-api-key`, {
-                headers: {
-                    Authorization: `BEARER ${token}`,
-                },
+                credentials: "include",
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -101,12 +98,12 @@ const UserAvatarUpdateDialog = ({
                         await fetch(`${BASE_API_URI}/API/users/${userId}`, {
                             method: "PUT",
                             headers: {
-                                Authorization: `BEARER ${token}`,
                                 "Content-type": "application/json",
                             },
                             body: JSON.stringify({
                                 avatarUrl,
                             }),
+                            credentials: "include",
                         });
 
                         dispatch(userUpdateAvatar({ avatarUrl }));
@@ -123,12 +120,12 @@ const UserAvatarUpdateDialog = ({
         await fetch(`${BASE_API_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {
-                Authorization: `BEARER ${token}`,
                 "Content-type": "application/json",
             },
             body: JSON.stringify({
                 avatarUrl: "",
             }),
+            credentials: "include",
         });
         setShowUserAvatarUpdateDialog(false);
     };

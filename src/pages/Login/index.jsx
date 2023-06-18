@@ -33,7 +33,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(e);
-
+        setErrorMessage("");
         setIsLoading(true);
 
         let loginData = {
@@ -55,29 +55,26 @@ const Login = () => {
                     "Content-type": "application/json",
                 },
                 body: JSON.stringify(loginData),
+                credentials: "include",
             });
-            if (response.status === 404) {
+            if (!response.ok) {
                 throw new Error(
                     "Connexion impossible. Veuillez réessayer ultérieurement."
                 );
             }
             const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
+            setIsLoading(false);
 
             sessionStorage.setItem("token", data.token);
             dispatch(userAuth());
             navigate("/");
         } catch (error) {
-            console.error(error);
+            setIsLoading(false);
             setErrorMessage(
-                error.message
-                // "Connexion impossible. Veuillez réessayer ultérieurement."
+                "Connexion impossible. Veuillez réessayer ultérieurement."
             );
+            console.error(error);
         }
-
-        setIsLoading(false);
     };
 
     return isLoading ? (

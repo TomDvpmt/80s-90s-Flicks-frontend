@@ -27,16 +27,13 @@ const DeleteAccountDialog = ({
         setErrorMessage: PropTypes.func.isRequired,
     };
 
-    const token = sessionStorage.getItem("token");
     const navigate = useNavigate();
     const userId = useSelector(selectUserId());
 
     const handleYes = async () => {
         const response = await fetch(`${BASE_API_URI}/API/users/${userId}`, {
             method: "DELETE",
-            headers: {
-                authorization: `BEARER ${token}`,
-            },
+            credentials: "include",
         });
         const data = await response.json();
         if (data.statusCode >= 400) {

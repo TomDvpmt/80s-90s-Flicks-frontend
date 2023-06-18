@@ -16,11 +16,9 @@ export const getUserInfo = async (setIsError) => {
     if (token) {
         const response = await fetch(`${BASE_API_URI}/API/users/profile`, {
             method: "GET",
-            headers: {
-                Authorization: `BEARER ${token}`,
-            },
+            credentials: "include",
         });
-        if (response.status >= 400) {
+        if (!response.ok) {
             setIsError(true);
             return {};
         }
@@ -37,14 +35,17 @@ export const getUserInfo = async (setIsError) => {
  */
 
 export const logout = (navigate) => {
+    try {
+        fetch(`${BASE_API_URI}/API/users/logout`, { credentials: "include" })
+            .then((response) => response.json())
+            .then((data) => console.log(data));
+    } catch (error) {
+        console.log(error);
+    }
     sessionStorage.removeItem("token");
     store.dispatch(userSignOut());
     store.dispatch(filtersClearAll());
     navigate("/login");
-};
-
-export const userMovieMethods = {
-    //
 };
 
 /**
@@ -55,14 +56,12 @@ export const userMovieMethods = {
  */
 
 export const updateUserMoviesInDB = (userId, bodyObject) => {
-    const token = sessionStorage.getItem("token");
-
     fetch(`${BASE_API_URI}/API/users/${userId}`, {
         method: "PUT",
         headers: {
             "Content-type": "application/json",
-            Authorization: `BEARER ${token}`,
         },
         body: JSON.stringify(bodyObject),
+        credentials: "include",
     });
 };
