@@ -100,6 +100,7 @@ const SearchMovieDialog = ({
                                     setShowSearchMovieDialog={
                                         setShowSearchMovieDialog
                                     }
+                                    location="searchMovieDialog"
                                 />
                             );
                         })

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -25,6 +25,13 @@ import { isEmptyObject } from "../../utils/utils";
 import { Box, ButtonGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
+const ACTIONS = {
+    setLangData: "setLangData",
+    setMovie: "setMovie",
+    setIsLoading: "setIsLoading",
+    setHasError: "setHasError",
+};
+
 const Movie = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn());
     const language = useSelector(selectUserLanguage());
@@ -32,37 +39,65 @@ const Movie = () => {
     const { id } = useParams();
     const movieId = parseInt(id);
 
-    const [langData, setLangData] = useState({});
-    const [movie, setMovie] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "setLangData":
+                return { ...state, langData: action.payload };
+            case "setMovie":
+                return { ...state, movie: action.payload };
+            case "setIsLoading":
+                return { ...state, isLoading: action.payload };
+            case "setHasError":
+                return { ...state, hasError: action.payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+
+    const [state, dispatch] = useReducer(reducer, {
+        langData: {},
+        movie: {},
+        isLoading: true,
+        hasError: false,
+    });
 
     useEffect(() => {
-        setLangData(theme.languages[language].pages.movie);
+        dispatch({
+            type: ACTIONS.setLangData,
+            payload: theme.languages[language].pages.movie,
+        });
     }, [language]);
 
     useEffect(() => {
-        setIsLoading(true);
+        dispatch({ type: ACTIONS.setIsLoading, payload: true });
         getMovieData(movieId, language)
             .then((movieData) =>
-                setMovie({ ...movieData, releaseDate: movieData.release_date })
+                dispatch({
+                    type: ACTIONS.setMovie,
+                    payload: {
+                        ...movieData,
+                        releaseDate: movieData.release_date,
+                    },
+                })
             )
             .catch((error) => {
                 console.error(error);
-                setHasError(true);
+                dispatch({ type: ACTIONS.setHasError, payload: true });
             })
-            .finally(() => setIsLoading(false));
+            .finally(() =>
+                dispatch({ type: ACTIONS.setIsLoading, payload: false })
+            );
     }, [movieId, language]);
 
-    return isLoading ? (
+    return state.isLoading ? (
         <Box>
             <Loader />
         </Box>
-    ) : hasError ? (
+    ) : state.hasError ? (
         <ErrorBoundary page="movie" />
     ) : (
         <>
-            {!isEmptyObject(movie) && movie.success !== false ? (
+            {!isEmptyObject(state.movie) && state.movie.success !== false ? (
                 <Box
                     component="section"
                     sx={{
@@ -77,8 +112,8 @@ const Movie = () => {
                         },
                     }}>
                     <MovieBackdrop
-                        path={movie.backdrop_path}
-                        movieTitle={movie.title}
+                        path={state.movie.backdrop_path}
+                        movieTitle={state.movie.title}
                     />
                     <Box
                         sx={{
@@ -94,13 +129,13 @@ const Movie = () => {
                             alignItems: "center",
                         }}>
                         <MoviePoster
-                            path={movie.poster_path}
-                            movieTitle={movie.title}
+                            path={state.movie.poster_path}
+                            movieTitle={state.movie.title}
                         />
                         {isSignedIn && (
                             <MovieCheckboxes
                                 movieId={movieId}
-                                langData={langData}
+                                langData={state.langData}
                             />
                         )}
                         <Box
@@ -113,32 +148,34 @@ const Movie = () => {
                                 justifyContent: "space-between",
                             }}>
                             <MovieHeading
-                                title={movie.title}
-                                originalTitle={movie.original_title}
+                                title={state.movie.title}
+                                originalTitle={state.movie.original_title}
                             />
-                            <MovieTagline tagline={movie.tagline} />
+                            <MovieTagline tagline={state.movie.tagline} />
                             <MovieCastAndCrew
                                 movieId={movieId}
-                                releaseDate={movie.releaseDate}
+                                releaseDate={state.movie.releaseDate}
                             />
                             <Box sx={{ p: "2rem" }}>
                                 <MovieGenres
                                     // exclude Documentary (99) and Television film (10770)
-                                    genres={movie.genres?.filter(
+                                    genres={state.movie.genres?.filter(
                                         (genre) =>
                                             genre.id !== 99 &&
                                             genre.id !== 10770
                                     )}
                                 />
-                                <MovieOverview overview={movie.overview} />
+                                <MovieOverview
+                                    overview={state.movie.overview}
+                                />
                             </Box>
                             <MovieBudget
-                                movieLangData={langData}
-                                budget={movie.budget}
+                                movieLangData={state.langData}
+                                budget={state.movie.budget}
                             />
                             <MovieRevenue
-                                movieLangData={langData}
-                                revenue={movie.revenue}
+                                movieLangData={state.langData}
+                                revenue={state.movie.revenue}
                             />
                         </Box>
                         <Box
@@ -149,10 +186,10 @@ const Movie = () => {
                             }}>
                             <ButtonGroup variant="outlined">
                                 <MovieIMDBLink
-                                    imdbId={movie.imdb_id}
-                                    imdbLang={langData.imdbLink}
+                                    imdbId={state.movie.imdb_id}
+                                    imdbLang={state.langData.imdbLink}
                                 />
-                                <MovieWikiLink movieTitle={movie.title} />
+                                <MovieWikiLink movieTitle={state.movie.title} />
                             </ButtonGroup>
                         </Box>
                     </Box>

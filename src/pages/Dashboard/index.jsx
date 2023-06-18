@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
@@ -13,23 +13,53 @@ import {
 
 import { getMovieData } from "../../utils/movie";
 
+const ACTIONS = {
+    setUniqueMovies: "setUniqueMovies",
+    setMoviesSeenLinks: "setMoviesSeenLinks",
+    setMoviesToSeeLinks: "setMoviesToSeeLinks",
+    setFavoritesLinks: "setFavoritesLinks",
+    setLoading: "setLoading",
+    setHasError: "setHasError",
+};
+
 const Dashboard = () => {
     const language = useSelector(selectUserLanguage());
     const moviesSeen = useSelector(selectUserMoviesSeen());
     const moviesToSee = useSelector(selectUserMoviesToSee());
     const favorites = useSelector(selectUserFavorites());
 
-    const [uniqueMovies, setUniqueMovies] = useState([]);
-    const [moviesSeenLinks, setMoviesSeenLinks] = useState([]);
-    const [moviesToSeeLinks, setMoviesToSeeLinks] = useState([]);
-    const [favoritesLinks, setFavoritesLinks] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "setUniqueMovies":
+                return { ...state, uniqueMovies: action.payload };
+            case "setMoviesSeenLinks":
+                return { ...state, moviesSeenLinks: action.payload };
+            case "setMoviesToSeeLinks":
+                return { ...state, moviesToSeeLinks: action.payload };
+            case "setFavoritesLinks":
+                return { ...state, favoritesLinks: action.payload };
+            case "setLoading":
+                return { ...state, loading: action.payload };
+            case "setHasError":
+                return { ...state, hasError: action.payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+    const [state, dispatch] = useReducer(reducer, {
+        uniqueMovies: [],
+        moviesSeenLinks: [],
+        moviesToSeeLinks: [],
+        favoritesLinks: [],
+        loading: false,
+        hasError: false,
+    });
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
-        setHasError(false);
-        setLoading(true);
+        dispatch({ type: ACTIONS.setHasError, payload: false });
+        dispatch({ type: ACTIONS.setLoading, payload: true });
+
         const allMoviesIds = moviesSeen?.concat(moviesToSee).concat(favorites);
         Promise.all(
             allMoviesIds.map(async (id) => {
@@ -45,22 +75,25 @@ const Dashboard = () => {
                     })
                     .catch((error) => {
                         console.log(error);
-                        setHasError(true);
+                        dispatch({ type: ACTIONS.setHasError, payload: true });
                     });
             })
         )
             .then((data) =>
                 // getting rid of duplicates
-                setUniqueMovies(
-                    data.filter(
+                dispatch({
+                    type: ACTIONS.setUniqueMovies,
+                    payload: data.filter(
                         (movie, index, array) =>
                             array.findIndex((mov) => mov.id === movie.id) ===
                             index
-                    )
-                )
+                    ),
+                })
             )
             .catch((error) => console.log(error))
-            .finally(() => setLoading(false));
+            .finally(() =>
+                dispatch({ type: ACTIONS.setLoading, payload: false })
+            );
     }, [moviesSeen, moviesToSee, favorites, language]);
 
     // Display movie cards for each section of the dashboard
@@ -78,18 +111,27 @@ const Dashboard = () => {
                     );
                 });
 
-        setMoviesSeenLinks(getLinks(uniqueMovies, moviesSeen));
-        setMoviesToSeeLinks(getLinks(uniqueMovies, moviesToSee));
-        setFavoritesLinks(getLinks(uniqueMovies, favorites));
-    }, [uniqueMovies, moviesSeen, moviesToSee, favorites]);
+        dispatch({
+            type: ACTIONS.setMoviesSeenLinks,
+            payload: getLinks(state.uniqueMovies, moviesSeen),
+        });
+        dispatch({
+            type: ACTIONS.setMoviesToSeeLinks,
+            payload: getLinks(state.uniqueMovies, moviesToSee),
+        });
+        dispatch({
+            type: ACTIONS.setFavoritesLinks,
+            payload: getLinks(state.uniqueMovies, favorites),
+        });
+    }, [state.uniqueMovies, moviesSeen, moviesToSee, favorites]);
 
     return (
         <DashboardTabs
-            moviesSeenLinks={moviesSeenLinks}
-            moviesToSeeLinks={moviesToSeeLinks}
-            favoritesLinks={favoritesLinks}
-            loading={loading}
-            hasError={hasError}
+            moviesSeenLinks={state.moviesSeenLinks}
+            moviesToSeeLinks={state.moviesToSeeLinks}
+            favoritesLinks={state.favoritesLinks}
+            loading={state.loading}
+            hasError={state.hasError}
         />
     );
 };

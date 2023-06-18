@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import PageHeading from "../../components/PageHeading";
 import PersonFilmographyList from "../../components/PersonFilmographyList";
-// import PersonFilmographyCard from "../../components/PersonFilmographyCard";
 import ListMovieCard from "../../components/ListMovieCard";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
@@ -18,91 +17,158 @@ import { isEmptyObject } from "../../utils/utils";
 import { Box, Link, Typography, Button, ButtonGroup } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
+const ACTIONS = {
+    setPerson: "setPerson",
+    setPersonFormatedName: "setPersonFormatedName",
+    setPersonFormatedBirthday: "setPersonFormatedBirthday",
+    setPersonFormatedDeathday: "setPersonFormatedDeathday",
+    setPersonImgUrl: "setPersonImgUrl",
+    setPersonActingMovies: "setPersonActingMovies",
+    setPersonDirectingMovies: "setPersonDirectingMovies",
+    setPersonWritingMovies: "setPersonWritingMovies",
+    setIsLoading: "setIsLoading",
+    setHasError: "setHasError",
+};
+
 const Person = () => {
     const language = useSelector(selectUserLanguage());
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl());
     const { personId } = useParams();
 
-    const [person, setPerson] = useState({});
-    const [personFormatedName, setPersonFormatedName] = useState("");
-    const [personFormatedBirthday, setPersonFormatedBirthday] = useState("");
-    const [personFormatedDeathday, setPersonFormatedDeathday] = useState("");
-    const [personImgUrl, setPersonImgUrl] = useState("");
-    const [personActingMovies, setPersonActingMovies] = useState([]);
-    const [personDirectingMovies, setPersonDirectingMovies] = useState([]);
-    const [personWritingMovies, setPersonWritingMovies] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "setPerson":
+                return { ...state, person: action.payload };
+            case "setPersonFormatedName":
+                return { ...state, personFormatedName: action.payload };
+            case "setPersonFormatedBirthday":
+                return { ...state, personFormatedBirthday: action.payload };
+            case "setPersonFormatedDeathday":
+                return { ...state, personFormatedDeathday: action.payload };
+            case "setPersonImgUrl":
+                return { ...state, personImgUrl: action.payload };
+            case "setPersonActingMovies":
+                return { ...state, personActingMovies: action.payload };
+            case "setPersonDirectingMovies":
+                return { ...state, personDirectingMovies: action.payload };
+            case "setPersonWritingMovies":
+                return { ...state, personWritingMovies: action.payload };
+            case "setIsLoading":
+                return { ...state, isLoading: action.payload };
+            case "setHasError":
+                return { ...state, hasError: action.payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+
+    const [state, dispatch] = useReducer(reducer, {
+        person: {},
+        personFormatedName: "",
+        personFormatedBirthday: "",
+        personFormatedDeathday: "",
+        personImgUrl: "",
+        personActingMovies: [],
+        personDirectingMovies: [],
+        personWritingMovies: [],
+        isLoading: true,
+        hasError: false,
+    });
 
     useEffect(() => {
-        person.name !== undefined &&
-            setPersonFormatedName(person.name.replace(" ", "_"));
+        state.person?.name &&
+            dispatch({
+                type: ACTIONS.setPersonFormatedName,
+                payload: state.person.name.replace(" ", "_"),
+            });
 
         const dateOptions = { year: "numeric", month: "long", day: "numeric" };
 
-        const birthday = new Date(person.birthday);
-        setPersonFormatedBirthday(
-            birthday.toLocaleDateString(language, dateOptions)
-        );
+        const birthday = new Date(state.person.birthday);
+        dispatch({
+            type: ACTIONS.setPersonFormatedBirthday,
+            payload: birthday.toLocaleDateString(language, dateOptions),
+        });
 
-        const deathday = new Date(person.deathday);
-        setPersonFormatedDeathday(
-            deathday.toLocaleDateString(language, dateOptions)
-        );
-    }, [person.name, person.birthday, person.deathday, language]);
+        const deathday = new Date(state.person.deathday);
+        dispatch({
+            type: ACTIONS.setPersonFormatedDeathday,
+            payload: deathday.toLocaleDateString(language, dateOptions),
+        });
+    }, [state.person, language]);
 
     useEffect(() => {
-        setIsLoading(true);
+        dispatch({ type: ACTIONS.setIsLoading, payload: true });
 
         getPersonFullData(personId, language, imageBaseUrl)
             .then((personData) => {
                 if (!isEmptyObject(personData)) {
-                    setPerson(personData.mainData);
-                    setPersonImgUrl(personData.imgUrl);
-                    setPersonActingMovies(
-                        personData.filmography.actingMovies.map((movie) => (
-                            <ListMovieCard
-                                key={movie.id}
-                                movie={movie}
-                                imgSrc={movie.imgSrc}
-                            />
-                        ))
-                    );
-                    setPersonDirectingMovies(
-                        personData.filmography.directingMovies.map((movie) => (
-                            <ListMovieCard
-                                key={movie.id}
-                                movie={movie}
-                                imgSrc={movie.imgSrc}
-                            />
-                        ))
-                    );
-                    setPersonWritingMovies(
-                        personData.filmography.writingMovies.map((movie) => (
-                            <ListMovieCard
-                                key={movie.id}
-                                movie={movie}
-                                imgSrc={movie.imgSrc}
-                            />
-                        ))
-                    );
+                    dispatch({
+                        type: ACTIONS.setPerson,
+                        payload: personData.mainData,
+                    });
+                    dispatch({
+                        type: ACTIONS.setPersonImgUrl,
+                        payload: personData.imgUrl,
+                    });
+                    dispatch({
+                        type: ACTIONS.setPersonActingMovies,
+                        payload: personData.filmography.actingMovies.map(
+                            (movie) => (
+                                <ListMovieCard
+                                    key={movie.id}
+                                    movie={movie}
+                                    imgSrc={movie.imgSrc}
+                                    location="person"
+                                />
+                            )
+                        ),
+                    });
+                    dispatch({
+                        type: ACTIONS.setPersonDirectingMovies,
+                        payload: personData.filmography.directingMovies.map(
+                            (movie) => (
+                                <ListMovieCard
+                                    key={movie.id}
+                                    movie={movie}
+                                    imgSrc={movie.imgSrc}
+                                    location="person"
+                                />
+                            )
+                        ),
+                    });
+                    dispatch({
+                        type: ACTIONS.setPersonWritingMovies,
+                        payload: personData.filmography.writingMovies.map(
+                            (movie) => (
+                                <ListMovieCard
+                                    key={movie.id}
+                                    movie={movie}
+                                    imgSrc={movie.imgSrc}
+                                    location="person"
+                                />
+                            )
+                        ),
+                    });
                 }
             })
             .catch((error) => {
                 console.error(error);
-                setHasError(true);
+                dispatch({ type: ACTIONS.setHasError, payload: true });
             })
-            .finally(() => setIsLoading(false));
+            .finally(() => {
+                dispatch({ type: ACTIONS.setIsLoading, payload: false });
+            });
     }, [personId, language, imageBaseUrl]);
 
-    return isLoading ? (
+    return state.isLoading ? (
         <Loader />
-    ) : hasError ? (
+    ) : state.hasError ? (
         <ErrorBoundary page="person" />
     ) : (
-        !isEmptyObject(person) && (
+        state.person && (
             <>
-                <PageHeading text={person.name} />
+                <PageHeading text={state.person.name} />
 
                 <Box
                     sx={{
@@ -115,8 +181,8 @@ const Person = () => {
                             maxWidth: "300px",
                         },
                     }}>
-                    {personImgUrl && (
-                        <img src={personImgUrl} alt={person.name} />
+                    {state.personImgUrl && (
+                        <img src={state.personImgUrl} alt={state.person.name} />
                     )}
                     <Box
                         sx={{
@@ -129,26 +195,26 @@ const Person = () => {
                                 Naissance :{" "}
                             </Typography>
                             <Typography component="span">
-                                {personFormatedBirthday}
+                                {state.personFormatedBirthday}
                             </Typography>
                         </Typography>
-                        {person.deathday && (
+                        {state.person.deathday && (
                             <Typography>
                                 <Typography component="span" fontWeight="700">
                                     Mort :{" "}
                                 </Typography>
                                 <Typography component="span">
-                                    {personFormatedDeathday}
+                                    {state.personFormatedDeathday}
                                 </Typography>
                             </Typography>
                         )}
-                        {person.biography && (
+                        {state.person.biography && (
                             <Typography
                                 align="justify"
                                 sx={{
                                     maxWidth: { md: theme.maxWidth.biography },
                                 }}>
-                                {person.biography}
+                                {state.person.biography}
                             </Typography>
                         )}
                         <Box
@@ -164,7 +230,7 @@ const Person = () => {
                                     <Link
                                         component={RouterLink}
                                         underline="none"
-                                        to={`https://${language}.wikipedia.org/wiki/${personFormatedName}`}
+                                        to={`https://${language}.wikipedia.org/wiki/${state.personFormatedName}`}
                                         target="_blank"
                                         color={theme.palette.text.lightBg}
                                         fontWeight="400">
@@ -175,7 +241,7 @@ const Person = () => {
                                     <Link
                                         component={RouterLink}
                                         underline="none"
-                                        to={`https://www.imdb.com/name/${person.imdb_id}/`}
+                                        to={`https://www.imdb.com/name/${state.person.imdb_id}/`}
                                         target="_blank"
                                         color={theme.palette.text.lightBg}
                                         fontWeight="400">
@@ -205,18 +271,18 @@ const Person = () => {
                             gap: "3rem",
                         }}>
                         <PersonFilmographyList
-                            personGender={person.gender}
-                            movies={personDirectingMovies}
+                            personGender={state.person.gender}
+                            movies={state.personDirectingMovies}
                             type="directing"
                         />
                         <PersonFilmographyList
-                            personGender={person.gender}
-                            movies={personWritingMovies}
+                            personGender={state.person.gender}
+                            movies={state.personWritingMovies}
                             type="writing"
                         />
                         <PersonFilmographyList
-                            personGender={person.gender}
-                            movies={personActingMovies}
+                            personGender={state.person.gender}
+                            movies={state.personActingMovies}
                             type="acting"
                         />
                     </Box>

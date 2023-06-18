@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
@@ -20,24 +20,52 @@ import theme from "../../assets/styles/theme";
 
 import { Box, Paper, Typography, Button } from "@mui/material";
 
+const ACTIONS = {
+    setNumberOfPages: "setNumberOfPages",
+    setNumberOfResults: "setNumberOfResults",
+    setMovies: "setMovies",
+    setLoading: "setLoading",
+    setHasError: "setHasError",
+};
+
 const Home = () => {
     const filters = useSelector(selectFiltersAll());
     const dispatch = useDispatch();
 
-    const [numberOfPages, setNumberOfPages] = useState(1);
-    const [numberOfResults, setNumberOfResults] = useState(0);
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "setNumberOfPages":
+                return { ...state, numberOfPages: action.payload };
+            case "setNumberOfResults":
+                return { ...state, numberOfResults: action.payload };
+            case "setMovies":
+                return { ...state, movies: action.payload };
+            case "setLoading":
+                return { ...state, loading: action.payload };
+            case "setHasError":
+                return { ...state, hasError: action.payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+
+    const [state, reducerDispatch] = useReducer(reducer, {
+        numberOfPages: 1,
+        numberOfResults: 0,
+        movies: [],
+        loading: true,
+        hasError: false,
+    });
+
     const [currentPage, setCurrentPage] = useState(1);
-    const [movies, setMovies] = useState([]);
     const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
 
     const handleFiltersClearAll = () => {
         dispatch(filtersClearAll());
     };
 
     useEffect(() => {
-        setLoading(true);
+        reducerDispatch({ type: ACTIONS.setLoading, payload: true });
 
         const queryFilters = filters
             .filter((filter) => filter.value !== "")
@@ -49,10 +77,15 @@ const Home = () => {
         )
             .then((response) => response.json())
             .then((data) => {
-                setNumberOfPages(
-                    data.total_pages > 500 ? 500 : data.total_pages
-                );
-                setNumberOfResults(data.total_results);
+                reducerDispatch({
+                    type: ACTIONS.setNumberOfPages,
+                    payload: data.total_pages > 500 ? 500 : data.total_pages,
+                });
+                reducerDispatch({
+                    type: ACTIONS.setNumberOfResults,
+                    payload: data.total_results,
+                });
+
                 const results = data.results.map((movie) => {
                     const movieData = {
                         id: movie.id,
@@ -77,13 +110,15 @@ const Home = () => {
                         />
                     );
                 });
-                setMovies(results);
+                reducerDispatch({ type: ACTIONS.setMovies, payload: results });
             })
             .catch((error) => {
-                setHasError(true);
+                reducerDispatch({ type: ACTIONS.setHasError, payload: true });
                 console.error(error);
             })
-            .finally(() => setLoading(false));
+            .finally(() => {
+                reducerDispatch({ type: ACTIONS.setLoading, payload: false });
+            });
     }, [filters]);
 
     return (
@@ -148,35 +183,35 @@ const Home = () => {
                         padding: "1rem",
                     }}>
                     <Typography>
-                        Nombre de résultats: {numberOfResults}{" "}
-                        {numberOfResults > 10000 && (
+                        Nombre de résultats: {state.numberOfResults}{" "}
+                        {state.numberOfResults > 10000 && (
                             <span>(10 000 max. disponibles)</span>
                         )}
                     </Typography>
                 </Paper>
                 {/* <Language /> */}
-                {movies?.length > 0 && (
+                {state.movies?.length > 0 && (
                     <Pagination
-                        numberOfPages={numberOfPages}
+                        numberOfPages={state.numberOfPages}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                     />
                 )}
             </Box>
             <Box component="section">
-                {loading ? (
+                {state.loading ? (
                     <Loader />
-                ) : hasError ? (
+                ) : state.hasError ? (
                     <ErrorBoundary page="home" />
                 ) : (
                     <>
-                        <MovieCardsGrid movies={movies} />
+                        <MovieCardsGrid movies={state.movies} />
                     </>
                 )}
             </Box>
-            {movies?.length > 0 && (
+            {state.movies?.length > 0 && (
                 <Pagination
-                    numberOfPages={numberOfPages}
+                    numberOfPages={state.numberOfPages}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                 />
