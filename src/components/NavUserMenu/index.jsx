@@ -58,10 +58,14 @@ const NavUserMenu = () => {
         setAnchorEl(null);
     }, []);
 
-    const handleLogout = useCallback(() => {
-        setAnchorEl(null);
-        logout(navigate);
-    }, [navigate]);
+    const handleLogout = useCallback(
+        (e) => {
+            e.preventDefault();
+            logout(navigate);
+            setAnchorEl(null);
+        },
+        [navigate]
+    );
 
     useEffect(() => {
         const menuItemsData = getMenuItemsData();

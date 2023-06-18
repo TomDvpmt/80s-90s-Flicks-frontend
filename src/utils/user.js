@@ -1,5 +1,5 @@
 import store from "../app/store";
-import { userSignOut } from "../features/user";
+import { userAuth, userSignOut } from "../features/user";
 import { filtersClearAll } from "../features/filters";
 
 import { BASE_API_URI } from "./config";
@@ -11,20 +11,31 @@ import { BASE_API_URI } from "./config";
  */
 
 export const getUserInfo = async (setIsError) => {
-    const token = sessionStorage.getItem("token");
+    const tokenResponse = await fetch(`${BASE_API_URI}/API/users/token`, {
+        credentials: "include",
+    });
+    if (!tokenResponse.ok) {
+        return {};
+    }
+    const token = await tokenResponse.json();
 
     if (token) {
-        const response = await fetch(`${BASE_API_URI}/API/users/profile`, {
-            method: "GET",
-            credentials: "include",
-        });
-        if (!response.ok) {
+        store.dispatch(userAuth(token));
+
+        const profileResponse = await fetch(
+            `${BASE_API_URI}/API/users/profile`,
+            {
+                credentials: "include",
+            }
+        );
+        if (!profileResponse.ok) {
             setIsError(true);
             return {};
         }
-        const data = await response.json();
+        const data = await profileResponse.json();
         return data;
     }
+
     return {};
 };
 
@@ -35,14 +46,13 @@ export const getUserInfo = async (setIsError) => {
  */
 
 export const logout = (navigate) => {
-    try {
-        fetch(`${BASE_API_URI}/API/users/logout`, { credentials: "include" })
-            .then((response) => response.json())
-            .then((data) => console.log(data));
-    } catch (error) {
-        console.log(error);
-    }
-    sessionStorage.removeItem("token");
+    fetch(`${BASE_API_URI}/API/users/logout`, { credentials: "include" })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => console.log(error));
+
     store.dispatch(userSignOut());
     store.dispatch(filtersClearAll());
     navigate("/login");

@@ -64,9 +64,7 @@ const Login = () => {
             }
             const data = await response.json();
             setIsLoading(false);
-
-            sessionStorage.setItem("token", data.token);
-            dispatch(userAuth());
+            dispatch(userAuth(data.token));
             navigate("/");
         } catch (error) {
             setIsLoading(false);

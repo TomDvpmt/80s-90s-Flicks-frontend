@@ -4,6 +4,10 @@ export const selectUserIsSignedIn = () => {
     return (state) => state.user.isSignedIn;
 };
 
+export const selectUserToken = () => {
+    return (state) => state.user.token;
+};
+
 export const selectUserId = () => {
     return (state) => state.user.id;
 };

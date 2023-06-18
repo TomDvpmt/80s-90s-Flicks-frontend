@@ -71,9 +71,7 @@ const Register = () => {
             if (!response.ok) {
                 throw new Error(data.message);
             }
-
-            dispatch(userAuth());
-            sessionStorage.setItem("token", data.token);
+            dispatch(userAuth(data.token));
             navigate("/");
         } catch (error) {
             console.error(error);

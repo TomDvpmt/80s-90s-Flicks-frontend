@@ -21,7 +21,6 @@ import { Box } from "@mui/material";
 import theme from "../../assets/styles/theme";
 
 const PageWrapper = () => {
-    const token = sessionStorage.getItem("token");
     const page = useSelector(selectPageLocation());
     const language = useSelector(selectUserLanguage());
     const data = useLoaderData();
@@ -32,23 +31,8 @@ const PageWrapper = () => {
 
     // Set user's info in global state
     useEffect(() => {
-        token
-            ? dispatch(userSetInfo(data))
-            : dispatch(
-                  userSetInfo({
-                      id: "",
-                      username: "",
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      moviesSeen: [""],
-                      moviesToSee: [""],
-                      favorites: [""],
-                      language: "fr",
-                      avatarUrl: "",
-                  })
-              );
-    }, [token, data, dispatch]);
+        dispatch(userSetInfo(data));
+    }, [data, dispatch]);
 
     // Get The Movie Database config infos
     useEffect(() => {
@@ -81,7 +65,6 @@ const PageWrapper = () => {
     ) : (
         <Box>
             <ScrollRestoration />
-            {/* <ScrollToHashElement /> */}
             <Header />
             <NavBar />
             <Box

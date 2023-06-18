@@ -5,8 +5,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import { selectUserIsSignedIn } from "../selectors";
+import { selectUserIsSignedIn, selectUserToken } from "../selectors";
 
 import { getUserInfo } from "../../utils/user";
 
@@ -24,11 +23,11 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
     const isSignedIn = useSelector(selectUserIsSignedIn());
+    const token = useSelector(selectUserToken());
 
     const [isError, setIsError] = useState(false);
 
     const privateRouteLoader = () => {
-        const token = sessionStorage.getItem("token");
         if (!token) {
             return redirect("/login");
         }

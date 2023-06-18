@@ -2,6 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
     isSignedIn: false,
+    token: "",
     id: "",
     avatarUrl: "",
     username: "",
@@ -34,10 +35,9 @@ const userReducer = createReducer(initialState, (builder) => {
     return builder
         .addCase(userAuth, (draft, action) => {
             draft.isSignedIn = true;
+            draft.token = action.payload;
         })
         .addCase(userSetInfo, (draft, action) => {
-            const token = sessionStorage.getItem("token");
-            draft.isSignedIn = token !== "" && token !== null;
             draft.id = action.payload.id || draft.id;
             draft.avatarUrl = action.payload.avatarUrl || draft.avatarUrl;
             draft.username = action.payload.username || draft.username;
