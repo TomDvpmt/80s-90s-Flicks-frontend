@@ -9,7 +9,7 @@ import {
     selectUserMoviesToSee,
     selectUserFavorites,
     selectUserLanguage,
-} from "../../app/selectors";
+} from "../../features/userSlice";
 
 import { getMovieData } from "../../utils/movie";
 
@@ -23,10 +23,10 @@ const ACTIONS = {
 };
 
 const Dashboard = () => {
-    const language = useSelector(selectUserLanguage());
-    const moviesSeen = useSelector(selectUserMoviesSeen());
-    const moviesToSee = useSelector(selectUserMoviesToSee());
-    const favorites = useSelector(selectUserFavorites());
+    const language = useSelector(selectUserLanguage);
+    const moviesSeen = useSelector(selectUserMoviesSeen);
+    const moviesToSee = useSelector(selectUserMoviesToSee);
+    const favorites = useSelector(selectUserFavorites);
 
     const reducer = (state, { type, payload }) => {
         switch (type) {

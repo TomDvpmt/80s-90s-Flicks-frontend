@@ -1,15 +1,12 @@
 import { useSelector } from "react-redux";
 
 import {
-    userAddToMoviesSeen,
-    userRemoveFromMoviesSeen,
-    userRemoveFromMoviesToSee,
-} from "../../features/user";
-
-import {
+    addToMoviesSeen,
+    removeFromMoviesSeen,
+    removeFromMoviesToSee,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
-} from "../../app/selectors";
+} from "../../features/userSlice";
 
 import { FormControlLabel, Checkbox } from "@mui/material";
 
@@ -22,19 +19,18 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
         langData: PropTypes.object.isRequired,
     };
 
-    const moviesToSee = useSelector(selectUserMoviesToSee());
-    const moviesSeen = useSelector(selectUserMoviesSeen());
+    const moviesToSee = useSelector(selectUserMoviesToSee);
+    const moviesSeen = useSelector(selectUserMoviesSeen);
     const userWantsToSeeMovie = moviesToSee.includes(movieId);
     const userHasSeenMovie = moviesSeen.includes(movieId);
 
     const handleMovieSeen = () => {
         if (userHasSeenMovie) {
-            toggleMovieInUserMovies(userRemoveFromMoviesSeen);
+            toggleMovieInUserMovies(removeFromMoviesSeen);
             return;
         }
-        userWantsToSeeMovie &&
-            toggleMovieInUserMovies(userRemoveFromMoviesToSee);
-        toggleMovieInUserMovies(userAddToMoviesSeen);
+        userWantsToSeeMovie && toggleMovieInUserMovies(removeFromMoviesToSee);
+        toggleMovieInUserMovies(addToMoviesSeen);
     };
 
     return (

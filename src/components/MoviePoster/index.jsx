@@ -12,7 +12,7 @@ import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 import Loader from "../Loader";
 
 import { Box } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 import PropTypes from "prop-types";
 

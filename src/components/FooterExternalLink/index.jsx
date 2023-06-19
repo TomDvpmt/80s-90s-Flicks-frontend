@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../app/selectors";
+import { selectUserLanguage } from "../../features/userSlice";
 
 import { Link } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 import PropTypes from "prop-types";
 
@@ -12,7 +12,7 @@ const FooterExternalLink = ({ type }) => {
         type: PropTypes.string.isRequired,
     };
 
-    const language = useSelector(selectUserLanguage());
+    const language = useSelector(selectUserLanguage);
 
     const LINKS = {
         tmdbAPI: {

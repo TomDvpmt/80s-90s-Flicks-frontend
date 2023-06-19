@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../app/selectors";
+import { selectUserLanguage } from "../../features/userSlice";
 import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
 import { TMDB_API_KEY } from "../../utils/config";
@@ -10,7 +10,7 @@ import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 import ListMovieCard from "../ListMovieCard";
 import Loader from "../Loader";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import {
     Dialog,
     DialogTitle,
@@ -59,7 +59,7 @@ const SearchMovieDialog = ({
         isLoading: false,
     });
 
-    const language = useSelector(selectUserLanguage());
+    const language = useSelector(selectUserLanguage);
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
 
     const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));

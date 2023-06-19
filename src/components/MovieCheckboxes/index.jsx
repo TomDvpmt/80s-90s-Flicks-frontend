@@ -5,16 +5,15 @@ import ToggleMovieSeen from "../ToggleMovieSeen";
 import ToggleMovieToSee from "../ToggleMovieToSee";
 
 import {
-    userAddToMoviesToSee,
-    userRemoveFromMoviesToSee,
-    userAddToMoviesSeen,
-    userRemoveFromMoviesSeen,
-} from "../../features/user";
-import {
+    addToMoviesToSee,
+    addToMoviesSeen,
+    removeFromMoviesToSee,
+    removeFromMoviesSeen,
     selectUserId,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
-} from "../../app/selectors";
+} from "../../features/userSlice";
+
 import { updateUserMoviesInDB } from "../../utils/user";
 
 import { Box, FormGroup } from "@mui/material";
@@ -27,26 +26,26 @@ const MovieCheckboxes = ({ movieId, langData }) => {
         langData: PropTypes.object.isRequired,
     };
 
-    const userId = useSelector(selectUserId());
-    const moviesToSee = useSelector(selectUserMoviesToSee());
-    const moviesSeen = useSelector(selectUserMoviesSeen());
+    const userId = useSelector(selectUserId);
+    const moviesToSee = useSelector(selectUserMoviesToSee);
+    const moviesSeen = useSelector(selectUserMoviesSeen);
     const dispatch = useDispatch();
 
     const toggleMovieInUserMovies = (action) => {
         let bodyObject = {};
         switch (action) {
-            case userAddToMoviesToSee:
+            case addToMoviesToSee:
                 bodyObject = { moviesToSee: [...moviesToSee, movieId] };
                 break;
-            case userRemoveFromMoviesToSee:
+            case removeFromMoviesToSee:
                 bodyObject = {
                     moviesToSee: moviesToSee.filter((id) => id !== movieId),
                 };
                 break;
-            case userAddToMoviesSeen:
+            case addToMoviesSeen:
                 bodyObject = { moviesSeen: [...moviesSeen, movieId] };
                 break;
-            case userRemoveFromMoviesSeen:
+            case removeFromMoviesSeen:
                 bodyObject = {
                     moviesSeen: moviesSeen.filter((id) => id !== movieId),
                 };

@@ -1,7 +1,7 @@
 import Branding from "../../components/Branding";
 
 import { Box } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const Header = () => {
     return (

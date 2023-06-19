@@ -1,5 +1,5 @@
-import store from "../app/store";
-import { userAuth, userSignOut } from "../features/user";
+import store from "../store/store";
+import { auth, signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
 import { BASE_API_URI } from "./config";
@@ -21,7 +21,7 @@ export const getUserInfo = async (setIsError) => {
         const token = await tokenResponse.json();
 
         if (token) {
-            store.dispatch(userAuth(token));
+            store.dispatch(auth(token));
 
             const profileResponse = await fetch(
                 `${BASE_API_URI}/API/users/profile`,
@@ -57,7 +57,7 @@ export const logout = (navigate) => {
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
-            store.dispatch(userSignOut());
+            store.dispatch(signOut());
             store.dispatch(clearAll());
             navigate("/login");
         })

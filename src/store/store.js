@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import userReducer from "../features/user";
-
+import userReducer from "../features/userSlice";
 import filtersReducer from "../features/filtersSlice";
 import themeReducer from "../features/themeSlice";
 import tmdbReducer from "../features/tmdbSlice";

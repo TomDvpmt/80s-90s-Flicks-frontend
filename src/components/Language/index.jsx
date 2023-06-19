@@ -1,8 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { userSetLanguage } from "../../features/user";
 import { setLanguage } from "../../features/filtersSlice";
-import { selectUserLanguage, selectUserId } from "../../app/selectors";
+import { selectUserId, selectUserLanguage } from "../../features/userSlice";
 
 import { BASE_API_URI } from "../../utils/config";
 
@@ -15,12 +14,11 @@ import {
 } from "@mui/material";
 
 const Language = () => {
-    const userId = useSelector(selectUserId());
-    const languageOption = useSelector(selectUserLanguage());
+    const userId = useSelector(selectUserId);
+    const languageOption = useSelector(selectUserLanguage);
     const dispatch = useDispatch();
 
     const handleLanguageChange = (e) => {
-        dispatch(userSetLanguage(e.target.value));
         dispatch(setLanguage(e.target.value));
         fetch(`${BASE_API_URI}/API/users/${userId}`, {
             method: "PUT",

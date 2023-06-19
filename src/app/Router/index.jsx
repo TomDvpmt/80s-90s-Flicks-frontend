@@ -5,7 +5,11 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserIsSignedIn, selectUserToken } from "../selectors";
+
+import {
+    selectUserIsSignedIn,
+    selectUserToken,
+} from "../../features/userSlice";
 
 import { getUserInfo } from "../../utils/user";
 
@@ -22,8 +26,8 @@ import SetPageLocation from "../../components/SetPageLocation";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
-    const isSignedIn = useSelector(selectUserIsSignedIn());
-    const token = useSelector(selectUserToken());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
 
     const [isError, setIsError] = useState(false);
 

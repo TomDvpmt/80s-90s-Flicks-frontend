@@ -1,6 +1,6 @@
 import { INDIANA_JONES_PALETTE } from "./palettes";
-import { LANGUAGE_FR } from "../languages/fr";
-import { LANGUAGE_EN } from "../languages/en";
+import { LANGUAGE_FR } from "../assets/languages/fr";
+import { LANGUAGE_EN } from "../assets/languages/en";
 
 import { createTheme } from "@mui/material/styles";
 

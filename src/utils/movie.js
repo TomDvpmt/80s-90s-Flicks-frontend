@@ -3,7 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { TMDB_API_KEY } from "./config";
 
 import { Box, Typography, Link } from "@mui/material";
-import theme from "../assets/styles/theme";
+import theme from "../styles/theme";
 
 /**
  * Get movie's main data from The Movie Database

@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { userAuth } from "../../features/user";
-import { selectUserIsSignedIn } from "../../app/selectors";
+import { auth, selectUserIsSignedIn } from "../../features/userSlice";
 
 import UsernameInput from "../../components/form-fields/UsernameInput";
 import PasswordInput from "../../components/form-fields/PasswordInput";
@@ -14,13 +13,13 @@ import { BASE_API_URI } from "../../utils/config";
 
 import { Box, Link, Button, Typography } from "@mui/material";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const isSignedIn = useSelector(selectUserIsSignedIn());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -64,7 +63,7 @@ const Login = () => {
             }
             const data = await response.json();
             setIsLoading(false);
-            dispatch(userAuth(data.token));
+            dispatch(auth(data.token));
             navigate("/");
         } catch (error) {
             setIsLoading(false);

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import SearchMovieDialog from "../SearchMovieDialog";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import { IconButton, Box } from "@mui/material";
 
 import { Search, Home } from "@mui/icons-material";

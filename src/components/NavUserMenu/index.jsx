@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserAvatarUrl, selectUserIsSignedIn } from "../../app/selectors";
+import {
+    selectUserAvatarUrl,
+    selectUserIsSignedIn,
+} from "../../features/userSlice";
 
 import { logout } from "../../utils/user";
 
@@ -16,8 +19,8 @@ import {
 import { Settings, Logout, Dashboard } from "@mui/icons-material";
 
 const NavUserMenu = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn());
-    const avatarUrl = useSelector(selectUserAvatarUrl());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const avatarUrl = useSelector(selectUserAvatarUrl);
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState(null);

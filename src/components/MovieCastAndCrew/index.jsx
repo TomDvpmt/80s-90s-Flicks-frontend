@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 
 import MovieReleaseDate from "../MovieReleaseDate";
 
-// import { selectPageLocation } from "../../app/selectors";
 import { selectPageLocation } from "../../features/pageSlice";
 
 import { setCastAndCrew } from "../../utils/movie";

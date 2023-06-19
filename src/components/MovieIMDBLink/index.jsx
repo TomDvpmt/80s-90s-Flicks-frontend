@@ -1,5 +1,5 @@
 import { Button, Link } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 import PropTypes from "prop-types";
 

@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { userUpdateAvatar } from "../../features/user";
-import { selectUserAvatarUrl, selectUserId } from "../../app/selectors";
+import {
+    updateAvatar,
+    selectUserAvatarUrl,
+    selectUserId,
+} from "../../features/userSlice";
 
 import { BASE_API_URI, BASE_IMGBB_URI } from "../../utils/config";
 
 import Loader from "../Loader";
 import ErrorMessage from "../ErrorMessage";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import {
     Dialog,
     DialogTitle,
@@ -33,8 +36,8 @@ const UserAvatarUpdateDialog = ({
         setShowUserAvatarUpdateDialog: PropTypes.func.isRequired,
     };
 
-    const userId = useSelector(selectUserId());
-    const avatarUrl = useSelector(selectUserAvatarUrl());
+    const userId = useSelector(selectUserId);
+    const avatarUrl = useSelector(selectUserAvatarUrl);
     const dispatch = useDispatch();
 
     const imgMimeTypes = {
@@ -106,7 +109,7 @@ const UserAvatarUpdateDialog = ({
                             credentials: "include",
                         });
 
-                        dispatch(userUpdateAvatar({ avatarUrl }));
+                        dispatch(updateAvatar({ avatarUrl }));
                     };
 
                     uploadImage();
@@ -116,7 +119,7 @@ const UserAvatarUpdateDialog = ({
     };
 
     const handleDeleteImg = async () => {
-        dispatch(userUpdateAvatar({ avatarUrl: "" }));
+        dispatch(updateAvatar({ avatarUrl: "" }));
         await fetch(`${BASE_API_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {

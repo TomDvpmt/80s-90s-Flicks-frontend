@@ -1,4 +1,4 @@
-import { displayBigNumber } from "../../utils/utils";
+import { displayBigNumber } from "../../utils/helpers";
 
 import { Typography } from "@mui/material";
 

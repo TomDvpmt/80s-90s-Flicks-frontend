@@ -15,7 +15,7 @@ import { clearAll, selectFiltersAll } from "../../features/filtersSlice";
 
 import { TMDB_API_KEY } from "../../utils/config";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 import { Box, Paper, Typography, Button } from "@mui/material";
 

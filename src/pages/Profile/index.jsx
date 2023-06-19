@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { userSetInfo } from "../../features/user";
-import { selectUserAvatarUrl } from "../../app/selectors";
+import {
+    setUserInfo,
+    selectUserAvatarUrl,
+    selectUserUsername,
+    selectUserFirstName,
+    selectUserLastName,
+    selectUserEmail,
+    selectUserId,
+} from "../../features/userSlice";
 
 import UserAvatarUpdateDialog from "../../components/UserAvatarUpdateDialog";
 import UsernameInput from "../../components/form-fields/UsernameInput";
@@ -14,14 +21,6 @@ import ErrorMessage from "../../components/ErrorMessage";
 import DeleteAccountDialog from "../../components/DeleteAccountDialog";
 
 import { BASE_API_URI } from "../../utils/config";
-
-import {
-    selectUserUsername,
-    selectUserFirstName,
-    selectUserLastName,
-    selectUserEmail,
-    selectUserId,
-} from "../../app/selectors";
 
 import {
     Box,
@@ -39,18 +38,18 @@ import {
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const Profile = () => {
     const dispatch = useDispatch();
 
-    const avatarUrl = useSelector(selectUserAvatarUrl());
-    const userId = useSelector(selectUserId());
+    const avatarUrl = useSelector(selectUserAvatarUrl);
+    const userId = useSelector(selectUserId);
 
-    const prevUsername = useSelector(selectUserUsername());
-    const prevEmail = useSelector(selectUserEmail());
-    const prevFirstName = useSelector(selectUserFirstName());
-    const prevLastName = useSelector(selectUserLastName());
+    const prevUsername = useSelector(selectUserUsername);
+    const prevEmail = useSelector(selectUserEmail);
+    const prevFirstName = useSelector(selectUserFirstName);
+    const prevLastName = useSelector(selectUserLastName);
 
     const [newUsername, setNewUsername] = useState("");
     const [newEmail, setNewEmail] = useState("");
@@ -115,7 +114,7 @@ const Profile = () => {
         }
 
         dispatch(
-            userSetInfo({
+            setUserInfo({
                 id: userId,
                 username: data.username,
                 firstName: data.firstName,

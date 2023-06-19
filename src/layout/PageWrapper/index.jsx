@@ -8,21 +8,19 @@ import PageHeading from "../../components/PageHeading";
 import Footer from "../../layout/Footer";
 import Loader from "../../components/Loader";
 
-import { userSetInfo } from "../../features/user";
+import { setUserInfo, selectUserLanguage } from "../../features/userSlice";
+import { tmdbSetConfig } from "../../features/tmdbSlice";
+import { selectPageLocation } from "../../features/pageSlice";
 
 import { TMDB_API_KEY } from "../../utils/config";
-import { tmdbSetConfig } from "../../features/tmdbSlice";
-
-import { selectUserLanguage } from "../../app/selectors";
-import { selectPageLocation } from "../../features/pageSlice";
 
 import { Box } from "@mui/material";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const PageWrapper = () => {
     const page = useSelector(selectPageLocation);
-    const language = useSelector(selectUserLanguage());
+    const language = useSelector(selectUserLanguage);
     const data = useLoaderData();
     const dispatch = useDispatch();
 
@@ -31,7 +29,7 @@ const PageWrapper = () => {
 
     // Set user's info in global state
     useEffect(() => {
-        dispatch(userSetInfo(data));
+        dispatch(setUserInfo(data));
     }, [data, dispatch]);
 
     // Get The Movie Database config infos

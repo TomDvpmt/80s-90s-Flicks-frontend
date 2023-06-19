@@ -17,13 +17,16 @@ import MovieWikiLink from "../../components/MovieWikiLink";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import { selectUserIsSignedIn, selectUserLanguage } from "../../app/selectors";
+import {
+    selectUserIsSignedIn,
+    selectUserLanguage,
+} from "../../features/userSlice";
 
 import { getMovieData } from "../../utils/movie";
-import { isEmptyObject } from "../../utils/utils";
+import { isEmptyObject } from "../../utils/helpers";
 
 import { Box, ButtonGroup } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const ACTIONS = {
     setLangData: "setLangData",
@@ -33,8 +36,8 @@ const ACTIONS = {
 };
 
 const Movie = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn());
-    const language = useSelector(selectUserLanguage());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const language = useSelector(selectUserLanguage);
 
     const { id } = useParams();
     const movieId = parseInt(id);

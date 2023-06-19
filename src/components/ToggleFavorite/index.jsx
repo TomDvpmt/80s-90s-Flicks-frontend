@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-    userAddToFavorites,
-    userRemoveFromFavorites,
-} from "../../features/user";
-
-import { selectUserFavorites, selectUserId } from "../../app/selectors";
+    addToFavorites,
+    removeFromFavorites,
+    selectUserFavorites,
+    selectUserId,
+} from "../../features/userSlice";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { Star, StarBorder } from "@mui/icons-material";
 
@@ -21,12 +21,12 @@ const ToggleFavorite = ({ movieId }) => {
     };
 
     const dispatch = useDispatch();
-    const userId = useSelector(selectUserId());
-    const favorites = useSelector(selectUserFavorites());
+    const userId = useSelector(selectUserId);
+    const favorites = useSelector(selectUserFavorites);
     const isFavorite = favorites.includes(movieId);
 
-    const addToFavorites = () => {
-        dispatch(userAddToFavorites(movieId));
+    const addMovieToFavorites = () => {
+        dispatch(addToFavorites(movieId));
         try {
             updateUserMoviesInDB(userId, {
                 favorites: [...favorites, movieId],
@@ -36,8 +36,8 @@ const ToggleFavorite = ({ movieId }) => {
         }
     };
 
-    const removeFromFavorites = () => {
-        dispatch(userRemoveFromFavorites(movieId));
+    const removeMovieFromFavorites = () => {
+        dispatch(removeFromFavorites(movieId));
         try {
             updateUserMoviesInDB(userId, {
                 favorites: favorites.filter((id) => id !== movieId),
@@ -49,9 +49,9 @@ const ToggleFavorite = ({ movieId }) => {
 
     const handleFavoriteCheckbox = () => {
         if (isFavorite) {
-            removeFromFavorites();
+            removeMovieFromFavorites();
         } else {
-            addToFavorites();
+            addMovieToFavorites();
         }
     };
 

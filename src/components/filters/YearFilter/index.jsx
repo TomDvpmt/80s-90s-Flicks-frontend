@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { setYear } from "../../../features/filtersSlice";
-import { selectFiltersYear } from "../../../app/selectors";
+import { setYear, selectFiltersYear } from "../../../features/filtersSlice";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
@@ -12,7 +11,7 @@ const YearFilter = ({ setCurrentPage }) => {
         setCurrentPage: PropTypes.func.isRequired,
     };
 
-    const yearOption = useSelector(selectFiltersYear());
+    const yearOption = useSelector(selectFiltersYear);
     const dispatch = useDispatch();
 
     const years = ["1980-1999"];

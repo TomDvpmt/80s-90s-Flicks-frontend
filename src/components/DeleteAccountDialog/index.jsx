@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserId } from "../../app/selectors";
+import { selectUserId } from "../../features/userSlice";
 
 import { logout } from "../../utils/user";
 import { BASE_API_URI } from "../../utils/config";
@@ -28,7 +28,7 @@ const DeleteAccountDialog = ({
     };
 
     const navigate = useNavigate();
-    const userId = useSelector(selectUserId());
+    const userId = useSelector(selectUserId);
 
     const handleYes = async () => {
         const response = await fetch(`${BASE_API_URI}/API/users/${userId}`, {

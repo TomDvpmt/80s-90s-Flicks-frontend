@@ -8,14 +8,14 @@ import ListMovieCard from "../../components/ListMovieCard";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import { selectUserLanguage } from "../../app/selectors";
+import { selectUserLanguage } from "../../features/userSlice";
 import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
 import { getPersonFullData } from "../../utils/person";
-import { isEmptyObject } from "../../utils/utils";
+import { isEmptyObject } from "../../utils/helpers";
 
 import { Box, Link, Typography, Button, ButtonGroup } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const ACTIONS = {
     setPerson: "setPerson",
@@ -31,7 +31,7 @@ const ACTIONS = {
 };
 
 const Person = () => {
-    const language = useSelector(selectUserLanguage());
+    const language = useSelector(selectUserLanguage);
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
     const { personId } = useParams();
 

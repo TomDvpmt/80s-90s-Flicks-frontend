@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import { Button } from "@mui/material";
 
 const NavLoginMenu = () => {

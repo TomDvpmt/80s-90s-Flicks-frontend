@@ -4,14 +4,17 @@ import NavExploreButtons from "../../components/NavExploreButtons";
 import NavUserMenu from "../../components/NavUserMenu";
 import NavLoginMenu from "../../components/NavLoginMenu";
 
-import { selectUserIsSignedIn, selectUserUsername } from "../../app/selectors";
+import {
+    selectUserIsSignedIn,
+    selectUserUsername,
+} from "../../features/userSlice";
 
 import { Box, AppBar, Toolbar, Typography } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const NavBar = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn());
-    const username = useSelector(selectUserUsername());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const username = useSelector(selectUserUsername);
 
     return (
         <AppBar

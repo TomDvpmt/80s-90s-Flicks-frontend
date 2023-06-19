@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../app/selectors";
+import { selectUserLanguage } from "../../features/userSlice";
 
 import MovieCardsGrid from "../MovieCardsGrid";
 import Loader from "../Loader";
 import ErrorBoundary from "../ErrorBoundary";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import { LocalMovies, Check, Star } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -47,7 +47,7 @@ const DashboardTabs = ({
         hasError: PropTypes.bool.isRequired,
     };
 
-    const language = useSelector(selectUserLanguage());
+    const language = useSelector(selectUserLanguage);
     const [value, setValue] = useState(0);
 
     const mdBreakpoint = useMediaQuery("(min-width:900px)");

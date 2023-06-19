@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import logo from "../../assets/logo/flix-logo.png";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 import { Box, useMediaQuery } from "@mui/material";
 
 import PropTypes from "prop-types";

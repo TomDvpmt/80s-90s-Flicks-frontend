@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { Box } from "@mui/material";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const Error404 = () => {
     return (

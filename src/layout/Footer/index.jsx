@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../app/selectors";
+import { selectUserIsSignedIn } from "../../features/userSlice";
 
 import Branding from "../../components/Branding";
 import FooterExternalLink from "../../components/FooterExternalLink";
@@ -17,7 +17,7 @@ import {
     Stack,
 } from "@mui/material";
 
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 const cellStyle = {
     border: "none",
@@ -32,7 +32,7 @@ const leftCellStyle = {
 };
 
 const Footer = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn());
+    const isSignedIn = useSelector(selectUserIsSignedIn);
     const navigate = useNavigate();
 
     const handleLogout = (e) => {

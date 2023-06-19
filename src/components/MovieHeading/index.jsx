@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
 
-// import { selectPageLocation } from "../../app/selectors";
 import { selectPageLocation } from "../../features/pageSlice";
 
 import { Typography } from "@mui/material";
-import theme from "../../assets/styles/theme";
+import theme from "../../styles/theme";
 
 import PropTypes from "prop-types";
 
