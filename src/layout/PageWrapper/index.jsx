@@ -12,7 +12,7 @@ import { setUserInfo, selectUserLanguage } from "../../features/userSlice";
 import { tmdbSetConfig } from "../../features/tmdbSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 
-import { TMDB_API_KEY } from "../../utils/config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "../../utils/config";
 
 import { Box } from "@mui/material";
 
@@ -35,10 +35,9 @@ const PageWrapper = () => {
     // Get The Movie Database config infos
     useEffect(() => {
         setIsLoading(true);
-        fetch(
-            `https://api.themoviedb.org/3/configuration?api_key=${TMDB_API_KEY}`,
-            { method: "GET" }
-        )
+        fetch(`${TMDB_BASE_URI}/configuration?api_key=${TMDB_API_KEY}`, {
+            method: "GET",
+        })
             .then((response) => response.json())
             .then((data) => dispatch(tmdbSetConfig(data)))
             .catch((error) => console.error(error))

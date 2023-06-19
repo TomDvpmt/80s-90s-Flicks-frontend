@@ -20,7 +20,7 @@ import ValidationMessage from "../../components/ValidationMessage";
 import ErrorMessage from "../../components/ErrorMessage";
 import DeleteAccountDialog from "../../components/DeleteAccountDialog";
 
-import { BASE_API_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../utils/config";
 
 import {
     Box,
@@ -94,7 +94,7 @@ const Profile = () => {
             return;
         }
 
-        const response = await fetch(`${BASE_API_URI}/API/users/${userId}`, {
+        const response = await fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",

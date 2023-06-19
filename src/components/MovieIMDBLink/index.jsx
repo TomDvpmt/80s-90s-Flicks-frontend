@@ -10,7 +10,8 @@ const MovieIMDBLink = ({ imdbId, imdbLang }) => {
     };
     return (
         imdbId !== undefined &&
-        imdbId !== null && (
+        imdbId !== null &&
+        imdbId !== "" && (
             <Button>
                 <Link
                     href={`https://www.imdb.com/title/${imdbId}/`}

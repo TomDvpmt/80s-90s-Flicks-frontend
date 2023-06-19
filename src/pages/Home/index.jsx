@@ -8,12 +8,14 @@ import GenresFilter from "../../components/filters/GenresFilter";
 import SearchMovieDialog from "../../components/SearchMovieDialog";
 // import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
+import LoggedOnlyDialog from "../../components/LoggedOnlyDialog";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
+import { selectUserIsSignedIn } from "../../features/userSlice";
 import { clearAll, selectFiltersAll } from "../../features/filtersSlice";
 
-import { TMDB_API_KEY } from "../../utils/config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "../../utils/config";
 
 import theme from "../../styles/theme";
 
@@ -28,6 +30,7 @@ const ACTIONS = {
 };
 
 const Home = () => {
+    const isSignedIn = useSelector(selectUserIsSignedIn);
     const filters = useSelector(selectFiltersAll);
     const dispatch = useDispatch();
 
@@ -58,6 +61,13 @@ const Home = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
+    const [showLoggedOnlyDialog, setShowLoggedOnlyDialog] = useState(false);
+
+    const handleSearch = () => {
+        isSignedIn
+            ? setShowSearchMovieDialog(true)
+            : setShowLoggedOnlyDialog(true);
+    };
 
     const handleFiltersClearAll = () => {
         dispatch(clearAll());
@@ -73,7 +83,7 @@ const Home = () => {
             .join("");
 
         fetch(
-            `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}`
+            `${TMDB_BASE_URI}/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}`
         )
             .then((response) => response.json())
             .then((data) => {
@@ -131,13 +141,17 @@ const Home = () => {
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                         variant="contained"
-                        onClick={() => setShowSearchMovieDialog(true)}
+                        onClick={handleSearch}
                         sx={{ color: "white" }}>
                         Recherche par titre
                     </Button>
                     <SearchMovieDialog
                         showSearchMovieDialog={showSearchMovieDialog}
                         setShowSearchMovieDialog={setShowSearchMovieDialog}
+                    />
+                    <LoggedOnlyDialog
+                        showLoggedOnlyDialog={showLoggedOnlyDialog}
+                        setShowLoggedOnlyDialog={setShowLoggedOnlyDialog}
                     />
                 </Box>
                 <Paper

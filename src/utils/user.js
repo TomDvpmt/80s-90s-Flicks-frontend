@@ -2,7 +2,7 @@ import store from "../store/store";
 import { auth, signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
-import { BASE_API_URI } from "./config";
+import { API_BASE_URI } from "./config";
 
 /**
  * Get current user info
@@ -12,7 +12,7 @@ import { BASE_API_URI } from "./config";
 
 export const getUserInfo = async (setIsError) => {
     try {
-        const tokenResponse = await fetch(`${BASE_API_URI}/API/users/token`, {
+        const tokenResponse = await fetch(`${API_BASE_URI}/API/users/token`, {
             credentials: "include",
         });
         if (!tokenResponse.ok) {
@@ -24,7 +24,7 @@ export const getUserInfo = async (setIsError) => {
             store.dispatch(auth(token));
 
             const profileResponse = await fetch(
-                `${BASE_API_URI}/API/users/profile`,
+                `${API_BASE_URI}/API/users/profile`,
                 {
                     credentials: "include",
                 }
@@ -51,7 +51,7 @@ export const getUserInfo = async (setIsError) => {
  */
 
 export const logout = (navigate) => {
-    fetch(`${BASE_API_URI}/API/users/logout`, {
+    fetch(`${API_BASE_URI}/API/users/logout`, {
         credentials: "include",
     })
         .then((response) => response.json())
@@ -72,7 +72,7 @@ export const logout = (navigate) => {
  */
 
 export const updateUserMoviesInDB = (userId, bodyObject) => {
-    fetch(`${BASE_API_URI}/API/users/${userId}`, {
+    fetch(`${API_BASE_URI}/API/users/${userId}`, {
         method: "PUT",
         headers: {
             "Content-type": "application/json",

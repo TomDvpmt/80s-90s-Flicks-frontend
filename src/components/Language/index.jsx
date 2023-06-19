@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../features/filtersSlice";
 import { selectUserId, selectUserLanguage } from "../../features/userSlice";
 
-import { BASE_API_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../utils/config";
 
 import {
     Paper,
@@ -20,7 +20,7 @@ const Language = () => {
 
     const handleLanguageChange = (e) => {
         dispatch(setLanguage(e.target.value));
-        fetch(`${BASE_API_URI}/API/users/${userId}`, {
+        fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",

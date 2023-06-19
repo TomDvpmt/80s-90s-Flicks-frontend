@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { selectUserLanguage } from "../../features/userSlice";
 import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
 
-import { TMDB_API_KEY } from "../../utils/config";
+import {
+    TMDB_API_KEY,
+    TMDB_BASE_URI,
+    TMDB_EXCLUDED_GENRES,
+} from "../../utils/config";
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
 import ListMovieCard from "../ListMovieCard";
@@ -84,7 +88,7 @@ const SearchMovieDialog = ({
     useEffect(() => {
         dispatch({ type: ACTIONS.setIsLoading, payload: true });
         fetch(
-            `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${state.query}&include_adult=false&language=${language}`
+            `${TMDB_BASE_URI}/search/movie?api_key=${TMDB_API_KEY}&query=${state.query}&include_adult=false&language=${language}`
         )
             .then((response) => response.json())
             .then((data) => {
@@ -93,9 +97,11 @@ const SearchMovieDialog = ({
                     return (
                         year >= 1980 &&
                         year < 2000 &&
-                        // exclude Documentary (99) and Television film (10770)
-                        !result.genre_ids?.includes(99) &&
-                        !result.genre_ids.includes(10770)
+                        result.genre_ids.reduce(
+                            (acc, current) =>
+                                acc && !TMDB_EXCLUDED_GENRES.includes(current),
+                            true
+                        )
                     );
                 });
                 dispatch({

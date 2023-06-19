@@ -7,7 +7,7 @@ import {
     selectUserId,
 } from "../../features/userSlice";
 
-import { BASE_API_URI, BASE_IMGBB_URI } from "../../utils/config";
+import { API_BASE_URI, IMGBB_BASE_URI } from "../../utils/config";
 
 import Loader from "../Loader";
 import ErrorMessage from "../ErrorMessage";
@@ -77,7 +77,7 @@ const UserAvatarUpdateDialog = ({
             return;
         } else {
             setIsLoading(true);
-            fetch(`${BASE_API_URI}/API/config/imgbb-api-key`, {
+            fetch(`${API_BASE_URI}/API/config/imgbb-api-key`, {
                 credentials: "include",
             })
                 .then((response) => response.json())
@@ -89,7 +89,7 @@ const UserAvatarUpdateDialog = ({
 
                     const uploadImage = async () => {
                         const uploadResponse = await fetch(
-                            `${BASE_IMGBB_URI}/upload?key=${imgBBAPIKey}`,
+                            `${IMGBB_BASE_URI}/upload?key=${imgBBAPIKey}`,
                             {
                                 method: "POST",
                                 body: imgData, // binary file
@@ -98,7 +98,7 @@ const UserAvatarUpdateDialog = ({
                         const avatar = await uploadResponse.json();
                         const avatarUrl = avatar.data?.image?.url;
 
-                        await fetch(`${BASE_API_URI}/API/users/${userId}`, {
+                        await fetch(`${API_BASE_URI}/API/users/${userId}`, {
                             method: "PUT",
                             headers: {
                                 "Content-type": "application/json",
@@ -120,7 +120,7 @@ const UserAvatarUpdateDialog = ({
 
     const handleDeleteImg = async () => {
         dispatch(updateAvatar({ avatarUrl: "" }));
-        await fetch(`${BASE_API_URI}/API/users/${userId}`, {
+        await fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",

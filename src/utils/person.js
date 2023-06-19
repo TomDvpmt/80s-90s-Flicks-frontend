@@ -1,4 +1,4 @@
-import { TMDB_API_KEY } from "./config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "./config";
 import defaultPoster from "../assets/img/defaultPoster.jpeg";
 
 /**
@@ -73,7 +73,7 @@ const getPersonMainData = async (personId, language) => {
     if (personId) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/person/${personId}?api_key=${TMDB_API_KEY}&language=${language}`
+                `${TMDB_BASE_URI}/person/${personId}?api_key=${TMDB_API_KEY}&language=${language}`
             );
             const person = await response.json();
             return person;
@@ -94,7 +94,7 @@ const getFilmography = async (personId, language, imageBaseUrl) => {
     if (personId) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${TMDB_API_KEY}&language=${language}&with_original_language=en`
+                `${TMDB_BASE_URI}/person/${personId}/movie_credits?api_key=${TMDB_API_KEY}&language=${language}&with_original_language=en`
             );
             const data = await response.json();
             const actingMovies = getFilmographyElements(

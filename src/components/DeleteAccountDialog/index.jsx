@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectUserId } from "../../features/userSlice";
 
 import { logout } from "../../utils/user";
-import { BASE_API_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../utils/config";
 
 import {
     Dialog,
@@ -31,7 +31,7 @@ const DeleteAccountDialog = ({
     const userId = useSelector(selectUserId);
 
     const handleYes = async () => {
-        const response = await fetch(`${BASE_API_URI}/API/users/${userId}`, {
+        const response = await fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "DELETE",
             credentials: "include",
         });

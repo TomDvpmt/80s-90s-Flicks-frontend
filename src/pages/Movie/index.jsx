@@ -24,6 +24,7 @@ import {
 
 import { getMovieData } from "../../utils/movie";
 import { isEmptyObject } from "../../utils/helpers";
+import { TMDB_EXCLUDED_GENRES } from "../../utils/config";
 
 import { Box, ButtonGroup } from "@mui/material";
 import theme from "../../styles/theme";
@@ -164,8 +165,9 @@ const Movie = () => {
                                     // exclude Documentary (99) and Television film (10770)
                                     genres={state.movie.genres?.filter(
                                         (genre) =>
-                                            genre.id !== 99 &&
-                                            genre.id !== 10770
+                                            !TMDB_EXCLUDED_GENRES.includes(
+                                                genre.id
+                                            )
                                     )}
                                 />
                                 <MovieOverview

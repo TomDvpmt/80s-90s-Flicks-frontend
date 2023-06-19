@@ -29,9 +29,7 @@ const MovieGenres = ({ genres }) => {
     };
 
     return (
-        genres !== undefined &&
-        genres !== null &&
-        genres.length > 0 && (
+        genres?.length > 0 && (
             <Box
                 sx={{
                     display: "flex",

@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 
-import { TMDB_API_KEY } from "./config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "./config";
 
 import { Box, Typography, Link } from "@mui/material";
 import theme from "../styles/theme";
@@ -14,7 +14,7 @@ import theme from "../styles/theme";
 export const getMovieData = async (id, language) => {
     try {
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
+            `${TMDB_BASE_URI}/movie/${id}?api_key=${TMDB_API_KEY}&language=${language}`,
             {
                 method: "GET",
                 headers: {
@@ -177,7 +177,7 @@ export const setCastAndCrew = async (
     if (movieId) {
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
+                `${TMDB_BASE_URI}/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`,
                 {
                     method: "GET",
                 }

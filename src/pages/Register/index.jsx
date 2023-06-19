@@ -13,7 +13,7 @@ import LastNameInput from "../../components/form-fields/LastNameInput";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loader from "../../components/Loader";
 
-import { BASE_API_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../utils/config";
 
 import { Box, Link, Button, Typography } from "@mui/material";
 
@@ -49,7 +49,7 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch(`${BASE_API_URI}/API/users/`, {
+            const response = await fetch(`${API_BASE_URI}/API/users/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
