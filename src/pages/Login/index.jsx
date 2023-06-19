@@ -10,6 +10,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Loader from "../../components/Loader";
 
 import { API_BASE_URI } from "../../utils/config";
+import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import { Box, Link, Button, Typography } from "@mui/material";
 
@@ -22,7 +23,10 @@ const Login = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
 
     const [username, setUsername] = useState("");
+    const [showUsernameError, setShowUsernameError] = useState(false);
     const [password, setPassword] = useState("");
+    const [showPasswordError, setShowPasswordError] = useState(false);
+
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +37,25 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(e);
         setErrorMessage("");
+
+        let inputs = [
+            {
+                type: "username",
+                state: username,
+                showErrors: setShowUsernameError,
+            },
+            {
+                type: "password",
+                state: password,
+                showErrors: setShowPasswordError,
+            },
+        ];
+
+        if (formHasErrors(inputs)) {
+            showFormErrors(inputs);
+            return;
+        }
+
         setIsLoading(true);
 
         let loginData = {
@@ -56,20 +79,16 @@ const Login = () => {
                 body: JSON.stringify(loginData),
                 credentials: "include",
             });
-            if (!response.ok) {
-                throw new Error(
-                    "Connexion impossible. Veuillez réessayer ultérieurement."
-                );
-            }
             const data = await response.json();
-            setIsLoading(false);
+            if (!response.ok) {
+                setIsLoading(false);
+                setErrorMessage(data.message);
+                throw new Error(data.message);
+            }
             dispatch(auth(data.token));
             navigate("/");
         } catch (error) {
             setIsLoading(false);
-            setErrorMessage(
-                "Connexion impossible. Veuillez réessayer ultérieurement."
-            );
             console.error(error);
         }
     };
@@ -98,11 +117,15 @@ const Login = () => {
                 username={username}
                 setUsername={setUsername}
                 setErrorMessage={setErrorMessage}
+                showUsernameError={showUsernameError}
+                setShowUsernameError={setShowUsernameError}
             />
             <PasswordInput
                 password={password}
                 setPassword={setPassword}
                 setErrorMessage={setErrorMessage}
+                showPasswordError={showPasswordError}
+                setShowPasswordError={setShowPasswordError}
             />
             <Box
                 sx={{

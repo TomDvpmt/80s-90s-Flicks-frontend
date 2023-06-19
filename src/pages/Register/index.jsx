@@ -14,6 +14,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Loader from "../../components/Loader";
 
 import { API_BASE_URI } from "../../utils/config";
+import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import { Box, Link, Button, Typography } from "@mui/material";
 
@@ -25,7 +26,10 @@ const Register = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
 
     const [username, setUsername] = useState("");
+    const [showUsernameError, setShowUsernameError] = useState(false);
     const [password, setPassword] = useState("");
+    const [showPasswordError, setShowPasswordError] = useState(false);
+
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -40,6 +44,25 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(e);
         setErrorMessage("");
+
+        let inputs = [
+            {
+                type: "username",
+                state: username,
+                showErrors: setShowUsernameError,
+            },
+            {
+                type: "password",
+                state: password,
+                showErrors: setShowPasswordError,
+            },
+        ];
+
+        if (formHasErrors(inputs)) {
+            showFormErrors(inputs);
+            return;
+        }
+
         setIsLoading(true);
 
         if (password !== passwordConfirm) {
