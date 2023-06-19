@@ -27,13 +27,9 @@ import { Close } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
 
-const UserAvatarUpdateDialog = ({
-    showUserAvatarUpdateDialog,
-    setShowUserAvatarUpdateDialog,
-}) => {
+const UserAvatarUpdateDialog = ({ reducer }) => {
     UserAvatarUpdateDialog.propTypes = {
-        showUserAvatarUpdateDialog: PropTypes.bool.isRequired,
-        setShowUserAvatarUpdateDialog: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const userId = useSelector(selectUserId);
@@ -130,17 +126,23 @@ const UserAvatarUpdateDialog = ({
             }),
             credentials: "include",
         });
-        setShowUserAvatarUpdateDialog(false);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowUserAvatarUpdateDialog,
+            payload: false,
+        });
     };
 
     const handleClose = () => {
-        setShowUserAvatarUpdateDialog(false);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowUserAvatarUpdateDialog,
+            payload: false,
+        });
         setErrorMessage("");
     };
 
     return (
         <Dialog
-            open={showUserAvatarUpdateDialog}
+            open={reducer.state.showUserAvatarUpdateDialog}
             onClose={handleClose}
             fullWidth>
             <Box

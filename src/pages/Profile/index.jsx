@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -40,6 +40,22 @@ import { Settings } from "@mui/icons-material";
 
 import theme from "../../styles/theme";
 
+const ACTIONS = {
+    setUsername: "setUsername",
+    setShowUsernameError: "setShowUsernameError",
+    setEmail: "setEmail",
+    setShowEmailError: "setShowEmailError",
+    setFirstName: "setFirstName",
+    setShowFirstNameError: "setShowFirstNameError",
+    setLastName: "setLastName",
+    setShowLastNameError: "setShowLastNameError",
+    setShowUpdateValidation: "setShowUpdateValidation",
+    setShowUserAvatarUpdateDialog: "setShowUserAvatarUpdateDialog",
+    setShowUpdateInfosForm: "setShowUpdateInfosForm",
+    setShowDeleteDialog: "setShowDeleteDialog",
+    setErrorMessage: "setErrorMessage",
+};
+
 const Profile = () => {
     const dispatch = useDispatch();
 
@@ -51,46 +67,97 @@ const Profile = () => {
     const prevFirstName = useSelector(selectUserFirstName);
     const prevLastName = useSelector(selectUserLastName);
 
-    const [newUsername, setNewUsername] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [newFirstName, setNewFirstName] = useState("");
-    const [newLastName, setNewLastName] = useState("");
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
+            case "setUsername":
+                return { ...state, username: payload };
+            case "setShowUsernameError":
+                return { ...state, showUsernameError: payload };
+            case "setEmail":
+                return { ...state, email: payload };
+            case "setShowEmailError":
+                return { ...state, showEmailError: payload };
+            case "setFirstName":
+                return { ...state, firstName: payload };
+            case "setShowFirstNameError":
+                return { ...state, showFirstNameError: payload };
+            case "setLastName":
+                return { ...state, lastName: payload };
+            case "setShowLastNameError":
+                return { ...state, showLastNameError: payload };
+            case "setShowUpdateValidation":
+                return { ...state, showUpdateValidation: payload };
+            case "setShowUserAvatarUpdateDialog":
+                return { ...state, showUserAvatarUpdateDialog: payload };
+            case "setShowUpdateInfosForm":
+                return { ...state, showUpdateInfosForm: payload };
+            case "setShowDeleteDialog":
+                return { ...state, showDeleteDialog: payload };
+            case "setErrorMessage":
+                return { ...state, errorMessage: payload };
+            default:
+                throw new Error("Reducer: unknown action");
+        }
+    };
 
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const [showUpdateValidation, setShowUpdateValidation] = useState(false);
-    const [showUserAvatarUpdateDialog, setShowUserAvatarUpdateDialog] =
-        useState(false);
-    const [showUpdateInfosForm, setShowUpdateInfosForm] = useState(false);
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [state, localDispatch] = useReducer(reducer, {
+        username: "",
+        showUsernameError: false,
+        email: "",
+        showEmailError: false,
+        firstName: "",
+        showFirstNameError: false,
+        lastName: "",
+        showLastNameError: false,
+        showUpdateValidation: false,
+        showUserAvatarUpdateDialog: false,
+        showUpdateInfosForm: false,
+        showDeleteDialog: false,
+        errorMessage: "",
+    });
 
     useEffect(() => {
-        setNewUsername(prevUsername);
-        setNewEmail(prevEmail);
-        setNewFirstName(prevFirstName);
-        setNewLastName(prevLastName);
+        localDispatch({ type: ACTIONS.setUsername, payload: prevUsername });
+        localDispatch({ type: ACTIONS.setEmail, payload: prevEmail });
+        localDispatch({
+            type: ACTIONS.setFirstName,
+            payload: prevFirstName,
+        });
+        localDispatch({ type: ACTIONS.setLastName, payload: prevLastName });
     }, [prevUsername, prevEmail, prevFirstName, prevLastName]);
 
     const handleUpdateInfos = () => {
-        setShowUpdateValidation(false);
-        setErrorMessage("");
-        setShowUpdateInfosForm((showUpdateInfosForm) => !showUpdateInfosForm);
+        localDispatch({
+            type: ACTIONS.setShowUpdateValidation,
+            payload: false,
+        });
+        localDispatch({ type: ACTIONS.setErrorMessage, payload: "" });
+        localDispatch({
+            type: ACTIONS.setShowUpdateInfosForm,
+            payload: !state.showUpdateInfosForm,
+        });
     };
 
     const handleDeleteClick = () => {
-        setShowDeleteDialog((show) => !show);
+        localDispatch({
+            type: ACTIONS.setShowDeleteDialog,
+            payload: !state.showDeleteDialog,
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (
-            prevUsername === newUsername &&
-            prevEmail === newEmail &&
-            prevFirstName === newFirstName &&
-            prevLastName === newLastName
+            prevUsername === state.username &&
+            prevEmail === state.email &&
+            prevFirstName === state.firstName &&
+            prevLastName === state.lastName
         ) {
-            setShowUpdateInfosForm(false);
+            localDispatch({
+                type: ACTIONS.setShowUpdateInfosForm,
+                payload: false,
+            });
             return;
         }
 
@@ -100,16 +167,19 @@ const Profile = () => {
                 "Content-type": "application/json",
             },
             body: JSON.stringify({
-                username: newUsername,
-                email: newEmail,
-                firstName: newFirstName,
-                lastName: newLastName,
+                username: state.username,
+                email: state.email,
+                firstName: state.firstName,
+                lastName: state.lastName,
             }),
             credentials: "include",
         });
         const data = await response.json();
         if (data.statusCode >= 400) {
-            setErrorMessage(data.message);
+            localDispatch({
+                type: ACTIONS.setErrorMessage,
+                payload: data.message,
+            });
             return;
         }
 
@@ -122,8 +192,8 @@ const Profile = () => {
                 email: data.email,
             })
         );
-        setShowUpdateValidation(true);
-        setShowUpdateInfosForm(false);
+        localDispatch({ type: ACTIONS.setShowUpdateValidation, payload: true });
+        localDispatch({ type: ACTIONS.setShowUpdateInfosForm, payload: false });
     };
 
     const leftCellStyle = {
@@ -142,7 +212,12 @@ const Profile = () => {
                 <Badge
                     badgeContent={
                         <IconButton
-                            onClick={() => setShowUserAvatarUpdateDialog(true)}>
+                            onClick={() =>
+                                localDispatch({
+                                    type: ACTIONS.setShowUserAvatarUpdateDialog,
+                                    payload: true,
+                                })
+                            }>
                             <Settings />
                         </IconButton>
                     }
@@ -164,8 +239,7 @@ const Profile = () => {
             </Box>
 
             <UserAvatarUpdateDialog
-                showUserAvatarUpdateDialog={showUserAvatarUpdateDialog}
-                setShowUserAvatarUpdateDialog={setShowUserAvatarUpdateDialog}
+                reducer={{ ACTIONS, state, localDispatch }}
             />
             <Box>
                 <Box
@@ -173,7 +247,7 @@ const Profile = () => {
                         maxWidth: theme.maxWidth.userForm,
                         margin: "0 auto 3rem",
                     }}>
-                    {showUpdateValidation && (
+                    {state.showUpdateValidation && (
                         <ValidationMessage text="Profil mis à jour." />
                     )}
                     <TableContainer component={Paper}>
@@ -215,12 +289,14 @@ const Profile = () => {
                         <Button
                             type="button"
                             variant={
-                                showUpdateInfosForm ? "outlined" : "contained"
+                                state.showUpdateInfosForm
+                                    ? "outlined"
+                                    : "contained"
                             }
                             size="small"
                             sx={{
                                 mt: theme.margin.buttonTop.notSpaced,
-                                color: showUpdateInfosForm
+                                color: state.showUpdateInfosForm
                                     ? "inherit"
                                     : "white",
                             }}
@@ -238,14 +314,12 @@ const Profile = () => {
                             Supprimer le compte
                         </Button>
                         <DeleteAccountDialog
-                            showDeleteDialog={showDeleteDialog}
-                            setShowDeleteDialog={setShowDeleteDialog}
-                            setErrorMessage={setErrorMessage}
+                            reducer={{ ACTIONS, state, localDispatch }}
                         />
                     </Box>
                 </Box>
 
-                <Collapse in={showUpdateInfosForm}>
+                <Collapse in={state.showUpdateInfosForm}>
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
@@ -253,26 +327,18 @@ const Profile = () => {
                             maxWidth: theme.maxWidth.userForm,
                             margin: "0 auto 3rem",
                         }}>
-                        <ErrorMessage errorMessage={errorMessage} />
+                        <ErrorMessage errorMessage={state.errorMessage} />
                         <UsernameInput
-                            username={newUsername}
-                            setUsername={setNewUsername}
-                            setErrorMessage={setErrorMessage}
+                            reducer={{ ACTIONS, state, localDispatch }}
                         />
                         <EmailInput
-                            email={newEmail}
-                            setEmail={setNewEmail}
-                            setErrorMessage={setErrorMessage}
+                            reducer={{ ACTIONS, state, localDispatch }}
                         />
                         <FirstNameInput
-                            firstName={newFirstName}
-                            setFirstName={setNewFirstName}
-                            setErrorMessage={setErrorMessage}
+                            reducer={{ ACTIONS, state, localDispatch }}
                         />
                         <LastNameInput
-                            lastName={newLastName}
-                            setLastName={setNewLastName}
-                            setErrorMessage={setErrorMessage}
+                            reducer={{ ACTIONS, state, localDispatch }}
                         />
                         <Box
                             sx={{
