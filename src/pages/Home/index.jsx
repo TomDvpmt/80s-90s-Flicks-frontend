@@ -11,8 +11,7 @@ import Pagination from "../../components/Pagination";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
-import { filtersClearAll } from "../../features/filters";
-import { selectFiltersAll } from "../../app/selectors";
+import { clearAll, selectFiltersAll } from "../../features/filtersSlice";
 
 import { TMDB_API_KEY } from "../../utils/config";
 
@@ -29,7 +28,7 @@ const ACTIONS = {
 };
 
 const Home = () => {
-    const filters = useSelector(selectFiltersAll());
+    const filters = useSelector(selectFiltersAll);
     const dispatch = useDispatch();
 
     const reducer = (state, { type, payload }) => {
@@ -61,7 +60,8 @@ const Home = () => {
     const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
 
     const handleFiltersClearAll = () => {
-        dispatch(filtersClearAll());
+        dispatch(clearAll());
+        setCurrentPage(1);
     };
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { filtersSetPageNumber } from "../../features/filters";
+import { setPageNumber } from "../../features/filtersSlice";
 
 import { Box, Pagination as MUIPagination } from "@mui/material";
 
@@ -21,7 +21,7 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
     };
 
     useEffect(() => {
-        dispatch(filtersSetPageNumber(currentPage));
+        dispatch(setPageNumber(currentPage));
     }, [currentPage, dispatch]);
 
     return (

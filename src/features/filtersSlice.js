@@ -1,4 +1,4 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const ALL_FILTERS = [
     {
@@ -39,27 +39,13 @@ const initialState = {
     searchQuery: "",
 };
 
-export const filtersSetYear = createAction("filters/year");
-export const filtersSetLanguage = createAction("filters/language");
-export const filtersAddActiveGenre = createAction("filters/addActiveGenre");
-export const filtersRemoveActiveGenre = createAction(
-    "filters/removeActiveGenre"
-);
-export const filtersSetActiveGenres = createAction("filters/setActiveGenres");
-export const filtersClearActiveGenres = createAction(
-    "filters/clearActiveGenres"
-);
-export const filtersConvertActiveGenresToFilter = createAction(
-    "filters/convertActiveGenresToFilter"
-);
-export const filtersSetPageNumber = createAction("filters/setPageNumber");
-export const filtersClearAll = createAction("filters/clearAll");
-
-const filtersReducer = createReducer(initialState, (builder) => {
-    return builder
-        .addCase(filtersSetYear, (draft, action) => {
+export const filtersSlice = createSlice({
+    name: "filters",
+    initialState,
+    reducers: {
+        setYear: (state, action) => {
             if (action.payload === "1980-1999") {
-                draft.allFilters = draft.allFilters.map((filter) => {
+                state.allFilters = state.allFilters.map((filter) => {
                     if (filter.name === "primaryReleaseYear")
                         return { ...filter, value: "" };
                     else if (filter.name === "allYearsMin")
@@ -69,7 +55,7 @@ const filtersReducer = createReducer(initialState, (builder) => {
                     else return filter;
                 });
             } else {
-                draft.allFilters = draft.allFilters.map((filter) => {
+                state.allFilters = state.allFilters.map((filter) => {
                     if (["allYearsMin", "allYearsMax"].includes(filter.name))
                         return { ...filter, value: "" };
                     else if (filter.name === "primaryReleaseYear")
@@ -77,45 +63,61 @@ const filtersReducer = createReducer(initialState, (builder) => {
                     else return filter;
                 });
             }
-        })
-        .addCase(filtersSetLanguage, (draft, action) => {
-            draft.allFilters = draft.allFilters.map((filter) =>
+        },
+        setLanguage: (state, action) => {
+            state.allFilters = state.allFilters.map((filter) =>
                 filter.name === "language"
                     ? { ...filter, value: action.payload }
                     : filter
             );
-        })
-        .addCase(filtersAddActiveGenre, (draft, action) => {
-            draft.activeGenres.push(action.payload);
-        })
-        .addCase(filtersRemoveActiveGenre, (draft, action) => {
-            draft.activeGenres = draft.activeGenres.filter(
-                (genre) => genre !== action.payload
-            );
-        })
-        .addCase(filtersSetActiveGenres, (draft, action) => {
-            draft.activeGenres = action.payload;
-        })
-        .addCase(filtersClearActiveGenres, (draft, action) => {
-            draft.activeGenres = [];
-        })
-        .addCase(filtersConvertActiveGenresToFilter, (draft, action) => {
-            draft.allFilters = draft.allFilters.map((filter) =>
+        },
+        addActiveGenre: (state, action) => {
+            state.activeGenres.push(action.payload);
+        },
+        setActiveGenres: (state, action) => {
+            state.activeGenres = action.payload;
+        },
+        // clearActiveGenres: (state, action) => {
+        //     state.activeGenres = [];
+        // },
+        convertActiveGenresToFilter: (state, action) => {
+            state.allFilters = state.allFilters.map((filter) =>
                 filter.name === "withGenres"
                     ? { ...filter, value: action.payload.toString() }
                     : filter
             );
-        })
-        .addCase(filtersSetPageNumber, (draft, action) => {
-            draft.allFilters = draft.allFilters.map((filter) =>
+        },
+        setPageNumber: (state, action) => {
+            state.allFilters = state.allFilters.map((filter) =>
                 filter.name === "page"
                     ? { ...filter, value: action.payload }
                     : filter
             );
-        })
-        .addCase(filtersClearAll, (draft, action) => {
-            return initialState;
-        });
+        },
+        clearAll: (state, action) => initialState,
+    },
 });
 
-export default filtersReducer;
+export const {
+    setYear,
+    setLanguage,
+    addActiveGenre,
+    setActiveGenres,
+    // clearActiveGenres,
+    convertActiveGenresToFilter,
+    setPageNumber,
+    clearAll,
+} = filtersSlice.actions;
+
+export const selectFiltersYear = (state) => {
+    const filtered =
+        state.filters.allFilters.filter(
+            (filter) => filter.name === "primaryReleaseYear"
+        )[0].value || "1980-1999";
+
+    return filtered;
+};
+export const selectFiltersActiveGenres = (state) => state.filters.activeGenres;
+export const selectFiltersAll = (state) => state.filters.allFilters;
+
+export default filtersSlice.reducer;

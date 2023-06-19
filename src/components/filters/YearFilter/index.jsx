@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { filtersSetYear } from "../../../features/filters";
+import { setYear } from "../../../features/filtersSlice";
 import { selectFiltersYear } from "../../../app/selectors";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
@@ -22,7 +22,7 @@ const YearFilter = ({ setCurrentPage }) => {
 
     const handleYearChange = (e) => {
         setCurrentPage(1);
-        dispatch(filtersSetYear(e.target.value));
+        dispatch(setYear(e.target.value));
     };
 
     return (

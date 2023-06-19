@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-    filtersSetActiveGenres,
-    filtersConvertActiveGenresToFilter,
-} from "../../../features/filters";
-import { selectFiltersActiveGenres } from "../../../app/selectors";
+    setActiveGenres,
+    convertActiveGenresToFilter,
+    selectFiltersActiveGenres,
+} from "../../../features/filtersSlice";
 
 import { TMDB_API_KEY } from "../../../utils/config";
 
@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 const GenresFilter = () => {
-    const activeGenres = useSelector(selectFiltersActiveGenres());
+    const activeGenres = useSelector(selectFiltersActiveGenres);
     const dispatch = useDispatch();
 
     const [allGenres, setAllGenres] = useState([]);
@@ -61,11 +61,11 @@ const GenresFilter = () => {
     }, []);
 
     const handleActiveGenresChange = (e) => {
-        dispatch(filtersSetActiveGenres(e.target.value));
+        dispatch(setActiveGenres(e.target.value));
     };
 
     useEffect(() => {
-        dispatch(filtersConvertActiveGenresToFilter(activeGenres));
+        dispatch(convertActiveGenresToFilter(activeGenres));
     }, [activeGenres, dispatch]);
 
     return (

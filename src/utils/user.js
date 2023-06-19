@@ -1,6 +1,6 @@
 import store from "../app/store";
 import { userAuth, userSignOut } from "../features/user";
-import { filtersClearAll } from "../features/filters";
+import { clearAll } from "../features/filtersSlice";
 
 import { BASE_API_URI } from "./config";
 
@@ -58,7 +58,7 @@ export const logout = (navigate) => {
         .then((data) => {
             console.log(data);
             store.dispatch(userSignOut());
-            store.dispatch(filtersClearAll());
+            store.dispatch(clearAll());
             navigate("/login");
         })
         .catch((error) => console.log(error));
