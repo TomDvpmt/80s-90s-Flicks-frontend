@@ -1,15 +1,20 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const LastNameInput = ({ lastName, setLastName, setErrorMessage }) => {
+const LastNameInput = ({ reducer }) => {
     LastNameInput.propTypes = {
-        lastName: PropTypes.string.isRequired,
-        setLastName: PropTypes.func.isRequired,
-        setErrorMessage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const handleChange = (e) => {
-        setLastName(e.target.value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setErrorMessage,
+            payload: "",
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setLastName,
+            payload: e.target.value,
+        });
     };
 
     return (
@@ -20,10 +25,8 @@ const LastNameInput = ({ lastName, setLastName, setErrorMessage }) => {
             name="LastName"
             type="text"
             label="Nom"
-            value={lastName}
+            value={reducer.state.lastName}
             onChange={handleChange}
-            onFocus={() => setErrorMessage("")}
-            // error={lastNameError !== ""}
         />
     );
 };

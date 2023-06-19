@@ -1,7 +1,18 @@
 export const USERNAME_MIN_LENGTH = 3;
 export const USERNAME_MAX_LENGTH = 15;
-export const PASSWORD_MIN_LENGTH = 6;
+export const PASSWORD_MIN_LENGTH = 4;
 export const PASSWORD_MAX_LENGTH = 20;
+
+/**
+ * Email regex :
+ * ------------
+ *   - starts with at least 1 alphanumeric character, underscore, dash or dot
+ *   - then @
+ *   - then at least 1 group of alphanumeric characters, underscores or dashes, ending with a dot
+ *   - ends with 2 to 4 alphanumeric characters
+ *   - no accents
+ */
+const emailRegex = new RegExp(/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/);
 
 const inputHasErrors = (type, input) => {
     let errorConditions = [];
@@ -17,6 +28,9 @@ const inputHasErrors = (type, input) => {
                 input.length < PASSWORD_MIN_LENGTH,
                 input.length > PASSWORD_MAX_LENGTH,
             ];
+            break;
+        case "email":
+            errorConditions = [!emailRegex.test(input)];
             break;
         default:
             errorConditions = [];
@@ -35,8 +49,9 @@ export const formHasErrors = (inputs) => {
 export const showFormErrors = (inputs, localDispatch) => {
     inputs.forEach((input) => {
         if (inputHasErrors(input.type, input.state)) {
+            console.log(input.type, " has errors");
             localDispatch({
-                type: input.setShowErrorsActionType,
+                type: input.showErrorsActionType,
                 payload: true,
             });
         }

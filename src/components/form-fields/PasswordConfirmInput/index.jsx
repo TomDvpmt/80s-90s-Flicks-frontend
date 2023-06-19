@@ -1,19 +1,26 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const PasswordConfirmInput = ({
-    passwordConfirm,
-    setPasswordConfirm,
-    setErrorMessage,
-}) => {
+const PasswordConfirmInput = ({ reducer }) => {
     PasswordConfirmInput.propTypes = {
-        passwordConfirm: PropTypes.string.isRequired,
-        setPasswordConfirm: PropTypes.func.isRequired,
-        setErrorMessage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
+    const helperText = `Les mots de passe ne correspondent pas.`;
+
     const handleChange = (e) => {
-        setPasswordConfirm(e.target.value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setErrorMessage,
+            payload: "",
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowPasswordConfirmError,
+            payload: false,
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setPasswordConfirm,
+            payload: e.target.value,
+        });
     };
 
     return (
@@ -25,10 +32,10 @@ const PasswordConfirmInput = ({
             name="passwordConfirm"
             type="password"
             label="Confirmez votre mot de passe"
-            value={passwordConfirm}
+            value={reducer.state.passwordConfirm}
             onChange={handleChange}
-            onFocus={() => setErrorMessage("")}
-            // error={passwordConfirmError !== ""}
+            error={reducer.state.showPasswordConfirmError}
+            helperText={reducer.state.showPasswordConfirmError && helperText}
         />
     );
 };

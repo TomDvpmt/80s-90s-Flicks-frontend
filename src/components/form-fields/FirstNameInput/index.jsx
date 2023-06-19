@@ -1,30 +1,32 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const FirstNameInput = ({ firstName, setFirstName, setErrorMessage }) => {
+const FirstNameInput = ({ reducer }) => {
     FirstNameInput.propTypes = {
-        firstName: PropTypes.string.isRequired,
-        setFirstName: PropTypes.func.isRequired,
-        setErrorMessage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const handleChange = (e) => {
-        setFirstName(e.target.value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setErrorMessage,
+            payload: "",
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setFirstName,
+            payload: e.target.value,
+        });
     };
 
     return (
         <TextField
-            // autoFocus={hasAutoFocus}
             fullWidth
             margin="dense"
             id="firstName"
             name="firstName"
             type="text"
             label="Prénom"
-            value={firstName}
+            value={reducer.state.firstName}
             onChange={handleChange}
-            onFocus={() => setErrorMessage("")}
-            // error={firstNameError !== ""}
         />
     );
 };

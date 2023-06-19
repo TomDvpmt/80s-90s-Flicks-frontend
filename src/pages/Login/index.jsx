@@ -71,12 +71,12 @@ const Login = () => {
             {
                 type: "username",
                 state: state.username,
-                setShowErrorsActionType: ACTIONS.setShowUsernameError,
+                showErrorsActionType: ACTIONS.setShowUsernameError,
             },
             {
                 type: "password",
                 state: state.password,
-                setShowErrorsActionType: ACTIONS.setShowPasswordError,
+                showErrorsActionType: ACTIONS.setShowPasswordError,
             },
         ];
 
@@ -112,7 +112,7 @@ const Login = () => {
             if (!response.ok) {
                 localDispatch({ type: ACTIONS.setIsLoading, payload: false });
                 localDispatch({
-                    type: "setErrorMessage",
+                    type: ACTIONS.setErrorMessage,
                     payload: data.message,
                 });
                 throw new Error(data.message);

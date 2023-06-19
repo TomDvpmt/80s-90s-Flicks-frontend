@@ -2,31 +2,41 @@ import { TextField } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const EmailInput = ({ email, setEmail, setErrorMessage }) => {
+const EmailInput = ({ reducer }) => {
     EmailInput.propTypes = {
-        email: PropTypes.string.isRequired,
-        setEmail: PropTypes.func.isRequired,
-        setErrorMessage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
+    const helperText = `Format d'adresse e-mail incorrect.`;
+
     const handleChange = (e) => {
-        setEmail(e.target.value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setErrorMessage,
+            payload: "",
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowEmailError,
+            payload: false,
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setEmail,
+            payload: e.target.value,
+        });
     };
 
     return (
         <TextField
-            // autoFocus={hasAutoFocus}
             required
             fullWidth
             margin="dense"
             id="email"
             name="email"
-            type="email"
+            type="text"
             label="Adresse e-mail"
-            value={email}
+            value={reducer.state.email}
             onChange={handleChange}
-            onFocus={() => setErrorMessage("")}
-            // error={emailError !== ""}
+            error={reducer.state.showEmailError}
+            helperText={reducer.state.showEmailError && helperText}
         />
     );
 };
