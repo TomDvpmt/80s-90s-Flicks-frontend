@@ -12,7 +12,7 @@ export const PASSWORD_MAX_LENGTH = 20;
  *   - ends with 2 to 4 alphanumeric characters
  *   - no accents
  */
-const emailRegex = new RegExp(/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/);
+const emailRegex = new RegExp(/^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/);
 
 const inputHasErrors = (type, input) => {
     let errorConditions = [];
@@ -49,7 +49,6 @@ export const formHasErrors = (inputs) => {
 export const showFormErrors = (inputs, localDispatch) => {
     inputs.forEach((input) => {
         if (inputHasErrors(input.type, input.state)) {
-            console.log(input.type, " has errors");
             localDispatch({
                 type: input.showErrorsActionType,
                 payload: true,

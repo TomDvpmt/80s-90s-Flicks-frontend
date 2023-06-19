@@ -7,22 +7,23 @@ import { Box, Pagination as MUIPagination } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
+const Pagination = ({ reducer }) => {
     Pagination.propTypes = {
-        numberOfPages: PropTypes.number.isRequired,
-        currentPage: PropTypes.number.isRequired,
-        setCurrentPage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const dispatch = useDispatch();
 
     const handlePageChange = (event, value) => {
-        setCurrentPage(value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setCurrentPage,
+            payload: value,
+        });
     };
 
     useEffect(() => {
-        dispatch(setPageNumber(currentPage));
-    }, [currentPage, dispatch]);
+        dispatch(setPageNumber(reducer.state.currentPage));
+    }, [reducer.state.currentPage, dispatch]);
 
     return (
         <Box sx={{ m: "1rem", display: "flex", justifyContent: "center" }}>
@@ -30,8 +31,8 @@ const Pagination = ({ numberOfPages, currentPage, setCurrentPage }) => {
                 variant="outlined"
                 shape="rounded"
                 size="small"
-                count={numberOfPages}
-                page={currentPage}
+                count={reducer.state.numberOfPages}
+                page={reducer.state.currentPage}
                 onChange={handlePageChange}
             />
         </Box>

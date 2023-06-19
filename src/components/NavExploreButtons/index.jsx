@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -12,15 +12,40 @@ import { IconButton, Box } from "@mui/material";
 
 import { Search, Home } from "@mui/icons-material";
 
+const ACTIONS = {
+    setShowSearchMovieDialog: "setShowSearchMovieDialog",
+    setShowLoggedOnlyDialog: "setShowLoggedOnlyDialog",
+};
+
 const NavExploreButtons = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
-    const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
-    const [showLoggedOnlyDialog, setShowLoggedOnlyDialog] = useState(false);
+
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
+            case "setShowSearchMovieDialog":
+                return { ...state, showSearchMovieDialog: payload };
+            case "setShowLoggedOnlyDialog":
+                return { ...state, showLoggedOnlyDialog: payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
+
+    const [state, localDispatch] = useReducer(reducer, {
+        showSearchMovieDialog: false,
+        showLoggedOnlyDialog: false,
+    });
 
     const handleSearch = () => {
         isSignedIn
-            ? setShowSearchMovieDialog(true)
-            : setShowLoggedOnlyDialog(true);
+            ? localDispatch({
+                  type: ACTIONS.setShowSearchMovieDialog,
+                  payload: true,
+              })
+            : localDispatch({
+                  type: ACTIONS.setShowLoggedOnlyDialog,
+                  payload: true,
+              });
     };
 
     return (
@@ -39,13 +64,9 @@ const NavExploreButtons = () => {
                 </IconButton>
             </Box>
             <SearchMovieDialog
-                showSearchMovieDialog={showSearchMovieDialog}
-                setShowSearchMovieDialog={setShowSearchMovieDialog}
+                parentReducer={{ ACTIONS, state, localDispatch }}
             />
-            <LoggedOnlyDialog
-                showLoggedOnlyDialog={showLoggedOnlyDialog}
-                setShowLoggedOnlyDialog={setShowLoggedOnlyDialog}
-            />
+            <LoggedOnlyDialog reducer={{ ACTIONS, state, localDispatch }} />
         </>
     );
 };

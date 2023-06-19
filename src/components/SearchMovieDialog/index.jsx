@@ -35,13 +35,9 @@ const ACTIONS = {
     setIsLoading: "setIsLoading",
 };
 
-const SearchMovieDialog = ({
-    showSearchMovieDialog,
-    setShowSearchMovieDialog,
-}) => {
+const SearchMovieDialog = ({ parentReducer }) => {
     SearchMovieDialog.propTypes = {
-        showSearchMovieDialog: PropTypes.bool.isRequired,
-        setShowSearchMovieDialog: PropTypes.func.isRequired,
+        parentReducer: PropTypes.object.isRequired,
     };
 
     const reducer = (state, { type, payload }) => {
@@ -73,8 +69,10 @@ const SearchMovieDialog = ({
     };
 
     const handleClose = () => {
-        console.log("test");
-        setShowSearchMovieDialog(false);
+        parentReducer.localDispatch({
+            type: parentReducer.ACTIONS.setShowSearchMovieDialog,
+            payload: false,
+        });
     };
 
     useEffect(() => {
@@ -83,7 +81,7 @@ const SearchMovieDialog = ({
 
     useEffect(() => {
         dispatch({ type: ACTIONS.setQuery, payload: "" });
-    }, [showSearchMovieDialog]);
+    }, [parentReducer.state.showSearchMovieDialog]);
 
     useEffect(() => {
         dispatch({ type: ACTIONS.setIsLoading, payload: true });
@@ -123,9 +121,7 @@ const SearchMovieDialog = ({
                                         key={movie.id}
                                         movie={movie}
                                         imgSrc={imgSrc}
-                                        setShowSearchMovieDialog={
-                                            setShowSearchMovieDialog
-                                        }
+                                        reducer={parentReducer}
                                         location="searchMovieDialog"
                                     />
                                 );
@@ -137,11 +133,11 @@ const SearchMovieDialog = ({
             .finally(() =>
                 dispatch({ type: ACTIONS.setIsLoading, payload: false })
             );
-    }, [state.query, imageBaseUrl, language, setShowSearchMovieDialog]);
+    }, [state.query, imageBaseUrl, language, parentReducer]);
 
     return (
         <Dialog
-            open={showSearchMovieDialog}
+            open={parentReducer.state.showSearchMovieDialog}
             onClose={handleClose}
             fullWidth={isWiderThanSmallScreen}
             fullScreen={!isWiderThanSmallScreen}>

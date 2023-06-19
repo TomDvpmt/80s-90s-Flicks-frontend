@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -102,6 +102,7 @@ const Register = () => {
         e.preventDefault(e);
         localDispatch({ type: ACTIONS.setErrorMessage, payload: "" });
 
+        // form validation
         let inputs = [
             {
                 type: "username",
@@ -149,6 +150,8 @@ const Register = () => {
         }
 
         if (state.password !== state.passwordConfirm) return;
+
+        // submit
 
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
 

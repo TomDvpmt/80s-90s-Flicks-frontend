@@ -26,6 +26,7 @@ const ACTIONS = {
     setPersonActingMovies: "setPersonActingMovies",
     setPersonDirectingMovies: "setPersonDirectingMovies",
     setPersonWritingMovies: "setPersonWritingMovies",
+    setShowSearchMovieDialog: "setShowSearchMovieDialog",
     setIsLoading: "setIsLoading",
     setHasError: "setHasError",
 };
@@ -53,6 +54,8 @@ const Person = () => {
                 return { ...state, personDirectingMovies: payload };
             case "setPersonWritingMovies":
                 return { ...state, personWritingMovies: payload };
+            case "setShowSearchMovieDialog":
+                return { ...state, showSearchMovieDialog: payload };
             case "setIsLoading":
                 return { ...state, isLoading: payload };
             case "setHasError":
@@ -62,7 +65,7 @@ const Person = () => {
         }
     };
 
-    const [state, dispatch] = useReducer(reducer, {
+    const [state, localDispatch] = useReducer(reducer, {
         person: {},
         personFormatedName: "",
         personFormatedBirthday: "",
@@ -71,13 +74,14 @@ const Person = () => {
         personActingMovies: [],
         personDirectingMovies: [],
         personWritingMovies: [],
+        showSearchMovieDialog: false,
         isLoading: true,
         hasError: false,
     });
 
     useEffect(() => {
         state.person?.name &&
-            dispatch({
+            localDispatch({
                 type: ACTIONS.setPersonFormatedName,
                 payload: state.person.name.replace(" ", "_"),
             });
@@ -85,81 +89,75 @@ const Person = () => {
         const dateOptions = { year: "numeric", month: "long", day: "numeric" };
 
         const birthday = new Date(state.person.birthday);
-        dispatch({
+        localDispatch({
             type: ACTIONS.setPersonFormatedBirthday,
             payload: birthday.toLocaleDateString(language, dateOptions),
         });
 
         const deathday = new Date(state.person.deathday);
-        dispatch({
+        localDispatch({
             type: ACTIONS.setPersonFormatedDeathday,
             payload: deathday.toLocaleDateString(language, dateOptions),
         });
     }, [state.person, language]);
 
     useEffect(() => {
-        dispatch({ type: ACTIONS.setIsLoading, payload: true });
+        localDispatch({ type: ACTIONS.setIsLoading, payload: true });
 
         getPersonFullData(personId, language, imageBaseUrl)
             .then((personData) => {
                 if (!isEmptyObject(personData)) {
-                    dispatch({
+                    localDispatch({
                         type: ACTIONS.setPerson,
                         payload: personData.mainData,
                     });
-                    dispatch({
+                    localDispatch({
                         type: ACTIONS.setPersonImgUrl,
                         payload: personData.imgUrl,
                     });
-                    dispatch({
+
+                    const getListMovieCard = (movie) => (
+                        <ListMovieCard
+                            key={movie.id}
+                            movie={movie}
+                            imgSrc={movie.imgSrc}
+                            location="person"
+                            reducer={{
+                                ACTIONS,
+                                state,
+                                localDispatch,
+                            }}
+                        />
+                    );
+
+                    localDispatch({
                         type: ACTIONS.setPersonActingMovies,
                         payload: personData.filmography.actingMovies.map(
-                            (movie) => (
-                                <ListMovieCard
-                                    key={movie.id}
-                                    movie={movie}
-                                    imgSrc={movie.imgSrc}
-                                    location="person"
-                                />
-                            )
+                            (movie) => getListMovieCard(movie)
                         ),
                     });
-                    dispatch({
+                    localDispatch({
                         type: ACTIONS.setPersonDirectingMovies,
                         payload: personData.filmography.directingMovies.map(
-                            (movie) => (
-                                <ListMovieCard
-                                    key={movie.id}
-                                    movie={movie}
-                                    imgSrc={movie.imgSrc}
-                                    location="person"
-                                />
-                            )
+                            (movie) => getListMovieCard(movie)
                         ),
                     });
-                    dispatch({
+                    localDispatch({
                         type: ACTIONS.setPersonWritingMovies,
                         payload: personData.filmography.writingMovies.map(
-                            (movie) => (
-                                <ListMovieCard
-                                    key={movie.id}
-                                    movie={movie}
-                                    imgSrc={movie.imgSrc}
-                                    location="person"
-                                />
-                            )
+                            (movie) => getListMovieCard(movie)
                         ),
                     });
                 }
             })
             .catch((error) => {
                 console.error(error);
-                dispatch({ type: ACTIONS.setHasError, payload: true });
+                localDispatch({ type: ACTIONS.setHasError, payload: true });
             })
             .finally(() => {
-                dispatch({ type: ACTIONS.setIsLoading, payload: false });
+                localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             });
-    }, [personId, language, imageBaseUrl]);
+    }, [personId, language, imageBaseUrl, state]);
 
     return state.isLoading ? (
         <Loader />

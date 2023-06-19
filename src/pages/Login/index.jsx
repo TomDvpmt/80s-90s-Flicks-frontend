@@ -74,6 +74,8 @@ const Login = () => {
             localDispatch({ type: ACTIONS.setPassword, payload: "password" });
         }
 
+        // form validation
+
         let inputs = [
             {
                 type: "username",
@@ -91,6 +93,8 @@ const Login = () => {
             showFormErrors(inputs, localDispatch);
             return;
         }
+
+        // submit
 
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
 

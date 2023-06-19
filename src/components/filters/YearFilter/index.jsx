@@ -6,9 +6,9 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const YearFilter = ({ setCurrentPage }) => {
+const YearFilter = ({ reducer }) => {
     YearFilter.propTypes = {
-        setCurrentPage: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const yearOption = useSelector(selectFiltersYear);
@@ -20,7 +20,10 @@ const YearFilter = ({ setCurrentPage }) => {
     }
 
     const handleYearChange = (e) => {
-        setCurrentPage(1);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setCurrentPage,
+            payload: 1,
+        });
         dispatch(setYear(e.target.value));
     };
 

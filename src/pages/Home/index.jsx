@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
@@ -25,6 +25,9 @@ const ACTIONS = {
     setNumberOfPages: "setNumberOfPages",
     setNumberOfResults: "setNumberOfResults",
     setMovies: "setMovies",
+    setCurrentPage: "setCurrentPage",
+    setShowSearchMovieDialog: "setShowSearchMovieDialog",
+    setShowLoggedOnlyDialog: "setShowLoggedOnlyDialog",
     setLoading: "setLoading",
     setHasError: "setHasError",
 };
@@ -42,6 +45,12 @@ const Home = () => {
                 return { ...state, numberOfResults: payload };
             case "setMovies":
                 return { ...state, movies: payload };
+            case "setCurrentPage":
+                return { ...state, currentPage: payload };
+            case "setShowSearchMovieDialog":
+                return { ...state, showSearchMovieDialog: payload };
+            case "setShowLoggedOnlyDialog":
+                return { ...state, showLoggedOnlyDialog: payload };
             case "setLoading":
                 return { ...state, loading: payload };
             case "setHasError":
@@ -51,31 +60,36 @@ const Home = () => {
         }
     };
 
-    const [state, reducerDispatch] = useReducer(reducer, {
+    const [state, localDispatch] = useReducer(reducer, {
         numberOfPages: 1,
         numberOfResults: 0,
         movies: [],
+        currentPage: 1,
+        showSearchMovieDialog: false,
+        showLoggedOnlyDialog: false,
         loading: true,
         hasError: false,
     });
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [showSearchMovieDialog, setShowSearchMovieDialog] = useState(false);
-    const [showLoggedOnlyDialog, setShowLoggedOnlyDialog] = useState(false);
-
     const handleSearch = () => {
         isSignedIn
-            ? setShowSearchMovieDialog(true)
-            : setShowLoggedOnlyDialog(true);
+            ? localDispatch({
+                  type: ACTIONS.setShowSearchMovieDialog,
+                  payload: true,
+              })
+            : localDispatch({
+                  type: ACTIONS.setShowLoggedOnlyDialog,
+                  payload: true,
+              });
     };
 
     const handleFiltersClearAll = () => {
         dispatch(clearAll());
-        setCurrentPage(1);
+        localDispatch({ type: ACTIONS.setCurrentPage, payload: 1 });
     };
 
     useEffect(() => {
-        reducerDispatch({ type: ACTIONS.setLoading, payload: true });
+        localDispatch({ type: ACTIONS.setLoading, payload: true });
 
         const queryFilters = filters
             .filter((filter) => filter.value !== "")
@@ -87,11 +101,11 @@ const Home = () => {
         )
             .then((response) => response.json())
             .then((data) => {
-                reducerDispatch({
+                localDispatch({
                     type: ACTIONS.setNumberOfPages,
                     payload: data.total_pages > 500 ? 500 : data.total_pages,
                 });
-                reducerDispatch({
+                localDispatch({
                     type: ACTIONS.setNumberOfResults,
                     payload: data.total_results,
                 });
@@ -120,14 +134,14 @@ const Home = () => {
                         />
                     );
                 });
-                reducerDispatch({ type: ACTIONS.setMovies, payload: results });
+                localDispatch({ type: ACTIONS.setMovies, payload: results });
             })
             .catch((error) => {
-                reducerDispatch({ type: ACTIONS.setHasError, payload: true });
+                localDispatch({ type: ACTIONS.setHasError, payload: true });
                 console.error(error);
             })
             .finally(() => {
-                reducerDispatch({ type: ACTIONS.setLoading, payload: false });
+                localDispatch({ type: ACTIONS.setLoading, payload: false });
             });
     }, [filters]);
 
@@ -146,12 +160,10 @@ const Home = () => {
                         Recherche par titre
                     </Button>
                     <SearchMovieDialog
-                        showSearchMovieDialog={showSearchMovieDialog}
-                        setShowSearchMovieDialog={setShowSearchMovieDialog}
+                        parentReducer={{ ACTIONS, state, localDispatch }}
                     />
                     <LoggedOnlyDialog
-                        showLoggedOnlyDialog={showLoggedOnlyDialog}
-                        setShowLoggedOnlyDialog={setShowLoggedOnlyDialog}
+                        reducer={{ ACTIONS, state, localDispatch }}
                     />
                 </Box>
                 <Paper
@@ -176,7 +188,9 @@ const Home = () => {
                                 gap: "1rem",
                                 "& *": { flex: "1" },
                             }}>
-                            <YearFilter setCurrentPage={setCurrentPage} />
+                            <YearFilter
+                                reducer={{ ACTIONS, state, localDispatch }}
+                            />
                             <GenresFilter />
                         </Box>
                         <Button
@@ -205,11 +219,7 @@ const Home = () => {
                 </Paper>
                 {/* <Language /> */}
                 {state.movies?.length > 0 && (
-                    <Pagination
-                        numberOfPages={state.numberOfPages}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                    />
+                    <Pagination reducer={{ ACTIONS, state, localDispatch }} />
                 )}
             </Box>
             <Box component="section">
@@ -224,11 +234,7 @@ const Home = () => {
                 )}
             </Box>
             {state.movies?.length > 0 && (
-                <Pagination
-                    numberOfPages={state.numberOfPages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                />
+                <Pagination reducer={{ ACTIONS, state, localDispatch }} />
             )}
         </>
     );

@@ -21,6 +21,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import DeleteAccountDialog from "../../components/DeleteAccountDialog";
 
 import { API_BASE_URI } from "../../utils/config";
+import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import {
     Box,
@@ -148,6 +149,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // form validation
         if (
             prevUsername === state.username &&
             prevEmail === state.email &&
@@ -161,6 +163,35 @@ const Profile = () => {
             return;
         }
 
+        let inputs = [
+            {
+                type: "username",
+                state: state.username,
+                showErrorsActionType: ACTIONS.setShowUsernameError,
+            },
+            {
+                type: "email",
+                state: state.email,
+                showErrorsActionType: ACTIONS.setShowEmailError,
+            },
+            {
+                type: "firstName",
+                state: state.firstName,
+                showErrorsActionType: ACTIONS.setShowFirstNameError,
+            },
+            {
+                type: "lastName",
+                state: state.lastName,
+                showErrorsActionType: ACTIONS.setShowLastNameError,
+            },
+        ];
+
+        if (formHasErrors(inputs)) {
+            showFormErrors(inputs, localDispatch);
+            return;
+        }
+
+        // submit
         const response = await fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {

@@ -16,21 +16,23 @@ import { Close } from "@mui/icons-material";
 
 import PropTypes from "prop-types";
 
-const LoggedOnlyDialog = ({
-    showLoggedOnlyDialog,
-    setShowLoggedOnlyDialog,
-}) => {
+const LoggedOnlyDialog = ({ reducer }) => {
     LoggedOnlyDialog.propTypes = {
-        showLoggedOnlyDialog: PropTypes.bool.isRequired,
-        setShowLoggedOnlyDialog: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const handleClose = () => {
-        setShowLoggedOnlyDialog(false);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowLoggedOnlyDialog,
+            payload: false,
+        });
     };
 
     return (
-        <Dialog open={showLoggedOnlyDialog} onClose={handleClose} fullWidth>
+        <Dialog
+            open={reducer.state.showLoggedOnlyDialog}
+            onClose={handleClose}
+            fullWidth>
             <DialogTitle
                 sx={{
                     display: "flex",
@@ -66,6 +68,7 @@ const LoggedOnlyDialog = ({
                     component={RouterLink}
                     variant="contained"
                     to="/login"
+                    onClick={handleClose}
                     sx={{ color: theme.palette.text.darkBg }}>
                     Se connecter
                 </Button>
