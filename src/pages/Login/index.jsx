@@ -67,6 +67,13 @@ const Login = () => {
         e.preventDefault(e);
         localDispatch({ type: ACTIONS.setErrorMessage, payload: "" });
 
+        const isDemoSubmit = e.target.id === "demo";
+
+        if (isDemoSubmit) {
+            localDispatch({ type: ACTIONS.setUsername, payload: "DemoUser" });
+            localDispatch({ type: ACTIONS.setPassword, payload: "password" });
+        }
+
         let inputs = [
             {
                 type: "username",
@@ -80,7 +87,7 @@ const Login = () => {
             },
         ];
 
-        if (formHasErrors(inputs)) {
+        if (!isDemoSubmit && formHasErrors(inputs)) {
             showFormErrors(inputs, localDispatch);
             return;
         }
@@ -92,7 +99,7 @@ const Login = () => {
             password: state.password,
         };
 
-        if (e.target.id === "demo") {
+        if (isDemoSubmit) {
             loginData = {
                 username: "DemoUser",
                 password: "password",
