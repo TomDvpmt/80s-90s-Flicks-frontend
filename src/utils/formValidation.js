@@ -32,10 +32,13 @@ export const formHasErrors = (inputs) => {
     );
 };
 
-export const showFormErrors = (inputs) => {
+export const showFormErrors = (inputs, localDispatch) => {
     inputs.forEach((input) => {
         if (inputHasErrors(input.type, input.state)) {
-            input.showErrors(true);
+            localDispatch({
+                type: input.setShowErrorsActionType,
+                payload: true,
+            });
         }
     });
 };

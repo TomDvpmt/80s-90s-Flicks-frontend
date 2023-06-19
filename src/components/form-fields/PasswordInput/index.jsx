@@ -6,27 +6,26 @@ import {
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const PasswordInput = ({
-    password,
-    setPassword,
-    setErrorMessage,
-    showPasswordError,
-    setShowPasswordError,
-}) => {
+const PasswordInput = ({ reducer }) => {
     PasswordInput.propTypes = {
-        password: PropTypes.string.isRequired,
-        setPassword: PropTypes.func.isRequired,
-        setErrorMessage: PropTypes.func.isRequired,
-        showPasswordError: PropTypes.bool.isRequired,
-        setShowPasswordError: PropTypes.func.isRequired,
+        reducer: PropTypes.object.isRequired,
     };
 
     const helperText = `Le mot de passe doit comporter au moins ${PASSWORD_MIN_LENGTH} et au maximum ${PASSWORD_MAX_LENGTH} caractères.`;
 
     const handleChange = (e) => {
-        setErrorMessage("");
-        setShowPasswordError(false);
-        setPassword(e.target.value);
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setErrorMessage,
+            payload: "",
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setShowPasswordError,
+            payload: false,
+        });
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setPassword,
+            payload: e.target.value,
+        });
     };
 
     return (
@@ -38,10 +37,10 @@ const PasswordInput = ({
             name="password"
             type="password"
             label="Mot de passe"
-            value={password}
+            value={reducer.state.password}
             onChange={handleChange}
-            error={showPasswordError}
-            helperText={showPasswordError && helperText}
+            error={reducer.state.showPasswordError}
+            helperText={reducer.state.showPasswordError && helperText}
         />
     );
 };

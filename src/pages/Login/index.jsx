@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,19 +16,48 @@ import { Box, Link, Button, Typography } from "@mui/material";
 
 import theme from "../../styles/theme";
 
+const ACTIONS = {
+    setUsername: "setUsername",
+    setShowUsernameError: "setShowUsernameError",
+    setPassword: "setPassword",
+    setShowPasswordError: "setShowPasswordError",
+    setErrorMessage: "setErrorMessage",
+    setIsLoading: "setIsLoading",
+};
+
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const isSignedIn = useSelector(selectUserIsSignedIn);
 
-    const [username, setUsername] = useState("");
-    const [showUsernameError, setShowUsernameError] = useState(false);
-    const [password, setPassword] = useState("");
-    const [showPasswordError, setShowPasswordError] = useState(false);
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
+            case "setUsername":
+                return { ...state, username: payload };
+            case "setShowUsernameError":
+                return { ...state, showUsernameError: payload };
+            case "setPassword":
+                return { ...state, password: payload };
+            case "setShowPasswordError":
+                return { ...state, showPasswordError: payload };
+            case "setErrorMessage":
+                return { ...state, errorMessage: payload };
+            case "setIsLoading":
+                return { ...state, isLoading: payload };
+            default:
+                throw new Error("Reducer: unknown action.");
+        }
+    };
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const [state, localDispatch] = useReducer(reducer, {
+        username: "",
+        showUsernameError: false,
+        password: "",
+        showPasswordError: false,
+        errorMessage: "",
+        isLoading: false,
+    });
 
     useEffect(() => {
         isSignedIn && navigate("/");
@@ -36,31 +65,31 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(e);
-        setErrorMessage("");
+        localDispatch({ type: ACTIONS.setErrorMessage, payload: "" });
 
         let inputs = [
             {
                 type: "username",
-                state: username,
-                showErrors: setShowUsernameError,
+                state: state.username,
+                setShowErrorsActionType: ACTIONS.setShowUsernameError,
             },
             {
                 type: "password",
-                state: password,
-                showErrors: setShowPasswordError,
+                state: state.password,
+                setShowErrorsActionType: ACTIONS.setShowPasswordError,
             },
         ];
 
         if (formHasErrors(inputs)) {
-            showFormErrors(inputs);
+            showFormErrors(inputs, localDispatch);
             return;
         }
 
-        setIsLoading(true);
+        localDispatch({ type: ACTIONS.setIsLoading, payload: true });
 
         let loginData = {
-            username,
-            password,
+            username: state.username,
+            password: state.password,
         };
 
         if (e.target.id === "demo") {
@@ -81,19 +110,22 @@ const Login = () => {
             });
             const data = await response.json();
             if (!response.ok) {
-                setIsLoading(false);
-                setErrorMessage(data.message);
+                localDispatch({ type: ACTIONS.setIsLoading, payload: false });
+                localDispatch({
+                    type: "setErrorMessage",
+                    payload: data.message,
+                });
                 throw new Error(data.message);
             }
             dispatch(auth(data.token));
             navigate("/");
         } catch (error) {
-            setIsLoading(false);
+            localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             console.error(error);
         }
     };
 
-    return isLoading ? (
+    return state.isLoading ? (
         <Loader />
     ) : (
         <Box
@@ -112,21 +144,9 @@ const Login = () => {
                     Utilisateur démo
                 </Button>
             </Box>
-            <ErrorMessage errorMessage={errorMessage} />
-            <UsernameInput
-                username={username}
-                setUsername={setUsername}
-                setErrorMessage={setErrorMessage}
-                showUsernameError={showUsernameError}
-                setShowUsernameError={setShowUsernameError}
-            />
-            <PasswordInput
-                password={password}
-                setPassword={setPassword}
-                setErrorMessage={setErrorMessage}
-                showPasswordError={showPasswordError}
-                setShowPasswordError={setShowPasswordError}
-            />
+            <ErrorMessage errorMessage={state.errorMessage} />
+            <UsernameInput reducer={{ ACTIONS, state, localDispatch }} />
+            <PasswordInput reducer={{ ACTIONS, state, localDispatch }} />
             <Box
                 sx={{
                     display: "flex",
