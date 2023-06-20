@@ -241,9 +241,7 @@ const Home = () => {
                 ) : state.hasError ? (
                     <ErrorBoundary page="home" />
                 ) : (
-                    <>
-                        <MovieCardsGrid movies={state.movies} />
-                    </>
+                    <MovieCardsGrid movies={state.movies} />
                 )}
             </Box>
             {state.movies?.length > 0 && (

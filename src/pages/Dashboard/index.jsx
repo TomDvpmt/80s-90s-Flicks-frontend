@@ -46,7 +46,7 @@ const Dashboard = () => {
                 throw new Error("Reducer: unknown action.");
         }
     };
-    const [state, dispatch] = useReducer(reducer, {
+    const [state, localDispatch] = useReducer(reducer, {
         uniqueMovies: [],
         moviesSeenLinks: [],
         moviesToSeeLinks: [],
@@ -57,8 +57,8 @@ const Dashboard = () => {
 
     // Get all movies data from MoviesSeen and MoviesToSee, without duplicates
     useEffect(() => {
-        dispatch({ type: ACTIONS.setHasError, payload: false });
-        dispatch({ type: ACTIONS.setLoading, payload: true });
+        localDispatch({ type: ACTIONS.setHasError, payload: false });
+        localDispatch({ type: ACTIONS.setLoading, payload: true });
 
         const allMoviesIds = moviesSeen?.concat(moviesToSee).concat(favorites);
         Promise.all(
@@ -75,13 +75,16 @@ const Dashboard = () => {
                     })
                     .catch((error) => {
                         console.log(error);
-                        dispatch({ type: ACTIONS.setHasError, payload: true });
+                        localDispatch({
+                            type: ACTIONS.setHasError,
+                            payload: true,
+                        });
                     });
             })
         )
             .then((data) =>
                 // getting rid of duplicates
-                dispatch({
+                localDispatch({
                     type: ACTIONS.setUniqueMovies,
                     payload: data.filter(
                         (movie, index, array) =>
@@ -92,7 +95,7 @@ const Dashboard = () => {
             )
             .catch((error) => console.log(error))
             .finally(() =>
-                dispatch({ type: ACTIONS.setLoading, payload: false })
+                localDispatch({ type: ACTIONS.setLoading, payload: false })
             );
     }, [moviesSeen, moviesToSee, favorites, language]);
 
@@ -111,15 +114,15 @@ const Dashboard = () => {
                     );
                 });
 
-        dispatch({
+        localDispatch({
             type: ACTIONS.setMoviesSeenLinks,
             payload: getLinks(state.uniqueMovies, moviesSeen),
         });
-        dispatch({
+        localDispatch({
             type: ACTIONS.setMoviesToSeeLinks,
             payload: getLinks(state.uniqueMovies, moviesToSee),
         });
-        dispatch({
+        localDispatch({
             type: ACTIONS.setFavoritesLinks,
             payload: getLinks(state.uniqueMovies, favorites),
         });

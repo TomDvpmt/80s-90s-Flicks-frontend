@@ -6,10 +6,12 @@ import themeReducer from "../features/themeSlice";
 import tmdbReducer from "../features/tmdbSlice";
 import pageReducer from "../features/pageSlice";
 import dialogsReducer from "../features/dialogsSlice";
+import dashboardReducer from "../features/dashboardSlice";
 
 const store = configureStore({
     reducer: {
         user: userReducer,
+        dashboard: dashboardReducer,
         page: pageReducer,
         filters: filtersReducer,
         dialogs: dialogsReducer,

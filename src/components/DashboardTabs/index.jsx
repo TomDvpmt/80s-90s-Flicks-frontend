@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import { selectUserLanguage } from "../../features/userSlice";
 
+import DashboardTabPanel from "../DashboardTabPanel";
 import MovieCardsGrid from "../MovieCardsGrid";
 import Loader from "../Loader";
 import ErrorBoundary from "../ErrorBoundary";
@@ -13,24 +14,6 @@ import { LocalMovies, Check, Star } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import PropTypes from "prop-types";
-
-const TabPanel = ({ children, index, value }) => {
-    TabPanel.propTypes = {
-        children: PropTypes.node,
-        index: PropTypes.number.isRequired,
-        value: PropTypes.number.isRequired,
-    };
-    return (
-        <Box
-            role="tabpanel"
-            hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
-            flexGrow="1">
-            {value === index && <Box>{children}</Box>}
-        </Box>
-    );
-};
 
 const DashboardTabs = ({
     moviesToSeeLinks,
@@ -48,6 +31,7 @@ const DashboardTabs = ({
     };
 
     const language = useSelector(selectUserLanguage);
+
     const [value, setValue] = useState(0);
 
     const mdBreakpoint = useMediaQuery("(min-width:900px)");
@@ -163,16 +147,18 @@ const DashboardTabs = ({
                             <ErrorBoundary page="dashboard" />
                         </Box>
                     ) : (
-                        dashboardTabs?.map((item, index) => (
-                            <TabPanel
-                                key={index}
-                                value={value}
-                                index={index}
-                                children={
-                                    <MovieCardsGrid movies={item.movies} />
-                                }
-                            />
-                        ))
+                        dashboardTabs?.map((item, index) => {
+                            return (
+                                <DashboardTabPanel
+                                    key={index}
+                                    value={value}
+                                    index={index}
+                                    children={
+                                        <MovieCardsGrid movies={item.movies} />
+                                    }
+                                />
+                            );
+                        })
                     )}
                 </Box>
             )}

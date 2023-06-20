@@ -67,7 +67,6 @@ Le back-end : [https://github.com/TomDvpmt/80s-90s-Flicks-backend](https://githu
 -   module de recherche de personnes
 -   ajout des bandes-annonces
 -   ajout des producteurs
--   possibilité d'ajouter une photo de profil
 -   création de listes par l'utilisateur
 
 # Installation
