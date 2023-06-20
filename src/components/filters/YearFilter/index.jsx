@@ -36,7 +36,7 @@ const YearFilter = ({ reducer }) => {
                 onChange={handleYearChange}
                 value={yearOption}>
                 {years.map((year) => (
-                    <MenuItem key={year} value={year}>
+                    <MenuItem key={year} value={year} dense>
                         {year}
                     </MenuItem>
                 ))}

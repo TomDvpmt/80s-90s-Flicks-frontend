@@ -11,10 +11,8 @@ import {
     NUMBER_OF_ACTORS_ON_MOVIE_CARD,
 } from "../../config/movie";
 
-import MovieDirector from "../MovieDirector";
-import MovieWriter from "../MovieWriter";
-import MovieActor from "../MovieActor";
 import MovieReleaseDate from "../MovieReleaseDate";
+import PersonLabel from "../PersonLabel";
 
 import { Typography, Box } from "@mui/material";
 
@@ -53,7 +51,11 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                 setDirectors(
                     movieDirectors.map((director, index) => (
                         <Typography key={index} component="span">
-                            <MovieDirector director={director} />
+                            <PersonLabel
+                                person={director}
+                                isLink={page === "movie"}
+                                isStrong={true}
+                            />
                             {index === movieDirectors.length - 1 ? "" : ", "}
                         </Typography>
                     ))
@@ -71,7 +73,11 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                 setWriters(
                     movieWriters.map((writer, index) => (
                         <Typography key={index} component="span">
-                            <MovieWriter writer={writer} />
+                            <PersonLabel
+                                person={writer}
+                                isLink={page === "movie"}
+                                isStrong={page === "movie"}
+                            />
                             {index === movieWriters.length - 1 ? "" : ", "}
                         </Typography>
                     ))
@@ -93,7 +99,11 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                 setActors(
                     movieActors.map((actor, index) => (
                         <Typography key={index} component="span">
-                            <MovieActor actor={actor} />
+                            <PersonLabel
+                                person={actor}
+                                isLink={page === "movie"}
+                                isStrong={page === "movie"}
+                            />
                             {index === movieActors.length - 1 ? "" : ", "}
                         </Typography>
                     ))
