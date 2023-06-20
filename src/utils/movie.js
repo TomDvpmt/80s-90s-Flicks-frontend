@@ -121,39 +121,39 @@ const getMovieActorsElements = (page, cast) => {
     const numberOfActors = page === "home" || page === "dashboard" ? 3 : 10;
     let actorsElements;
 
+    const numberOfActorsToDisplay =
+        cast.length >= numberOfActors ? numberOfActors : cast.length;
+
     actorsElements =
         cast && cast.length > 0
-            ? cast
-                  .slice(
-                      0,
-                      cast.length >= numberOfActors
-                          ? numberOfActors
-                          : cast.length
-                  )
-                  .map((actor, index) => {
-                      if (page === "home" || page === "dashboard") {
-                          return (
-                              <Typography key={actor.id} component="span">
+            ? cast.slice(0, numberOfActorsToDisplay).map((actor, index) => {
+                  if (page === "home" || page === "dashboard") {
+                      return (
+                          <Typography key={actor.id} component="span">
+                              {actor.name}
+                              {index === numberOfActorsToDisplay - 1
+                                  ? ""
+                                  : ", "}
+                          </Typography>
+                      );
+                  } else if (page === "movie") {
+                      return (
+                          <Box key={actor.id} component="span">
+                              <Link
+                                  component={RouterLink}
+                                  to={`/person/${actor.id}`}
+                                  underline="hover"
+                                  color={theme.palette.text.lightBg}>
                                   {actor.name}
-                                  {index === numberOfActors - 1 ? "" : ", "}
-                              </Typography>
-                          );
-                      } else if (page === "movie") {
-                          return (
-                              <Box key={actor.id} component="span">
-                                  <Link
-                                      component={RouterLink}
-                                      to={`/person/${actor.id}`}
-                                      underline="hover"
-                                      color={theme.palette.text.lightBg}>
-                                      {actor.name}
-                                  </Link>
-                                  {index === numberOfActors - 1 ? "" : ", "}
-                              </Box>
-                          );
-                      }
-                      return null;
-                  })
+                              </Link>
+                              {index === numberOfActorsToDisplay - 1
+                                  ? ""
+                                  : ", "}
+                          </Box>
+                      );
+                  }
+                  return null;
+              })
             : [""];
     return actorsElements;
 };

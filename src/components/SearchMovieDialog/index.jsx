@@ -1,8 +1,12 @@
 import { useEffect, useReducer } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { selectUserLanguage } from "../../features/userSlice";
 import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
+import {
+    setShowSearchMovieDialog,
+    selectShowSearchMovieDialog,
+} from "../../features/dialogsSlice";
 
 import {
     TMDB_API_KEY,
@@ -27,18 +31,15 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-import PropTypes from "prop-types";
-
 const ACTIONS = {
     setQuery: "setQuery",
     setResults: "setResults",
     setIsLoading: "setIsLoading",
 };
 
-const SearchMovieDialog = ({ parentReducer }) => {
-    SearchMovieDialog.propTypes = {
-        parentReducer: PropTypes.object.isRequired,
-    };
+const SearchMovieDialog = () => {
+    const showSearchMovieDialog = useSelector(selectShowSearchMovieDialog);
+    const dispatch = useDispatch();
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
@@ -53,7 +54,7 @@ const SearchMovieDialog = ({ parentReducer }) => {
         }
     };
 
-    const [state, dispatch] = useReducer(reducer, {
+    const [state, localDispatch] = useReducer(reducer, {
         query: "",
         results: [],
         isLoading: false,
@@ -65,26 +66,23 @@ const SearchMovieDialog = ({ parentReducer }) => {
     const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
     const handleChange = (e) => {
-        dispatch({ type: ACTIONS.setQuery, payload: e.target.value });
+        localDispatch({ type: ACTIONS.setQuery, payload: e.target.value });
     };
 
     const handleClose = () => {
-        parentReducer.localDispatch({
-            type: parentReducer.ACTIONS.setShowSearchMovieDialog,
-            payload: false,
-        });
+        dispatch(setShowSearchMovieDialog(false));
     };
 
     useEffect(() => {
-        dispatch({ type: ACTIONS.setResults, payload: [] });
+        localDispatch({ type: ACTIONS.setResults, payload: [] });
     }, []);
 
     useEffect(() => {
-        dispatch({ type: ACTIONS.setQuery, payload: "" });
-    }, [parentReducer.state.showSearchMovieDialog]);
+        localDispatch({ type: ACTIONS.setQuery, payload: "" });
+    }, [showSearchMovieDialog]);
 
     useEffect(() => {
-        dispatch({ type: ACTIONS.setIsLoading, payload: true });
+        localDispatch({ type: ACTIONS.setIsLoading, payload: true });
         fetch(
             `${TMDB_BASE_URI}/search/movie?api_key=${TMDB_API_KEY}&query=${state.query}&include_adult=false&language=${language}`
         )
@@ -102,7 +100,7 @@ const SearchMovieDialog = ({ parentReducer }) => {
                         )
                     );
                 });
-                dispatch({
+                localDispatch({
                     type: ACTIONS.setResults,
                     payload:
                         movies.length === 0 ? (
@@ -121,8 +119,6 @@ const SearchMovieDialog = ({ parentReducer }) => {
                                         key={movie.id}
                                         movie={movie}
                                         imgSrc={imgSrc}
-                                        reducer={parentReducer}
-                                        location="searchMovieDialog"
                                     />
                                 );
                             })
@@ -131,13 +127,13 @@ const SearchMovieDialog = ({ parentReducer }) => {
             })
             .catch((error) => console.log(error))
             .finally(() =>
-                dispatch({ type: ACTIONS.setIsLoading, payload: false })
+                localDispatch({ type: ACTIONS.setIsLoading, payload: false })
             );
-    }, [state.query, imageBaseUrl, language, parentReducer]);
+    }, [state.query, imageBaseUrl, language]);
 
     return (
         <Dialog
-            open={parentReducer.state.showSearchMovieDialog}
+            open={showSearchMovieDialog}
             onClose={handleClose}
             fullWidth={isWiderThanSmallScreen}
             fullScreen={!isWiderThanSmallScreen}>

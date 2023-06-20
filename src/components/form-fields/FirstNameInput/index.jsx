@@ -21,7 +21,7 @@ const FirstNameInput = ({ reducer }) => {
         <TextField
             fullWidth
             margin="dense"
-            id="firstName"
+            // id="firstName"
             name="firstName"
             type="text"
             label="Prénom"

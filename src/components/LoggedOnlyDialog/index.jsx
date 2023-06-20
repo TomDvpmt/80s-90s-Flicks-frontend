@@ -1,11 +1,20 @@
-import { Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+    setShowLoginDialog,
+    setShowRegisterDialog,
+    setShowLoggedOnlyDialog,
+    selectShowLoggedOnlyDialog,
+} from "../../features/dialogsSlice";
+
+import LoginDialog from "../LoginDialog";
+import RegisterDialog from "../RegisterDialog";
 
 import theme from "../../styles/theme";
 import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogContentText,
     DialogActions,
     Button,
     IconButton,
@@ -14,38 +23,39 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-import PropTypes from "prop-types";
-
-const LoggedOnlyDialog = ({ reducer }) => {
-    LoggedOnlyDialog.propTypes = {
-        reducer: PropTypes.object.isRequired,
-    };
+const LoggedOnlyDialog = () => {
+    const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
+    const dispatch = useDispatch();
 
     const handleClose = () => {
-        reducer.localDispatch({
-            type: reducer.ACTIONS.setShowLoggedOnlyDialog,
-            payload: false,
-        });
+        dispatch(setShowLoggedOnlyDialog(false));
+    };
+
+    const handleLogin = () => {
+        dispatch(setShowLoginDialog(true));
+        handleClose();
+    };
+
+    const handleRegister = () => {
+        dispatch(setShowRegisterDialog(true));
+        handleClose();
     };
 
     return (
-        <Dialog
-            open={reducer.state.showLoggedOnlyDialog}
-            onClose={handleClose}
-            fullWidth>
-            <DialogTitle
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}>
-                Fonctionnalité réservée aux membres
-                <IconButton onClick={handleClose}>
-                    <Close />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText>
+        <>
+            <Dialog open={showLoggedOnlyDialog} onClose={handleClose} fullWidth>
+                <DialogTitle
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}>
+                    Fonctionnalité réservée aux membres
+                    <IconButton onClick={handleClose}>
+                        <Close />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
                     <Typography>
                         Cette fonctionnalité est réservée aux utilisateurs
                         connectés.
@@ -55,26 +65,30 @@ const LoggedOnlyDialog = ({ reducer }) => {
                             Pas encore inscrit ?{" "}
                         </Typography>
                         <Link
-                            component={RouterLink}
-                            to="/register"
-                            sx={{ color: theme.palette.primary.main }}>
+                            onClick={handleRegister}
+                            sx={{
+                                color: theme.palette.primary.main,
+                                "&:hover": {
+                                    cursor: "pointer",
+                                },
+                            }}>
                             Créer un compte
                         </Link>
                     </Typography>
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    component={RouterLink}
-                    variant="contained"
-                    to="/login"
-                    onClick={handleClose}
-                    sx={{ color: theme.palette.text.darkBg }}>
-                    Se connecter
-                </Button>
-                <Button onClick={handleClose}>Annuler</Button>
-            </DialogActions>
-        </Dialog>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={handleLogin}
+                        sx={{ color: theme.palette.text.darkBg }}>
+                        Se connecter
+                    </Button>
+                    <Button onClick={handleClose}>Annuler</Button>
+                </DialogActions>
+            </Dialog>
+            <LoginDialog />
+            <RegisterDialog />
+        </>
     );
 };
 

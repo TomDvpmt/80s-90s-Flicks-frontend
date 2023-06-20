@@ -28,7 +28,7 @@ const PasswordConfirmInput = ({ reducer }) => {
             required
             fullWidth
             margin="dense"
-            id="passwordConfirm"
+            // id="passwordConfirm"
             name="passwordConfirm"
             type="password"
             label="Confirmez votre mot de passe"

@@ -192,39 +192,57 @@ const Profile = () => {
         }
 
         // submit
-        const response = await fetch(`${API_BASE_URI}/API/users/${userId}`, {
-            method: "PUT",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: JSON.stringify({
-                username: state.username,
-                email: state.email,
-                firstName: state.firstName,
-                lastName: state.lastName,
-            }),
-            credentials: "include",
-        });
-        const data = await response.json();
-        if (data.statusCode >= 400) {
-            localDispatch({
-                type: ACTIONS.setErrorMessage,
-                payload: data.message,
-            });
-            return;
-        }
 
-        dispatch(
-            setUserInfo({
-                id: userId,
-                username: data.username,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.email,
-            })
-        );
-        localDispatch({ type: ACTIONS.setShowUpdateValidation, payload: true });
-        localDispatch({ type: ACTIONS.setShowUpdateInfosForm, payload: false });
+        const updateData = {
+            username: state.username,
+            email: state.email,
+            firstName: state.firstName,
+            lastName: state.lastName,
+        };
+
+        try {
+            const response = await fetch(
+                `${API_BASE_URI}/API/users/${userId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(updateData),
+                    credentials: "include",
+                }
+            );
+            const data = await response.json();
+            if (!response.ok) {
+                localDispatch({
+                    type: ACTIONS.setErrorMessage,
+                    payload: data.message,
+                });
+                throw new Error(data.message);
+            }
+
+            console.log(data);
+
+            dispatch(
+                setUserInfo({
+                    id: userId,
+                    username: data.username,
+                    email: data.email,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                })
+            );
+            localDispatch({
+                type: ACTIONS.setShowUpdateValidation,
+                payload: true,
+            });
+            localDispatch({
+                type: ACTIONS.setShowUpdateInfosForm,
+                payload: false,
+            });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const leftCellStyle = {

@@ -26,7 +26,6 @@ const ACTIONS = {
     setPersonActingMovies: "setPersonActingMovies",
     setPersonDirectingMovies: "setPersonDirectingMovies",
     setPersonWritingMovies: "setPersonWritingMovies",
-    setShowSearchMovieDialog: "setShowSearchMovieDialog",
     setIsLoading: "setIsLoading",
     setHasError: "setHasError",
 };
@@ -54,8 +53,6 @@ const Person = () => {
                 return { ...state, personDirectingMovies: payload };
             case "setPersonWritingMovies":
                 return { ...state, personWritingMovies: payload };
-            case "setShowSearchMovieDialog":
-                return { ...state, showSearchMovieDialog: payload };
             case "setIsLoading":
                 return { ...state, isLoading: payload };
             case "setHasError":
@@ -74,11 +71,11 @@ const Person = () => {
         personActingMovies: [],
         personDirectingMovies: [],
         personWritingMovies: [],
-        showSearchMovieDialog: false,
         isLoading: true,
         hasError: false,
     });
 
+    // birthday - deathday
     useEffect(() => {
         state.person?.name &&
             localDispatch({
@@ -101,6 +98,7 @@ const Person = () => {
         });
     }, [state.person, language]);
 
+    // person data
     useEffect(() => {
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
 
@@ -121,12 +119,6 @@ const Person = () => {
                             key={movie.id}
                             movie={movie}
                             imgSrc={movie.imgSrc}
-                            location="person"
-                            reducer={{
-                                ACTIONS,
-                                state,
-                                localDispatch,
-                            }}
                         />
                     );
 
@@ -157,7 +149,7 @@ const Person = () => {
             .finally(() => {
                 localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             });
-    }, [personId, language, imageBaseUrl, state]);
+    }, [personId, language, imageBaseUrl]);
 
     return state.isLoading ? (
         <Loader />

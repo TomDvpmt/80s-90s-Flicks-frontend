@@ -29,7 +29,7 @@ const EmailInput = ({ reducer }) => {
             required
             fullWidth
             margin="dense"
-            id="email"
+            // id="email"
             name="email"
             type="text"
             label="Adresse e-mail"

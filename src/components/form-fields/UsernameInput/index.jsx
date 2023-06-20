@@ -34,7 +34,7 @@ const UsernameInput = ({ reducer }) => {
             required
             margin="dense"
             fullWidth
-            id="username"
+            // id="username"
             name="username"
             type="username"
             label="Nom d'utilisateur"

@@ -33,7 +33,7 @@ const PasswordInput = ({ reducer }) => {
             required
             fullWidth
             margin="dense"
-            id="password"
+            // id="password"
             name="password"
             type="password"
             label="Mot de passe"

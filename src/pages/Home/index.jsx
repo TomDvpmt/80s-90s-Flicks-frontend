@@ -13,7 +13,16 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
 import { selectUserIsSignedIn } from "../../features/userSlice";
-import { clearAll, selectFiltersAll } from "../../features/filtersSlice";
+import {
+    clearAll,
+    selectFiltersAll,
+    selectFiltersActiveGenres,
+    selectFiltersYear,
+} from "../../features/filtersSlice";
+import {
+    setShowLoggedOnlyDialog,
+    setShowSearchMovieDialog,
+} from "../../features/dialogsSlice";
 
 import { TMDB_API_KEY, TMDB_BASE_URI } from "../../utils/config";
 
@@ -22,12 +31,11 @@ import theme from "../../styles/theme";
 import { Box, Paper, Typography, Button } from "@mui/material";
 
 const ACTIONS = {
+    setHasActiveFilters: "setHasActiveFilters",
     setNumberOfPages: "setNumberOfPages",
     setNumberOfResults: "setNumberOfResults",
     setMovies: "setMovies",
     setCurrentPage: "setCurrentPage",
-    setShowSearchMovieDialog: "setShowSearchMovieDialog",
-    setShowLoggedOnlyDialog: "setShowLoggedOnlyDialog",
     setLoading: "setLoading",
     setHasError: "setHasError",
 };
@@ -35,10 +43,14 @@ const ACTIONS = {
 const Home = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
     const filters = useSelector(selectFiltersAll);
+    const activeGenres = useSelector(selectFiltersActiveGenres);
+    const activeYear = useSelector(selectFiltersYear);
     const dispatch = useDispatch();
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
+            case "setHasActiveFilters":
+                return { ...state, hasActiveFilters: payload };
             case "setNumberOfPages":
                 return { ...state, numberOfPages: payload };
             case "setNumberOfResults":
@@ -47,10 +59,6 @@ const Home = () => {
                 return { ...state, movies: payload };
             case "setCurrentPage":
                 return { ...state, currentPage: payload };
-            case "setShowSearchMovieDialog":
-                return { ...state, showSearchMovieDialog: payload };
-            case "setShowLoggedOnlyDialog":
-                return { ...state, showLoggedOnlyDialog: payload };
             case "setLoading":
                 return { ...state, loading: payload };
             case "setHasError":
@@ -61,29 +69,35 @@ const Home = () => {
     };
 
     const [state, localDispatch] = useReducer(reducer, {
+        hasActiveFilters: false,
         numberOfPages: 1,
         numberOfResults: 0,
         movies: [],
         currentPage: 1,
-        showSearchMovieDialog: false,
-        showLoggedOnlyDialog: false,
         loading: true,
         hasError: false,
     });
 
+    useEffect(() => {
+        localDispatch({
+            type: ACTIONS.setHasActiveFilters,
+            payload:
+                activeGenres.length === 0 && activeYear === "1980-1999"
+                    ? false
+                    : true,
+        });
+    }, [activeGenres, activeYear]);
+
+    useEffect(() => {}, [state.hasActiveFilters]);
+
     const handleSearch = () => {
         isSignedIn
-            ? localDispatch({
-                  type: ACTIONS.setShowSearchMovieDialog,
-                  payload: true,
-              })
-            : localDispatch({
-                  type: ACTIONS.setShowLoggedOnlyDialog,
-                  payload: true,
-              });
+            ? dispatch(setShowSearchMovieDialog(true))
+            : dispatch(setShowLoggedOnlyDialog(true));
     };
 
     const handleFiltersClearAll = () => {
+        if (!state.hasActiveFilters) return;
         dispatch(clearAll());
         localDispatch({ type: ACTIONS.setCurrentPage, payload: 1 });
     };
@@ -159,12 +173,8 @@ const Home = () => {
                         sx={{ color: "white" }}>
                         Recherche par titre
                     </Button>
-                    <SearchMovieDialog
-                        parentReducer={{ ACTIONS, state, localDispatch }}
-                    />
-                    <LoggedOnlyDialog
-                        reducer={{ ACTIONS, state, localDispatch }}
-                    />
+                    <SearchMovieDialog />
+                    <LoggedOnlyDialog />
                 </Box>
                 <Paper
                     elevation={2}
@@ -196,11 +206,14 @@ const Home = () => {
                         <Button
                             variant="outlined"
                             onClick={handleFiltersClearAll}
+                            disabled={!state.hasActiveFilters}
                             sx={{
                                 maxWidth: "max-content",
                                 margin: "auto",
                             }}>
-                            Aucun filtre
+                            {state.hasActiveFilters
+                                ? "Supprimer les filtres"
+                                : "Aucun filtre actif"}
                         </Button>
                     </Box>
                 </Paper>

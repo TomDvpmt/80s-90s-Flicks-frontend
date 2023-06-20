@@ -89,8 +89,15 @@ const GenresFilter = () => {
                     );
                 }}>
                 {allGenres.map((genre) => (
-                    <MenuItem key={genre.id} id={genre.id} value={genre.id}>
-                        <Checkbox checked={activeGenres.includes(genre.id)} />
+                    <MenuItem
+                        key={genre.id}
+                        id={genre.id}
+                        value={genre.id}
+                        dense>
+                        <Checkbox
+                            checked={activeGenres.includes(genre.id)}
+                            sx={{ pt: "0", pb: "0" }}
+                        />
                         <ListItemText primary={genre.name} />
                     </MenuItem>
                 ))}

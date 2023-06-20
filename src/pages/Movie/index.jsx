@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import MovieBackdrop from "../../components/MovieBackdrop";
 import MoviePoster from "../../components/MoviePoster";
@@ -21,6 +21,7 @@ import {
     selectUserIsSignedIn,
     selectUserLanguage,
 } from "../../features/userSlice";
+import { setShowSearchMovieDialog } from "../../features/dialogsSlice";
 
 import { getMovieData } from "../../utils/movie";
 import { isEmptyObject } from "../../utils/helpers";
@@ -40,6 +41,7 @@ const Movie = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
     const language = useSelector(selectUserLanguage);
 
+    const dispatch = useDispatch();
     const { id } = useParams();
     const movieId = parseInt(id);
 
@@ -58,7 +60,7 @@ const Movie = () => {
         }
     };
 
-    const [state, dispatch] = useReducer(reducer, {
+    const [state, localDispatch] = useReducer(reducer, {
         langData: {},
         movie: {},
         isLoading: true,
@@ -66,17 +68,21 @@ const Movie = () => {
     });
 
     useEffect(() => {
-        dispatch({
+        dispatch(setShowSearchMovieDialog(false));
+    }, [dispatch]);
+
+    useEffect(() => {
+        localDispatch({
             type: ACTIONS.setLangData,
             payload: theme.languages[language].pages.movie,
         });
     }, [language]);
 
     useEffect(() => {
-        dispatch({ type: ACTIONS.setIsLoading, payload: true });
+        localDispatch({ type: ACTIONS.setIsLoading, payload: true });
         getMovieData(movieId, language)
             .then((movieData) =>
-                dispatch({
+                localDispatch({
                     type: ACTIONS.setMovie,
                     payload: {
                         ...movieData,
@@ -86,10 +92,10 @@ const Movie = () => {
             )
             .catch((error) => {
                 console.error(error);
-                dispatch({ type: ACTIONS.setHasError, payload: true });
+                localDispatch({ type: ACTIONS.setHasError, payload: true });
             })
             .finally(() =>
-                dispatch({ type: ACTIONS.setIsLoading, payload: false })
+                localDispatch({ type: ACTIONS.setIsLoading, payload: false })
             );
     }, [movieId, language]);
 
