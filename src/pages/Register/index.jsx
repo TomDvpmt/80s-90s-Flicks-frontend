@@ -1,7 +1,7 @@
 import RegisterForm from "../../components/RegisterForm";
 
 const Register = () => {
-    return <RegisterForm location="page" />;
+    return <RegisterForm isDialogForm={false} />;
 };
 
 export default Register;

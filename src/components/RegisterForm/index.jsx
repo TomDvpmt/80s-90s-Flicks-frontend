@@ -7,6 +7,7 @@ import {
     setShowLoginDialog,
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
+import { setDestination, selectDestination } from "../../features/pageSlice";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
@@ -18,7 +19,7 @@ import LoginDialog from "../LoginDialog";
 import ErrorMessage from "../ErrorMessage";
 import Loader from "../Loader";
 
-import { API_BASE_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../config/APIs";
 import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import { Box, Link, Button, Typography } from "@mui/material";
@@ -44,13 +45,14 @@ const ACTIONS = {
     setIsLoading: "setIsLoading",
 };
 
-const RegisterForm = ({ location }) => {
+const RegisterForm = ({ isDialogForm }) => {
     RegisterForm.propTypes = {
-        location: PropTypes.string.isRequired,
+        isDialogForm: PropTypes.bool.isRequired,
     };
+    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isSignedIn = useSelector(selectUserIsSignedIn);
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
@@ -109,7 +111,7 @@ const RegisterForm = ({ location }) => {
     }, [isSignedIn, navigate]);
 
     const handleLogin = (e) => {
-        if (location === "dialog") {
+        if (isDialogForm) {
             e.preventDefault();
             dispatch(setShowRegisterDialog(false));
             dispatch(setShowLoginDialog(true));
@@ -199,7 +201,8 @@ const RegisterForm = ({ location }) => {
             }
             dispatch(auth(data.token));
             dispatch(setShowRegisterDialog(false));
-            navigate("/");
+            navigate(destination);
+            dispatch(setDestination(""));
         } catch (error) {
             localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             console.error(error);
@@ -260,7 +263,7 @@ const RegisterForm = ({ location }) => {
                             Déjà inscrit ?&nbsp;
                             <Link
                                 component={RouterLink}
-                                to={location === "page" && "/login"}
+                                to={!isDialogForm && "/login"}
                                 onClick={handleLogin}
                                 sx={{ color: theme.palette.primary.main }}>
                                 Se connecter

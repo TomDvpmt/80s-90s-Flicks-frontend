@@ -24,7 +24,7 @@ import ValidationMessage from "../../components/ValidationMessage";
 import ErrorMessage from "../../components/ErrorMessage";
 import DeleteAccountDialog from "../../components/DeleteAccountDialog";
 
-import { API_BASE_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../config/APIs";
 import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import {

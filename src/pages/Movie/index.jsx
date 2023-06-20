@@ -17,15 +17,12 @@ import MovieWikiLink from "../../components/MovieWikiLink";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import {
-    selectUserIsSignedIn,
-    selectUserLanguage,
-} from "../../features/userSlice";
+import { selectUserLanguage } from "../../features/userSlice";
 import { setShowSearchMovieDialog } from "../../features/dialogsSlice";
 
 import { getMovieData } from "../../utils/movie";
 import { isEmptyObject } from "../../utils/helpers";
-import { TMDB_EXCLUDED_GENRES } from "../../utils/config";
+import { TMDB_EXCLUDED_GENRES } from "../../config/APIs";
 
 import { Box, ButtonGroup } from "@mui/material";
 import theme from "../../styles/theme";
@@ -38,7 +35,6 @@ const ACTIONS = {
 };
 
 const Movie = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
     const language = useSelector(selectUserLanguage);
 
     const dispatch = useDispatch();
@@ -142,12 +138,12 @@ const Movie = () => {
                             path={state.movie.poster_path}
                             movieTitle={state.movie.title}
                         />
-                        {isSignedIn && (
-                            <MovieCheckboxes
-                                movieId={movieId}
-                                langData={state.langData}
-                            />
-                        )}
+
+                        <MovieCheckboxes
+                            movieId={movieId}
+                            langData={state.langData}
+                        />
+
                         <Box
                             sx={{
                                 gridColumn: "2",

@@ -11,7 +11,7 @@ import {
     selectShowUserAvatarUpdateDialog,
 } from "../../features/dialogsSlice";
 
-import { API_BASE_URI, IMGBB_BASE_URI } from "../../utils/config";
+import { API_BASE_URI, IMGBB_BASE_URI } from "../../config/APIs";
 
 import Loader from "../Loader";
 import ErrorMessage from "../ErrorMessage";

@@ -7,13 +7,14 @@ import {
     setShowLoginDialog,
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
+import { setDestination, selectDestination } from "../../features/pageSlice";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
 import ErrorMessage from "../ErrorMessage";
 import Loader from "../Loader";
 
-import { API_BASE_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../config/APIs";
 import { formHasErrors, showFormErrors } from "../../utils/formValidation";
 
 import { Box, Link, Button, Typography } from "@mui/material";
@@ -31,14 +32,15 @@ const ACTIONS = {
     setIsLoading: "setIsLoading",
 };
 
-const LoginForm = ({ location }) => {
+const LoginForm = ({ isDialogForm }) => {
     LoginForm.propTypes = {
-        location: PropTypes.string.isRequired,
+        isDialogForm: PropTypes.bool.isRequired,
     };
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const isSignedIn = useSelector(selectUserIsSignedIn);
+    const destination = useSelector(selectDestination);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
@@ -73,7 +75,7 @@ const LoginForm = ({ location }) => {
     }, [isSignedIn, navigate]);
 
     const handleRegister = (e) => {
-        if (location === "dialog") {
+        if (isDialogForm) {
             e.preventDefault();
             dispatch(setShowLoginDialog(false));
             dispatch(setShowRegisterDialog(true));
@@ -147,7 +149,8 @@ const LoginForm = ({ location }) => {
             }
             dispatch(auth(data.token));
             dispatch(setShowLoginDialog(false));
-            navigate("/");
+            navigate(destination);
+            dispatch(setDestination(""));
         } catch (error) {
             localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             console.error(error);
@@ -205,7 +208,7 @@ const LoginForm = ({ location }) => {
                             Pas encore inscrit ?&nbsp;
                             <Link
                                 component={RouterLink}
-                                to={location === "page" && "/register"}
+                                to={!isDialogForm && "/register"}
                                 onClick={handleRegister}
                                 sx={{ color: theme.palette.primary.main }}>
                                 Créer un compte

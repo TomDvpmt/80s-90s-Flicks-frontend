@@ -11,7 +11,7 @@ import {
     TMDB_API_KEY,
     TMDB_BASE_URI,
     TMDB_EXCLUDED_GENRES,
-} from "../../../utils/config";
+} from "../../../config/APIs";
 
 import {
     FormControl,

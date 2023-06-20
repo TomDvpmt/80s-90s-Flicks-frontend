@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    showLoggedOnlyDialog: false,
     showLoginDialog: false,
     showRegisterDialog: false,
-    showLoggedOnlyDialog: false,
     showSearchMovieDialog: false,
     showDeleteAccountDialog: false,
     showUserAvatarUpdateDialog: false,
@@ -13,14 +13,14 @@ export const dialogsSlice = createSlice({
     name: "dialogs",
     initialState,
     reducers: {
+        setShowLoggedOnlyDialog: (state, action) => {
+            state.showLoggedOnlyDialog = action.payload;
+        },
         setShowLoginDialog: (state, action) => {
             state.showLoginDialog = action.payload;
         },
         setShowRegisterDialog: (state, action) => {
             state.showRegisterDialog = action.payload;
-        },
-        setShowLoggedOnlyDialog: (state, action) => {
-            state.showLoggedOnlyDialog = action.payload;
         },
         setShowSearchMovieDialog: (state, action) => {
             state.showSearchMovieDialog = action.payload;
@@ -43,11 +43,11 @@ export const {
     setShowUserAvatarUpdateDialog,
 } = dialogsSlice.actions;
 
+export const selectShowLoggedOnlyDialog = (state) =>
+    state.dialogs.showLoggedOnlyDialog;
 export const selectShowLoginDialog = (state) => state.dialogs.showLoginDialog;
 export const selectShowRegisterDialog = (state) =>
     state.dialogs.showRegisterDialog;
-export const selectShowLoggedOnlyDialog = (state) =>
-    state.dialogs.showLoggedOnlyDialog;
 export const selectShowSearchMovieDialog = (state) =>
     state.dialogs.showSearchMovieDialog;
 export const selectShowDeleteAccountDialog = (state) =>

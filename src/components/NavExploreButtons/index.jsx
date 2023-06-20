@@ -6,6 +6,7 @@ import {
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
 } from "../../features/dialogsSlice";
+import { setDestination } from "../../features/pageSlice";
 
 import SearchMovieDialog from "../SearchMovieDialog";
 import LoggedOnlyDialog from "../LoggedOnlyDialog";
@@ -20,9 +21,12 @@ const NavExploreButtons = () => {
     const dispatch = useDispatch();
 
     const handleSearch = () => {
-        isSignedIn
-            ? dispatch(setShowSearchMovieDialog(true))
-            : dispatch(setShowLoggedOnlyDialog(true));
+        if (isSignedIn) {
+            dispatch(setShowSearchMovieDialog(true));
+            return;
+        }
+        dispatch(setDestination("/"));
+        dispatch(setShowLoggedOnlyDialog(true));
     };
 
     return (

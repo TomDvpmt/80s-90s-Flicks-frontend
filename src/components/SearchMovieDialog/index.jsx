@@ -12,7 +12,7 @@ import {
     TMDB_API_KEY,
     TMDB_BASE_URI,
     TMDB_EXCLUDED_GENRES,
-} from "../../utils/config";
+} from "../../config/APIs";
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
 import ListMovieCard from "../ListMovieCard";
@@ -70,12 +70,9 @@ const SearchMovieDialog = () => {
     };
 
     const handleClose = () => {
+        localDispatch({ type: ACTIONS.setResults, payload: [] });
         dispatch(setShowSearchMovieDialog(false));
     };
-
-    useEffect(() => {
-        localDispatch({ type: ACTIONS.setResults, payload: [] });
-    }, []);
 
     useEffect(() => {
         localDispatch({ type: ACTIONS.setQuery, payload: "" });

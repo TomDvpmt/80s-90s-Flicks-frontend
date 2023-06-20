@@ -2,7 +2,7 @@ import store from "../store/store";
 import { auth, signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
-import { API_BASE_URI } from "./config";
+import { API_BASE_URI } from "../config/APIs";
 
 /**
  * Get current user info

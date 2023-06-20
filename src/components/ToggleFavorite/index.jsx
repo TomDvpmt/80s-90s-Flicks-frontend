@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     addToFavorites,
     removeFromFavorites,
-    selectUserFavorites,
+    selectUserIsSignedIn,
     selectUserId,
+    selectUserFavorites,
 } from "../../features/userSlice";
+import { setShowLoggedOnlyDialog } from "../../features/dialogsSlice";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 
@@ -21,6 +23,7 @@ const ToggleFavorite = ({ movieId }) => {
     };
 
     const dispatch = useDispatch();
+    const isSignedIn = useSelector(selectUserIsSignedIn);
     const userId = useSelector(selectUserId);
     const favorites = useSelector(selectUserFavorites);
     const isFavorite = favorites.includes(movieId);
@@ -48,6 +51,10 @@ const ToggleFavorite = ({ movieId }) => {
     };
 
     const handleFavoriteCheckbox = () => {
+        if (!isSignedIn) {
+            dispatch(setShowLoggedOnlyDialog(true));
+            return;
+        }
         if (isFavorite) {
             removeMovieFromFavorites();
         } else {

@@ -1,0 +1,4 @@
+export const NUMBER_OF_DIRECTORS = 2;
+export const NUMBER_OF_WRITERS = 2;
+export const NUMBER_OF_ACTORS_ON_MOVIE_PAGE = 10;
+export const NUMBER_OF_ACTORS_ON_MOVIE_CARD = 10;

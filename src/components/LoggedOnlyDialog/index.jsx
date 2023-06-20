@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-    setShowLoginDialog,
-    setShowRegisterDialog,
     setShowLoggedOnlyDialog,
     selectShowLoggedOnlyDialog,
+    setShowLoginDialog,
+    setShowRegisterDialog,
 } from "../../features/dialogsSlice";
 
 import LoginDialog from "../LoginDialog";

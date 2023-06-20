@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { updateLocation } from "../../features/pageSlice";
+import { setPageLocation } from "../../features/pageSlice";
 
 import PropTypes from "prop-types";
 
@@ -12,7 +12,7 @@ const SetPageLocation = ({ page }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(updateLocation(page));
+        dispatch(setPageLocation(page));
     }, [page, dispatch]);
 
     return false;

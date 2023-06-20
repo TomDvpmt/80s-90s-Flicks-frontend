@@ -1,12 +1,14 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
     addToMoviesSeen,
     removeFromMoviesSeen,
     removeFromMoviesToSee,
+    selectUserIsSignedIn,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
 } from "../../features/userSlice";
+import { setShowLoggedOnlyDialog } from "../../features/dialogsSlice";
 
 import { FormControlLabel, Checkbox } from "@mui/material";
 
@@ -19,12 +21,19 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
         langData: PropTypes.object.isRequired,
     };
 
+    const isSignedIn = useSelector(selectUserIsSignedIn);
     const moviesToSee = useSelector(selectUserMoviesToSee);
     const moviesSeen = useSelector(selectUserMoviesSeen);
+    const dispatch = useDispatch();
+
     const userWantsToSeeMovie = moviesToSee.includes(movieId);
     const userHasSeenMovie = moviesSeen.includes(movieId);
 
     const handleMovieSeen = () => {
+        if (!isSignedIn) {
+            dispatch(setShowLoggedOnlyDialog(true));
+            return;
+        }
         if (userHasSeenMovie) {
             toggleMovieInUserMovies(removeFromMoviesSeen);
             return;

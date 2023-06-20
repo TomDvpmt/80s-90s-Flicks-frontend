@@ -11,7 +11,7 @@ import {
 import ErrorMessage from "../ErrorMessage";
 
 import { logout } from "../../utils/user";
-import { API_BASE_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../config/APIs";
 
 import {
     Dialog,

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ToggleFavorite from "../ToggleFavorite";
 import ToggleMovieSeen from "../ToggleMovieSeen";
 import ToggleMovieToSee from "../ToggleMovieToSee";
+import LoggedOnlyDialog from "../LoggedOnlyDialog";
 
 import {
     addToMoviesToSee,
@@ -63,29 +64,32 @@ const MovieCheckboxes = ({ movieId, langData }) => {
     };
 
     return (
-        <Box
-            sx={{
-                gridColumn: "1",
-                gridRow: "2",
-                justifySelf: "center",
-                padding: ".5rem",
-            }}>
-            <ToggleFavorite movieId={movieId} />
-            <Box component="form">
-                <FormGroup>
-                    <ToggleMovieSeen
-                        movieId={movieId}
-                        langData={langData}
-                        toggleMovieInUserMovies={toggleMovieInUserMovies}
-                    />
-                    <ToggleMovieToSee
-                        movieId={movieId}
-                        langData={langData}
-                        toggleMovieInUserMovies={toggleMovieInUserMovies}
-                    />
-                </FormGroup>
+        <>
+            <Box
+                sx={{
+                    gridColumn: "1",
+                    gridRow: "2",
+                    justifySelf: "center",
+                    padding: ".5rem",
+                }}>
+                <ToggleFavorite movieId={movieId} />
+                <Box component="form">
+                    <FormGroup>
+                        <ToggleMovieSeen
+                            movieId={movieId}
+                            langData={langData}
+                            toggleMovieInUserMovies={toggleMovieInUserMovies}
+                        />
+                        <ToggleMovieToSee
+                            movieId={movieId}
+                            langData={langData}
+                            toggleMovieInUserMovies={toggleMovieInUserMovies}
+                        />
+                    </FormGroup>
+                </Box>
             </Box>
-        </Box>
+            <LoggedOnlyDialog />
+        </>
     );
 };
 

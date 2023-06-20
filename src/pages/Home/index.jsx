@@ -24,7 +24,7 @@ import {
     setShowSearchMovieDialog,
 } from "../../features/dialogsSlice";
 
-import { TMDB_API_KEY, TMDB_BASE_URI } from "../../utils/config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "../../config/APIs";
 
 import theme from "../../styles/theme";
 

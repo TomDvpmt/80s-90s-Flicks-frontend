@@ -31,7 +31,7 @@ const LoginDialog = () => {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <LoginForm location="dialog" />
+                <LoginForm isDialogForm={true} />
             </DialogContent>
         </Dialog>
     );

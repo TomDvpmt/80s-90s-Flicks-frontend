@@ -12,7 +12,7 @@ import { setUserInfo, selectUserLanguage } from "../../features/userSlice";
 import { tmdbSetConfig } from "../../features/tmdbSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 
-import { TMDB_API_KEY, TMDB_BASE_URI } from "../../utils/config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "../../config/APIs";
 
 import { Box } from "@mui/material";
 

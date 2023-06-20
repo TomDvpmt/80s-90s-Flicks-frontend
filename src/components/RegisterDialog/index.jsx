@@ -32,7 +32,7 @@ const RegisterDialog = () => {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <RegisterForm location="dialog" />
+                <RegisterForm isDialogForm={true} />
             </DialogContent>
         </Dialog>
     );

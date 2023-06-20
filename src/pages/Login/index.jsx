@@ -1,7 +1,7 @@
 import LoginForm from "../../components/LoginForm";
 
 const Login = () => {
-    return <LoginForm location="page" />;
+    return <LoginForm isDialogForm={false} />;
 };
 
 export default Login;

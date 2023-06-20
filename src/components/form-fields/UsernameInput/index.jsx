@@ -1,7 +1,4 @@
-import {
-    USERNAME_MAX_LENGTH,
-    USERNAME_MIN_LENGTH,
-} from "../../../utils/formValidation";
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../../config/user";
 
 import { TextField } from "@mui/material";
 

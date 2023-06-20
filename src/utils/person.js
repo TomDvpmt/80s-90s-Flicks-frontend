@@ -1,4 +1,4 @@
-import { TMDB_API_KEY, TMDB_BASE_URI } from "./config";
+import { TMDB_API_KEY, TMDB_BASE_URI } from "../config/APIs";
 import defaultPoster from "../assets/img/defaultPoster.jpeg";
 
 /**
