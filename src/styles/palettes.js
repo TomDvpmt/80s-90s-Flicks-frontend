@@ -1,4 +1,4 @@
-const COMMON_PALETTE = {
+export const COMMON_PALETTE = {
     warning: {
         // red
         main: "#ff0000",
@@ -26,7 +26,6 @@ const COMMON_PALETTE = {
 };
 
 export const INDIANA_JONES_PALETTE = {
-    ...COMMON_PALETTE,
     primary: {
         // orange
         main: "#DE8E49",
@@ -48,7 +47,6 @@ export const INDIANA_JONES_PALETTE = {
 };
 
 export const MATRIX_PALETTE = {
-    ...COMMON_PALETTE,
     primary: {
         // Green-blue
         main: "#7B9A88",
@@ -70,7 +68,6 @@ export const MATRIX_PALETTE = {
 };
 
 export const ALIEN_PALETTE = {
-    ...COMMON_PALETTE,
     primary: {
         // Blue-green
         main: "#303E48",
@@ -93,7 +90,6 @@ export const ALIEN_PALETTE = {
 };
 
 export const FURY_ROAD_PALETTE = {
-    ...COMMON_PALETTE,
     primary: {
         // orange to brown
         main: "#5C2A08",

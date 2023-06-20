@@ -158,66 +158,74 @@ const LoginForm = ({ isDialogForm }) => {
     };
 
     return (
-        <>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+                maxWidth: theme.maxWidth.userForm,
+                margin: "0 auto 3rem",
+            }}>
             <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                    maxWidth: theme.maxWidth.userForm,
-                    margin: "0 auto 3rem",
-                }}>
-                <Box mb="2rem" display="flex" justifyContent="center">
-                    <Button
-                        className="demo"
-                        onClick={handleSubmit}
-                        variant="contained"
-                        color="secondary">
-                        Utilisateur démo
-                    </Button>
-                </Box>
-                <ErrorMessage errorMessage={state.errorMessage} />
-                {state.isLoading ? (
-                    <Loader />
-                ) : (
-                    <Box>
-                        <UsernameInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
-                        <PasswordInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
-                    </Box>
-                )}
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-end",
-                    }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            margin: `${theme.margin.buttonTop.spaced} 0`,
-                            color: "white",
-                        }}>
-                        Se connecter
-                    </Button>
-                    <Typography paragraph>
-                        <Typography component="span">
-                            Pas encore inscrit ?&nbsp;
-                            <Link
-                                component={RouterLink}
-                                to={!isDialogForm && "/register"}
-                                onClick={handleRegister}
-                                sx={{ color: theme.palette.primary.main }}>
-                                Créer un compte
-                            </Link>
-                        </Typography>
-                    </Typography>
-                </Box>
+                mb="4rem"
+                display="flex"
+                flexDirection={{ xs: "column", sm: "row" }}
+                justifyContent="center"
+                alignItems="center"
+                gap="1rem">
+                <Typography component="span" fontWeight="700">
+                    Pour tester l'application :{" "}
+                </Typography>
+                <Button
+                    className="demo"
+                    onClick={handleSubmit}
+                    variant="contained"
+                    color="success"
+                    title="Un utilisateur déjà enregistré pour tester l'application">
+                    Utilisateur démo
+                </Button>
             </Box>
-        </>
+            <ErrorMessage errorMessage={state.errorMessage} />
+            {state.isLoading ? (
+                <Loader />
+            ) : (
+                <Box>
+                    <UsernameInput
+                        reducer={{ ACTIONS, state, localDispatch }}
+                    />
+                    <PasswordInput
+                        reducer={{ ACTIONS, state, localDispatch }}
+                    />
+                </Box>
+            )}
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                }}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        margin: `${theme.margin.buttonTop.spaced} 0`,
+                        color: "white",
+                    }}>
+                    Se connecter
+                </Button>
+                <Typography paragraph>
+                    <Typography component="span">
+                        Pas encore inscrit ?&nbsp;
+                        <Link
+                            component={RouterLink}
+                            to={!isDialogForm && "/register"}
+                            onClick={handleRegister}
+                            sx={{ color: theme.palette.primary.main }}>
+                            Créer un compte
+                        </Link>
+                    </Typography>
+                </Typography>
+            </Box>
+        </Box>
     );
 };
 

@@ -49,7 +49,10 @@ const PersonLabel = ({ person, isStrong, isLink }) => {
             className={isStrong ? "credit--strong" : "credit"}
             color={
                 page === "movie"
-                    ? theme.palette.text.lightBg
+                    ? {
+                          xs: theme.palette.text.lightBg,
+                          md: theme.palette.text.darkBg,
+                      }
                     : theme.palette.text.darkBg
             }
             onClick={handleClick}
