@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { selectUserId } from "../../features/userSlice";
+import {
+    setShowDeleteAccountDialog,
+    selectShowDeleteAccountDialog,
+} from "../../features/dialogsSlice";
 
 import ErrorMessage from "../ErrorMessage";
 
@@ -18,41 +22,42 @@ import {
     Box,
 } from "@mui/material";
 
-import PropTypes from "prop-types";
-
-const DeleteAccountDialog = ({ reducer }) => {
-    DeleteAccountDialog.propTypes = {
-        reducer: PropTypes.object.isRequired,
-    };
-
-    const navigate = useNavigate();
+const DeleteAccountDialog = () => {
     const userId = useSelector(selectUserId);
+    const showDeleteAccountDialog = useSelector(selectShowDeleteAccountDialog);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleYes = async () => {
-        const response = await fetch(`${API_BASE_URI}/API/users/${userId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-        const data = await response.json();
-        if (!response.ok) {
-            setErrorMessage(data.message);
-            return;
+    const handleConfirmDelete = async () => {
+        try {
+            const response = await fetch(
+                `${API_BASE_URI}/API/users/${userId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+            const data = await response.json();
+            if (!response.ok) {
+                setErrorMessage(data.message);
+                throw new Error(data.message);
+            }
+            dispatch(setShowDeleteAccountDialog(false));
+        } catch (error) {
+            console.log(error);
         }
         logout(navigate);
     };
 
     const handleClose = () => {
-        reducer.localDispatch({
-            type: reducer.ACTIONS.setShowDeleteDialog,
-            payload: false,
-        });
+        dispatch(setShowDeleteAccountDialog(false));
         setErrorMessage("");
     };
 
     return (
-        <Dialog open={reducer.state.showDeleteDialog}>
+        <Dialog open={showDeleteAccountDialog}>
             <DialogTitle>
                 Êtes-vous sûr de vouloir supprimer votre compte ?
             </DialogTitle>
@@ -66,7 +71,10 @@ const DeleteAccountDialog = ({ reducer }) => {
                 )}
             </DialogContent>
             <DialogActions>
-                <Button variant="contained" color="warning" onClick={handleYes}>
+                <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={handleConfirmDelete}>
                     Supprimer le compte
                 </Button>
                 <Button onClick={handleClose}>Annuler</Button>

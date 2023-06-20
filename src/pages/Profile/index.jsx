@@ -10,6 +10,10 @@ import {
     selectUserEmail,
     selectUserId,
 } from "../../features/userSlice";
+import {
+    setShowDeleteAccountDialog,
+    setShowUserAvatarUpdateDialog,
+} from "../../features/dialogsSlice";
 
 import UserAvatarUpdateDialog from "../../components/UserAvatarUpdateDialog";
 import UsernameInput from "../../components/form-fields/UsernameInput";
@@ -51,9 +55,7 @@ const ACTIONS = {
     setLastName: "setLastName",
     setShowLastNameError: "setShowLastNameError",
     setShowUpdateValidation: "setShowUpdateValidation",
-    setShowUserAvatarUpdateDialog: "setShowUserAvatarUpdateDialog",
     setShowUpdateInfosForm: "setShowUpdateInfosForm",
-    setShowDeleteDialog: "setShowDeleteDialog",
     setErrorMessage: "setErrorMessage",
 };
 
@@ -88,12 +90,8 @@ const Profile = () => {
                 return { ...state, showLastNameError: payload };
             case "setShowUpdateValidation":
                 return { ...state, showUpdateValidation: payload };
-            case "setShowUserAvatarUpdateDialog":
-                return { ...state, showUserAvatarUpdateDialog: payload };
             case "setShowUpdateInfosForm":
                 return { ...state, showUpdateInfosForm: payload };
-            case "setShowDeleteDialog":
-                return { ...state, showDeleteDialog: payload };
             case "setErrorMessage":
                 return { ...state, errorMessage: payload };
             default:
@@ -111,9 +109,7 @@ const Profile = () => {
         lastName: "",
         showLastNameError: false,
         showUpdateValidation: false,
-        showUserAvatarUpdateDialog: false,
         showUpdateInfosForm: false,
-        showDeleteDialog: false,
         errorMessage: "",
     });
 
@@ -126,6 +122,14 @@ const Profile = () => {
         });
         localDispatch({ type: ACTIONS.setLastName, payload: prevLastName });
     }, [prevUsername, prevEmail, prevFirstName, prevLastName]);
+
+    const handleUpdateAvatar = () => {
+        dispatch(setShowUserAvatarUpdateDialog(true));
+        localDispatch({
+            type: ACTIONS.setShowUpdateValidation,
+            payload: false,
+        });
+    };
 
     const handleUpdateInfos = () => {
         localDispatch({
@@ -140,10 +144,7 @@ const Profile = () => {
     };
 
     const handleDeleteClick = () => {
-        localDispatch({
-            type: ACTIONS.setShowDeleteDialog,
-            payload: !state.showDeleteDialog,
-        });
+        dispatch(setShowDeleteAccountDialog(true));
     };
 
     const handleSubmit = async (e) => {
@@ -221,8 +222,6 @@ const Profile = () => {
                 throw new Error(data.message);
             }
 
-            console.log(data);
-
             dispatch(
                 setUserInfo({
                     id: userId,
@@ -260,13 +259,7 @@ const Profile = () => {
             <Box>
                 <Badge
                     badgeContent={
-                        <IconButton
-                            onClick={() =>
-                                localDispatch({
-                                    type: ACTIONS.setShowUserAvatarUpdateDialog,
-                                    payload: true,
-                                })
-                            }>
+                        <IconButton onClick={handleUpdateAvatar}>
                             <Settings />
                         </IconButton>
                     }
@@ -287,9 +280,7 @@ const Profile = () => {
                 </Badge>
             </Box>
 
-            <UserAvatarUpdateDialog
-                reducer={{ ACTIONS, state, localDispatch }}
-            />
+            <UserAvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
             <Box>
                 <Box
                     sx={{
@@ -362,9 +353,7 @@ const Profile = () => {
                             onClick={handleDeleteClick}>
                             Supprimer le compte
                         </Button>
-                        <DeleteAccountDialog
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
+                        <DeleteAccountDialog />
                     </Box>
                 </Box>
 

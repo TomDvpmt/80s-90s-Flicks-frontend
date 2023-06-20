@@ -6,6 +6,10 @@ import {
     selectUserAvatarUrl,
     selectUserId,
 } from "../../features/userSlice";
+import {
+    setShowUserAvatarUpdateDialog,
+    selectShowUserAvatarUpdateDialog,
+} from "../../features/dialogsSlice";
 
 import { API_BASE_URI, IMGBB_BASE_URI } from "../../utils/config";
 
@@ -34,6 +38,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
 
     const userId = useSelector(selectUserId);
     const avatarUrl = useSelector(selectUserAvatarUrl);
+    const showUserAvatarUpdateDialog = useSelector(
+        selectShowUserAvatarUpdateDialog
+    );
     const dispatch = useDispatch();
 
     const imgMimeTypes = {
@@ -57,6 +64,11 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    const handleClose = () => {
+        dispatch(setShowUserAvatarUpdateDialog(false));
+        setErrorMessage("");
+    };
+
     const handleChangeFile = async (e) => {
         setErrorMessage("");
 
@@ -68,49 +80,78 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
         ) {
             setErrorMessage(`Formats acceptés : ${extensionsString}.`);
             return;
-        } else if (uploadedFile.size > 1024 * 1024) {
+        } else if (uploadedFile?.size > 1024 * 1024) {
             setErrorMessage("La taille du fichier ne doit pas dépasser 1Mo.");
             return;
         } else {
             setIsLoading(true);
-            fetch(`${API_BASE_URI}/API/config/imgbb-api-key`, {
-                credentials: "include",
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    const imgBBAPIKey = data;
 
-                    const imgData = new FormData();
-                    imgData.append("image", uploadedFile);
+            try {
+                const imgBBAPIKeyResponse = await fetch(
+                    `${API_BASE_URI}/API/config/imgbb-api-key`,
+                    {
+                        credentials: "include",
+                    }
+                );
 
-                    const uploadImage = async () => {
-                        const uploadResponse = await fetch(
-                            `${IMGBB_BASE_URI}/upload?key=${imgBBAPIKey}`,
-                            {
-                                method: "POST",
-                                body: imgData, // binary file
-                            }
-                        );
-                        const avatar = await uploadResponse.json();
-                        const avatarUrl = avatar.data?.image?.url;
+                if (!imgBBAPIKeyResponse.ok) {
+                    throw new Error(
+                        "Impossible de récupérer la clef d'API ImgBB."
+                    );
+                }
+                const imgBBAPIKey = await imgBBAPIKeyResponse.json();
 
-                        await fetch(`${API_BASE_URI}/API/users/${userId}`, {
-                            method: "PUT",
-                            headers: {
-                                "Content-type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                avatarUrl,
-                            }),
-                            credentials: "include",
-                        });
+                const imgData = new FormData();
+                imgData.append("image", uploadedFile);
 
-                        dispatch(updateAvatar({ avatarUrl }));
-                    };
+                const uploadResponse = await fetch(
+                    `${IMGBB_BASE_URI}/upload?key=${imgBBAPIKey}`,
+                    {
+                        method: "POST",
+                        body: imgData, // binary file
+                    }
+                );
 
-                    uploadImage();
-                })
-                .catch((error) => console.log(error));
+                if (!uploadResponse.ok) {
+                    throw new Error(
+                        "Impossible d'uploader l'image sur le serveur d'ImgBB."
+                    );
+                }
+
+                const avatar = await uploadResponse.json();
+                const avatarUrl = avatar.data?.image?.url;
+
+                const updateUserResponse = await fetch(
+                    `${API_BASE_URI}/API/users/${userId}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            avatarUrl,
+                        }),
+                        credentials: "include",
+                    }
+                );
+
+                if (!updateUserResponse.ok) {
+                    throw new Error(
+                        "Impossible de mettre à jour l'utilisateur."
+                    );
+                }
+
+                dispatch(updateAvatar({ avatarUrl }));
+                reducer.localDispatch({
+                    type: reducer.ACTIONS.setShowUpdateValidation,
+                    payload: "true",
+                });
+                handleClose();
+            } catch (error) {
+                console.error(error);
+                setIsLoading(false);
+                setErrorMessage("Opération impossible.");
+            }
         }
     };
 
@@ -126,23 +167,12 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
             }),
             credentials: "include",
         });
-        reducer.localDispatch({
-            type: reducer.ACTIONS.setShowUserAvatarUpdateDialog,
-            payload: false,
-        });
-    };
-
-    const handleClose = () => {
-        reducer.localDispatch({
-            type: reducer.ACTIONS.setShowUserAvatarUpdateDialog,
-            payload: false,
-        });
-        setErrorMessage("");
+        dispatch(setShowUserAvatarUpdateDialog(false));
     };
 
     return (
         <Dialog
-            open={reducer.state.showUserAvatarUpdateDialog}
+            open={showUserAvatarUpdateDialog}
             onClose={handleClose}
             fullWidth>
             <Box

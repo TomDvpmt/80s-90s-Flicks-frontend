@@ -5,6 +5,8 @@ const initialState = {
     showRegisterDialog: false,
     showLoggedOnlyDialog: false,
     showSearchMovieDialog: false,
+    showDeleteAccountDialog: false,
+    showUserAvatarUpdateDialog: false,
 };
 
 export const dialogsSlice = createSlice({
@@ -23,6 +25,12 @@ export const dialogsSlice = createSlice({
         setShowSearchMovieDialog: (state, action) => {
             state.showSearchMovieDialog = action.payload;
         },
+        setShowDeleteAccountDialog: (state, action) => {
+            state.showDeleteAccountDialog = action.payload;
+        },
+        setShowUserAvatarUpdateDialog: (state, action) => {
+            state.showUserAvatarUpdateDialog = action.payload;
+        },
     },
 });
 
@@ -31,6 +39,8 @@ export const {
     setShowRegisterDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
+    setShowDeleteAccountDialog,
+    setShowUserAvatarUpdateDialog,
 } = dialogsSlice.actions;
 
 export const selectShowLoginDialog = (state) => state.dialogs.showLoginDialog;
@@ -40,5 +50,9 @@ export const selectShowLoggedOnlyDialog = (state) =>
     state.dialogs.showLoggedOnlyDialog;
 export const selectShowSearchMovieDialog = (state) =>
     state.dialogs.showSearchMovieDialog;
+export const selectShowDeleteAccountDialog = (state) =>
+    state.dialogs.showDeleteAccountDialog;
+export const selectShowUserAvatarUpdateDialog = (state) =>
+    state.dialogs.showUserAvatarUpdateDialog;
 
 export default dialogsSlice.reducer;
