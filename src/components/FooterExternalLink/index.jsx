@@ -25,7 +25,7 @@ const FooterExternalLink = ({ type }) => {
         },
         sourceCode: {
             label: "github.com/TomDvpmt",
-            path: "https://github.com/TomDvpmt/80s-90s-Flicks-frontend",
+            path: "https://github.com/TomDvpmt/80s-90s-Flixx-frontend",
         },
     };
 

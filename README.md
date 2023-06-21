@@ -1,4 +1,4 @@
-![Logo de l'application 80s-90s Flicks](/src/assets/logo/flix-logo-on-black.png)
+![Logo de l'application 80s-90s Flixx](/src/assets/logo/Flixx-logo.webp)
 
 # Contexte
 
@@ -6,17 +6,17 @@ Cette application est un projet personnel développé en 2023.
 
 # Résumé
 
-**80s-90s Flicks** est une application de recherche de films des années 80 et 90, avec un module de filtrage des recherches et un tableau de bord permettant d'enregistrer des favoris, des films vus et des films à voir.
+**80s-90s Flixx** est une application de recherche de films des années 80 et 90, avec un module de filtrage des recherches et un tableau de bord permettant d'enregistrer des favoris, des films vus et des films à voir.
 
 # Lien vers l'application
 
-[https://flicks80s90s.onrender.com/](https://flicks80s90s.onrender.com/)
+[https://flixx80s90s.onrender.com/](https://flixx80s90s.onrender.com/)
 
 # Dépôts
 
 Ce dépôt contient uniquement le **front-end** de l'application.
 
-Le back-end : [https://github.com/TomDvpmt/80s-90s-Flicks-backend](https://github.com/TomDvpmt/80s-90s-Flicks-backend)
+Le back-end : [https://github.com/TomDvpmt/80s-90s-Flixx-backend](https://github.com/TomDvpmt/80s-90s-Flixx-backend)
 
 # Technologies utilisées (MERN)
 
@@ -38,27 +38,27 @@ Le back-end : [https://github.com/TomDvpmt/80s-90s-Flicks-backend](https://githu
 
 -   données cinéma issues d'une API externe (The Movie Database), avec plus de 35 000 films répertoriés pour la période 80s-90s :
 
-![page d'accueil](/src/assets/img/captures/flix-home.webp)
+![page d'accueil](/src/assets/img/captures/flixx-home.webp)
 
 -   une fiche détaillée par film :
 
-![page film](/src/assets/img/captures/flix-movie.webp)
+![page film](/src/assets/img/captures/flixx-movie.webp)
 
 -   module de recherche par titre :
 
-![recherche](/src/assets/img/captures/flix-search.webp)
+![recherche](/src/assets/img/captures/flixx-search.webp)
 
 -   filtrage par date et genre :
 
-![filtres](/src/assets/img/captures/flix-filters.webp)
+![filtres](/src/assets/img/captures/flixx-filters.webp)
 
 -   fiches individuelles avec filmographie complète pour les réalisateurs, scénaristes et acteurs :
 
-![fiche individuelle](/src/assets/img/captures/flix-person.webp)
+![fiche individuelle](/src/assets/img/captures/flixx-person.webp)
 
 -   tableau de bord avec films favoris, films vus et films à voir :
 
-![taleau de bord](/src/assets/img/captures/flix-dashboard.webp)
+![taleau de bord](/src/assets/img/captures/flixx-dashboard.webp)
 
 # Fonctionnalités à venir
 
