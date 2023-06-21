@@ -1,5 +1,5 @@
 import store from "../store/store";
-import { auth, signOut } from "../features/userSlice";
+import { signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
 import { API_BASE_URI } from "../config/APIs";
@@ -10,7 +10,7 @@ import { API_BASE_URI } from "../config/APIs";
  * @returns {String}
  */
 
-const getToken = async () => {
+export const getToken = async () => {
     try {
         const tokenResponse = await fetch(`${API_BASE_URI}/API/users/token`, {
             credentials: "include",
@@ -19,9 +19,11 @@ const getToken = async () => {
             throw new Error("Aucun token d'accès trouvé.");
         }
         const token = await tokenResponse.json();
+
         return token;
     } catch (error) {
         console.log(error.message);
+        return "";
     }
 };
 
@@ -31,32 +33,24 @@ const getToken = async () => {
  * @returns {Object}
  */
 
-export const getUserInfo = async (setHasError) => {
+export const getUserInfo = async () => {
     try {
-        const token = await getToken();
-
-        if (token) {
-            store.dispatch(auth(token));
-
-            const profileResponse = await fetch(
-                `${API_BASE_URI}/API/users/profile`,
-                {
-                    credentials: "include",
-                }
-            );
-            if (!profileResponse.ok) {
-                setHasError(true);
-                return {};
+        const profileResponse = await fetch(
+            `${API_BASE_URI}/API/users/profile`,
+            {
+                credentials: "include",
             }
-            const data = await profileResponse.json();
-            return data;
+        );
+        if (!profileResponse.ok) {
+            return {};
         }
+        const data = await profileResponse.json();
+        return data;
+        // }
     } catch (error) {
         console.error(error.message);
         return {};
     }
-
-    return {};
 };
 
 /**

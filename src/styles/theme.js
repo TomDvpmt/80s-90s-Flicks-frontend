@@ -111,6 +111,10 @@ theme = createTheme(theme, {
         biography: "700px",
         userForm: "500px",
         profileAvatar: "10rem",
+        loader: {
+            large: "5rem",
+            small: "1rem",
+        },
     },
     margin: {
         buttonTop: {

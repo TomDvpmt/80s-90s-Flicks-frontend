@@ -7,8 +7,13 @@ import {
     selectUserIsSignedIn,
 } from "../../features/userSlice";
 
+import { API_BASE_URI } from "../../config/APIs";
+import useFetch from "../../hooks/useFetch";
 import { logout } from "../../utils/user";
 
+import Loader from "../Loader";
+
+import theme from "../../styles/theme";
 import {
     Menu,
     MenuItem,
@@ -25,6 +30,10 @@ const NavUserMenu = () => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
+
+    const { data, isLoading } = useFetch(
+        `${API_BASE_URI}/API/config/initialize`
+    );
 
     const getMenuItemsData = useCallback(
         () => [
@@ -89,7 +98,12 @@ const NavUserMenu = () => {
         );
     }, [isSignedIn, handleLogout, handleClose, getMenuItemsData]);
 
-    return (
+    return isLoading ? (
+        <Loader
+            size={theme.maxWidth.loader.small}
+            marginY={theme.maxWidth.loader.small}
+        />
+    ) : (
         <>
             <IconButton onClick={handleOpen}>
                 <Avatar

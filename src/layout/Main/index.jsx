@@ -2,18 +2,15 @@ import { useState, useEffect } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectBackendIsInitialized } from "../../features/configSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 import { setUserInfo, selectUserLanguage } from "../../features/userSlice";
 
-import NavBar from "../NavBar";
 import PageHeading from "../../components/PageHeading";
 
 import theme from "../../styles/theme";
 import { Box } from "@mui/material";
 
 const Main = () => {
-    const backendIsInitialized = useSelector(selectBackendIsInitialized);
     const language = useSelector(selectUserLanguage);
     const page = useSelector(selectPageLocation);
 
@@ -21,6 +18,8 @@ const Main = () => {
     const dispatch = useDispatch();
 
     const [heading, setHeading] = useState("");
+
+    console.log("main");
 
     // Set user's info in global state
     useEffect(() => {
@@ -34,11 +33,11 @@ const Main = () => {
 
     return (
         <>
-            {backendIsInitialized && <NavBar />}
             <Box
                 component="main"
                 sx={{
                     flexGrow: "1",
+                    width: "100%",
                     maxWidth:
                         page === "movie" ? "initial" : theme.maxWidth.main,
                     m: "auto",
