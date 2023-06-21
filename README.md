@@ -10,7 +10,7 @@ Cette application est un projet personnel développé en 2023.
 
 # Lien vers l'application
 
-[https://flixx80s90s.onrender.com/](https://flixx80s90s.onrender.com/)
+[https://flixx80s90s.netlify.app/](https://flixx80s90s.netlify.app/)
 
 # Dépôts
 

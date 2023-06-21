@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { setPageNumber } from "../../features/filtersSlice";
-import { selectPageLocation } from "../../features/pageSlice";
 
 import { Box, Pagination as MUIPagination } from "@mui/material";
 
