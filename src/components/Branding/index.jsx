@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/logo/flix-logo.png";
+import logo from "../../assets/logo/Flixx-logo.webp";
 
 import theme from "../../styles/theme";
 import { Box, useMediaQuery } from "@mui/material";
@@ -19,6 +19,8 @@ const Branding = ({ location }) => {
         <Box
             component="div"
             sx={{
+                gridColumn: "1",
+                ml: { md: "3rem" },
                 pt:
                     location === "header" && isWiderThanSmallScreen
                         ? "6rem"

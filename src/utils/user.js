@@ -5,12 +5,12 @@ import { clearAll } from "../features/filtersSlice";
 import { API_BASE_URI } from "../config/APIs";
 
 /**
- * Get current user info
+ * Get current user's token from backend
  *
- * @returns {Object}
+ * @returns {String}
  */
 
-export const getUserInfo = async (setIsError) => {
+const getToken = async () => {
     try {
         const tokenResponse = await fetch(`${API_BASE_URI}/API/users/token`, {
             credentials: "include",
@@ -19,6 +19,21 @@ export const getUserInfo = async (setIsError) => {
             throw new Error("Aucun token d'accès trouvé.");
         }
         const token = await tokenResponse.json();
+        return token;
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+/**
+ * Get current user info
+ *
+ * @returns {Object}
+ */
+
+export const getUserInfo = async (setIsError) => {
+    try {
+        const token = await getToken();
 
         if (token) {
             store.dispatch(auth(token));

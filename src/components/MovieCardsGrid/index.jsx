@@ -7,7 +7,7 @@
 
 // import { DASHBOARD_RESULTS_PER_PAGE } from "../../config/user";
 
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 
 import PropTypes from "prop-types";
 

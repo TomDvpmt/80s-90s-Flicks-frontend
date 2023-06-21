@@ -9,12 +9,14 @@ import {
     selectUserUsername,
 } from "../../features/userSlice";
 
-import { Box, AppBar, Toolbar, Typography } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import theme from "../../styles/theme";
 
 const NavBar = () => {
     const isSignedIn = useSelector(selectUserIsSignedIn);
     const username = useSelector(selectUserUsername);
+
+    const isSmallestScreen = useMediaQuery("(max-width: 400px)");
 
     return (
         <AppBar
@@ -22,12 +24,13 @@ const NavBar = () => {
             sx={{
                 position: { xs: "sticky", sm: "static" },
                 pr: "0 !important",
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.background.darkest,
                 flexDirection: "row",
                 justifyContent: "center",
             }}>
             <Toolbar
                 sx={{
+                    p: isSmallestScreen ? "0" : "auto",
                     flexGrow: 1,
                     maxWidth: theme.maxWidth.nav,
                     justifyContent: "space-between",

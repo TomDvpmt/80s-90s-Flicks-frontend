@@ -322,9 +322,18 @@ const Profile = () => {
                     </TableContainer>
                     <Box
                         sx={{
+                            mt: {
+                                xs: "1rem",
+                                sm: theme.margin.buttonTop.notSpaced,
+                            },
                             display: "flex",
+                            flexDirection: { xs: "column", sm: "row" },
                             justifyContent: "center",
+                            alignItems: "center",
                             gap: ".5rem",
+                            "& button": {
+                                maxWidth: "max-content",
+                            },
                         }}>
                         <Button
                             type="button"
@@ -335,7 +344,6 @@ const Profile = () => {
                             }
                             size="small"
                             sx={{
-                                mt: theme.margin.buttonTop.notSpaced,
                                 color: state.showUpdateInfosForm
                                     ? "inherit"
                                     : "white",
@@ -347,9 +355,6 @@ const Profile = () => {
                             type="button"
                             variant="text"
                             size="small"
-                            sx={{
-                                mt: theme.margin.buttonTop.notSpaced,
-                            }}
                             onClick={handleDeleteClick}>
                             Supprimer le compte
                         </Button>

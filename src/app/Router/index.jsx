@@ -58,7 +58,7 @@ function Router() {
         }
     }
 
-    const ROUTES_DATA = [
+    const routesData = [
         {
             page: "home",
             path: "/",
@@ -107,7 +107,7 @@ function Router() {
         },
     ];
 
-    const routes = ROUTES_DATA.map(
+    const routes = routesData.map(
         (route) =>
             new Route(
                 route.page,

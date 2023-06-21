@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { getMovieData } from "../utils/movie";
+
 const initialState = {
     favoritesLinks: [],
     moviesToSeeLinks: [],
@@ -11,7 +13,8 @@ export const dashboardSlice = createSlice({
     initialState,
     reducers: {
         setFavoritesLinks: (state, action) => {
-            state.favoritesLinks = action.payload;
+            const arrayOfIds = action.payload;
+            //
         },
         setMoviesToSeeLinks: (state, action) => {
             state.moviesToSeeLinks = action.payload;

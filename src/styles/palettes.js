@@ -28,21 +28,21 @@ export const COMMON_PALETTE = {
 export const INDIANA_JONES_PALETTE = {
     primary: {
         // orange
-        main: "#DE8E49",
+        main: "#CF7204",
     },
     secondary: {
-        // yellow
-        main: "#EFC54D",
-        light: "#EBD5A0",
-        lightest: "#F9F5E3",
+        // brown
+        main: "#7D1F03",
+        dark: "#271811",
     },
     tertiary: {
-        // brown
-        dark: "#271811",
-        main: "#54331D",
+        // yellow
+        main: "#E6BB61",
+        dark: "#E5AF13",
+        lightest: "#E0CFB9",
     },
     brandingWarm: {
-        main: "#DE8E49",
+        main: "#CF7204",
     },
 };
 

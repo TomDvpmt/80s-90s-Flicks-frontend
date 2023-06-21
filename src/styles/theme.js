@@ -1,4 +1,5 @@
 import { COMMON_PALETTE, INDIANA_JONES_PALETTE } from "./palettes";
+import sfFedora from "../assets/fonts/SF_Fedora_Shadow.ttf";
 import { LANGUAGE_FR } from "../assets/languages/fr";
 import { LANGUAGE_EN } from "../assets/languages/en";
 
@@ -16,7 +17,6 @@ let theme = createTheme({
 
 theme = createTheme(theme, {
     typography: {
-        fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif",
         h1: {
             margin: "3rem 0",
             textAlign: "center",
@@ -60,6 +60,23 @@ theme = createTheme(theme, {
         },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: `
+            @font-face {
+                font-family: "SfFedora";
+                font-style: normal;
+                font-display: swap;
+                font-weight: 400;
+                src: local("SF_Fedora_Shadow"), url(${sfFedora}) format("truetype");
+                unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
+            }
+            `,
+        },
+        MuiTypography: {
+            defaultProps: {
+                fontFamily: "Raleway, Arial",
+            },
+        },
         MuiLink: {
             styleOverrides: {
                 root: {
@@ -71,6 +88,14 @@ theme = createTheme(theme, {
             styleOverrides: {
                 input: {
                     backgroundColor: "white",
+                    fontFamily: "Raleway, Arial",
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    fontWeight: "700",
                 },
             },
         },
@@ -84,7 +109,7 @@ theme = createTheme(theme, {
         filters: "700px",
         filmography: "500px",
         biography: "700px",
-        userForm: "400px",
+        userForm: "500px",
         profileAvatar: "10rem",
     },
     margin: {

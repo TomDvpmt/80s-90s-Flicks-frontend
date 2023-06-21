@@ -21,6 +21,7 @@ import theme from "../../styles/theme";
 const PageWrapper = () => {
     const page = useSelector(selectPageLocation);
     const language = useSelector(selectUserLanguage);
+
     const data = useLoaderData();
     const dispatch = useDispatch();
 

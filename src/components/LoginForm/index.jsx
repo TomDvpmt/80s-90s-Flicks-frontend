@@ -168,12 +168,12 @@ const LoginForm = ({ isDialogForm }) => {
             <Box
                 mb="4rem"
                 display="flex"
-                flexDirection={{ xs: "column", sm: "row" }}
+                flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
                 gap="1rem">
                 <Typography component="span" fontWeight="700">
-                    Pour tester l'application :{" "}
+                    Pour tester l'application sans s'inscrire :{" "}
                 </Typography>
                 <Button
                     className="demo"
