@@ -1,10 +1,10 @@
 import { useEffect, useReducer } from "react";
+import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
 import MovieCardsGrid from "../../components/MovieCardsGrid";
-import YearFilter from "../../components/filters/YearFilter";
-import GenresFilter from "../../components/filters/GenresFilter";
+import HomeFilters from "../../components/filters/HomeFilters";
 import SearchMovieDialog from "../../components/SearchMovieDialog";
 // import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
@@ -14,7 +14,6 @@ import Loader from "../../components/Loader";
 
 import { selectUserIsSignedIn } from "../../features/userSlice";
 import {
-    clearAll,
     selectFiltersAll,
     selectFiltersActiveGenres,
     selectFiltersYear,
@@ -31,6 +30,8 @@ import theme from "../../styles/theme";
 import { Box, Paper, Typography, Button } from "@mui/material";
 
 const ACTIONS = {
+    setIsYearFilterReady: "setIsYearFilterReady",
+    setIsGenreFilterReady: "setIsGenreFilterReady",
     setHasActiveFilters: "setHasActiveFilters",
     setNumberOfPages: "setNumberOfPages",
     setNumberOfResults: "setNumberOfResults",
@@ -49,6 +50,10 @@ const Home = () => {
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
+            case "setIsYearFilterReady":
+                return { ...state, isYearFilterReady: payload };
+            case "setIsGenreFilterReady":
+                return { ...state, isGenreFilterReady: payload };
             case "setHasActiveFilters":
                 return { ...state, hasActiveFilters: payload };
             case "setNumberOfPages":
@@ -69,6 +74,8 @@ const Home = () => {
     };
 
     const [state, localDispatch] = useReducer(reducer, {
+        isYearFilterReady: false,
+        isGenreFilterReady: false,
         hasActiveFilters: false,
         numberOfPages: 1,
         numberOfResults: 0,
@@ -96,12 +103,7 @@ const Home = () => {
             : dispatch(setShowLoggedOnlyDialog(true));
     };
 
-    const handleFiltersClearAll = () => {
-        if (!state.hasActiveFilters) return;
-        dispatch(clearAll());
-        localDispatch({ type: ACTIONS.setCurrentPage, payload: 1 });
-    };
-
+    // get movies
     useEffect(() => {
         localDispatch({ type: ACTIONS.setLoading, payload: true });
 
@@ -176,47 +178,8 @@ const Home = () => {
                     <SearchMovieDialog />
                     <LoggedOnlyDialog />
                 </Box>
-                <Paper
-                    elevation={2}
-                    sx={{
-                        margin: "2rem 0",
-                        padding: "1rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1rem",
-                    }}>
-                    <Box
-                        component="form"
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "2rem",
-                        }}>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                gap: "1rem",
-                                "& *": { flex: "1" },
-                            }}>
-                            <YearFilter
-                                reducer={{ ACTIONS, state, localDispatch }}
-                            />
-                            <GenresFilter />
-                        </Box>
-                        <Button
-                            variant="outlined"
-                            onClick={handleFiltersClearAll}
-                            disabled={!state.hasActiveFilters}
-                            sx={{
-                                maxWidth: "max-content",
-                                margin: "auto",
-                            }}>
-                            {state.hasActiveFilters
-                                ? "Supprimer les filtres"
-                                : "Aucun filtre actif"}
-                        </Button>
-                    </Box>
-                </Paper>
+                <Outlet />
+                <HomeFilters reducer={{ ACTIONS, state, localDispatch }} />
                 <Paper
                     elevation={2}
                     sx={{

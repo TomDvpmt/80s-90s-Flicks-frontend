@@ -4,32 +4,45 @@ import {
     redirect,
     RouterProvider,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
     selectUserIsSignedIn,
     selectUserToken,
 } from "../../features/userSlice";
+import {
+    selectBackendIsInitialized,
+    tmdbSetConfig,
+} from "../../features/configSlice";
 
+import { TMDB_BASE_URI, TMDB_API_KEY } from "../../config/APIs";
 import { getUserInfo } from "../../utils/user";
 
 import PageWrapper from "../../layout/PageWrapper";
+import BackendInitializer from "../../components/BackendInitializer";
+import SetPageLocation from "../../components/SetPageLocation";
+import Main from "../../layout/Main";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 import Profile from "../../pages/Profile";
 import Dashboard from "../../pages/Dashboard";
 import Home from "../../pages/Home";
+import HomeFilters from "../../components/filters/HomeFilters";
 import Movie from "../../pages/Movie";
 import Person from "../../pages/Person";
+import Loader from "../../components/Loader";
 import Error404 from "../../pages/Error404";
-import SetPageLocation from "../../components/SetPageLocation";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
+import { Box } from "@mui/material";
+
 function Router() {
+    const backendIsInitialized = useSelector(selectBackendIsInitialized);
     const isSignedIn = useSelector(selectUserIsSignedIn);
     const token = useSelector(selectUserToken);
+    const dispatch = useDispatch();
 
-    const [isError, setIsError] = useState(false);
+    const [isError, setHasError] = useState(false);
 
     const privateRouteLoader = () => {
         if (!token) {
@@ -121,9 +134,45 @@ function Router() {
     const router = createBrowserRouter([
         {
             element: <PageWrapper />,
-            loader: async () => await getUserInfo(setIsError),
-            errorElement: <ErrorBoundary page="all" />,
-            children: !isError && routes,
+            children: [
+                {
+                    element: <BackendInitializer />,
+                    children: [
+                        backendIsInitialized
+                            ? {
+                                  element: <Main />,
+                                  loader: async () => {
+                                      fetch(
+                                          `${TMDB_BASE_URI}/configuration?api_key=${TMDB_API_KEY}`
+                                      )
+                                          .then((response) => response.json())
+                                          .then((data) =>
+                                              dispatch(tmdbSetConfig(data))
+                                          )
+                                          .catch((error) =>
+                                              console.error(error)
+                                          );
+
+                                      return await getUserInfo(setHasError);
+                                  },
+                                  errorElement: <ErrorBoundary page="all" />,
+                                  children: !isError && routes,
+                              }
+                            : {
+                                  element: (
+                                      <Box
+                                          flexGrow="1"
+                                          display="flex"
+                                          flexDirection="column"
+                                          justifyContent="center">
+                                          <Loader />
+                                      </Box>
+                                  ),
+                                  path: "*",
+                              },
+                    ],
+                },
+            ],
         },
     ]);
 

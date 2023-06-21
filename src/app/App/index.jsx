@@ -1,8 +1,13 @@
-import Router from "../Router";
+import Router from "../../routes/Router";
 import { ThemeProvider, CssBaseline, GlobalStyles } from "@mui/material";
 import theme from "../../styles/theme";
 
 const styles = {
+    "#root": {
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+    },
     a: {
         textDecoration: "none",
     },

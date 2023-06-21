@@ -29,3 +29,14 @@ export const isEmptyObject = (objectToCheck) => {
         objectToCheck.constructor === Object
     );
 };
+
+/**
+ * Get ellapsed time from start
+ * @param { Number } startTime
+ * @returns { Number }
+ */
+
+export const getEllapsedTime = (startTime) => {
+    const now = Date.now();
+    return now - startTime;
+};

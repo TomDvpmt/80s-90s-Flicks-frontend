@@ -22,7 +22,10 @@ const NavBar = () => {
         <AppBar
             component="nav"
             sx={{
-                position: { xs: "sticky", sm: "static" },
+                position: {
+                    xs: "sticky",
+                    // sm: "static"
+                },
                 pr: "0 !important",
                 backgroundColor: theme.palette.background.darkest,
                 flexDirection: "row",
@@ -45,7 +48,8 @@ const NavBar = () => {
                     <Typography
                         component="span"
                         color="white"
-                        fontSize="1.3rem">
+                        fontSize="1.3rem"
+                        fontWeight="700">
                         {username}
                     </Typography>
                     {isSignedIn ? <NavUserMenu /> : <NavLoginMenu />}

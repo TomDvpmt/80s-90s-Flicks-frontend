@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 import { selectUserLanguage } from "../../features/userSlice";
-import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
+import { selectTmdbImagesSecureUrl } from "../../features/configSlice";
 
 import { getPersonFullData } from "../../utils/person";
 import { isEmptyObject } from "../../utils/helpers";

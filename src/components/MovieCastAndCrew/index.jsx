@@ -129,7 +129,7 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                     {directors}
                 </Typography>
 
-                {releaseDate && " | "}
+                {directors.length > 0 && releaseDate && " | "}
                 {releaseDate && <MovieReleaseDate date={releaseDate} />}
             </Typography>
             {page === "movie" && writers.length > 0 && (

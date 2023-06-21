@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 
-const Loader = () => {
+const Loader = ({ size, margin }) => {
     return (
         <CircularProgress
             className="loader"

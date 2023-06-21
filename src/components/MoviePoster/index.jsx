@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import {
     selectTmdbImagesPosterSizes,
     selectTmdbImagesSecureUrl,
-} from "../../features/tmdbSlice";
+} from "../../features/configSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";

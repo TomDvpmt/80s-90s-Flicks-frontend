@@ -24,6 +24,7 @@ const cellStyle = {
     padding: ".2rem .5rem",
     color: theme.palette.text.darkBg,
     fontSize: ".8rem",
+    fontFamily: "Raleway, Arial",
 };
 
 const leftCellStyle = {
@@ -58,6 +59,7 @@ const Footer = () => {
                         "& *": {
                             color: theme.palette.text.darkBg,
                             fontWeight: "400",
+                            fontFamily: "Raleway, Arial",
 
                             "&:hover": {
                                 textDecoration: "underline",

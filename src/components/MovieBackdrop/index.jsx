@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
+import { selectTmdbImagesSecureUrl } from "../../features/configSlice";
 
 import defaultBackdrop from "../../assets/img/defaultBackdrop.jpg";
 

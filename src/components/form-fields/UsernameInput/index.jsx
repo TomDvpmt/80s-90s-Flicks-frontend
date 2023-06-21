@@ -1,3 +1,7 @@
+import { useSelector } from "react-redux";
+
+import { selectPageLocation } from "../../../features/pageSlice";
+
 import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../../config/user";
 
 import { TextField } from "@mui/material";
@@ -8,6 +12,8 @@ const UsernameInput = ({ reducer }) => {
     UsernameInput.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const page = useSelector(selectPageLocation);
 
     const helperText = `Le nom d'utilisateur doit comporter au moins ${USERNAME_MIN_LENGTH} et au maximum ${USERNAME_MAX_LENGTH} caractères.`;
 
@@ -28,6 +34,7 @@ const UsernameInput = ({ reducer }) => {
 
     return (
         <TextField
+            autoFocus={page !== "profile"}
             required
             margin="dense"
             fullWidth

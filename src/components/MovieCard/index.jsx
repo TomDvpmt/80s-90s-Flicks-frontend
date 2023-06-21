@@ -10,7 +10,7 @@ import { selectUserFavorites } from "../../features/userSlice";
 import {
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
-} from "../../features/tmdbSlice";
+} from "../../features/configSlice";
 
 import theme from "../../styles/theme";
 import {

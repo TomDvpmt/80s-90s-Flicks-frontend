@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectUserLanguage } from "../../features/userSlice";
-import { selectTmdbImagesSecureUrl } from "../../features/tmdbSlice";
+import { selectTmdbImagesSecureUrl } from "../../features/configSlice";
 import {
     setShowSearchMovieDialog,
     selectShowSearchMovieDialog,

@@ -31,7 +31,7 @@ const getToken = async () => {
  * @returns {Object}
  */
 
-export const getUserInfo = async (setIsError) => {
+export const getUserInfo = async (setHasError) => {
     try {
         const token = await getToken();
 
@@ -45,14 +45,14 @@ export const getUserInfo = async (setIsError) => {
                 }
             );
             if (!profileResponse.ok) {
-                setIsError(true);
+                setHasError(true);
                 return {};
             }
             const data = await profileResponse.json();
             return data;
         }
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         return {};
     }
 

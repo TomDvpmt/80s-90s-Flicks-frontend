@@ -139,6 +139,7 @@ const LoginForm = ({ isDialogForm }) => {
                 credentials: "include",
             });
             const data = await response.json();
+
             if (!response.ok) {
                 localDispatch({ type: ACTIONS.setIsLoading, payload: false });
                 localDispatch({
