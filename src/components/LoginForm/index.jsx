@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -80,10 +80,6 @@ const LoginForm = ({ isDialogForm }) => {
         isLoading: false,
     });
 
-    // useEffect(() => {
-    //     token && navigate("/");
-    // }, [token, navigate]);
-
     const handleRegister = (e) => {
         if (isDialogForm) {
             e.preventDefault();
@@ -164,19 +160,21 @@ const LoginForm = ({ isDialogForm }) => {
 
             dispatch(setUserInfo(data.user));
             dispatch(setShowLoginDialog(false));
-            localDispatch({ type: ACTIONS.setIsLoading, payload: false });
+            localDispatch({
+                type: ACTIONS.setIsLoading,
+                payload: false,
+            });
         } catch (error) {
             console.error(error);
             localDispatch({
                 type: ACTIONS.setErrorMessage,
                 payload: error.message,
             });
+            localDispatch({
+                type: ACTIONS.setIsLoading,
+                payload: false,
+            });
         }
-
-        localDispatch({
-            type: ACTIONS.setIsLoading,
-            payload: false,
-        });
     };
 
     useEffect(() => {
@@ -184,7 +182,7 @@ const LoginForm = ({ isDialogForm }) => {
             navigate(destination);
             dispatch(setDestination(""));
         }
-    }, [userId]);
+    }, [userId, token, destination, navigate, dispatch]);
 
     return (
         <Box

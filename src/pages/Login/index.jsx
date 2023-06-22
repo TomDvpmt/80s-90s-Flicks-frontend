@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -9,9 +10,11 @@ const Login = () => {
     const token = useSelector(selectUserToken);
     const navigate = useNavigate();
 
-    if (token) {
-        navigate("/");
-    }
+    useEffect(() => {
+        if (token) {
+            navigate("/");
+        }
+    }, [token, navigate]);
 
     return <LoginForm isDialogForm={false} />;
 };

@@ -21,10 +21,13 @@ import {
     Button,
     Box,
 } from "@mui/material";
+import { selectDemoUserId } from "../../features/configSlice";
 
 const DeleteAccountDialog = () => {
     const userId = useSelector(selectUserId);
     const showDeleteAccountDialog = useSelector(selectShowDeleteAccountDialog);
+    const demoUserId = useSelector(selectDemoUserId);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -32,6 +35,19 @@ const DeleteAccountDialog = () => {
 
     const handleConfirmDelete = async () => {
         try {
+            // Prevent deletion of DemoUser account
+            if (!demoUserId) {
+                throw new Error(
+                    "Une erreur s'est produite, suppression impossible."
+                );
+            }
+            if (demoUserId === userId) {
+                throw new Error(
+                    "Vous ne pouvez pas supprimer le compte de démonstration de l'application."
+                );
+            }
+
+            // Delete account
             const response = await fetch(
                 `${API_BASE_URI}/API/users/${userId}`,
                 {
@@ -41,14 +57,14 @@ const DeleteAccountDialog = () => {
             );
             const data = await response.json();
             if (!response.ok) {
-                setErrorMessage(data.message);
                 throw new Error(data.message);
             }
             dispatch(setShowDeleteAccountDialog(false));
+            logout(navigate);
         } catch (error) {
-            console.log(error);
+            setErrorMessage(error.message);
+            console.error(error);
         }
-        logout(navigate);
     };
 
     const handleClose = () => {

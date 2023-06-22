@@ -63,12 +63,12 @@ const MovieCard = ({ page, movie }) => {
                         backgroundColor: "black",
                         "&:hover": {
                             "& .movieInfo": {
-                                display: "flex",
+                                display: { xs: "none", md: "flex" },
                                 flexDirection: "column",
                                 justifyContent: "center",
                             },
                             img: {
-                                opacity: "0.2",
+                                opacity: { md: "0.2" },
                             },
                         },
                     }}>

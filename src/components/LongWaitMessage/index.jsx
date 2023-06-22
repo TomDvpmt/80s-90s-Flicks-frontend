@@ -1,5 +1,5 @@
 import theme from "../../styles/theme";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const LongWaitMessage = () => {
     return (
@@ -35,7 +35,7 @@ const LongWaitMessage = () => {
                     color={theme.palette.text.darkBg}
                     fontWeight="500">
                     Merci de patienter, vous allez pouvoir tester l'application
-                    dans quelques secondes...
+                    dans quelques instants...
                 </Typography>
             </Box>
         </Box>

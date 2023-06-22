@@ -11,9 +11,12 @@ import {
     selectUserId,
 } from "../../features/userSlice";
 import {
+    selectShowDeleteAccountDialog,
+    selectShowUserAvatarUpdateDialog,
     setShowDeleteAccountDialog,
     setShowUserAvatarUpdateDialog,
 } from "../../features/dialogsSlice";
+import { setDemoUserId } from "../../features/configSlice";
 
 import UserAvatarUpdateDialog from "../../components/UserAvatarUpdateDialog";
 import UsernameInput from "../../components/form-fields/UsernameInput";
@@ -70,6 +73,11 @@ const Profile = () => {
     const prevFirstName = useSelector(selectUserFirstName);
     const prevLastName = useSelector(selectUserLastName);
 
+    const showDeleteAccountDialog = useSelector(selectShowDeleteAccountDialog);
+    const showUserAvatarUpdateDialog = useSelector(
+        selectShowUserAvatarUpdateDialog
+    );
+
     const reducer = (state, { type, payload }) => {
         switch (type) {
             case "setUsername":
@@ -112,6 +120,15 @@ const Profile = () => {
         showUpdateInfosForm: false,
         errorMessage: "",
     });
+
+    useEffect(() => {
+        fetch(`${API_BASE_URI}/API/config/demo-user-id`, {
+            credentials: "include",
+        })
+            .then((response) => response.json())
+            .then((data) => dispatch(setDemoUserId(data)))
+            .catch((error) => console.error(error));
+    }, [dispatch]);
 
     useEffect(() => {
         localDispatch({ type: ACTIONS.setUsername, payload: prevUsername });
@@ -280,7 +297,9 @@ const Profile = () => {
                 </Badge>
             </Box>
 
-            <UserAvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
+            {showUserAvatarUpdateDialog && (
+                <UserAvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
+            )}
             <Box>
                 <Box
                     sx={{
@@ -358,7 +377,7 @@ const Profile = () => {
                             onClick={handleDeleteClick}>
                             Supprimer le compte
                         </Button>
-                        <DeleteAccountDialog />
+                        {showDeleteAccountDialog && <DeleteAccountDialog />}
                     </Box>
                 </Box>
 

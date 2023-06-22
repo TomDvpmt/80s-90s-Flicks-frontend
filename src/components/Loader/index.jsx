@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-
-import { selectPageLocation } from "../../features/pageSlice";
+import { useState, useRef } from "react";
 
 import { LOADER_LONG_WAIT_DURATION } from "../../config/timing";
 
@@ -25,20 +22,19 @@ const Loader = ({
         modal: PropTypes.bool,
     };
 
-    const page = useSelector(selectPageLocation);
-
     const [isLongWait, setIsLongWait] = useState(false);
 
-    let ellapsedTime = 0;
+    let seconds = useRef(0);
 
-    const timer = setInterval(() => {
-        ellapsedTime = ellapsedTime + 1000;
-
-        if (ellapsedTime > LOADER_LONG_WAIT_DURATION) {
-            clearInterval(timer);
-            setIsLongWait(true);
-        }
-    }, 1000);
+    if (hasMessage) {
+        const timerId = setInterval(() => {
+            seconds.current++;
+            if (seconds.current > LOADER_LONG_WAIT_DURATION) {
+                clearInterval(timerId);
+                setIsLongWait(true);
+            }
+        }, 1000);
+    }
 
     const loaderStyle = {
         display: "flex",

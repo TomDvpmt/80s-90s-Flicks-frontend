@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectUserToken } from "../../features/userSlice";
 import {
+    selectShowLoggedOnlyDialog,
+    selectShowSearchMovieDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
 } from "../../features/dialogsSlice";
@@ -18,6 +20,8 @@ import { Search, Home } from "@mui/icons-material";
 
 const NavExploreButtons = () => {
     const token = useSelector(selectUserToken);
+    const showSearchMovieDialog = useSelector(selectShowSearchMovieDialog);
+    const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
     const dispatch = useDispatch();
 
     const handleSearch = () => {
@@ -44,8 +48,8 @@ const NavExploreButtons = () => {
                     <Search sx={{ fontSize: "2.2rem" }} />
                 </IconButton>
             </Box>
-            <SearchMovieDialog />
-            <LoggedOnlyDialog />
+            {showSearchMovieDialog && <SearchMovieDialog />}
+            {showLoggedOnlyDialog && <LoggedOnlyDialog />}
         </>
     );
 };

@@ -19,6 +19,8 @@ import {
     selectFiltersYear,
 } from "../../features/filtersSlice";
 import {
+    selectShowLoggedOnlyDialog,
+    selectShowSearchMovieDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
 } from "../../features/dialogsSlice";
@@ -46,6 +48,9 @@ const Home = () => {
     const filters = useSelector(selectFiltersAll);
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const activeYear = useSelector(selectFiltersYear);
+    const showSearchMovieDialog = useSelector(selectShowSearchMovieDialog);
+    const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
+
     const dispatch = useDispatch();
 
     const reducer = (state, { type, payload }) => {
@@ -175,8 +180,8 @@ const Home = () => {
                         sx={{ color: "white" }}>
                         Recherche par titre
                     </Button>
-                    <SearchMovieDialog />
-                    <LoggedOnlyDialog />
+                    {showSearchMovieDialog && <SearchMovieDialog />}
+                    {showLoggedOnlyDialog && <LoggedOnlyDialog />}
                 </Box>
                 <Outlet />
                 <HomeFilters reducer={{ ACTIONS, state, localDispatch }} />

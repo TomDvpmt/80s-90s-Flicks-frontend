@@ -1,6 +1,5 @@
 import store from "../store/store";
 
-import { setBackendIsInitialized } from "../features/configSlice";
 import { signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
@@ -24,7 +23,6 @@ export const getToken = async () => {
         const token = await tokenResponse.json();
 
         console.log("token");
-        store.dispatch(setBackendIsInitialized());
 
         return token;
     } catch (error) {

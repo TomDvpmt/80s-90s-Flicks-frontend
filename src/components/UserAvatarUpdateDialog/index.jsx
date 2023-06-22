@@ -65,8 +65,8 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleClose = () => {
-        dispatch(setShowUserAvatarUpdateDialog(false));
         setErrorMessage("");
+        dispatch(setShowUserAvatarUpdateDialog(false));
     };
 
     const handleChangeFile = async (e) => {
