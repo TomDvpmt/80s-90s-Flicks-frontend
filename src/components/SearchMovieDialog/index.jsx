@@ -146,7 +146,7 @@ const SearchMovieDialog = () => {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <Box component="form">
+                <Box component="form" pb="1.5rem">
                     <TextField
                         fullWidth
                         value={state.query}

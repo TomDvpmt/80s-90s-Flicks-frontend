@@ -29,7 +29,6 @@ const PersonLabel = ({ person, isStrong, isLink }) => {
         if (!isLink) return;
 
         if (!token) {
-            console.log(" destination : ", destination);
             dispatch(setShowLoggedOnlyDialog(true));
             return;
         }

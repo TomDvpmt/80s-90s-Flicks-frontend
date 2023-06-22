@@ -20,7 +20,7 @@ const LongWaitMessage = () => {
             <Box>
                 <Typography
                     pb="1rem"
-                    variant="h6"
+                    variant={{ md: "h6" }}
                     color={theme.palette.text.darkBg}
                     fontWeight="500">
                     Ce site est hébergé en partie par Render.com, qui impose un
@@ -31,7 +31,7 @@ const LongWaitMessage = () => {
                     .
                 </Typography>
                 <Typography
-                    variant="h6"
+                    variant={{ md: "h6" }}
                     color={theme.palette.text.darkBg}
                     fontWeight="500">
                     Merci de patienter, vous allez pouvoir tester l'application

@@ -131,50 +131,55 @@ const LoginForm = ({ isDialogForm }) => {
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
         page === "login" && dispatch(setDestination("/"));
 
-        let loginData = {
-            username: state.username,
-            password: state.password,
-        };
-
-        if (isDemoSubmit) {
-            loginData = {
-                username: "DemoUser",
-                password: "password",
+        setTimeout(async () => {
+            let loginData = {
+                username: state.username,
+                password: state.password,
             };
-        }
 
-        try {
-            const response = await fetch(`${API_BASE_URI}/API/users/login`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify(loginData),
-                credentials: "include",
-            });
-
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message);
+            if (isDemoSubmit) {
+                loginData = {
+                    username: "DemoUser",
+                    password: "password",
+                };
             }
 
-            dispatch(setUserInfo(data.user));
-            dispatch(setShowLoginDialog(false));
-            localDispatch({
-                type: ACTIONS.setIsLoading,
-                payload: false,
-            });
-        } catch (error) {
-            console.error(error);
-            localDispatch({
-                type: ACTIONS.setErrorMessage,
-                payload: error.message,
-            });
-            localDispatch({
-                type: ACTIONS.setIsLoading,
-                payload: false,
-            });
-        }
+            try {
+                const response = await fetch(
+                    `${API_BASE_URI}/API/users/login`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        body: JSON.stringify(loginData),
+                        credentials: "include",
+                    }
+                );
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message);
+                }
+
+                dispatch(setUserInfo(data.user));
+                dispatch(setShowLoginDialog(false));
+                localDispatch({
+                    type: ACTIONS.setIsLoading,
+                    payload: false,
+                });
+            } catch (error) {
+                console.error(error);
+                localDispatch({
+                    type: ACTIONS.setErrorMessage,
+                    payload: error.message,
+                });
+                localDispatch({
+                    type: ACTIONS.setIsLoading,
+                    payload: false,
+                });
+            }
+        }, 10000);
     };
 
     useEffect(() => {

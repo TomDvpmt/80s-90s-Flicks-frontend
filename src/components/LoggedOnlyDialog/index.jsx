@@ -49,6 +49,7 @@ const LoggedOnlyDialog = () => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
+                        // lineHeight: "1.4rem",
                     }}>
                     Fonctionnalité réservée aux membres
                     <IconButton onClick={handleClose}>

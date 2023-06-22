@@ -99,6 +99,19 @@ theme = createTheme(theme, {
                 },
             },
         },
+        MuiDialogTitle: {
+            defaultProps: {
+                lineHeight: "1.4rem",
+            },
+        },
+        MuiDialogActions: {
+            styleOverrides: {
+                root: {
+                    paddingBottom: "1rem",
+                    flexWrap: "wrap",
+                },
+            },
+        },
     },
 
     // Custom properties
