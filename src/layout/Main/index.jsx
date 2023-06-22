@@ -96,7 +96,14 @@ const Main = () => {
     }, [language, page]);
 
     return isLoading ? (
-        <Loader modal hasMessage />
+        <Box
+            component="main"
+            flexGrow="1"
+            display="flex"
+            justifyContent="center"
+            alignItems="center">
+            <Loader hasMessage />
+        </Box>
     ) : (
         <>
             <NavBar />

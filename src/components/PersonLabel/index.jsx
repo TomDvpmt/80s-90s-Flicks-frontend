@@ -23,12 +23,13 @@ const PersonLabel = ({ person, isStrong, isLink }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleClick = (e) => {
+    const handleClick = () => {
+        const destination = `/person/${person.id}`;
+        dispatch(setDestination(destination));
         if (!isLink) return;
 
-        const destination = `/person/${e.target.id}`;
         if (!token) {
-            dispatch(setDestination(destination));
+            console.log(" destination : ", destination);
             dispatch(setShowLoggedOnlyDialog(true));
             return;
         }

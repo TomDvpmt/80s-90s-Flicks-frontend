@@ -1,19 +1,11 @@
-import { useState } from "react";
 import {
     createBrowserRouter,
     redirect,
     RouterProvider,
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { auth, selectUserToken } from "../../features/userSlice";
-import {
-    selectBackendIsInitialized,
-    tmdbSetConfig,
-} from "../../features/configSlice";
-
-import { TMDB_BASE_URI, TMDB_API_KEY } from "../../config/APIs";
-import { getToken, getUserInfo } from "../../utils/user";
+import { selectUserToken } from "../../features/userSlice";
 
 import PageWrapper from "../../layout/PageWrapper";
 import SetPageLocation from "../../components/SetPageLocation";
@@ -25,25 +17,13 @@ import Dashboard from "../../pages/Dashboard";
 import Home from "../../pages/Home";
 import Movie from "../../pages/Movie";
 import Person from "../../pages/Person";
-import Loader from "../../components/Loader";
 import Error404 from "../../pages/Error404";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
     const token = useSelector(selectUserToken);
-    const isBackendInitialized = useSelector(selectBackendIsInitialized);
-    const dispatch = useDispatch();
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    // const setTmdbConfig = () => {
-    //     fetch(`${TMDB_BASE_URI}/configuration?api_key=${TMDB_API_KEY}`)
-    //         .then((response) => response.json())
-    //         .then((data) => dispatch(tmdbSetConfig(data)))
-    //         .catch((error) => console.error(error));
-    // };
-
-    const privateRouteLoader = () => {
+    const checkAuth = () => {
         if (!token) {
             return redirect("/login");
         }
@@ -90,27 +70,27 @@ function Router() {
             page: "profile",
             path: "profile",
             element: <Profile />,
-            loader: () => privateRouteLoader(),
-            errorElement: true,
+            loader: () => checkAuth(),
+            // errorElement: true,
         },
         {
             page: "dashboard",
             path: "dashboard",
-            element: token ? <Dashboard /> : <Login />,
-            loader: () => privateRouteLoader(),
-            errorElement: true,
+            element: <Dashboard />,
+            loader: () => checkAuth(),
+            // errorElement: true,
         },
         {
             page: "movie",
             path: "movies/:id",
             element: <Movie />,
-            errorElement: true,
+            // errorElement: true,
         },
         {
             page: "person",
             path: "person/:personId",
             element: <Person />,
-            errorElement: true,
+            // errorElement: true,
         },
         {
             page: "error404",
@@ -125,8 +105,8 @@ function Router() {
                 route.page,
                 route.path,
                 route.element,
-                route.loader || null,
-                route.errorElement || false
+                route.loader || null
+                // route.errorElement || false
             )
     );
 
@@ -137,14 +117,6 @@ function Router() {
             children: [
                 {
                     element: <Main />,
-                    // loader: async () => {
-                    //     setTmdbConfig();
-                    //     const token = await getToken();
-                    //     console.log(token);
-                    //     dispatch(auth(token));
-                    //     const userData = token ? await getUserInfo() : {};
-                    //     return userData;
-                    // },
                     errorElement: <ErrorBoundary page="all" />,
                     children: routes,
                 },

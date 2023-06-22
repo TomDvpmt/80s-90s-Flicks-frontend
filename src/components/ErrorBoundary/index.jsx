@@ -61,7 +61,14 @@ const ErrorBoundary = ({ page }) => {
     return (
         <>
             {page === "all" && <Header />}
-            <Box component="main" bgcolor={theme.palette.background.default}>
+            <Box
+                component="main"
+                flexGrow="1"
+                bgcolor={theme.palette.background.default}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center">
                 <Box component="section" padding="3rem">
                     <Typography
                         variant="h2"

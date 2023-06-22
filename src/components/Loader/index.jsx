@@ -68,16 +68,19 @@ const Loader = ({
             </Box>
         </Modal>
     ) : (
-        <Box sx={loaderStyle}>
-            <CircularProgress
-                className="loader"
-                sx={{
-                    display: "block",
-                    margin: `${marginY} auto`,
-                }}
-                size={size}
-            />
-        </Box>
+        <>
+            <Box sx={loaderStyle}>
+                <CircularProgress
+                    className="loader"
+                    sx={{
+                        display: "block",
+                        margin: `${marginY} auto`,
+                    }}
+                    size={size}
+                />
+                {isLongWait && hasMessage && <LongWaitMessage />}
+            </Box>
+        </>
     );
 };
 

@@ -2,12 +2,20 @@ import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { auth, selectUserToken } from "../../features/userSlice";
+import {
+    selectUserToken,
+    selectUserId,
+    setUserInfo,
+} from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
-import { setDestination, selectDestination } from "../../features/pageSlice";
+import {
+    setDestination,
+    selectDestination,
+    selectPageLocation,
+} from "../../features/pageSlice";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
@@ -50,6 +58,8 @@ const RegisterForm = ({ isDialogForm }) => {
         isDialogForm: PropTypes.bool.isRequired,
     };
     const token = useSelector(selectUserToken);
+    const userId = useSelector(selectUserId);
+    const page = useSelector(selectPageLocation);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -105,10 +115,6 @@ const RegisterForm = ({ isDialogForm }) => {
         errorMessage: "",
         isLoading: false,
     });
-
-    useEffect(() => {
-        token && navigate("/");
-    }, [token, navigate]);
 
     const handleLogin = (e) => {
         if (isDialogForm) {
@@ -174,6 +180,7 @@ const RegisterForm = ({ isDialogForm }) => {
         // submit
 
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
+        page === "register" && dispatch(setDestination("/"));
 
         try {
             const response = await fetch(`${API_BASE_URI}/API/users/`, {
@@ -192,22 +199,27 @@ const RegisterForm = ({ isDialogForm }) => {
             });
             const data = await response.json();
             if (!response.ok) {
-                localDispatch({ type: ACTIONS.setIsLoading, payload: false });
                 localDispatch({
                     type: ACTIONS.setErrorMessage,
                     payload: data.message,
                 });
                 throw new Error(data.message);
             }
-            dispatch(auth(data.token));
+            dispatch(setUserInfo(data.user));
             dispatch(setShowRegisterDialog(false));
-            navigate(destination);
-            dispatch(setDestination(""));
+            localDispatch({ type: ACTIONS.setIsLoading, payload: false });
         } catch (error) {
             localDispatch({ type: ACTIONS.setIsLoading, payload: false });
             console.error(error);
         }
     };
+
+    useEffect(() => {
+        if (token) {
+            navigate(destination);
+            dispatch(setDestination(""));
+        }
+    }, [userId]);
 
     return (
         <>

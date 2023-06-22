@@ -5,6 +5,7 @@ import { signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
 import { API_BASE_URI } from "../config/APIs";
+import { setDestination } from "../features/pageSlice";
 
 /**
  * Get current user's token from backend
@@ -68,8 +69,8 @@ export const logout = (navigate) => {
         credentials: "include",
     })
         .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
+        .then(() => {
+            store.dispatch(setDestination(""));
             store.dispatch(signOut());
             store.dispatch(clearAll());
             navigate("/login");

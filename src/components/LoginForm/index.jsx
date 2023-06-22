@@ -1,13 +1,21 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { auth, selectUserToken, setUserInfo } from "../../features/userSlice";
+import {
+    selectUserId,
+    selectUserToken,
+    setUserInfo,
+} from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
-import { setDestination, selectDestination } from "../../features/pageSlice";
+import {
+    setDestination,
+    selectDestination,
+    selectPageLocation,
+} from "../../features/pageSlice";
 
 import UsernameInput from "../form-fields/UsernameInput";
 import PasswordInput from "../form-fields/PasswordInput";
@@ -38,6 +46,8 @@ const LoginForm = ({ isDialogForm }) => {
     };
 
     const token = useSelector(selectUserToken);
+    const userId = useSelector(selectUserId);
+    const page = useSelector(selectPageLocation);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -70,9 +80,9 @@ const LoginForm = ({ isDialogForm }) => {
         isLoading: false,
     });
 
-    useEffect(() => {
-        token && navigate("/");
-    }, [token, navigate]);
+    // useEffect(() => {
+    //     token && navigate("/");
+    // }, [token, navigate]);
 
     const handleRegister = (e) => {
         if (isDialogForm) {
@@ -123,6 +133,7 @@ const LoginForm = ({ isDialogForm }) => {
         // submit
 
         localDispatch({ type: ACTIONS.setIsLoading, payload: true });
+        page === "login" && dispatch(setDestination("/"));
 
         let loginData = {
             username: state.username,
@@ -145,28 +156,35 @@ const LoginForm = ({ isDialogForm }) => {
                 body: JSON.stringify(loginData),
                 credentials: "include",
             });
-            const data = await response.json();
 
+            const data = await response.json();
             if (!response.ok) {
-                localDispatch({
-                    type: ACTIONS.setIsLoading,
-                    payload: false,
-                });
-                localDispatch({
-                    type: ACTIONS.setErrorMessage,
-                    payload: data.message,
-                });
                 throw new Error(data.message);
             }
+
             dispatch(setUserInfo(data.user));
             dispatch(setShowLoginDialog(false));
+            localDispatch({ type: ACTIONS.setIsLoading, payload: false });
+        } catch (error) {
+            console.error(error);
+            localDispatch({
+                type: ACTIONS.setErrorMessage,
+                payload: error.message,
+            });
+        }
+
+        localDispatch({
+            type: ACTIONS.setIsLoading,
+            payload: false,
+        });
+    };
+
+    useEffect(() => {
+        if (token) {
             navigate(destination);
             dispatch(setDestination(""));
-        } catch (error) {
-            localDispatch({ type: ACTIONS.setIsLoading, payload: false });
-            console.error(error);
         }
-    };
+    }, [userId]);
 
     return (
         <Box

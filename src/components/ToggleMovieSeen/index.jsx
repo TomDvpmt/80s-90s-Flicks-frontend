@@ -9,6 +9,7 @@ import {
     selectUserMoviesToSee,
 } from "../../features/userSlice";
 import { setShowLoggedOnlyDialog } from "../../features/dialogsSlice";
+import { setDestination } from "../../features/pageSlice";
 
 import { FormControlLabel, Checkbox } from "@mui/material";
 
@@ -31,6 +32,7 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
 
     const handleMovieSeen = () => {
         if (!token) {
+            dispatch(setDestination(`/movies/${movieId}`));
             dispatch(setShowLoggedOnlyDialog(true));
             return;
         }

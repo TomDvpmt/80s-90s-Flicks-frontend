@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserAvatarUrl, selectUserToken } from "../../features/userSlice";
+import {
+    selectUserAvatarUrl,
+    selectUserId,
+    selectUserToken,
+} from "../../features/userSlice";
 
 import { API_BASE_URI } from "../../config/APIs";
 import useFetch from "../../hooks/useFetch";
@@ -64,14 +68,11 @@ const NavUserMenu = () => {
         setAnchorEl(null);
     }, []);
 
-    const handleLogout = useCallback(
-        (e) => {
-            e.preventDefault();
-            logout(navigate);
-            setAnchorEl(null);
-        },
-        [navigate]
-    );
+    const handleLogout = useCallback((e) => {
+        e.preventDefault();
+        logout(navigate);
+        setAnchorEl(null);
+    }, []);
 
     useEffect(() => {
         const menuItemsData = getMenuItemsData();
