@@ -7,11 +7,15 @@ import {
     selectShowSearchMovieDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
+    selectShowLoginDialog,
+    selectShowRegisterDialog,
 } from "../../features/dialogsSlice";
 import { setDestination } from "../../features/pageSlice";
 
 import SearchMovieDialog from "../SearchMovieDialog";
 import LoggedOnlyDialog from "../LoggedOnlyDialog";
+import LoginDialog from "../LoginDialog";
+import RegisterDialog from "../RegisterDialog";
 
 import theme from "../../styles/theme";
 import { IconButton, Box } from "@mui/material";
@@ -22,6 +26,8 @@ const NavExploreButtons = () => {
     const token = useSelector(selectUserToken);
     const showSearchMovieDialog = useSelector(selectShowSearchMovieDialog);
     const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
+    const showLoginDialog = useSelector(selectShowLoginDialog);
+    const showRegisterDialog = useSelector(selectShowRegisterDialog);
     const dispatch = useDispatch();
 
     const handleSearch = () => {
@@ -50,6 +56,8 @@ const NavExploreButtons = () => {
             </Box>
             {showSearchMovieDialog && <SearchMovieDialog />}
             {showLoggedOnlyDialog && <LoggedOnlyDialog />}
+            {showLoginDialog && <LoginDialog />}
+            {showRegisterDialog && <RegisterDialog />}
         </>
     );
 };

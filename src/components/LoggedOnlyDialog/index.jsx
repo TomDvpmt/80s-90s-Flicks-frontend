@@ -7,9 +7,6 @@ import {
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
 
-import LoginDialog from "../LoginDialog";
-import RegisterDialog from "../RegisterDialog";
-
 import theme from "../../styles/theme";
 import {
     Dialog,
@@ -33,6 +30,7 @@ const LoggedOnlyDialog = () => {
 
     const handleLogin = () => {
         dispatch(setShowLoginDialog(true));
+        console.log("handleLogin");
         handleClose();
     };
 
@@ -87,8 +85,6 @@ const LoggedOnlyDialog = () => {
                     <Button onClick={handleClose}>Annuler</Button>
                 </DialogActions>
             </Dialog>
-            <LoginDialog />
-            <RegisterDialog />
         </>
     );
 };
