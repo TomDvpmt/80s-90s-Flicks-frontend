@@ -1,7 +1,6 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
 
 import Header from "../../layout/Header";
-import NavBar from "../NavBar";
 import Footer from "../../layout/Footer";
 
 import { Box } from "@mui/material";

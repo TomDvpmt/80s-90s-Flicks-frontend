@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
 
 import {
     addToFavorites,
@@ -9,7 +8,7 @@ import {
     selectUserFavorites,
 } from "../../features/userSlice";
 import { setShowLoggedOnlyDialog } from "../../features/dialogsSlice";
-import { selectPageLocation, setDestination } from "../../features/pageSlice";
+import { setDestination } from "../../features/pageSlice";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 
@@ -25,7 +24,6 @@ const ToggleFavorite = ({ movieId }) => {
     };
 
     const dispatch = useDispatch();
-    const page = useSelector(selectPageLocation);
     const token = useSelector(selectUserToken);
     const userId = useSelector(selectUserId);
     const favorites = useSelector(selectUserFavorites);

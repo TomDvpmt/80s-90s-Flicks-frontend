@@ -88,7 +88,7 @@ const Main = () => {
             .finally(() => {
                 setIsloading(false);
             });
-    }, [dispatch, setTmdbConfig]);
+    }, [dispatch, setTmdbConfig, getToken, getUserInfo]);
 
     // Set page's heading
     useEffect(() => {

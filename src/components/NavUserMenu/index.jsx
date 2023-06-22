@@ -2,11 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import {
-    selectUserAvatarUrl,
-    selectUserId,
-    selectUserToken,
-} from "../../features/userSlice";
+import { selectUserAvatarUrl, selectUserToken } from "../../features/userSlice";
 
 import { API_BASE_URI } from "../../config/APIs";
 import useFetch from "../../hooks/useFetch";
@@ -32,9 +28,12 @@ const NavUserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
 
-    const { data, isLoading } = useFetch(
-        `${API_BASE_URI}/API/config/initialize`
-    );
+    const response = useFetch(`${API_BASE_URI}/API/config/initialize`);
+    const isLoading = response.isLoading;
+
+    // const { data, isLoading } = useFetch(
+    //     `${API_BASE_URI}/API/config/initialize`
+    // );
 
     const getMenuItemsData = useCallback(
         () => [
@@ -68,11 +67,14 @@ const NavUserMenu = () => {
         setAnchorEl(null);
     }, []);
 
-    const handleLogout = useCallback((e) => {
-        e.preventDefault();
-        logout(navigate);
-        setAnchorEl(null);
-    }, []);
+    const handleLogout = useCallback(
+        (e) => {
+            e.preventDefault();
+            logout(navigate);
+            setAnchorEl(null);
+        },
+        [navigate]
+    );
 
     useEffect(() => {
         const menuItemsData = getMenuItemsData();
