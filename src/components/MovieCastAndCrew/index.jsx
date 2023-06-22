@@ -9,7 +9,7 @@ import {
     NUMBER_OF_WRITERS,
     NUMBER_OF_ACTORS_ON_MOVIE_PAGE,
     NUMBER_OF_ACTORS_ON_MOVIE_CARD,
-} from "../../config/movie";
+} from "../../config/layout";
 
 import MovieReleaseDate from "../MovieReleaseDate";
 import PersonLabel from "../PersonLabel";

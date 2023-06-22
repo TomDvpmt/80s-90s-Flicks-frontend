@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../features/userSlice";
+import { selectUserToken } from "../../features/userSlice";
 
 import Branding from "../../components/Branding";
 import FooterExternalLink from "../../components/FooterExternalLink";
@@ -33,7 +33,7 @@ const leftCellStyle = {
 };
 
 const Footer = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const navigate = useNavigate();
 
     const handleLogout = (e) => {
@@ -67,7 +67,7 @@ const Footer = () => {
                         },
                     }}>
                     <Link to="/">Explorer</Link>
-                    {isSignedIn && (
+                    {token && (
                         <>
                             <Link to="/dashboard">Mon tableau de bord</Link>
                             <Link to="/profile">Profil</Link>
@@ -76,7 +76,7 @@ const Footer = () => {
                             </Link>
                         </>
                     )}
-                    {!isSignedIn && (
+                    {!token && (
                         <>
                             <Link to="/login">Se connecter</Link>
                             <Link to="/register">Créer un compte</Link>

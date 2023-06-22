@@ -4,7 +4,7 @@ import {
     addToMoviesSeen,
     removeFromMoviesSeen,
     removeFromMoviesToSee,
-    selectUserIsSignedIn,
+    selectUserToken,
     selectUserMoviesSeen,
     selectUserMoviesToSee,
 } from "../../features/userSlice";
@@ -21,7 +21,7 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
         langData: PropTypes.object.isRequired,
     };
 
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const moviesToSee = useSelector(selectUserMoviesToSee);
     const moviesSeen = useSelector(selectUserMoviesSeen);
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
     const userHasSeenMovie = moviesSeen.includes(movieId);
 
     const handleMovieSeen = () => {
-        if (!isSignedIn) {
+        if (!token) {
             dispatch(setShowLoggedOnlyDialog(true));
             return;
         }

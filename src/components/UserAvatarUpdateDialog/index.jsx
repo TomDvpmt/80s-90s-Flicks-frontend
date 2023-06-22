@@ -87,6 +87,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
             setIsLoading(true);
 
             try {
+                // get ImgBB API key
                 const imgBBAPIKeyResponse = await fetch(
                     `${API_BASE_URI}/API/config/imgbb-api-key`,
                     {
@@ -101,6 +102,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                 }
                 const imgBBAPIKey = await imgBBAPIKeyResponse.json();
 
+                // upload file to ImgBB
                 const imgData = new FormData();
                 imgData.append("image", uploadedFile);
 
@@ -121,6 +123,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                 const avatar = await uploadResponse.json();
                 const avatarUrl = avatar.data?.image?.url;
 
+                // Update user avatar url in database
                 const updateUserResponse = await fetch(
                     `${API_BASE_URI}/API/users/${userId}`,
                     {
@@ -141,7 +144,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                     );
                 }
 
+                // Update user avatar url in global state
                 dispatch(updateAvatar({ avatarUrl }));
+
                 reducer.localDispatch({
                     type: reducer.ACTIONS.setShowUpdateValidation,
                     payload: "true",
@@ -191,6 +196,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    position: "relative",
                 }}>
                 <Box display="flex" alignItems="center">
                     <Avatar
@@ -209,14 +215,16 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                         <Box
                             sx={{
                                 position: "absolute",
-                                display: "flex",
-                                width: theme.maxWidth.profileAvatar,
+                                right: "0",
+                                left: "0",
+                                // width: theme.maxWidth.profileAvatar,
                                 height: theme.maxWidth.profileAvatar,
+                                display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 bgcolor: "rgba(255, 255, 255, 0.5)",
                             }}>
-                            <Loader />
+                            <Loader modal hasMessage />
                         </Box>
                     )}
                 </Box>

@@ -12,7 +12,7 @@ import LoggedOnlyDialog from "../../components/LoggedOnlyDialog";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
-import { selectUserIsSignedIn } from "../../features/userSlice";
+import { selectUserToken } from "../../features/userSlice";
 import {
     selectFiltersAll,
     selectFiltersActiveGenres,
@@ -42,7 +42,7 @@ const ACTIONS = {
 };
 
 const Home = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const filters = useSelector(selectFiltersAll);
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const activeYear = useSelector(selectFiltersYear);
@@ -98,7 +98,7 @@ const Home = () => {
     useEffect(() => {}, [state.hasActiveFilters]);
 
     const handleSearch = () => {
-        isSignedIn
+        token
             ? dispatch(setShowSearchMovieDialog(true))
             : dispatch(setShowLoggedOnlyDialog(true));
     };

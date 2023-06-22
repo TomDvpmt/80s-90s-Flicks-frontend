@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../features/userSlice";
+import { selectUserToken } from "../../features/userSlice";
 import {
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
@@ -17,11 +17,11 @@ import { IconButton, Box } from "@mui/material";
 import { Search, Home } from "@mui/icons-material";
 
 const NavExploreButtons = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const dispatch = useDispatch();
 
     const handleSearch = () => {
-        if (isSignedIn) {
+        if (token) {
             dispatch(setShowSearchMovieDialog(true));
             return;
         }

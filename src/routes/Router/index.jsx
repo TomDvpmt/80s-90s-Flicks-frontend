@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     createBrowserRouter,
     redirect,
@@ -5,12 +6,11 @@ import {
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import { auth, selectUserToken } from "../../features/userSlice";
 import {
-    auth,
-    selectUserIsSignedIn,
-    selectUserToken,
-} from "../../features/userSlice";
-import { tmdbSetConfig } from "../../features/configSlice";
+    selectBackendIsInitialized,
+    tmdbSetConfig,
+} from "../../features/configSlice";
 
 import { TMDB_BASE_URI, TMDB_API_KEY } from "../../config/APIs";
 import { getToken, getUserInfo } from "../../utils/user";
@@ -23,7 +23,6 @@ import Register from "../../pages/Register";
 import Profile from "../../pages/Profile";
 import Dashboard from "../../pages/Dashboard";
 import Home from "../../pages/Home";
-import HomeFilters from "../../components/filters/HomeFilters";
 import Movie from "../../pages/Movie";
 import Person from "../../pages/Person";
 import Loader from "../../components/Loader";
@@ -31,16 +30,18 @@ import Error404 from "../../pages/Error404";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 function Router() {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
     const token = useSelector(selectUserToken);
+    const isBackendInitialized = useSelector(selectBackendIsInitialized);
     const dispatch = useDispatch();
 
-    const setTmdbConfig = () => {
-        fetch(`${TMDB_BASE_URI}/configuration?api_key=${TMDB_API_KEY}`)
-            .then((response) => response.json())
-            .then((data) => dispatch(tmdbSetConfig(data)))
-            .catch((error) => console.error(error));
-    };
+    const [isLoading, setIsLoading] = useState(true);
+
+    // const setTmdbConfig = () => {
+    //     fetch(`${TMDB_BASE_URI}/configuration?api_key=${TMDB_API_KEY}`)
+    //         .then((response) => response.json())
+    //         .then((data) => dispatch(tmdbSetConfig(data)))
+    //         .catch((error) => console.error(error));
+    // };
 
     const privateRouteLoader = () => {
         if (!token) {
@@ -95,7 +96,7 @@ function Router() {
         {
             page: "dashboard",
             path: "dashboard",
-            element: isSignedIn ? <Dashboard /> : <Login />,
+            element: token ? <Dashboard /> : <Login />,
             loader: () => privateRouteLoader(),
             errorElement: true,
         },
@@ -136,13 +137,14 @@ function Router() {
             children: [
                 {
                     element: <Main />,
-                    loader: async () => {
-                        setTmdbConfig();
-                        const token = await getToken();
-                        dispatch(auth(token));
-                        const userData = token ? await getUserInfo() : {};
-                        return userData;
-                    },
+                    // loader: async () => {
+                    //     setTmdbConfig();
+                    //     const token = await getToken();
+                    //     console.log(token);
+                    //     dispatch(auth(token));
+                    //     const userData = token ? await getUserInfo() : {};
+                    //     return userData;
+                    // },
                     errorElement: <ErrorBoundary page="all" />,
                     children: routes,
                 },

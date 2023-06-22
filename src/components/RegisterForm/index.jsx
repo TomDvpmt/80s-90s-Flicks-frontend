@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { auth, selectUserIsSignedIn } from "../../features/userSlice";
+import { auth, selectUserToken } from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
@@ -49,7 +49,7 @@ const RegisterForm = ({ isDialogForm }) => {
     RegisterForm.propTypes = {
         isDialogForm: PropTypes.bool.isRequired,
     };
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -107,8 +107,8 @@ const RegisterForm = ({ isDialogForm }) => {
     });
 
     useEffect(() => {
-        isSignedIn && navigate("/");
-    }, [isSignedIn, navigate]);
+        token && navigate("/");
+    }, [token, navigate]);
 
     const handleLogin = (e) => {
         if (isDialogForm) {
@@ -220,7 +220,7 @@ const RegisterForm = ({ isDialogForm }) => {
                 }}>
                 <ErrorMessage errorMessage={state.errorMessage} />
                 {state.isLoading ? (
-                    <Loader />
+                    <Loader hasMessage />
                 ) : (
                     <Box>
                         <UsernameInput

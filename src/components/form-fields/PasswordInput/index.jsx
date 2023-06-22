@@ -1,4 +1,4 @@
-import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "../../../config/user";
+import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "../../../config/form";
 
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";

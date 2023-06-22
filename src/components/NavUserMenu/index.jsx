@@ -2,10 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import {
-    selectUserAvatarUrl,
-    selectUserIsSignedIn,
-} from "../../features/userSlice";
+import { selectUserAvatarUrl, selectUserToken } from "../../features/userSlice";
 
 import { API_BASE_URI } from "../../config/APIs";
 import useFetch from "../../hooks/useFetch";
@@ -24,7 +21,7 @@ import {
 import { Settings, Logout, Dashboard } from "@mui/icons-material";
 
 const NavUserMenu = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const avatarUrl = useSelector(selectUserAvatarUrl);
     const navigate = useNavigate();
 
@@ -41,21 +38,18 @@ const NavUserMenu = () => {
                 name: "dashboard",
                 label: "Mon tableau de bord",
                 icon: <Dashboard />,
-                limitation: "signedIn",
                 linkTo: "/dashboard",
             },
             {
                 name: "profile",
                 label: "Mon profil",
                 icon: <Settings />,
-                limitation: "signedIn",
                 linkTo: "/profile",
             },
             {
                 name: "logout",
                 label: "Déconnexion",
                 icon: <Logout />,
-                limitation: "signedIn",
                 linkTo: "/login",
             },
         ],
@@ -96,7 +90,7 @@ const NavUserMenu = () => {
                 </MenuItem>
             ))
         );
-    }, [isSignedIn, handleLogout, handleClose, getMenuItemsData]);
+    }, [token, handleLogout, handleClose, getMenuItemsData]);
 
     return isLoading ? (
         <Loader

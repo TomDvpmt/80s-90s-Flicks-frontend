@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { auth, selectUserIsSignedIn } from "../../features/userSlice";
+import { auth, selectUserToken, setUserInfo } from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
@@ -37,7 +37,7 @@ const LoginForm = ({ isDialogForm }) => {
         isDialogForm: PropTypes.bool.isRequired,
     };
 
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -71,8 +71,8 @@ const LoginForm = ({ isDialogForm }) => {
     });
 
     useEffect(() => {
-        isSignedIn && navigate("/");
-    }, [isSignedIn, navigate]);
+        token && navigate("/");
+    }, [token, navigate]);
 
     const handleRegister = (e) => {
         if (isDialogForm) {
@@ -84,13 +84,20 @@ const LoginForm = ({ isDialogForm }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         localDispatch({ type: ACTIONS.setErrorMessage, payload: "" });
 
         const isDemoSubmit = e.target.classList.contains("demo");
 
         if (isDemoSubmit) {
-            localDispatch({ type: ACTIONS.setUsername, payload: "DemoUser" });
-            localDispatch({ type: ACTIONS.setPassword, payload: "password" });
+            localDispatch({
+                type: ACTIONS.setUsername,
+                payload: "DemoUser",
+            });
+            localDispatch({
+                type: ACTIONS.setPassword,
+                payload: "password",
+            });
         }
 
         // form validation
@@ -141,14 +148,17 @@ const LoginForm = ({ isDialogForm }) => {
             const data = await response.json();
 
             if (!response.ok) {
-                localDispatch({ type: ACTIONS.setIsLoading, payload: false });
+                localDispatch({
+                    type: ACTIONS.setIsLoading,
+                    payload: false,
+                });
                 localDispatch({
                     type: ACTIONS.setErrorMessage,
                     payload: data.message,
                 });
                 throw new Error(data.message);
             }
-            dispatch(auth(data.token));
+            dispatch(setUserInfo(data.user));
             dispatch(setShowLoginDialog(false));
             navigate(destination);
             dispatch(setDestination(""));
@@ -186,18 +196,10 @@ const LoginForm = ({ isDialogForm }) => {
                 </Button>
             </Box>
             <ErrorMessage errorMessage={state.errorMessage} />
-            {state.isLoading ? (
-                <Loader />
-            ) : (
-                <Box>
-                    <UsernameInput
-                        reducer={{ ACTIONS, state, localDispatch }}
-                    />
-                    <PasswordInput
-                        reducer={{ ACTIONS, state, localDispatch }}
-                    />
-                </Box>
-            )}
+            <Box>
+                <UsernameInput reducer={{ ACTIONS, state, localDispatch }} />
+                <PasswordInput reducer={{ ACTIONS, state, localDispatch }} />
+            </Box>
             <Box
                 sx={{
                     display: "flex",
@@ -226,6 +228,7 @@ const LoginForm = ({ isDialogForm }) => {
                     </Typography>
                 </Typography>
             </Box>
+            {state.isLoading && <Loader modal hasMessage />}
         </Box>
     );
 };

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 import { selectPageLocation } from "../../../features/pageSlice";
 
-import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../../config/user";
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../../config/form";
 
 import { TextField } from "@mui/material";
 

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectUserIsSignedIn } from "../../features/userSlice";
+import { selectUserToken } from "../../features/userSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 
 import { setDestination } from "../../features/pageSlice";
@@ -18,7 +18,7 @@ const PersonLabel = ({ person, isStrong, isLink }) => {
         isStrong: PropTypes.bool.isRequired,
         isLink: PropTypes.bool.isRequired,
     };
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const page = useSelector(selectPageLocation);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const PersonLabel = ({ person, isStrong, isLink }) => {
         if (!isLink) return;
 
         const destination = `/person/${e.target.id}`;
-        if (!isSignedIn) {
+        if (!token) {
             dispatch(setDestination(destination));
             dispatch(setShowLoggedOnlyDialog(true));
             return;

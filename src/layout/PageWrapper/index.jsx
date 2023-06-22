@@ -7,7 +7,6 @@ import Footer from "../../layout/Footer";
 import { Box } from "@mui/material";
 
 const PageWrapper = () => {
-    console.log("PageWrapper");
     return (
         <Box id="page-wrapper" flex="1" display="flex" flexDirection="column">
             <ScrollRestoration
@@ -16,7 +15,7 @@ const PageWrapper = () => {
                 }}
             />
             <Header />
-            <NavBar />
+            {/* <NavBar /> */}
             <Outlet />
             <Footer />
         </Box>

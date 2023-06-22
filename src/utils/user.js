@@ -1,4 +1,6 @@
 import store from "../store/store";
+
+import { setBackendIsInitialized } from "../features/configSlice";
 import { signOut } from "../features/userSlice";
 import { clearAll } from "../features/filtersSlice";
 
@@ -19,6 +21,9 @@ export const getToken = async () => {
             throw new Error("Aucun token d'accès trouvé.");
         }
         const token = await tokenResponse.json();
+
+        console.log("token");
+        store.dispatch(setBackendIsInitialized());
 
         return token;
     } catch (error) {
@@ -46,7 +51,6 @@ export const getUserInfo = async () => {
         }
         const data = await profileResponse.json();
         return data;
-        // }
     } catch (error) {
         console.error(error.message);
         return {};

@@ -4,16 +4,13 @@ import NavExploreButtons from "../../components/NavExploreButtons";
 import NavUserMenu from "../../components/NavUserMenu";
 import NavLoginMenu from "../../components/NavLoginMenu";
 
-import {
-    selectUserIsSignedIn,
-    selectUserUsername,
-} from "../../features/userSlice";
+import { selectUserToken, selectUserUsername } from "../../features/userSlice";
 
 import { Box, AppBar, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import theme from "../../styles/theme";
 
 const NavBar = () => {
-    const isSignedIn = useSelector(selectUserIsSignedIn);
+    const token = useSelector(selectUserToken);
     const username = useSelector(selectUserUsername);
 
     const isSmallestScreen = useMediaQuery("(max-width: 400px)");
@@ -52,7 +49,7 @@ const NavBar = () => {
                         fontWeight="700">
                         {username}
                     </Typography>
-                    {isSignedIn ? <NavUserMenu /> : <NavLoginMenu />}
+                    {token ? <NavUserMenu /> : <NavLoginMenu />}
                 </Box>
             </Toolbar>
         </AppBar>
