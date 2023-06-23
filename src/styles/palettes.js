@@ -13,6 +13,7 @@ export const COMMON_PALETTE = {
         dark: "#bababa",
         darker: "#242424",
         darkest: "black",
+        modal: "rgba(255, 255, 255, .5)",
     },
     text: {
         darkBg: "white",

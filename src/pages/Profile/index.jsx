@@ -266,6 +266,10 @@ const Profile = () => {
         fontWeight: "700",
     };
 
+    const rightCellStyle = {
+        overflowWrap: "break-word",
+    };
+
     return (
         <Box
             display="flex"
@@ -310,31 +314,39 @@ const Profile = () => {
                         <ValidationMessage text="Profil mis à jour." />
                     )}
                     <TableContainer component={Paper}>
-                        <Table>
+                        <Table sx={{ tableLayout: "fixed" }}>
                             <TableBody>
                                 <TableRow>
                                     <TableCell sx={leftCellStyle}>
-                                        Nom d'utilisateur :
+                                        Nom d'utilisateur&nbsp;:
                                     </TableCell>
-                                    <TableCell>{prevUsername}</TableCell>
+                                    <TableCell sx={rightCellStyle}>
+                                        {prevUsername}
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={leftCellStyle}>
-                                        Adresse e-mail :
+                                        Adresse e&#8209;mail&nbsp;:
                                     </TableCell>
-                                    <TableCell>{prevEmail}</TableCell>
+                                    <TableCell sx={rightCellStyle}>
+                                        {prevEmail}
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={leftCellStyle}>
-                                        Prénom :
+                                        Prénom&nbsp;:
                                     </TableCell>
-                                    <TableCell>{prevFirstName}</TableCell>
+                                    <TableCell sx={rightCellStyle}>
+                                        {prevFirstName}
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={leftCellStyle}>
-                                        Nom :
+                                        Nom&nbsp;:
                                     </TableCell>
-                                    <TableCell>{prevLastName}</TableCell>
+                                    <TableCell sx={rightCellStyle}>
+                                        {prevLastName}
+                                    </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

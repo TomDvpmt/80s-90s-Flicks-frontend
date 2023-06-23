@@ -8,7 +8,10 @@ const PageHeading = ({ text }) => {
     };
 
     return (
-        <Typography component="h1" variant="h1">
+        <Typography
+            component="h1"
+            variant="h1"
+            fontFamily="SfFedora, Raleway, sans-serif">
             {text}
         </Typography>
     );

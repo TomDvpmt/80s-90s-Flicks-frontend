@@ -8,7 +8,6 @@ import {
     setUserInfo,
 } from "../../features/userSlice";
 import {
-    selectShowLoginDialog,
     setShowLoginDialog,
     setShowRegisterDialog,
 } from "../../features/dialogsSlice";
@@ -24,7 +23,6 @@ import PasswordConfirmInput from "../form-fields/PasswordConfirmInput";
 import EmailInput from "../form-fields/EmailInput";
 import FirstNameInput from "../form-fields/FirstNameInput";
 import LastNameInput from "../form-fields/LastNameInput";
-import LoginDialog from "../LoginDialog";
 import ErrorMessage from "../ErrorMessage";
 import Loader from "../Loader";
 
@@ -62,7 +60,6 @@ const RegisterForm = ({ isDialogForm }) => {
     const userId = useSelector(selectUserId);
     const page = useSelector(selectPageLocation);
     const destination = useSelector(selectDestination);
-    const showLoginDialog = useSelector(selectShowLoginDialog);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -287,7 +284,6 @@ const RegisterForm = ({ isDialogForm }) => {
                     </Typography>
                 </Box>
             </Box>
-            {showLoginDialog && <LoginDialog />}
         </>
     );
 };

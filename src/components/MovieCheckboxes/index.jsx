@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import ToggleFavorite from "../ToggleFavorite";
 import ToggleMovieSeen from "../ToggleMovieSeen";
 import ToggleMovieToSee from "../ToggleMovieToSee";
-import LoggedOnlyDialog from "../LoggedOnlyDialog";
 
 import {
     addToMoviesToSee,
@@ -14,7 +13,6 @@ import {
     selectUserMoviesSeen,
     selectUserMoviesToSee,
 } from "../../features/userSlice";
-import { selectShowLoggedOnlyDialog } from "../../features/dialogsSlice";
 
 import { updateUserMoviesInDB } from "../../utils/user";
 
@@ -31,7 +29,6 @@ const MovieCheckboxes = ({ movieId, langData }) => {
     const userId = useSelector(selectUserId);
     const moviesToSee = useSelector(selectUserMoviesToSee);
     const moviesSeen = useSelector(selectUserMoviesSeen);
-    const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
     const dispatch = useDispatch();
 
     const toggleMovieInUserMovies = (action) => {
@@ -90,7 +87,6 @@ const MovieCheckboxes = ({ movieId, langData }) => {
                     </FormGroup>
                 </Box>
             </Box>
-            {showLoggedOnlyDialog && <LoggedOnlyDialog />}
         </>
     );
 };

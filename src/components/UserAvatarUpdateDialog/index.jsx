@@ -217,7 +217,6 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                                 position: "absolute",
                                 right: "0",
                                 left: "0",
-                                // width: theme.maxWidth.profileAvatar,
                                 height: theme.maxWidth.profileAvatar,
                                 display: "flex",
                                 alignItems: "center",

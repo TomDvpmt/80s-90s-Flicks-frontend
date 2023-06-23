@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectUserToken } from "../../features/userSlice";
 import {
-    selectShowLoggedOnlyDialog,
-    selectShowSearchMovieDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
+    selectShowLoggedOnlyDialog,
+    selectShowSearchMovieDialog,
     selectShowLoginDialog,
     selectShowRegisterDialog,
 } from "../../features/dialogsSlice";

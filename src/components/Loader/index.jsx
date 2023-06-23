@@ -24,12 +24,12 @@ const Loader = ({
 
     const [isLongWait, setIsLongWait] = useState(false);
 
-    let seconds = useRef(0);
+    let duration = useRef(0);
 
     if (hasMessage) {
         const timerId = setInterval(() => {
-            seconds.current++;
-            if (seconds.current > LOADER_LONG_WAIT_DURATION) {
+            duration.current = duration.current + 1000;
+            if (duration.current > LOADER_LONG_WAIT_DURATION) {
                 clearInterval(timerId);
                 setIsLongWait(true);
             }
@@ -48,7 +48,7 @@ const Loader = ({
             open={true}
             sx={{
                 "& .MuiModal-backdrop": {
-                    backgroundColor: "rgba(255, 255, 255, .5)",
+                    backgroundColor: theme.palette.background.modal,
                 },
             }}>
             <Box minWidth="100vw" minHeight="100vh" sx={loaderStyle}>

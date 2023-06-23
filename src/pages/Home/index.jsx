@@ -5,10 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import MovieCard from "../../components/MovieCard";
 import MovieCardsGrid from "../../components/MovieCardsGrid";
 import HomeFilters from "../../components/filters/HomeFilters";
-import SearchMovieDialog from "../../components/SearchMovieDialog";
-// import Language from "../../components/Language";
 import Pagination from "../../components/Pagination";
-import LoggedOnlyDialog from "../../components/LoggedOnlyDialog";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
@@ -19,8 +16,6 @@ import {
     selectFiltersYear,
 } from "../../features/filtersSlice";
 import {
-    selectShowLoggedOnlyDialog,
-    selectShowSearchMovieDialog,
     setShowLoggedOnlyDialog,
     setShowSearchMovieDialog,
 } from "../../features/dialogsSlice";
@@ -48,8 +43,6 @@ const Home = () => {
     const filters = useSelector(selectFiltersAll);
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const activeYear = useSelector(selectFiltersYear);
-    const showSearchMovieDialog = useSelector(selectShowSearchMovieDialog);
-    const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
 
     const dispatch = useDispatch();
 
@@ -180,8 +173,6 @@ const Home = () => {
                         sx={{ color: "white" }}>
                         Recherche par titre
                     </Button>
-                    {showSearchMovieDialog && <SearchMovieDialog />}
-                    {showLoggedOnlyDialog && <LoggedOnlyDialog />}
                 </Box>
                 <Outlet />
                 <HomeFilters reducer={{ ACTIONS, state, localDispatch }} />
@@ -198,7 +189,6 @@ const Home = () => {
                         )}
                     </Typography>
                 </Paper>
-                {/* <Language /> */}
                 {state.movies?.length > 0 && (
                     <Pagination reducer={{ ACTIONS, state, localDispatch }} />
                 )}

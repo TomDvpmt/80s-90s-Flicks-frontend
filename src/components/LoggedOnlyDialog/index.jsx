@@ -29,9 +29,8 @@ const LoggedOnlyDialog = () => {
     };
 
     const handleLogin = () => {
-        dispatch(setShowLoginDialog(true));
-        console.log("handleLogin");
         handleClose();
+        dispatch(setShowLoginDialog(true));
     };
 
     const handleRegister = () => {
@@ -47,7 +46,6 @@ const LoggedOnlyDialog = () => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        // lineHeight: "1.4rem",
                     }}>
                     Fonctionnalité réservée aux membres
                     <IconButton onClick={handleClose}>

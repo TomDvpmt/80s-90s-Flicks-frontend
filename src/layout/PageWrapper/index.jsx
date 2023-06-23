@@ -14,7 +14,6 @@ const PageWrapper = () => {
                 }}
             />
             <Header />
-            {/* <NavBar /> */}
             <Outlet />
             <Footer />
         </Box>

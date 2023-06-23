@@ -26,7 +26,7 @@ const RegisterDialog = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                 }}>
-                Connexion
+                Créer un compte
                 <IconButton onClick={handleClose}>
                     <Close />
                 </IconButton>

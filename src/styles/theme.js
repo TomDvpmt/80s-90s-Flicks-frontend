@@ -21,6 +21,8 @@ theme = createTheme(theme, {
             margin: "3rem 0",
             textAlign: "center",
             fontSize: "2rem",
+
+            textTransform: "uppercase",
             [theme.breakpoints.up("sm")]: {
                 fontSize: "3rem",
             },
@@ -92,10 +94,25 @@ theme = createTheme(theme, {
                 },
             },
         },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    fontFamily: "Raleway, Arial",
+                },
+            },
+        },
         MuiButton: {
             styleOverrides: {
                 root: {
                     fontWeight: "700",
+                    fontFamily: "Raleway, Arial",
+                },
+            },
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    fontFamily: "Raleway, Arial",
                 },
             },
         },

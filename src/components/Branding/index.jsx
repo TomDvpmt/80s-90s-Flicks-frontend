@@ -13,13 +13,22 @@ const Branding = ({ location }) => {
     };
 
     const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
-    const headerWidth = isWiderThanSmallScreen ? "500" : "250";
+    const isWiderThanMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+    let headerWidth = "250px";
+
+    if (isWiderThanSmallScreen) {
+        headerWidth = "350px";
+    }
+    if (isWiderThanMediumScreen) {
+        headerWidth = "500px";
+    }
 
     return (
         <Box
             component="div"
             sx={{
-                gridColumn: "1",
+                gridColumn: "1 / 3",
                 ml: { md: "3rem" },
                 pt:
                     location === "header" && isWiderThanSmallScreen

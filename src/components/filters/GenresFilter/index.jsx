@@ -23,7 +23,13 @@ import {
     Checkbox,
 } from "@mui/material";
 
-const GenresFilter = () => {
+import PropTypes from "prop-types";
+
+const GenresFilter = ({ reducer }) => {
+    GenresFilter.propTypes = {
+        reducer: PropTypes.object.isRequired,
+    };
+
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const dispatch = useDispatch();
 
@@ -38,21 +44,22 @@ const GenresFilter = () => {
         );
     };
 
+    const getGenres = async () => {
+        try {
+            const results = await fetch(
+                `${TMDB_BASE_URI}/genre/movie/list?api_key=${TMDB_API_KEY}&language=fr`,
+                {
+                    method: "GET",
+                }
+            );
+            const data = await results.json();
+            return data.genres;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
-        const getGenres = async () => {
-            try {
-                const results = await fetch(
-                    `${TMDB_BASE_URI}/genre/movie/list?api_key=${TMDB_API_KEY}&language=fr`,
-                    {
-                        method: "GET",
-                    }
-                );
-                const data = await results.json();
-                return data.genres;
-            } catch (error) {
-                console.log(error);
-            }
-        };
         getGenres()
             .then((data) => {
                 const genres = data.filter(
@@ -65,6 +72,10 @@ const GenresFilter = () => {
 
     const handleActiveGenresChange = (e) => {
         dispatch(setActiveGenres(e.target.value));
+        reducer.localDispatch({
+            type: reducer.ACTIONS.setCurrentPage,
+            payload: 1,
+        });
     };
 
     useEffect(() => {
