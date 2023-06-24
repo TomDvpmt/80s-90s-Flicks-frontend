@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+    selectUserLanguage,
     updateAvatar,
     selectUserAvatarUrl,
     selectUserId,
@@ -12,6 +13,7 @@ import {
 } from "../../features/dialogsSlice";
 
 import { API_BASE_URI, IMGBB_BASE_URI } from "../../config/APIs";
+import { AVATAR_MAX_SIZE } from "../../config/form";
 
 import Loader from "../Loader";
 import ErrorMessage from "../ErrorMessage";
@@ -36,6 +38,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
         reducer: PropTypes.object.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const userId = useSelector(selectUserId);
     const avatarUrl = useSelector(selectUserAvatarUrl);
     const showUserAvatarUpdateDialog = useSelector(
@@ -81,7 +84,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
             setErrorMessage(`Formats acceptés : ${extensionsString}.`);
             return;
         } else if (uploadedFile?.size > 1024 * 1024) {
-            setErrorMessage("La taille du fichier ne doit pas dépasser 1Mo.");
+            setErrorMessage(
+                `${theme.languages[language].components.userAvatarUpdateDialog.error} ${AVATAR_MAX_SIZE} ${theme.languages[language].components.userAvatarUpdateDialog.unit}.`
+            );
             return;
         } else {
             setIsLoading(true);

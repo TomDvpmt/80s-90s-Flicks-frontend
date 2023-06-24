@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { selectUserLanguage } from "../../features/userSlice";
 import { selectPageLocation } from "../../features/pageSlice";
 
 import { TMDB_BASE_URI, TMDB_API_KEY } from "../../config/APIs";
@@ -14,6 +15,7 @@ import {
 import MovieReleaseDate from "../MovieReleaseDate";
 import PersonLabel from "../PersonLabel";
 
+import theme from "../../styles/theme";
 import { Typography, Box } from "@mui/material";
 
 import PropTypes from "prop-types";
@@ -24,6 +26,7 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
         releaseDate: PropTypes.string.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const page = useSelector(selectPageLocation);
 
     const [directors, setDirectors] = useState([]);
@@ -123,7 +126,12 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
             }}>
             <Typography>
                 {page === "movie" && directors.length > 0 && (
-                    <Typography component="span">De </Typography>
+                    <Typography component="span">
+                        {
+                            theme.languages[language].components
+                                .movieCastAndCrew.from
+                        }{" "}
+                    </Typography>
                 )}
                 <Typography component="span" fontWeight="700">
                     {directors}
@@ -134,7 +142,12 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
             </Typography>
             {page === "movie" && writers.length > 0 && (
                 <Typography>
-                    <Typography component="span">Écrit par </Typography>
+                    <Typography component="span">
+                        {
+                            theme.languages[language].components
+                                .movieCastAndCrew.writtenBy
+                        }{" "}
+                    </Typography>
                     <Typography component="span" fontWeight="700">
                         {writers}
                     </Typography>
@@ -142,7 +155,12 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
             )}
             <Typography>
                 {page === "movie" && actors.length > 0 && (
-                    <Typography component="span">Avec </Typography>
+                    <Typography component="span">
+                        {
+                            theme.languages[language].components
+                                .movieCastAndCrew.with
+                        }{" "}
+                    </Typography>
                 )}
                 <Typography component="span" fontWeight="700">
                     {actors}

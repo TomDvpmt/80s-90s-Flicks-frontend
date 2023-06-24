@@ -1,10 +1,18 @@
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
+import theme from "../../styles/theme";
+
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const PasswordConfirmInput = ({ reducer }) => {
-    PasswordConfirmInput.propTypes = {
+const InputPasswordConfirm = ({ reducer }) => {
+    InputPasswordConfirm.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const helperText = `Les mots de passe ne correspondent pas.`;
 
@@ -31,7 +39,7 @@ const PasswordConfirmInput = ({ reducer }) => {
             // id="passwordConfirm"
             name="passwordConfirm"
             type="password"
-            label="Confirmez votre mot de passe"
+            label={theme.languages[language].components.inputPasswordConfirm}
             value={reducer.state.passwordConfirm}
             onChange={handleChange}
             error={reducer.state.showPasswordConfirmError}
@@ -40,4 +48,4 @@ const PasswordConfirmInput = ({ reducer }) => {
     );
 };
 
-export default PasswordConfirmInput;
+export default InputPasswordConfirm;

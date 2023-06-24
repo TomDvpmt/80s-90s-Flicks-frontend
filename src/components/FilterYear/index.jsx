@@ -1,16 +1,19 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { setYear, selectFiltersYear } from "../../../features/filtersSlice";
+import { setYear, selectFiltersYear } from "../../features/filtersSlice";
+import { selectUserLanguage } from "../../features/userSlice";
 
+import theme from "../../styles/theme";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const YearFilter = ({ reducer }) => {
-    YearFilter.propTypes = {
+const FilterYear = ({ reducer }) => {
+    FilterYear.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const yearOption = useSelector(selectFiltersYear);
     const dispatch = useDispatch();
 
@@ -29,7 +32,9 @@ const YearFilter = ({ reducer }) => {
 
     return (
         <FormControl component="fieldset">
-            <InputLabel id="year-filter">Période</InputLabel>
+            <InputLabel id="year-filter">
+                {theme.languages[language].components.filterYear.label}
+            </InputLabel>
             <Select
                 labelId="year-filter"
                 label="Période"
@@ -45,4 +50,4 @@ const YearFilter = ({ reducer }) => {
     );
 };
 
-export default YearFilter;
+export default FilterYear;

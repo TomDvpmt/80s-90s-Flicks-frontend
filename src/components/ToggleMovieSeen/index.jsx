@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+    selectUserLanguage,
     addToMoviesSeen,
     removeFromMoviesSeen,
     removeFromMoviesToSee,
@@ -11,17 +12,17 @@ import {
 import { setShowLoggedOnlyDialog } from "../../features/dialogsSlice";
 import { setDestination } from "../../features/pageSlice";
 
+import theme from "../../styles/theme";
 import { FormControlLabel, Checkbox } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
+const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId }) => {
     ToggleMovieSeen.propTypes = {
         toggleMovieInUserMovies: PropTypes.func.isRequired,
         movieId: PropTypes.number.isRequired,
-        langData: PropTypes.object.isRequired,
     };
-
+    const language = useSelector(selectUserLanguage);
     const token = useSelector(selectUserToken);
     const moviesToSee = useSelector(selectUserMoviesToSee);
     const moviesSeen = useSelector(selectUserMoviesSeen);
@@ -62,7 +63,7 @@ const ToggleMovieSeen = ({ toggleMovieInUserMovies, movieId, langData }) => {
                     }}
                 />
             }
-            label={langData.seen}
+            label={theme.languages[language].components.toggleMovieSeen}
         />
     );
 };

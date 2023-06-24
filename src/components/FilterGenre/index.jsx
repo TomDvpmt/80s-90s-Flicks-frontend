@@ -5,14 +5,16 @@ import {
     setActiveGenres,
     convertActiveGenresToFilter,
     selectFiltersActiveGenres,
-} from "../../../features/filtersSlice";
+} from "../../features/filtersSlice";
+import { selectUserLanguage } from "../../features/userSlice";
 
 import {
     TMDB_API_KEY,
     TMDB_BASE_URI,
     TMDB_EXCLUDED_GENRES,
-} from "../../../config/APIs";
+} from "../../config/APIs";
 
+import theme from "../../styles/theme";
 import {
     FormControl,
     InputLabel,
@@ -25,11 +27,12 @@ import {
 
 import PropTypes from "prop-types";
 
-const GenresFilter = ({ reducer }) => {
-    GenresFilter.propTypes = {
+const FilterGenre = ({ reducer }) => {
+    FilterGenre.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const dispatch = useDispatch();
 
@@ -84,7 +87,9 @@ const GenresFilter = ({ reducer }) => {
 
     return (
         <FormControl component="fieldset">
-            <InputLabel id="genres-list-label">Genres</InputLabel>
+            <InputLabel id="genres-list-label">
+                {theme.languages[language].components.filterGenre.label}
+            </InputLabel>
             <Select
                 labelId="genres-list-label"
                 label="Genres"
@@ -117,4 +122,4 @@ const GenresFilter = ({ reducer }) => {
     );
 };
 
-export default GenresFilter;
+export default FilterGenre;

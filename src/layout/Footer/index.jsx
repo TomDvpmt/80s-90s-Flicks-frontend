@@ -1,21 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserToken } from "../../features/userSlice";
+import { selectUserToken, selectUserLanguage } from "../../features/userSlice";
 
 import Branding from "../../components/Branding";
 import FooterExternalLink from "../../components/FooterExternalLink";
 
 import { logout } from "../../utils/user";
 
-import {
-    Box,
-    Table,
-    TableBody,
-    TableRow,
-    TableCell,
-    Stack,
-} from "@mui/material";
+import { Box, Table, TableBody, TableRow, TableCell } from "@mui/material";
 
 import theme from "../../styles/theme";
 
@@ -33,6 +26,7 @@ const leftCellStyle = {
 };
 
 const Footer = () => {
+    const language = useSelector(selectUserLanguage);
     const token = useSelector(selectUserToken);
     const navigate = useNavigate();
 
@@ -51,11 +45,14 @@ const Footer = () => {
                     flexDirection: "column-reverse",
                 }}>
                 <Branding location="footer" />
-                <Stack
+                <Box
                     component="nav"
-                    spacing={1}
+                    width="max-content"
+                    padding="2rem"
+                    display="flex"
+                    flexDirection="column"
+                    gap=".5rem"
                     sx={{
-                        padding: "2rem",
                         "& *": {
                             color: theme.palette.text.darkBg,
                             fontWeight: "400",
@@ -66,23 +63,33 @@ const Footer = () => {
                             },
                         },
                     }}>
-                    <Link to="/">Explorer</Link>
+                    <Link to="/">
+                        {theme.languages[language].navigation.explore}
+                    </Link>
                     {token && (
                         <>
-                            <Link to="/dashboard">Mon tableau de bord</Link>
-                            <Link to="/profile">Profil</Link>
+                            <Link to="/dashboard">
+                                {theme.languages[language].navigation.dashboard}
+                            </Link>
+                            <Link to="/profile">
+                                {theme.languages[language].navigation.profile}
+                            </Link>
                             <Link to="/login" onClick={handleLogout}>
-                                Déconnexion
+                                {theme.languages[language].navigation.logout}
                             </Link>
                         </>
                     )}
                     {!token && (
                         <>
-                            <Link to="/login">Se connecter</Link>
-                            <Link to="/register">Créer un compte</Link>
+                            <Link to="/login">
+                                {theme.languages[language].navigation.login}
+                            </Link>
+                            <Link to="/register">
+                                {theme.languages[language].navigation.register}
+                            </Link>
                         </>
                     )}
-                </Stack>
+                </Box>
             </Box>
             <Table
                 sx={{
@@ -93,7 +100,7 @@ const Footer = () => {
                 <TableBody>
                     <TableRow>
                         <TableCell sx={{ ...cellStyle, ...leftCellStyle }}>
-                            API externes utilisées :{" "}
+                            {theme.languages[language].layout.footer.usedAPI}{" "}
                         </TableCell>
                         <TableCell>
                             <FooterExternalLink type="tmdbAPI" />
@@ -103,7 +110,7 @@ const Footer = () => {
                     </TableRow>
                     <TableRow>
                         <TableCell sx={{ ...cellStyle, ...leftCellStyle }}>
-                            Code source :{" "}
+                            {theme.languages[language].layout.footer.sourceCode}{" "}
                         </TableCell>
                         <TableCell>
                             <FooterExternalLink type="sourceCode" />

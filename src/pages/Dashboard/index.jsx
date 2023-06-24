@@ -70,7 +70,7 @@ const Dashboard = () => {
                             title: movie.title,
                             originalTitle: movie.original_title,
                             releaseDate: movie.release_date,
-                            posterPath: movie.poster_path || "", // to add : default picture
+                            posterPath: movie.poster_path || "",
                         };
                     })
                     .catch((error) => {

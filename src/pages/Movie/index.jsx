@@ -12,8 +12,8 @@ import MovieGenres from "../../components/MovieGenres";
 import MovieOverview from "../../components/MovieOverview";
 import MovieBudget from "../../components/MovieBudget";
 import MovieRevenue from "../../components/MovieRevenue";
-import MovieIMDBLink from "../../components/MovieIMDBLink";
-import MovieWikiLink from "../../components/MovieWikiLink";
+import IMDBLink from "../../components/IMDBLink";
+import WikiLink from "../../components/WikiLink";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
@@ -192,11 +192,11 @@ const Movie = () => {
                                 justifyContent: "center",
                             }}>
                             <ButtonGroup variant="outlined">
-                                <MovieIMDBLink
+                                <IMDBLink
                                     imdbId={state.movie.imdb_id}
                                     imdbLang={state.langData.imdbLink}
                                 />
-                                <MovieWikiLink movieTitle={state.movie.title} />
+                                <WikiLink movieTitle={state.movie.title} />
                             </ButtonGroup>
                         </Box>
                     </Box>

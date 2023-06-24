@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectUserId } from "../../features/userSlice";
+import { selectDemoUserId } from "../../features/configSlice";
+import { selectUserId, selectUserLanguage } from "../../features/userSlice";
 import {
     setShowDeleteAccountDialog,
     selectShowDeleteAccountDialog,
@@ -13,6 +14,7 @@ import ErrorMessage from "../ErrorMessage";
 import { logout } from "../../utils/user";
 import { API_BASE_URI } from "../../config/APIs";
 
+import theme from "../../styles/theme";
 import {
     Dialog,
     DialogTitle,
@@ -21,10 +23,10 @@ import {
     Button,
     Box,
 } from "@mui/material";
-import { selectDemoUserId } from "../../features/configSlice";
 
 const DeleteAccountDialog = () => {
     const userId = useSelector(selectUserId);
+    const language = useSelector(selectUserLanguage);
     const showDeleteAccountDialog = useSelector(selectShowDeleteAccountDialog);
     const demoUserId = useSelector(selectDemoUserId);
 
@@ -38,12 +40,16 @@ const DeleteAccountDialog = () => {
             // Prevent deletion of DemoUser account
             if (!demoUserId) {
                 throw new Error(
-                    "Une erreur s'est produite, suppression impossible."
+                    theme.languages[
+                        language
+                    ].components.deleteAccountDialog.errors.impossible
                 );
             }
             if (demoUserId === userId) {
                 throw new Error(
-                    "Vous ne pouvez pas supprimer le compte de démonstration de l'application."
+                    theme.languages[
+                        language
+                    ].components.deleteAccountDialog.errors.forbidden
                 );
             }
 
@@ -75,11 +81,13 @@ const DeleteAccountDialog = () => {
     return (
         <Dialog open={showDeleteAccountDialog}>
             <DialogTitle>
-                Êtes-vous sûr de vouloir supprimer votre compte ?
+                {theme.languages[language].components.deleteAccountDialog.title}
             </DialogTitle>
             <DialogContent>
-                Toues les informations qui y sont attachées seront supprimées.
-                Cette opération est irréversible.
+                {
+                    theme.languages[language].components.deleteAccountDialog
+                        .description
+                }
                 {errorMessage && (
                     <Box m="2rem 0">
                         <ErrorMessage errorMessage={errorMessage} />
@@ -91,9 +99,17 @@ const DeleteAccountDialog = () => {
                     variant="contained"
                     color="warning"
                     onClick={handleConfirmDelete}>
-                    Supprimer le compte
+                    {
+                        theme.languages[language].components.deleteAccountDialog
+                            .confirm
+                    }
                 </Button>
-                <Button onClick={handleClose}>Annuler</Button>
+                <Button onClick={handleClose}>
+                    {
+                        theme.languages[language].components.deleteAccountDialog
+                            .cancel
+                    }
+                </Button>
             </DialogActions>
         </Dialog>
     );

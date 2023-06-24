@@ -101,7 +101,12 @@ const SearchMovieDialog = () => {
                     type: ACTIONS.setResults,
                     payload:
                         movies.length === 0 ? (
-                            <Typography>Aucun résultat.</Typography>
+                            <Typography>
+                                {
+                                    theme.languages[language].components
+                                        .searchMovieDialog.noResult
+                                }
+                            </Typography>
                         ) : (
                             movies.map((movie) => {
                                 const posterPath = movie.poster_path;
@@ -140,7 +145,7 @@ const SearchMovieDialog = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                 }}>
-                Chercher un titre de film
+                {theme.languages[language].components.searchMovieDialog.title}
                 <IconButton onClick={handleClose}>
                     <Close />
                 </IconButton>
@@ -156,9 +161,13 @@ const SearchMovieDialog = () => {
                 {state.results?.length > 0 && (
                     <Box sx={{ p: "2rem 0 0" }}>
                         <Typography pb=".5rem" fontWeight="700">
-                            {`${state.results.length} résultat${
-                                state.results.length > 1 ? "s" : ""
-                            } : `}
+                            {`${state.results.length} ${
+                                state.results.length > 1
+                                    ? theme.languages[language].components
+                                          .searchMovieDialog.plural
+                                    : theme.languages[language].components
+                                          .searchMovieDialog.result
+                            }`}
                         </Typography>
                         {state.isLoading ? (
                             <Loader />

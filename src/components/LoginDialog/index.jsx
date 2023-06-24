@@ -3,15 +3,18 @@ import {
     setShowLoginDialog,
     selectShowLoginDialog,
 } from "../../features/dialogsSlice";
+import { selectUserLanguage } from "../../features/userSlice";
 
 import LoginForm from "../LoginForm";
 
+import theme from "../../styles/theme";
 import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 const LoginDialog = () => {
-    const dispatch = useDispatch();
+    const language = useSelector(selectUserLanguage);
     const showLoginDialog = useSelector(selectShowLoginDialog);
+    const dispatch = useDispatch();
 
     const handleClose = () => {
         dispatch(setShowLoginDialog(false));
@@ -25,7 +28,7 @@ const LoginDialog = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                 }}>
-                Connexion
+                {theme.languages[language].components.loginDialog.title}
                 <IconButton onClick={handleClose}>
                     <Close />
                 </IconButton>

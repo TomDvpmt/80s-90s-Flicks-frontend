@@ -1,11 +1,17 @@
+import { useSelector } from "react-redux";
+import { selectUserLanguage } from "../../features/userSlice";
+
+import theme from "../../styles/theme";
 import { TextField } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const EmailInput = ({ reducer }) => {
-    EmailInput.propTypes = {
+const InputEmail = ({ reducer }) => {
+    InputEmail.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const helperText = `Format d'adresse e-mail incorrect.`;
 
@@ -32,7 +38,7 @@ const EmailInput = ({ reducer }) => {
             // id="email"
             name="email"
             type="text"
-            label="Adresse e-mail"
+            label={theme.languages[language].components.inputEmail}
             value={reducer.state.email}
             onChange={handleChange}
             error={reducer.state.showEmailError}
@@ -41,4 +47,4 @@ const EmailInput = ({ reducer }) => {
     );
 };
 
-export default EmailInput;
+export default InputEmail;

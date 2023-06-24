@@ -6,7 +6,10 @@ import MovieCastAndCrew from "../MovieCastAndCrew";
 
 import defaultPoster from "../../assets/img/defaultPoster.jpeg";
 
-import { selectUserFavorites } from "../../features/userSlice";
+import {
+    selectUserFavorites,
+    selectUserLanguage,
+} from "../../features/userSlice";
 import {
     selectTmdbImagesSecureUrl,
     selectTmdbImagesPosterSizes,
@@ -29,6 +32,8 @@ const MovieCard = ({ page, movie }) => {
         page: PropTypes.string.isRequired,
         movie: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const imageBaseUrl = useSelector(selectTmdbImagesSecureUrl);
     const posterSizes = useSelector(selectTmdbImagesPosterSizes);
@@ -74,7 +79,10 @@ const MovieCard = ({ page, movie }) => {
                     }}>
                     {page === "home" && isFavorite && (
                         <Star
-                            titleAccess="Ce film fait partie de vos favoris"
+                            titleAccess={
+                                theme.languages[language].components.movieCard
+                                    .starTitle
+                            }
                             sx={{
                                 position: "absolute",
                                 zIndex: "3",

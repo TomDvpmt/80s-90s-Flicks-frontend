@@ -21,8 +21,6 @@ theme = createTheme(theme, {
             margin: "3rem 0",
             textAlign: "center",
             fontSize: "2rem",
-
-            textTransform: "uppercase",
             [theme.breakpoints.up("sm")]: {
                 fontSize: "3rem",
             },

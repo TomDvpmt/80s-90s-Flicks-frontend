@@ -5,7 +5,7 @@ import { selectUserLanguage } from "../../features/userSlice";
 import { Button, Link } from "@mui/material";
 import theme from "../../styles/theme";
 
-const MovieWikiLink = ({ movieTitle }) => {
+const WikiLink = ({ movieTitle }) => {
     const language = useSelector(selectUserLanguage);
     const movieFormatedName = movieTitle?.replace(" ", "_");
 
@@ -21,10 +21,10 @@ const MovieWikiLink = ({ movieTitle }) => {
                         md: theme.palette.text.darkBg,
                     },
                 }}>
-                Voir sur Wikipédia
+                {theme.languages[language].components.wikiLink}
             </Link>
         </Button>
     );
 };
 
-export default MovieWikiLink;
+export default WikiLink;

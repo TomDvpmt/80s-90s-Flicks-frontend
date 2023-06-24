@@ -1,18 +1,21 @@
 import { useSelector } from "react-redux";
 
-import { selectPageLocation } from "../../../features/pageSlice";
+import { selectUserLanguage } from "../../features/userSlice";
+import { selectPageLocation } from "../../features/pageSlice";
 
-import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../../config/form";
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "../../config/form";
 
+import theme from "../../styles/theme";
 import { TextField } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const UsernameInput = ({ reducer }) => {
-    UsernameInput.propTypes = {
+const InputUsername = ({ reducer }) => {
+    InputUsername.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const page = useSelector(selectPageLocation);
 
     const helperText = `Le nom d'utilisateur doit comporter au moins ${USERNAME_MIN_LENGTH} et au maximum ${USERNAME_MAX_LENGTH} caractères.`;
@@ -41,7 +44,7 @@ const UsernameInput = ({ reducer }) => {
             // id="username"
             name="username"
             type="username"
-            label="Nom d'utilisateur"
+            label={theme.languages[language].components.inputUsername}
             value={reducer.state.username}
             onChange={handleChange}
             error={reducer.state.showUsernameError}
@@ -50,4 +53,4 @@ const UsernameInput = ({ reducer }) => {
     );
 };
 
-export default UsernameInput;
+export default InputUsername;

@@ -49,8 +49,10 @@ const DashboardTabs = ({
         constructor(movies, label, icon) {
             this.id = label;
             this.primary =
-                theme.languages[language].components.sideNav.primary[label];
-            this.secondary = `${theme.languages[language].components.sideNav.secondary} ${movies.length}`;
+                theme.languages[language].components.dashboardTabs.primary[
+                    label
+                ];
+            this.secondary = `${theme.languages[language].components.dashboardTabs.secondary} ${movies.length}`;
             this.icon = icon;
             this.movies = movies;
 

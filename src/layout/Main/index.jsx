@@ -44,7 +44,7 @@ const Main = () => {
                 }
             );
             if (!tokenResponse.ok) {
-                throw new Error("Aucun token d'accès trouvé.");
+                throw new Error("No acces token found.");
             }
             const token = await tokenResponse.json();
 

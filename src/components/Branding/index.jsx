@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
 
 import logo from "../../assets/logo/Flixx-logo.webp";
 
@@ -11,6 +14,8 @@ const Branding = ({ location }) => {
     Branding.propTypes = {
         location: PropTypes.string.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const isWiderThanSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
     const isWiderThanMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -58,7 +63,7 @@ const Branding = ({ location }) => {
                     fontStyle="italic"
                     textAlign="center"
                     sx={{ textShadow: "2px 2px 2px black" }}>
-                    20 ans de magie hollywoodienne
+                    {theme.languages[language].components.branding.tagline}
                 </Typography>
             )}
         </Box>

@@ -1,26 +1,29 @@
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
 import { displayBigNumber } from "../../utils/helpers";
 
+import theme from "../../styles/theme";
 import { Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const MovieBudget = ({ movieLangData, budget }) => {
+const MovieBudget = ({ budget }) => {
     MovieBudget.propTypes = {
-        movieLangData: PropTypes.shape({
-            budget: PropTypes.string.isRequired,
-            unavailable: PropTypes.string.isRequired,
-        }),
         budget: PropTypes.number.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     return (
         budget !== null && (
             <Typography paragraph>
                 <Typography component="span" fontWeight="700">
-                    {movieLangData.budget}
+                    {theme.languages[language].components.movieBudget}
                 </Typography>{" "}
                 {!budget || budget === 0
-                    ? movieLangData.unavailable
+                    ? theme.languages[language].global.noData
                     : "$ " + displayBigNumber(budget)}
             </Typography>
         )

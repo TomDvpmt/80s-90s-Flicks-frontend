@@ -1,19 +1,22 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { clearAll } from "../../../features/filtersSlice";
+import { clearAll } from "../../features/filtersSlice";
+import { selectUserLanguage } from "../../features/userSlice";
 
-import GenresFilter from "../GenresFilter";
-import YearFilter from "../YearFilter";
+import FilterGenre from "../FilterGenre";
+import FilterYear from "../FilterYear";
 
+import theme from "../../styles/theme";
 import { Box, Paper, Button } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const HomeFilters = ({ reducer }) => {
-    HomeFilters.propTypes = {
+const FiltersHome = ({ reducer }) => {
+    FiltersHome.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const dispatch = useDispatch();
 
     const handleFiltersClearAll = () => {
@@ -48,8 +51,8 @@ const HomeFilters = ({ reducer }) => {
                         gap: "1rem",
                         "& *": { flex: "1" },
                     }}>
-                    <YearFilter reducer={reducer} />
-                    <GenresFilter reducer={reducer} />
+                    <FilterYear reducer={reducer} />
+                    <FilterGenre reducer={reducer} />
                 </Box>
                 <Button
                     variant="outlined"
@@ -60,12 +63,14 @@ const HomeFilters = ({ reducer }) => {
                         margin: "auto",
                     }}>
                     {reducer.state.hasActiveFilters
-                        ? "Supprimer les filtres"
-                        : "Aucun filtre actif"}
+                        ? theme.languages[language].components.filtersHome
+                              .clearFilters
+                        : theme.languages[language].components.filtersHome
+                              .noneActive}
                 </Button>
             </Box>
         </Paper>
     );
 };
 
-export default HomeFilters;
+export default FiltersHome;

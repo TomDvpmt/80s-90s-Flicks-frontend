@@ -1,10 +1,17 @@
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
+import theme from "../../styles/theme";
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const LastNameInput = ({ reducer }) => {
-    LastNameInput.propTypes = {
+const InputLastName = ({ reducer }) => {
+    InputLastName.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const handleChange = (e) => {
         reducer.localDispatch({
@@ -24,11 +31,11 @@ const LastNameInput = ({ reducer }) => {
             // id="LastName"
             name="LastName"
             type="text"
-            label="Nom"
+            label={theme.languages[language].components.inputLastName}
             value={reducer.state.lastName}
             onChange={handleChange}
         />
     );
 };
 
-export default LastNameInput;
+export default InputLastName;

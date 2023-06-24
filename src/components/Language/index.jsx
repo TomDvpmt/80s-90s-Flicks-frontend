@@ -1,10 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { setLanguage } from "../../features/filtersSlice";
-import { selectUserId, selectUserLanguage } from "../../features/userSlice";
+import {
+    selectUserId,
+    selectUserLanguage,
+    setLanguage,
+} from "../../features/userSlice";
 
-import { API_BASE_URI } from "../../utils/config";
+import { API_BASE_URI } from "../../config/APIs";
 
+import theme from "../../styles/theme";
 import {
     Paper,
     FormControl,
@@ -15,11 +19,10 @@ import {
 
 const Language = () => {
     const userId = useSelector(selectUserId);
-    const languageOption = useSelector(selectUserLanguage);
+    const language = useSelector(selectUserLanguage);
     const dispatch = useDispatch();
 
     const handleLanguageChange = (e) => {
-        dispatch(setLanguage(e.target.value));
         fetch(`${API_BASE_URI}/API/users/${userId}`, {
             method: "PUT",
             headers: {
@@ -27,14 +30,17 @@ const Language = () => {
             },
             body: JSON.stringify({ language: e.target.value }),
             credentials: "include",
-        }).catch((error) => console.log(error));
+        })
+            .then(() => dispatch(setLanguage(e.target.value)))
+            .catch((error) => console.log(error));
     };
 
     return (
         <Paper
             sx={{
-                margin: "0 2rem",
                 padding: "1rem",
+                display: "flex",
+                justifyContent: "center",
             }}>
             <FormControl
                 component="form"
@@ -43,16 +49,19 @@ const Language = () => {
                     alignItems: "center",
                     gap: "1rem",
                 }}>
-                <Typography component="label" htmlFor="language">
-                    Langue des résultats :{" "}
+                <Typography
+                    component="label"
+                    htmlFor="language"
+                    fontWeight="700">
+                    {theme.languages[language].components.language}{" "}
                 </Typography>
-                {languageOption && (
+                {language && (
                     <Select
                         id="language"
                         onChange={handleLanguageChange}
-                        value={languageOption}>
+                        value={language}>
                         <MenuItem key="en" value="en">
-                            Anglais
+                            English
                         </MenuItem>
                         <MenuItem key="fr" value="fr">
                             Français

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
+import { selectUserLanguage } from "../../features/userSlice";
 import {
     setShowLoggedOnlyDialog,
     selectShowLoggedOnlyDialog,
@@ -21,6 +22,7 @@ import {
 import { Close } from "@mui/icons-material";
 
 const LoggedOnlyDialog = () => {
+    const language = useSelector(selectUserLanguage);
     const showLoggedOnlyDialog = useSelector(selectShowLoggedOnlyDialog);
     const dispatch = useDispatch();
 
@@ -47,19 +49,27 @@ const LoggedOnlyDialog = () => {
                         justifyContent: "space-between",
                         alignItems: "center",
                     }}>
-                    Fonctionnalité réservée aux membres
+                    {
+                        theme.languages[language].components.loggedOnlyDialog
+                            .title
+                    }
                     <IconButton onClick={handleClose}>
                         <Close />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        Cette fonctionnalité est réservée aux utilisateurs
-                        connectés.
+                        {
+                            theme.languages[language].components
+                                .loggedOnlyDialog.description
+                        }
                     </Typography>
                     <Typography>
                         <Typography component="span">
-                            Pas encore inscrit ?{" "}
+                            {
+                                theme.languages[language].components
+                                    .loggedOnlyDialog.redirect.question
+                            }{" "}
                         </Typography>
                         <Link
                             onClick={handleRegister}
@@ -69,7 +79,10 @@ const LoggedOnlyDialog = () => {
                                     cursor: "pointer",
                                 },
                             }}>
-                            Créer un compte
+                            {
+                                theme.languages[language].components
+                                    .loggedOnlyDialog.redirect.link
+                            }
                         </Link>
                     </Typography>
                 </DialogContent>
@@ -78,9 +91,17 @@ const LoggedOnlyDialog = () => {
                         variant="contained"
                         onClick={handleLogin}
                         sx={{ color: theme.palette.text.darkBg }}>
-                        Se connecter
+                        {
+                            theme.languages[language].components
+                                .loggedOnlyDialog.confirm
+                        }
                     </Button>
-                    <Button onClick={handleClose}>Annuler</Button>
+                    <Button onClick={handleClose}>
+                        {
+                            theme.languages[language].components
+                                .loggedOnlyDialog.cancel
+                        }
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>

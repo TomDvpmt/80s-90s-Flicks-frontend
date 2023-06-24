@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { Box } from "@mui/material";
+import { selectUserLanguage } from "../../features/userSlice";
 
 import theme from "../../styles/theme";
+import { Box } from "@mui/material";
 
 const Error404 = () => {
+    const language = useSelector(selectUserLanguage);
+
     return (
         <Box
             textAlign="center"
@@ -18,7 +22,9 @@ const Error404 = () => {
                     },
                 },
             }}>
-            <Link to="/">Revenir à l'accueil</Link>
+            <Link to="/">
+                {theme.languages[language].pages.error404.backHomeLink}
+            </Link>
         </Box>
     );
 };

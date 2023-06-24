@@ -1,13 +1,19 @@
-import { Button, Link } from "@mui/material";
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
 import theme from "../../styles/theme";
+import { Button, Link } from "@mui/material";
 
 import PropTypes from "prop-types";
 
-const MovieIMDBLink = ({ imdbId, imdbLang }) => {
-    MovieIMDBLink.propTypes = {
+const IMDBLink = ({ imdbId }) => {
+    IMDBLink.propTypes = {
         imdbId: PropTypes.string,
-        imdbLang: PropTypes.string.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
+
     return (
         imdbId !== undefined &&
         imdbId !== null &&
@@ -23,11 +29,11 @@ const MovieIMDBLink = ({ imdbId, imdbLang }) => {
                             md: theme.palette.text.darkBg,
                         },
                     }}>
-                    {imdbLang}
+                    {theme.languages[language].components.imdbLink}
                 </Link>
             </Button>
         )
     );
 };
 
-export default MovieIMDBLink;
+export default IMDBLink;

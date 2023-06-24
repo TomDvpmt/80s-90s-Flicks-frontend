@@ -1,6 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
 
 import theme from "../../styles/theme";
+import { Box, Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
 
@@ -10,6 +13,9 @@ const PersonFilmographyList = ({ personGender, movies, type }) => {
         movies: PropTypes.array.isRequired,
         type: PropTypes.string.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
+
     return (
         <>
             {movies.length > 0 && (
@@ -23,13 +29,17 @@ const PersonFilmographyList = ({ personGender, movies, type }) => {
                     <Typography component="h3" variant="h3" mb="1rem">
                         {type === "directing"
                             ? personGender === 1
-                                ? "Réalisatrice"
-                                : "Réalisateur"
+                                ? theme.languages[language].pages.person
+                                      .director.female
+                                : theme.languages[language].pages.person
+                                      .director.male
                             : type === "acting"
                             ? personGender === 1
-                                ? "Actrice"
-                                : "Acteur"
-                            : "Scénariste"}
+                                ? theme.languages[language].pages.person.actor
+                                      .female
+                                : theme.languages[language].pages.person.actor
+                                      .male
+                            : theme.languages[language].pages.person.writer}
                     </Typography>
                     <Box
                         sx={{

@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import MovieCard from "../../components/MovieCard";
 import MovieCardsGrid from "../../components/MovieCardsGrid";
-import HomeFilters from "../../components/filters/HomeFilters";
+import FiltersHome from "../../components/FiltersHome";
 import Pagination from "../../components/Pagination";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
-import { selectUserToken } from "../../features/userSlice";
+import { selectUserToken, selectUserLanguage } from "../../features/userSlice";
 import {
     selectFiltersAll,
     selectFiltersActiveGenres,
@@ -23,11 +23,10 @@ import {
 import { TMDB_API_KEY, TMDB_BASE_URI } from "../../config/APIs";
 
 import theme from "../../styles/theme";
-
 import { Box, Paper, Typography, Button } from "@mui/material";
 
 const ACTIONS = {
-    setIsYearFilterReady: "setIsYearFilterReady",
+    setIsFilterYearReady: "setIsFilterYearReady",
     setIsGenreFilterReady: "setIsGenreFilterReady",
     setHasActiveFilters: "setHasActiveFilters",
     setNumberOfPages: "setNumberOfPages",
@@ -39,6 +38,7 @@ const ACTIONS = {
 };
 
 const Home = () => {
+    const language = useSelector(selectUserLanguage);
     const token = useSelector(selectUserToken);
     const filters = useSelector(selectFiltersAll);
     const activeGenres = useSelector(selectFiltersActiveGenres);
@@ -48,8 +48,8 @@ const Home = () => {
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
-            case "setIsYearFilterReady":
-                return { ...state, isYearFilterReady: payload };
+            case "setIsFilterYearReady":
+                return { ...state, isFilterYearReady: payload };
             case "setIsGenreFilterReady":
                 return { ...state, isGenreFilterReady: payload };
             case "setHasActiveFilters":
@@ -72,7 +72,7 @@ const Home = () => {
     };
 
     const [state, localDispatch] = useReducer(reducer, {
-        isYearFilterReady: false,
+        isFilterYearReady: false,
         isGenreFilterReady: false,
         hasActiveFilters: false,
         numberOfPages: 1,
@@ -171,11 +171,11 @@ const Home = () => {
                         variant="contained"
                         onClick={handleSearch}
                         sx={{ color: "white" }}>
-                        Recherche par titre
+                        {theme.languages[language].pages.home.searchButton}
                     </Button>
                 </Box>
                 <Outlet />
-                <HomeFilters reducer={{ ACTIONS, state, localDispatch }} />
+                <FiltersHome reducer={{ ACTIONS, state, localDispatch }} />
                 <Paper
                     elevation={2}
                     sx={{
@@ -183,12 +183,22 @@ const Home = () => {
                         padding: "1rem",
                     }}>
                     <Typography>
-                        Nombre de résultats:{" "}
+                        {
+                            theme.languages[language].pages.home.numberOfResults
+                                .label
+                        }{" "}
                         <Typography component="span" fontWeight="700">
                             {state.numberOfResults}
                         </Typography>{" "}
                         {state.numberOfResults > 10000 && (
-                            <span>(10 000 max. disponibles)</span>
+                            <span>
+                                (10&nbsp;000{" "}
+                                {
+                                    theme.languages[language].pages.home
+                                        .numberOfResults.available
+                                }
+                                )
+                            </span>
                         )}
                     </Typography>
                 </Paper>

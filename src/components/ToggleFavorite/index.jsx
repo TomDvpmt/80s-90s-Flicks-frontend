@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+    selectUserLanguage,
     addToFavorites,
     removeFromFavorites,
     selectUserToken,
@@ -23,11 +24,12 @@ const ToggleFavorite = ({ movieId }) => {
         movieId: PropTypes.number.isRequired,
     };
 
-    const dispatch = useDispatch();
+    const language = useSelector(selectUserLanguage);
     const token = useSelector(selectUserToken);
     const userId = useSelector(selectUserId);
     const favorites = useSelector(selectUserFavorites);
     const isFavorite = favorites.includes(movieId);
+    const dispatch = useDispatch();
 
     const addMovieToFavorites = () => {
         dispatch(addToFavorites(movieId));
@@ -68,7 +70,11 @@ const ToggleFavorite = ({ movieId }) => {
         <FormControlLabel
             control={
                 <Checkbox
-                    inputProps={{ "aria-label": "add to favorite" }}
+                    inputProps={{
+                        "aria-label":
+                            theme.languages[language].components.toggleFavorite
+                                .add,
+                    }}
                     icon={
                         <StarBorder
                             sx={{
@@ -87,7 +93,11 @@ const ToggleFavorite = ({ movieId }) => {
                     onChange={handleFavoriteCheckbox}
                 />
             }
-            label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+            label={
+                isFavorite
+                    ? theme.languages[language].components.toggleFavorite.remove
+                    : theme.languages[language].components.toggleFavorite.add
+            }
         />
     );
 };

@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setUserInfo } from "../../features/userSlice";
+import { setUserInfo, selectUserLanguage } from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
@@ -13,8 +13,8 @@ import {
     selectPageLocation,
 } from "../../features/pageSlice";
 
-import UsernameInput from "../form-fields/UsernameInput";
-import PasswordInput from "../form-fields/PasswordInput";
+import InputUsername from "../InputUsername";
+import InputPassword from "../InputPassword";
 import ErrorMessage from "../ErrorMessage";
 import Loader from "../Loader";
 
@@ -41,6 +41,7 @@ const LoginForm = ({ isDialogForm }) => {
         isDialogForm: PropTypes.bool.isRequired,
     };
 
+    const language = useSelector(selectUserLanguage);
     const page = useSelector(selectPageLocation);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
@@ -189,7 +190,10 @@ const LoginForm = ({ isDialogForm }) => {
                 alignItems="center"
                 gap="1rem">
                 <Typography component="span" fontWeight="700">
-                    Pour tester l'application sans s'inscrire :{" "}
+                    {
+                        theme.languages[language].components.loginForm.demo
+                            .description
+                    }{" "}
                 </Typography>
                 <Button
                     className="demo"
@@ -197,13 +201,13 @@ const LoginForm = ({ isDialogForm }) => {
                     variant="contained"
                     color="success"
                     title="Un utilisateur déjà enregistré pour tester l'application">
-                    Utilisateur démo
+                    {theme.languages[language].components.loginForm.demo.label}
                 </Button>
             </Box>
             <ErrorMessage errorMessage={state.errorMessage} />
             <Box>
-                <UsernameInput reducer={{ ACTIONS, state, localDispatch }} />
-                <PasswordInput reducer={{ ACTIONS, state, localDispatch }} />
+                <InputUsername reducer={{ ACTIONS, state, localDispatch }} />
+                <InputPassword reducer={{ ACTIONS, state, localDispatch }} />
             </Box>
             <Box
                 sx={{
@@ -218,17 +222,24 @@ const LoginForm = ({ isDialogForm }) => {
                         margin: `${theme.margin.buttonTop.spaced} 0`,
                         color: "white",
                     }}>
-                    Se connecter
+                    {theme.languages[language].components.loginForm.submit}
                 </Button>
                 <Typography paragraph>
                     <Typography component="span">
-                        Pas encore inscrit ?&nbsp;
+                        {
+                            theme.languages[language].components.loginForm
+                                .redirect.question
+                        }
+                        &nbsp;
                         <Link
                             component={RouterLink}
                             to={!isDialogForm && "/register"}
                             onClick={handleRegister}
                             sx={{ color: theme.palette.primary.main }}>
-                            Créer un compte
+                            {
+                                theme.languages[language].components.loginForm
+                                    .redirect.link
+                            }
                         </Link>
                     </Typography>
                 </Typography>

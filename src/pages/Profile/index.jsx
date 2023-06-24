@@ -2,6 +2,7 @@ import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+    selectUserLanguage,
     setUserInfo,
     selectUserAvatarUrl,
     selectUserUsername,
@@ -19,13 +20,14 @@ import {
 import { setDemoUserId } from "../../features/configSlice";
 
 import UserAvatarUpdateDialog from "../../components/UserAvatarUpdateDialog";
-import UsernameInput from "../../components/form-fields/UsernameInput";
-import EmailInput from "../../components/form-fields/EmailInput";
-import FirstNameInput from "../../components/form-fields/FirstNameInput";
-import LastNameInput from "../../components/form-fields/LastNameInput";
+import InputUsername from "../../components/InputUsername";
+import InputEmail from "../../components/InputEmail";
+import InputFirstName from "../../components/InputFirstName";
+import InputLastName from "../../components/InputLastName";
 import ValidationMessage from "../../components/ValidationMessage";
 import ErrorMessage from "../../components/ErrorMessage";
 import DeleteAccountDialog from "../../components/DeleteAccountDialog";
+import Language from "../../components/Language";
 
 import { API_BASE_URI } from "../../config/APIs";
 import { formHasErrors, showFormErrors } from "../../utils/formValidation";
@@ -63,10 +65,9 @@ const ACTIONS = {
 };
 
 const Profile = () => {
-    const dispatch = useDispatch();
-
-    const avatarUrl = useSelector(selectUserAvatarUrl);
+    const language = useSelector(selectUserLanguage);
     const userId = useSelector(selectUserId);
+    const avatarUrl = useSelector(selectUserAvatarUrl);
 
     const prevUsername = useSelector(selectUserUsername);
     const prevEmail = useSelector(selectUserEmail);
@@ -77,6 +78,8 @@ const Profile = () => {
     const showUserAvatarUpdateDialog = useSelector(
         selectShowUserAvatarUpdateDialog
     );
+
+    const dispatch = useDispatch();
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
@@ -305,132 +308,167 @@ const Profile = () => {
                 <UserAvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
             )}
             <Box>
-                <Box
-                    sx={{
-                        maxWidth: theme.maxWidth.userForm,
-                        margin: "0 auto 3rem",
-                    }}>
-                    {state.showUpdateValidation && (
-                        <ValidationMessage text="Profil mis à jour." />
-                    )}
-                    <TableContainer component={Paper}>
-                        <Table sx={{ tableLayout: "fixed" }}>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell sx={leftCellStyle}>
-                                        Nom d'utilisateur&nbsp;:
-                                    </TableCell>
-                                    <TableCell sx={rightCellStyle}>
-                                        {prevUsername}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={leftCellStyle}>
-                                        Adresse e&#8209;mail&nbsp;:
-                                    </TableCell>
-                                    <TableCell sx={rightCellStyle}>
-                                        {prevEmail}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={leftCellStyle}>
-                                        Prénom&nbsp;:
-                                    </TableCell>
-                                    <TableCell sx={rightCellStyle}>
-                                        {prevFirstName}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={leftCellStyle}>
-                                        Nom&nbsp;:
-                                    </TableCell>
-                                    <TableCell sx={rightCellStyle}>
-                                        {prevLastName}
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Box
-                        sx={{
-                            mt: {
-                                xs: "1rem",
-                                sm: theme.margin.buttonTop.notSpaced,
-                            },
-                            display: "flex",
-                            flexDirection: { xs: "column", sm: "row" },
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: ".5rem",
-                            "& button": {
-                                maxWidth: "max-content",
-                            },
-                        }}>
-                        <Button
-                            type="button"
-                            variant={
-                                state.showUpdateInfosForm
-                                    ? "outlined"
-                                    : "contained"
-                            }
-                            size="small"
-                            sx={{
-                                color: state.showUpdateInfosForm
-                                    ? "inherit"
-                                    : "white",
-                            }}
-                            onClick={handleUpdateInfos}>
-                            Modifier les informations
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="text"
-                            size="small"
-                            onClick={handleDeleteClick}>
-                            Supprimer le compte
-                        </Button>
-                        {showDeleteAccountDialog && <DeleteAccountDialog />}
-                    </Box>
+                <Box width="100%" maxWidth={theme.maxWidth.userForm} mb="2rem">
+                    <Language />
                 </Box>
-
-                <Collapse in={state.showUpdateInfosForm}>
+                <Box>
                     <Box
-                        component="form"
-                        onSubmit={handleSubmit}
                         sx={{
                             maxWidth: theme.maxWidth.userForm,
                             margin: "0 auto 3rem",
                         }}>
-                        <ErrorMessage errorMessage={state.errorMessage} />
-                        <UsernameInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
-                        <EmailInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
-                        <FirstNameInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
-                        <LastNameInput
-                            reducer={{ ACTIONS, state, localDispatch }}
-                        />
+                        {state.showUpdateValidation && (
+                            <ValidationMessage
+                                text={
+                                    theme.languages[language].pages.profile
+                                        .update.validation
+                                }
+                            />
+                        )}
+                        <TableContainer component={Paper}>
+                            <Table sx={{ tableLayout: "fixed" }}>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell sx={leftCellStyle}>
+                                            {
+                                                theme.languages[language].pages
+                                                    .profile.username
+                                            }
+                                            &nbsp;:
+                                        </TableCell>
+                                        <TableCell sx={rightCellStyle}>
+                                            {prevUsername}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={leftCellStyle}>
+                                            {
+                                                theme.languages[language].pages
+                                                    .profile.email
+                                            }
+                                            &nbsp;:
+                                        </TableCell>
+                                        <TableCell sx={rightCellStyle}>
+                                            {prevEmail}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={leftCellStyle}>
+                                            {
+                                                theme.languages[language].pages
+                                                    .profile.firstName
+                                            }
+                                            &nbsp;:
+                                        </TableCell>
+                                        <TableCell sx={rightCellStyle}>
+                                            {prevFirstName}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={leftCellStyle}>
+                                            {
+                                                theme.languages[language].pages
+                                                    .profile.lastName
+                                            }
+                                            &nbsp;:
+                                        </TableCell>
+                                        <TableCell sx={rightCellStyle}>
+                                            {prevLastName}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                         <Box
                             sx={{
+                                mt: {
+                                    xs: "1rem",
+                                    sm: theme.margin.buttonTop.notSpaced,
+                                },
                                 display: "flex",
-                                justifyContent: "flex-end",
+                                flexDirection: { xs: "column", sm: "row" },
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: ".5rem",
+                                "& button": {
+                                    maxWidth: "max-content",
+                                },
                             }}>
                             <Button
-                                type="submit"
-                                variant="contained"
+                                type="button"
+                                variant={
+                                    state.showUpdateInfosForm
+                                        ? "outlined"
+                                        : "contained"
+                                }
+                                size="small"
                                 sx={{
-                                    margin: `${theme.margin.buttonTop.spaced} 0`,
-                                    color: "white",
-                                }}>
-                                Enregistrer
+                                    color: state.showUpdateInfosForm
+                                        ? "inherit"
+                                        : "white",
+                                }}
+                                onClick={handleUpdateInfos}>
+                                {
+                                    theme.languages[language].pages.profile
+                                        .update.label
+                                }
                             </Button>
+                            <Button
+                                type="button"
+                                variant="text"
+                                size="small"
+                                onClick={handleDeleteClick}>
+                                {
+                                    theme.languages[language].pages.profile
+                                        .delete.label
+                                }
+                            </Button>
+                            {showDeleteAccountDialog && <DeleteAccountDialog />}
                         </Box>
                     </Box>
-                </Collapse>
+
+                    <Collapse in={state.showUpdateInfosForm}>
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            sx={{
+                                maxWidth: theme.maxWidth.userForm,
+                                margin: "0 auto 3rem",
+                            }}>
+                            <ErrorMessage errorMessage={state.errorMessage} />
+                            <InputUsername
+                                reducer={{ ACTIONS, state, localDispatch }}
+                            />
+                            <InputEmail
+                                reducer={{ ACTIONS, state, localDispatch }}
+                            />
+                            <InputFirstName
+                                reducer={{ ACTIONS, state, localDispatch }}
+                            />
+                            <InputLastName
+                                reducer={{ ACTIONS, state, localDispatch }}
+                            />
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                }}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                        margin: `${theme.margin.buttonTop.spaced} 0`,
+                                        color: "white",
+                                    }}>
+                                    {
+                                        theme.languages[language].pages.profile
+                                            .update.submit
+                                    }
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Collapse>
+                </Box>
             </Box>
         </Box>
     );

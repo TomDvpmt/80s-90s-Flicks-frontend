@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserAvatarUrl, selectUserToken } from "../../features/userSlice";
+import {
+    selectUserAvatarUrl,
+    selectUserToken,
+    selectUserLanguage,
+} from "../../features/userSlice";
 
 import { API_BASE_URI } from "../../config/APIs";
 import useFetch from "../../hooks/useFetch";
@@ -22,6 +26,7 @@ import { Settings, Logout, Dashboard } from "@mui/icons-material";
 
 const NavUserMenu = () => {
     const token = useSelector(selectUserToken);
+    const language = useSelector(selectUserLanguage);
     const avatarUrl = useSelector(selectUserAvatarUrl);
     const navigate = useNavigate();
 
@@ -31,27 +36,23 @@ const NavUserMenu = () => {
     const response = useFetch(`${API_BASE_URI}/API/config/initialize`);
     const isLoading = response.isLoading;
 
-    // const { data, isLoading } = useFetch(
-    //     `${API_BASE_URI}/API/config/initialize`
-    // );
-
     const getMenuItemsData = useCallback(
         () => [
             {
                 name: "dashboard",
-                label: "Mon tableau de bord",
+                label: theme.languages[language].navigation.dashboard,
                 icon: <Dashboard />,
                 linkTo: "/dashboard",
             },
             {
                 name: "profile",
-                label: "Mon profil",
+                label: theme.languages[language].navigation.profile,
                 icon: <Settings />,
                 linkTo: "/profile",
             },
             {
                 name: "logout",
-                label: "Déconnexion",
+                label: theme.languages[language].navigation.logout,
                 icon: <Logout />,
                 linkTo: "/login",
             },

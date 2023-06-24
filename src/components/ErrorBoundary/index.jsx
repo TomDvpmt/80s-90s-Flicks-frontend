@@ -1,4 +1,7 @@
-import React from "react";
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
 import {
     useRouteError,
     useLocation,
@@ -11,16 +14,17 @@ import Footer from "../../layout/Footer";
 
 import { logout } from "../../utils/user";
 
+import theme from "../../styles/theme";
 import { Box, Typography, Link } from "@mui/material";
 
 import PropTypes from "prop-types";
-import theme from "../../styles/theme";
 
 const ErrorBoundary = ({ page }) => {
     ErrorBoundary.propTypes = {
         page: PropTypes.string,
     };
 
+    const language = useSelector(selectUserLanguage);
     const navigate = useNavigate();
 
     let error = useRouteError();
@@ -32,25 +36,35 @@ const ErrorBoundary = ({ page }) => {
 
     switch (page) {
         case "all":
-            message = "Quelque chose s'est mal passé.";
+            message =
+                theme.languages[language].components.errorBoundary.pages.all;
             break;
         case "home":
-            message = "Aïe ! Impossible d'afficher les films.";
+            message =
+                theme.languages[language].components.errorBoundary.pages.home;
             break;
         case "movie":
-            message = "Aïe ! Impossible d'afficher les données du film.";
+            message =
+                theme.languages[language].components.errorBoundary.pages.movie;
             break;
         case "dashboard":
-            message = "Aïe ! Impossible d'afficher les données.";
+            message =
+                theme.languages[language].components.errorBoundary.pages
+                    .dashboard;
             break;
         case "profile":
-            message = "Aïe ! Impossible d'afficher les données du profil.";
+            message =
+                theme.languages[language].components.errorBoundary.pages
+                    .profile;
             break;
         case "person":
-            message = "Aïe ! Impossible d'afficher les données de la personne.";
+            message =
+                theme.languages[language].components.errorBoundary.pages.person;
             break;
         default:
-            message = "Quelque chose s'est mal passé.";
+            message =
+                theme.languages[language].components.errorBoundary.pages
+                    .default;
     }
 
     const handleLogout = () => {
@@ -93,7 +107,10 @@ const ErrorBoundary = ({ page }) => {
                                     cursor: "pointer",
                                 },
                             }}>
-                            Essayer de rafraîchir la page
+                            {
+                                theme.languages[language].components
+                                    .errorBoundary.refreshLink
+                            }
                         </Link>
                         {page === "all" ? (
                             <Link
@@ -104,7 +121,10 @@ const ErrorBoundary = ({ page }) => {
                                         cursor: "pointer",
                                     },
                                 }}>
-                                Revenir à l'accueil
+                                {
+                                    theme.languages[language].components
+                                        .errorBoundary.refreshLink
+                                }
                             </Link>
                         ) : (
                             page !== "home" && (
@@ -118,7 +138,10 @@ const ErrorBoundary = ({ page }) => {
                                             cursor: "pointer",
                                         },
                                     }}>
-                                    Revenir à l'accueil
+                                    {
+                                        theme.languages[language].components
+                                            .errorBoundary.backHomeLink
+                                    }
                                 </Link>
                             )
                         )}

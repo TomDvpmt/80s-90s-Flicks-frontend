@@ -77,9 +77,6 @@ export const filtersSlice = createSlice({
         setActiveGenres: (state, action) => {
             state.activeGenres = action.payload;
         },
-        // clearActiveGenres: (state, action) => {
-        //     state.activeGenres = [];
-        // },
         convertActiveGenresToFilter: (state, action) => {
             state.allFilters = state.allFilters.map((filter) =>
                 filter.name === "withGenres"

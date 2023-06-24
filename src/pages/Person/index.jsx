@@ -182,7 +182,7 @@ const Person = () => {
                         }}>
                         <Typography>
                             <Typography component="span" fontWeight="700">
-                                Naissance :{" "}
+                                {theme.languages[language].pages.person.birth}{" "}
                             </Typography>
                             <Typography component="span">
                                 {state.personFormatedBirthday}
@@ -191,7 +191,10 @@ const Person = () => {
                         {state.person.deathday && (
                             <Typography>
                                 <Typography component="span" fontWeight="700">
-                                    Mort :{" "}
+                                    {
+                                        theme.languages[language].pages.person
+                                            .death
+                                    }{" "}
                                 </Typography>
                                 <Typography component="span">
                                     {state.personFormatedDeathday}
@@ -224,7 +227,10 @@ const Person = () => {
                                         target="_blank"
                                         color={theme.palette.text.lightBg}
                                         fontWeight="400">
-                                        Voir sur Wikipédia
+                                        {
+                                            theme.languages[language].components
+                                                .wikiLink
+                                        }
                                     </Link>
                                 </Button>
                                 <Button size="small">
@@ -235,7 +241,10 @@ const Person = () => {
                                         target="_blank"
                                         color={theme.palette.text.lightBg}
                                         fontWeight="400">
-                                        Voir sur IMDB
+                                        {
+                                            theme.languages[language].components
+                                                .imdbLink
+                                        }
                                     </Link>
                                 </Button>
                             </ButtonGroup>
@@ -245,7 +254,7 @@ const Person = () => {
 
                 <Box>
                     <Typography component="h2" variant="h2" m="4rem 0 3rem">
-                        Filmographie
+                        {theme.languages[language].pages.person.filmography}
                     </Typography>
                     <Box
                         sx={{

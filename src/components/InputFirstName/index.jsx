@@ -1,10 +1,18 @@
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
+import theme from "../../styles/theme";
+
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const FirstNameInput = ({ reducer }) => {
-    FirstNameInput.propTypes = {
+const InputFirstName = ({ reducer }) => {
+    InputFirstName.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const handleChange = (e) => {
         reducer.localDispatch({
@@ -21,14 +29,13 @@ const FirstNameInput = ({ reducer }) => {
         <TextField
             fullWidth
             margin="dense"
-            // id="firstName"
             name="firstName"
             type="text"
-            label="Prénom"
+            label={theme.languages[language].components.inputFirstName}
             value={reducer.state.firstName}
             onChange={handleChange}
         />
     );
 };
 
-export default FirstNameInput;
+export default InputFirstName;

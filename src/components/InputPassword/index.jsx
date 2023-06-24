@@ -1,12 +1,20 @@
-import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "../../../config/form";
+import { useSelector } from "react-redux";
+
+import { selectUserLanguage } from "../../features/userSlice";
+
+import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "../../config/form";
+
+import theme from "../../styles/theme";
 
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
-const PasswordInput = ({ reducer }) => {
-    PasswordInput.propTypes = {
+const InputPassword = ({ reducer }) => {
+    InputPassword.propTypes = {
         reducer: PropTypes.object.isRequired,
     };
+
+    const language = useSelector(selectUserLanguage);
 
     const helperText = `Le mot de passe doit comporter au moins ${PASSWORD_MIN_LENGTH} et au maximum ${PASSWORD_MAX_LENGTH} caractères.`;
 
@@ -33,7 +41,7 @@ const PasswordInput = ({ reducer }) => {
             // id="password"
             name="password"
             type="password"
-            label="Mot de passe"
+            label={theme.languages[language].components.inputPassword}
             value={reducer.state.password}
             onChange={handleChange}
             error={reducer.state.showPasswordError}
@@ -42,4 +50,4 @@ const PasswordInput = ({ reducer }) => {
     );
 };
 
-export default PasswordInput;
+export default InputPassword;

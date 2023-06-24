@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
     selectUserToken,
+    selectUserLanguage,
     selectUserId,
     setUserInfo,
 } from "../../features/userSlice";
@@ -17,12 +18,12 @@ import {
     selectPageLocation,
 } from "../../features/pageSlice";
 
-import UsernameInput from "../form-fields/UsernameInput";
-import PasswordInput from "../form-fields/PasswordInput";
-import PasswordConfirmInput from "../form-fields/PasswordConfirmInput";
-import EmailInput from "../form-fields/EmailInput";
-import FirstNameInput from "../form-fields/FirstNameInput";
-import LastNameInput from "../form-fields/LastNameInput";
+import InputUsername from "../InputUsername";
+import InputPassword from "../InputPassword";
+import InputPasswordConfirm from "../InputPasswordConfirm";
+import InputEmail from "../InputEmail";
+import InputFirstName from "../InputFirstName";
+import InputLastName from "../InputLastName";
 import ErrorMessage from "../ErrorMessage";
 import Loader from "../Loader";
 
@@ -56,6 +57,7 @@ const RegisterForm = ({ isDialogForm }) => {
     RegisterForm.propTypes = {
         isDialogForm: PropTypes.bool.isRequired,
     };
+    const language = useSelector(selectUserLanguage);
     const token = useSelector(selectUserToken);
     const userId = useSelector(selectUserId);
     const page = useSelector(selectPageLocation);
@@ -235,22 +237,22 @@ const RegisterForm = ({ isDialogForm }) => {
                     <Loader hasMessage />
                 ) : (
                     <Box>
-                        <UsernameInput
+                        <InputUsername
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
-                        <PasswordInput
+                        <InputPassword
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
-                        <PasswordConfirmInput
+                        <InputPasswordConfirm
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
-                        <EmailInput
+                        <InputEmail
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
-                        <FirstNameInput
+                        <InputFirstName
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
-                        <LastNameInput
+                        <InputLastName
                             reducer={{ ACTIONS, state, localDispatch }}
                         />
                     </Box>
@@ -268,17 +270,27 @@ const RegisterForm = ({ isDialogForm }) => {
                             margin: `${theme.margin.buttonTop.spaced} 0`,
                             color: "white",
                         }}>
-                        Créer le compte
+                        {
+                            theme.languages[language].components.registerForm
+                                .submit
+                        }
                     </Button>
                     <Typography paragraph>
                         <Typography component="span">
-                            Déjà inscrit ?&nbsp;
+                            {
+                                theme.languages[language].components
+                                    .registerForm.redirect.question
+                            }
+                            &nbsp;
                             <Link
                                 component={RouterLink}
                                 to={!isDialogForm && "/login"}
                                 onClick={handleLogin}
                                 sx={{ color: theme.palette.primary.main }}>
-                                Se connecter
+                                {
+                                    theme.languages[language].components
+                                        .registerForm.redirect.link
+                                }
                             </Link>
                         </Typography>
                     </Typography>
