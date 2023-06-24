@@ -190,7 +190,14 @@ export const LANGUAGE_FR = {
             remove: "Supprimer l'image",
             maxSize: "taille maximale :",
             unit: "Mo",
-            error: "La taille du fichier ne doit pas dépasser",
+            errors: {
+                size: "La taille du fichier ne doit pas dépasser",
+                imgBBKey: "Impossible de récupérer la clef d'API ImgBB.",
+                imgBBUpload:
+                    "Impossible d'uploader l'image sur le serveur d'ImgBB.",
+                update: "Impossible de mettre à jour l'utilisateur.",
+                global: "Opération impossible.",
+            },
         },
         wikiLink: "Voir sur Wikipédia",
     },

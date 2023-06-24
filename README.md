@@ -60,9 +60,10 @@ Le back-end : [https://github.com/TomDvpmt/80s-90s-Flixx-backend](https://github
 
 ![taleau de bord](/src/assets/img/captures/flixx-dashboard.webp)
 
+-   choix de la langue pour toute l'application (français / anglais)
+
 # Fonctionnalités à venir
 
--   choix de langue pour l'application (français ou anglais)
 -   choix du thème (clair / sombre)
 -   module de recherche de personnes
 -   ajout des bandes-annonces

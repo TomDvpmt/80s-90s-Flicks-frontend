@@ -57,7 +57,7 @@ const NavUserMenu = () => {
                 linkTo: "/login",
             },
         ],
-        []
+        [language]
     );
 
     const handleOpen = (e) => {

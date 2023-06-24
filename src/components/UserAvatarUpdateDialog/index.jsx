@@ -85,7 +85,7 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
             return;
         } else if (uploadedFile?.size > 1024 * 1024) {
             setErrorMessage(
-                `${theme.languages[language].components.userAvatarUpdateDialog.error} ${AVATAR_MAX_SIZE} ${theme.languages[language].components.userAvatarUpdateDialog.unit}.`
+                `${theme.languages[language].components.userAvatarUpdateDialog.errors.size} ${AVATAR_MAX_SIZE} ${theme.languages[language].components.userAvatarUpdateDialog.unit}.`
             );
             return;
         } else {
@@ -102,7 +102,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
 
                 if (!imgBBAPIKeyResponse.ok) {
                     throw new Error(
-                        "Impossible de récupérer la clef d'API ImgBB."
+                        theme.languages[
+                            language
+                        ].components.userAvatarUpdateDialog.errors.imgBBKey
                     );
                 }
                 const imgBBAPIKey = await imgBBAPIKeyResponse.json();
@@ -121,7 +123,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
 
                 if (!uploadResponse.ok) {
                     throw new Error(
-                        "Impossible d'uploader l'image sur le serveur d'ImgBB."
+                        theme.languages[
+                            language
+                        ].components.userAvatarUpdateDialog.errors.imgBBUpload
                     );
                 }
 
@@ -145,7 +149,9 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
 
                 if (!updateUserResponse.ok) {
                     throw new Error(
-                        "Impossible de mettre à jour l'utilisateur."
+                        theme.languages[
+                            language
+                        ].components.userAvatarUpdateDialog.errors.update
                     );
                 }
 
@@ -160,7 +166,10 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
             } catch (error) {
                 console.error(error);
                 setIsLoading(false);
-                setErrorMessage("Opération impossible.");
+                setErrorMessage(
+                    theme.languages[language].components.userAvatarUpdateDialog
+                        .errors.global
+                );
             }
         }
     };
@@ -189,7 +198,12 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center">
-                <DialogTitle>Votre avatar</DialogTitle>
+                <DialogTitle>
+                    {
+                        theme.languages[language].components
+                            .userAvatarUpdateDialog.title
+                    }
+                </DialogTitle>
                 <IconButton
                     onClick={handleClose}
                     sx={{ width: "2rem", height: "2rem", mr: "1rem" }}>
@@ -250,7 +264,10 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                         alignItems="center"
                         gap=".2rem">
                         <Button component="label" variant="contained">
-                            Choisir une image
+                            {
+                                theme.languages[language].components
+                                    .userAvatarUpdateDialog.choose
+                            }
                             <input
                                 hidden
                                 type="file"
@@ -259,10 +276,15 @@ const UserAvatarUpdateDialog = ({ reducer }) => {
                             />
                         </Button>
                         <Typography variant="body2">
-                            {"(taille maximale: 1 Mo)"}
+                            {`(${theme.languages[language].components.userAvatarUpdateDialog.maxSize} ${AVATAR_MAX_SIZE} ${theme.languages[language].components.userAvatarUpdateDialog.unit})`}
                         </Typography>
                     </Box>
-                    <Button onClick={handleDeleteImg}>Supprimer l'image</Button>
+                    <Button onClick={handleDeleteImg}>
+                        {
+                            theme.languages[language].components
+                                .userAvatarUpdateDialog.remove
+                        }
+                    </Button>
                 </Box>
             </DialogContent>
         </Dialog>
