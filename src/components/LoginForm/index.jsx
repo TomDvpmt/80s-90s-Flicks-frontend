@@ -1,12 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-    selectUserId,
-    selectUserToken,
-    setUserInfo,
-} from "../../features/userSlice";
+import { setUserInfo } from "../../features/userSlice";
 import {
     setShowLoginDialog,
     setShowRegisterDialog,
@@ -45,8 +41,6 @@ const LoginForm = ({ isDialogForm }) => {
         isDialogForm: PropTypes.bool.isRequired,
     };
 
-    const token = useSelector(selectUserToken);
-    const userId = useSelector(selectUserId);
     const page = useSelector(selectPageLocation);
     const destination = useSelector(selectDestination);
     const dispatch = useDispatch();
@@ -159,7 +153,9 @@ const LoginForm = ({ isDialogForm }) => {
             }
 
             dispatch(setUserInfo(data.user));
+            navigate(destination);
             dispatch(setShowLoginDialog(false));
+            dispatch(setDestination(""));
             localDispatch({
                 type: ACTIONS.setIsLoading,
                 payload: false,
@@ -176,13 +172,6 @@ const LoginForm = ({ isDialogForm }) => {
             });
         }
     };
-
-    useEffect(() => {
-        if (token) {
-            navigate(destination);
-            dispatch(setDestination(""));
-        }
-    }, [userId, token, destination, navigate, dispatch]);
 
     return (
         <Box

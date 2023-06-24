@@ -23,12 +23,8 @@ const LongWaitMessage = () => {
                     variant={{ xs: "body1", md: "h6" }}
                     color={theme.palette.text.darkBg}
                     fontWeight="500">
-                    Ce site est hébergé en partie par Render.com, qui impose un
-                    <span className="highlight">
-                        {" "}
-                        délai important lors de la première connexion à l'API
-                    </span>
-                    .
+                    Ce site est hébergé gratuitement, ce qui peut entraîner
+                    certains délais de connexion importants.
                 </Typography>
                 <Typography
                     variant={{ xs: "body1", md: "h6" }}

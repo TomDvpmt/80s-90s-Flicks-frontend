@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo/Flixx-logo.webp";
 
 import theme from "../../styles/theme";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import PropTypes from "prop-types";
 
@@ -29,7 +29,6 @@ const Branding = ({ location }) => {
             component="div"
             sx={{
                 gridColumn: "1 / 3",
-                ml: { md: "3rem" },
                 pt:
                     location === "header" && isWiderThanSmallScreen
                         ? "6rem"
@@ -50,6 +49,18 @@ const Branding = ({ location }) => {
                     width={location === "header" ? headerWidth : "250"}
                 />
             </Link>
+            {location === "header" && (
+                <Typography
+                    variant="h4"
+                    p="0 1rem"
+                    color={theme.palette.text.darkBg}
+                    fontWeight="500"
+                    fontStyle="italic"
+                    textAlign="center"
+                    sx={{ textShadow: "2px 2px 2px black" }}>
+                    20 ans de magie hollywoodienne
+                </Typography>
+            )}
         </Box>
     );
 };

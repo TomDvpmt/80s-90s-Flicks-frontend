@@ -25,7 +25,8 @@ function Router() {
 
     const checkAuth = () => {
         if (!token) {
-            return redirect("/login");
+            redirect("/login");
+            return null;
         }
         return null;
     };

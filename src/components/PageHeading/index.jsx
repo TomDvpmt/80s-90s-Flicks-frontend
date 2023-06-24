@@ -11,7 +11,8 @@ const PageHeading = ({ text }) => {
         <Typography
             component="h1"
             variant="h1"
-            fontFamily="SfFedora, Raleway, sans-serif">
+            // fontFamily="SfFedora, Raleway, sans-serif"
+        >
             {text}
         </Typography>
     );

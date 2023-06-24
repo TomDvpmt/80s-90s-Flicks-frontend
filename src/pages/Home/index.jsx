@@ -183,7 +183,10 @@ const Home = () => {
                         padding: "1rem",
                     }}>
                     <Typography>
-                        Nombre de résultats: {state.numberOfResults}{" "}
+                        Nombre de résultats:{" "}
+                        <Typography component="span" fontWeight="700">
+                            {state.numberOfResults}
+                        </Typography>{" "}
                         {state.numberOfResults > 10000 && (
                             <span>(10 000 max. disponibles)</span>
                         )}

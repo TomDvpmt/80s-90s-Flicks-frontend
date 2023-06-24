@@ -1,4 +1,7 @@
-export const API_BASE_URI = "https://flixx80s90s-api.onrender.com";
+export const API_BASE_URI = "https://flixx80s90s-api.cyclic.app/";
+
+// export const API_BASE_URI = "https://flixx80s90s-api.onrender.com";
+
 // export const API_BASE_URI =
 //     process.env.NODE_ENV === "development"
 //         ? "http://localhost:3000"

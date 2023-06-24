@@ -16,7 +16,7 @@ export const COMMON_PALETTE = {
         modal: "rgba(255, 255, 255, .5)",
     },
     text: {
-        darkBg: "white",
+        darkBg: "#f5f5f5",
         lightBg: "black",
         faded: "#919191",
     },
