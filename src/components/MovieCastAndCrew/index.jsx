@@ -129,7 +129,7 @@ const MovieCastAndCrew = ({ movieId, releaseDate }) => {
                     <Typography component="span">
                         {
                             theme.languages[language].components
-                                .movieCastAndCrew.from
+                                .movieCastAndCrew.by
                         }{" "}
                     </Typography>
                 )}

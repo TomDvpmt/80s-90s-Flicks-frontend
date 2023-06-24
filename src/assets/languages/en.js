@@ -153,7 +153,7 @@ export const LANGUAGE_EN = {
             starTitle: "This movie is one of your favorites",
         },
         movieCastAndCrew: {
-            from: "From",
+            by: "By",
             with: "With",
             writtenBy: "Written by",
         },

@@ -157,7 +157,7 @@ export const LANGUAGE_FR = {
             starTitle: "Ce film fait partie de vos favoris",
         },
         movieCastAndCrew: {
-            from: "De",
+            by: "De",
             with: "Avec",
             writtenBy: "Écrit par",
         },
