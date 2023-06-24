@@ -36,8 +36,8 @@ export const LANGUAGE_EN = {
             h1: "",
         },
         person: {
-            birth: "Naissance :",
-            death: "Mort :",
+            birth: "Birth:",
+            death: "Death:",
             filmography: "Filmography",
             director: {
                 male: "Director",
