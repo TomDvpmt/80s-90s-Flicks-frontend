@@ -1,4 +1,4 @@
-![Logo de l'application 80s-90s Flixx](/src/assets/logo/Flixx-logo.webp)
+![Logo de l'application 80s-90s Flixx](/src/assets/brand/Flixx-logo.webp)
 
 # Contexte
 
