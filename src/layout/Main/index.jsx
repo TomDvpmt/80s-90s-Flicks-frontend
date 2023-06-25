@@ -4,19 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { API_BASE_URI, TMDB_BASE_URI, TMDB_API_KEY } from "../../config/APIs";
 
-import { tmdbSetConfig } from "../../features/configSlice";
-import { selectPageLocation } from "../../features/pageSlice";
+import { tmdbSetConfig } from "../../config/configSlice";
 import {
-    auth,
+    setToken,
     setUserInfo,
     selectUserLanguage,
-} from "../../features/userSlice";
+} from "../../features/user/userSlice";
+import { selectPageLocation } from "../../features/navigation/navigationSlice";
 
-import NavBar from "../NavBar";
-import PageHeading from "../../components/PageHeading";
+import NavBar from "../../features/navigation/components/NavBar";
+import PageHeading from "../PageHeading";
 import Loader from "../../components/Loader";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box } from "@mui/material";
 
 const Main = () => {
@@ -78,7 +78,7 @@ const Main = () => {
         getToken()
             .then((token) => {
                 if (token) {
-                    dispatch(auth(token));
+                    dispatch(setToken(token));
                     getUserInfo().then((data) => {
                         dispatch(setUserInfo(data));
                     });

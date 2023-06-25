@@ -4,7 +4,7 @@ import { LOADER_LONG_WAIT_DURATION } from "../../config/timing";
 
 import LongWaitMessage from "../LongWaitMessage";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { CircularProgress, Modal, Box } from "@mui/material";
 
 import PropTypes from "prop-types";

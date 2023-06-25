@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserToken } from "../../features/userSlice";
+import { selectToken } from "../../features/user/userSlice";
 
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../features/user/components/LoginForm";
 
 const Login = () => {
-    const token = useSelector(selectUserToken);
+    const token = useSelector(selectToken);
     const navigate = useNavigate();
 
     useEffect(() => {

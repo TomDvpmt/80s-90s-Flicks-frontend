@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 
 import PropTypes from "prop-types";
 

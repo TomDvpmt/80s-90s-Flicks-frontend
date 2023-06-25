@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../features/userSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
 
 import {
     useRouteError,
@@ -12,9 +12,9 @@ import {
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 
-import { logout } from "../../utils/user";
+import { logout } from "../../features/user/userUtils";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box, Typography, Link } from "@mui/material";
 
 import PropTypes from "prop-types";

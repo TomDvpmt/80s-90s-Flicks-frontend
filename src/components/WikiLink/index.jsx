@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../features/userSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
 
 import { Button, Link } from "@mui/material";
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 
 const WikiLink = ({ movieTitle }) => {
     const language = useSelector(selectUserLanguage);

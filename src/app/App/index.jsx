@@ -1,6 +1,6 @@
-import Router from "../../routes/Router";
+import Router from "../Router";
 import { ThemeProvider, CssBaseline, GlobalStyles } from "@mui/material";
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 
 const styles = {
     "#root": {

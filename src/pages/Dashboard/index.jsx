@@ -1,17 +1,17 @@
 import { useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 
-import MovieCard from "../../components/MovieCard";
-import DashboardTabs from "../../components/DashboardTabs";
+import MovieCard from "../../features/movie/components/MovieCard";
+import DashboardTabs from "./DashboardTabs";
 
 import {
     selectUserMoviesSeen,
     selectUserMoviesToSee,
     selectUserFavorites,
     selectUserLanguage,
-} from "../../features/userSlice";
+} from "../../features/user/userSlice";
 
-import { getMovieData } from "../../utils/movie";
+import { getMovieData } from "../../features/movie/movieUtils";
 
 const ACTIONS = {
     setUniqueMovies: "setUniqueMovies",

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../features/userSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box } from "@mui/material";
 
 const Error404 = () => {

@@ -10,27 +10,28 @@ import {
     selectUserLastName,
     selectUserEmail,
     selectUserId,
-} from "../../features/userSlice";
-import {
-    selectShowDeleteAccountDialog,
-    selectShowUserAvatarUpdateDialog,
     setShowDeleteAccountDialog,
-    setShowUserAvatarUpdateDialog,
-} from "../../features/dialogsSlice";
-import { setDemoUserId } from "../../features/configSlice";
+    selectShowDeleteAccountDialog,
+    selectShowAvatarUpdateDialog,
+    setShowAvatarUpdateDialog,
+} from "../../features/user/userSlice";
+import { setDemoUserId } from "../../config/configSlice";
 
-import UserAvatarUpdateDialog from "../../components/UserAvatarUpdateDialog";
-import InputUsername from "../../components/InputUsername";
-import InputEmail from "../../components/InputEmail";
-import InputFirstName from "../../components/InputFirstName";
-import InputLastName from "../../components/InputLastName";
+import AvatarUpdateDialog from "../../features/user/components/AvatarUpdateDialog";
+import InputUsername from "../../features/user/components/InputUsername";
+import InputEmail from "../../features/user/components/InputEmail";
+import InputFirstName from "../../features/user/components/InputFirstName";
+import InputLastName from "../../features/user/components/InputLastName";
+import DeleteAccountDialog from "../../features/user/components/DeleteAccountDialog";
+import Language from "../../features/user/components/Language";
 import ValidationMessage from "../../components/ValidationMessage";
 import ErrorMessage from "../../components/ErrorMessage";
-import DeleteAccountDialog from "../../components/DeleteAccountDialog";
-import Language from "../../components/Language";
 
 import { API_BASE_URI } from "../../config/APIs";
-import { formHasErrors, showFormErrors } from "../../utils/formValidation";
+import {
+    formHasErrors,
+    showFormErrors,
+} from "../../features/user/userFormValidation";
 
 import {
     Box,
@@ -48,7 +49,7 @@ import {
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 
 const ACTIONS = {
     setUsername: "setUsername",
@@ -75,9 +76,7 @@ const Profile = () => {
     const prevLastName = useSelector(selectUserLastName);
 
     const showDeleteAccountDialog = useSelector(selectShowDeleteAccountDialog);
-    const showUserAvatarUpdateDialog = useSelector(
-        selectShowUserAvatarUpdateDialog
-    );
+    const showAvatarUpdateDialog = useSelector(selectShowAvatarUpdateDialog);
 
     const dispatch = useDispatch();
 
@@ -144,7 +143,7 @@ const Profile = () => {
     }, [prevUsername, prevEmail, prevFirstName, prevLastName]);
 
     const handleUpdateAvatar = () => {
-        dispatch(setShowUserAvatarUpdateDialog(true));
+        dispatch(setShowAvatarUpdateDialog(true));
         localDispatch({
             type: ACTIONS.setShowUpdateValidation,
             payload: false,
@@ -304,8 +303,8 @@ const Profile = () => {
                 </Badge>
             </Box>
 
-            {showUserAvatarUpdateDialog && (
-                <UserAvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
+            {showAvatarUpdateDialog && (
+                <AvatarUpdateDialog reducer={{ ACTIONS, localDispatch }} />
             )}
             <Box>
                 <Box width="100%" maxWidth={theme.maxWidth.userForm} mb="2rem">

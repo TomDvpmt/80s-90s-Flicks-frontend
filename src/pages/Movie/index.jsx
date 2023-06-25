@@ -2,30 +2,30 @@ import { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import MovieBackdrop from "../../components/MovieBackdrop";
-import MoviePoster from "../../components/MoviePoster";
-import MovieCheckboxes from "../../components/MovieCheckboxes";
-import MovieHeading from "../../components/MovieHeading";
-import MovieTagline from "../../components/MovieTagline";
-import MovieCastAndCrew from "../../components/MovieCastAndCrew";
-import MovieGenres from "../../components/MovieGenres";
-import MovieOverview from "../../components/MovieOverview";
-import MovieBudget from "../../components/MovieBudget";
-import MovieRevenue from "../../components/MovieRevenue";
+import MovieBackdrop from "../../features/movie/components/MovieBackdrop";
+import MoviePoster from "../../features/movie/components/MoviePoster";
+import MovieCheckboxes from "../../features/movie/components/MovieCheckboxes";
+import MovieHeading from "../../features/movie/components/MovieHeading";
+import MovieTagline from "../../features/movie/components/MovieTagline";
+import MovieCastAndCrew from "../../features/movie/components/MovieCastAndCrew";
+import MovieGenres from "../../features/movie/components/MovieGenres";
+import MovieOverview from "../../features/movie/components/MovieOverview";
+import MovieBudget from "../../features/movie/components/MovieBudget";
+import MovieRevenue from "../../features/movie/components/MovieRevenue";
 import IMDBLink from "../../components/IMDBLink";
 import WikiLink from "../../components/WikiLink";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import { selectUserLanguage } from "../../features/userSlice";
-import { setShowSearchMovieDialog } from "../../features/dialogsSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
+import { setShowSearchMovieDialog } from "../../features/movie/movieSlice";
 
-import { getMovieData } from "../../utils/movie";
+import { getMovieData } from "../../features/movie/movieUtils";
 import { isEmptyObject } from "../../utils/helpers";
 import { TMDB_EXCLUDED_GENRES } from "../../config/APIs";
 
+import theme from "../../theme/theme";
 import { Box, ButtonGroup } from "@mui/material";
-import theme from "../../styles/theme";
 
 const ACTIONS = {
     setLangData: "setLangData",

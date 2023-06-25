@@ -1,21 +1,22 @@
 import { useEffect, useReducer } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import PageHeading from "../../components/PageHeading";
-import PersonFilmographyList from "../../components/PersonFilmographyList";
-import ListMovieCard from "../../components/ListMovieCard";
+import PageHeading from "../../layout/PageHeading";
+import PersonInfo from "../../features/person/components/PersonInfo";
+import PersonFilmographyList from "../../features/person/components/PersonFilmographyList";
+import ListMovieCard from "../../features/movie/components/ListMovieCard";
 import Loader from "../../components/Loader";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
-import { selectUserLanguage } from "../../features/userSlice";
-import { selectTmdbImagesSecureUrl } from "../../features/configSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
+import { selectTmdbImagesSecureUrl } from "../../config/configSlice";
 
-import { getPersonFullData } from "../../utils/person";
+import { getPersonFullData } from "../../features/person/personUtils";
 import { isEmptyObject } from "../../utils/helpers";
 
-import { Box, Link, Typography, Button, ButtonGroup } from "@mui/material";
-import theme from "../../styles/theme";
+import { Box, Typography } from "@mui/material";
+import theme from "../../theme/theme";
 
 const ACTIONS = {
     setPerson: "setPerson",
@@ -159,99 +160,7 @@ const Person = () => {
         state.person && (
             <>
                 <PageHeading text={state.person.name} />
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: { xs: "column", md: "row" },
-                        gap: "2rem",
-                        "& img": {
-                            maxWidth: "300px",
-                        },
-                    }}>
-                    {state.personImgUrl && (
-                        <img src={state.personImgUrl} alt={state.person.name} />
-                    )}
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "1rem",
-                        }}>
-                        <Typography>
-                            <Typography component="span" fontWeight="700">
-                                {theme.languages[language].pages.person.birth}{" "}
-                            </Typography>
-                            <Typography component="span">
-                                {state.personFormatedBirthday}
-                            </Typography>
-                        </Typography>
-                        {state.person.deathday && (
-                            <Typography>
-                                <Typography component="span" fontWeight="700">
-                                    {
-                                        theme.languages[language].pages.person
-                                            .death
-                                    }{" "}
-                                </Typography>
-                                <Typography component="span">
-                                    {state.personFormatedDeathday}
-                                </Typography>
-                            </Typography>
-                        )}
-                        {state.person.biography && (
-                            <Typography
-                                align="justify"
-                                sx={{
-                                    maxWidth: { md: theme.maxWidth.biography },
-                                }}>
-                                {state.person.biography}
-                            </Typography>
-                        )}
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: {
-                                    xs: "center",
-                                    md: "flex-start",
-                                },
-                            }}>
-                            <ButtonGroup variant="outlined">
-                                <Button size="small">
-                                    <Link
-                                        component={RouterLink}
-                                        underline="none"
-                                        to={`https://${language}.wikipedia.org/wiki/${state.personFormatedName}`}
-                                        target="_blank"
-                                        color={theme.palette.text.lightBg}
-                                        fontWeight="400">
-                                        {
-                                            theme.languages[language].components
-                                                .wikiLink
-                                        }
-                                    </Link>
-                                </Button>
-                                <Button size="small">
-                                    <Link
-                                        component={RouterLink}
-                                        underline="none"
-                                        to={`https://www.imdb.com/name/${state.person.imdb_id}/`}
-                                        target="_blank"
-                                        color={theme.palette.text.lightBg}
-                                        fontWeight="400">
-                                        {
-                                            theme.languages[language].components
-                                                .imdbLink
-                                        }
-                                    </Link>
-                                </Button>
-                            </ButtonGroup>
-                        </Box>
-                    </Box>
-                </Box>
-
+                <PersonInfo state={state} />
                 <Box>
                     <Typography component="h2" variant="h2" m="4rem 0 3rem">
                         {theme.languages[language].pages.person.filmography}

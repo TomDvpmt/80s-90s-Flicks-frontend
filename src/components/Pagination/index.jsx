@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { setPageNumber } from "../../features/filtersSlice";
+import { setPageNumber } from "../../features/movie/movieSlice";
 
 import { Box, Pagination as MUIPagination } from "@mui/material";
 

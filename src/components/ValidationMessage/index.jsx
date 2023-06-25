@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 
 const ValidationMessage = ({ text }) => {
     return (

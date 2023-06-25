@@ -1,4 +1,4 @@
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box, Typography } from "@mui/material";
 
 const LongWaitMessage = () => {

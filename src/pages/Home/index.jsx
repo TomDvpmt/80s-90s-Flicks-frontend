@@ -2,27 +2,28 @@ import { useEffect, useReducer } from "react";
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import MovieCard from "../../components/MovieCard";
-import MovieCardsGrid from "../../components/MovieCardsGrid";
-import FiltersHome from "../../components/FiltersHome";
+import MovieCard from "../../features/movie/components/MovieCard";
+import MovieCardsGrid from "../../layout/MovieCardsGrid";
+import FiltersHome from "../../features/movie/components/FiltersHome";
 import Pagination from "../../components/Pagination";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Loader from "../../components/Loader";
 
-import { selectUserToken, selectUserLanguage } from "../../features/userSlice";
+import {
+    selectToken,
+    setShowLoggedOnlyDialog,
+    selectUserLanguage,
+} from "../../features/user/userSlice";
 import {
     selectFiltersAll,
     selectFiltersActiveGenres,
     selectFiltersYear,
-} from "../../features/filtersSlice";
-import {
-    setShowLoggedOnlyDialog,
-    setShowSearchMovieDialog,
-} from "../../features/dialogsSlice";
+} from "../../features/movie/movieSlice";
+import { setShowSearchMovieDialog } from "../../features/movie/movieSlice";
 
 import { TMDB_API_KEY, TMDB_BASE_URI } from "../../config/APIs";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box, Paper, Typography, Button } from "@mui/material";
 
 const ACTIONS = {
@@ -39,7 +40,7 @@ const ACTIONS = {
 
 const Home = () => {
     const language = useSelector(selectUserLanguage);
-    const token = useSelector(selectUserToken);
+    const token = useSelector(selectToken);
     const filters = useSelector(selectFiltersAll);
     const activeGenres = useSelector(selectFiltersActiveGenres);
     const activeYear = useSelector(selectFiltersYear);

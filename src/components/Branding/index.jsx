@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUserLanguage } from "../../features/userSlice";
+import { selectUserLanguage } from "../../features/user/userSlice";
 
-import logo from "../../assets/logo/Flixx-logo.webp";
+import logo from "../../assets/brand/Flixx-logo.webp";
 
-import theme from "../../styles/theme";
+import theme from "../../theme/theme";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import PropTypes from "prop-types";
@@ -60,7 +60,6 @@ const Branding = ({ location }) => {
                     p="0 1rem"
                     color={theme.palette.text.darkBg}
                     fontWeight="500"
-                    fontStyle="italic"
                     textAlign="center"
                     sx={{ textShadow: "2px 2px 2px black" }}>
                     {theme.languages[language].components.branding.tagline}
