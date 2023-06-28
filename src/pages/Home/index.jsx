@@ -94,8 +94,6 @@ const Home = () => {
         });
     }, [activeGenres, activeYear]);
 
-    useEffect(() => {}, [state.hasActiveFilters]);
-
     const handleSearch = () => {
         token
             ? dispatch(setShowSearchMovieDialog(true))
@@ -112,7 +110,7 @@ const Home = () => {
             .join("");
 
         fetch(
-            `${TMDB_BASE_URI}/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}`
+            `${TMDB_BASE_URI}/discover/movie?api_key=${TMDB_API_KEY}${queryFilters}&language=${language}`
         )
             .then((response) => response.json())
             .then((data) => {
@@ -158,7 +156,7 @@ const Home = () => {
             .finally(() => {
                 localDispatch({ type: ACTIONS.setLoading, payload: false });
             });
-    }, [filters]);
+    }, [filters, language]);
 
     return (
         <>
