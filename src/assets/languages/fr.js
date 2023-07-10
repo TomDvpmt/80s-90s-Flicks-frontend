@@ -52,7 +52,7 @@ export const LANGUAGE_FR = {
         profile: {
             h1: "Mon profil",
             username: "Nom d'utilisateur",
-            email: `Adresse e${(<span>&#8209;</span>)}mail`,
+            email: `Adresse e-mail`,
             firstName: "Prénom",
             lastName: "Nom",
             update: {
