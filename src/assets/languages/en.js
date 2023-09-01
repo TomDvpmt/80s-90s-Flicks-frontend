@@ -72,7 +72,7 @@ export const LANGUAGE_EN = {
     },
     components: {
         branding: {
-            tagline: "20 years of Hollywood magic",
+            tagline: "Explore. Archive. Nostalgize.",
         },
         dashboardTabs: {
             primary: {

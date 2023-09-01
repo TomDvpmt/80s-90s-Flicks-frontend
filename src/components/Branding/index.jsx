@@ -56,12 +56,12 @@ const Branding = ({ location }) => {
             </Link>
             {location === "header" && (
                 <Typography
-                    variant="h4"
+                    variant="h3"
                     p="0 1rem"
                     color={theme.palette.text.darkBg}
                     fontWeight="500"
                     textAlign="center"
-                    sx={{ textShadow: "2px 2px 2px black" }}>
+                    sx={{ textShadow: "3px 3px 3px black" }}>
                     {theme.languages[language].components.branding.tagline}
                 </Typography>
             )}
